@@ -53,4 +53,8 @@
     color: $primary;
   }
 
+
+  @media screen and (max-width: $med) {
+    margin-bottom: 40px;
+  }
 }

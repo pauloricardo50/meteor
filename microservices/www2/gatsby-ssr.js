@@ -14,11 +14,21 @@ import { linkResolver } from './src/utils/linkResolver';
 
 registerLinkResolver(linkResolver);
 
-const theme = createTheme({ fontSize: 18 });
+const theme = createTheme({
+  fontSize: 18,
+  overrideTheme: {
+    overrides: {
+      MuiAccordion: {
+        root: { backgroundColor: 'transparent', boxShadow: 'none' },
+      },
+    },
+  },
+});
 
 const wrapPageElement = ({ element, props }) => (
   <Layout {...props}>{element}</Layout>
 );
+
 const wrapRootElement = ({ element }) => (
   <IntlProvider
     messages={getLanguageData()}

@@ -196,6 +196,16 @@ const defaultTheme = fontSize => ({
         border: 'none',
       },
     },
+    MuiDialogContent: {
+      root: {
+        '&:first-child': {
+          // dialog without title fix. it does not work when you wrap
+          // content in a form tag for example
+          // https://github.com/mui-org/material-ui/issues/21894
+          paddingTop: 8,
+        },
+      },
+    },
   },
   palette: {
     primary: {
