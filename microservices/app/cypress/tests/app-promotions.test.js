@@ -57,35 +57,21 @@ describe('App Promotions', () => {
 
     cy.get('.promotion-lots-table tbody tr').should('have.length', 2);
 
-    cy.get('.promotion-lots-table input[type=checkbox]').first().click();
+    cy.get('.promotion-lots-table input[type=checkbox]').first().check();
 
     cy.get('.promotion-options-table tbody tr').should('have.length', 1);
 
     cy.get('.promotion-lots-table input[type=checkbox]:checked')
       .first()
-      .click();
+      .uncheck();
 
     cy.contains('Vous devez choisir au moins un lot').should('exist');
 
-    cy.get('.promotion-lots-table input[type=checkbox]:not(:checked)').click();
+    cy.get('.promotion-lots-table input[type=checkbox]:not(:checked)').check();
 
     cy.get('.promotion-options-table tbody tr').should('have.length', 2);
 
-    cy.contains('Mes lots')
-      .parents('div')
-      .contains('button', 'Réserver')
-      .should('exist')
-      .first();
-    cy.contains('Mes lots')
-      .parents('div')
-      .contains('button', 'Réserver')
-      .first()
-      .should('not.be.disabled');
-    cy.contains('Mes lots')
-      .parents('div')
-      .contains('button', 'Réserver')
-      .first()
-      .click();
+    cy.contains('button', 'Réserver').first().click();
     cy.contains('Confirmer').click();
     cy.contains('Réservation en cours').should('exist');
   });
