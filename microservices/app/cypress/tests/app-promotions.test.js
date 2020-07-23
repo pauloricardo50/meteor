@@ -5,7 +5,7 @@ import {
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
-describe('App Promotions', () => {
+describe.skip('App Promotions', () => {
   before(() => {
     cy.startTest();
     cy.meteorLogout();
