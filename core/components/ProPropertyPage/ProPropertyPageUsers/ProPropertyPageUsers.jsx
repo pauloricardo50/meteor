@@ -1,16 +1,13 @@
 import React from 'react';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AddCircleOutlineIcon from '@material-ui/icons/Add';
 
-import withHider from '../../../containers/withHider';
 import Table from '../../Table';
 import T from '../../Translation';
 import ProPropertyPageUsersContainer from './ProPropertyPageUsersContainer';
 import ProPropertyProUserAdder from './ProPropertyProUserAdder/ProPropertyProUserAdder';
-
-const HiddenUsers = withHider(hide => ({
-  label: hide ? 'Afficher les comptes Pro' : 'Masquer les comptes Pro',
-  primary: true,
-  style: { display: 'block', margin: '0 auto' },
-}))(Table);
 
 const ProPropertyPageUsers = ({
   property,
@@ -18,19 +15,35 @@ const ProPropertyPageUsers = ({
   columnOptions,
   permissions,
 }) => (
-  <div className="card1 card-top users-table">
-    <span className="flex users-table-header">
-      <h2>
-        <T id="ProPropertyPage.usersTable.title" />
-      </h2>
-      {permissions.canInviteProUsers && (
-        <>
-          <ProPropertyProUserAdder property={property} />
-        </>
-      )}
-    </span>
-    <HiddenUsers rows={rows} columnOptions={columnOptions} />
-  </div>
+  <Accordion>
+    <AccordionSummary
+      expandIcon={<AddCircleOutlineIcon />}
+      IconButtonProps={{ className: 'mr-0' }}
+    >
+      <div
+        className="flex center-align"
+        onClick={event => {
+          event.stopPropagation();
+        }}
+      >
+        <h2 className="mr-16">
+          <T id="ProPropertyPage.usersTable.title" />
+        </h2>
+        {permissions.canInviteProUsers && (
+          <>
+            <ProPropertyProUserAdder property={property} />
+          </>
+        )}
+      </div>
+    </AccordionSummary>
+    <AccordionDetails style={{ flexDirection: 'column' }}>
+      <Table
+        rows={rows}
+        columnOptions={columnOptions}
+        style={{ alignSelf: 'stretch' }}
+      />
+    </AccordionDetails>
+  </Accordion>
 );
 
 export default ProPropertyPageUsersContainer(ProPropertyPageUsers);

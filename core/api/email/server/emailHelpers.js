@@ -174,6 +174,7 @@ export const addEmailListener = ({
     props.context.unblock();
     Meteor.defer(() => {
       // Send emails asynchronously after the method returns
+      // FYI: This loses the current fiber data
       func(props);
     });
   });

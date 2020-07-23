@@ -44,7 +44,12 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, history }) => {
               raised
               href={Meteor.settings.public.subdomains.app}
               onClick={() => {
-                ctaClicked({ name: CTAS.START, history, routes: WWW_ROUTES });
+                ctaClicked({
+                  name: CTAS.START,
+                  history,
+                  routes: WWW_ROUTES,
+                  toPath: Meteor.settings.public.subdomains.app,
+                });
               }}
             >
               <T id="general.continue" />

@@ -1,3 +1,4 @@
+import { subscribeToNewsletter } from '../../email/methodDefinitions';
 import {
   adminLoanInsert,
   anonymousLoanInsert,
@@ -7,6 +8,7 @@ import {
   userLoanInsert,
 } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
+import { submitPromotionInterestForm } from '../../promotions/methodDefinitions';
 import PromotionService from '../../promotions/server/PromotionService';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
@@ -804,5 +806,25 @@ addAnalyticsListener({
     }
 
     analytics.track(EVENTS.INTERCOM_OPENED_MESSENGER, params, trackingId);
+  },
+});
+
+addAnalyticsListener({
+  method: subscribeToNewsletter,
+  func: ({ analytics, params: { email } }) => {
+    analytics.track(EVENTS.SUBSCRIBE_TO_NEWSLETTER, { userEmail: email });
+  },
+});
+
+addAnalyticsListener({
+  method: submitPromotionInterestForm,
+  func: ({ analytics, params: { email, promotionId } }) => {
+    const { name: promotionName } = PromotionService.get(promotionId, {
+      name: 1,
+    });
+    analytics.track(EVENTS.SUBMIT_PROMOTION_INTEREST_FORM, {
+      userEmail: email,
+      promotionName,
+    });
   },
 });

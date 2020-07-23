@@ -1,6 +1,6 @@
 import React from 'react';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 
 import Icon from 'core/components/Icon';
 import Link from 'core/components/Link';
@@ -21,7 +21,7 @@ const answerValues = {
 const Faq = {};
 
 Faq.Summary = React.memo(({ faq, ...props }) => (
-  <ExpansionPanelSummary
+  <AccordionSummary
     {...props}
     expandIcon={
       <Icon type="expandMore" className="faq-page-faqs-expand-icon" />
@@ -30,17 +30,17 @@ Faq.Summary = React.memo(({ faq, ...props }) => (
     <h4>
       <T id={`FaqPageFaqs.${faq}.question`} />
     </h4>
-  </ExpansionPanelSummary>
+  </AccordionSummary>
 ));
 
 Faq.Details = React.memo(({ faq }) => (
-  <ExpansionPanelDetails>
+  <AccordionDetails>
     <p className="description">
       <T id={`FaqPageFaqs.${faq}.answer`} values={answerValues} />
     </p>
-  </ExpansionPanelDetails>
+  </AccordionDetails>
 ));
 
-Faq.Summary.muiName = ExpansionPanelSummary.muiName;
+Faq.Summary.muiName = AccordionDetails.muiName;
 
 export default Faq;

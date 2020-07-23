@@ -18,25 +18,19 @@ const BorrowersAdder = ({ loanId }) => (
         onClick={() => loanInsertBorrowers.run({ loanId, amount: 1 })}
         raised
         secondary
+        icon={<Icon type="person" />}
+        size="large"
       >
-        <div className="flex-row center space-children">
-          <Icon type="person" />
-          <p style={{ margin: 'unset' }}>
-            <T id="BorrowersPage.BorrowerAdder.singleBorrower" />
-          </p>
-        </div>
+        <T id="BorrowersPage.BorrowerAdder.singleBorrower" />
       </Button>
       <Button
         onClick={() => loanInsertBorrowers.run({ loanId, amount: 2 })}
         raised
         secondary
+        icon={<Icon type="people" />}
+        size="large"
       >
-        <div className="flex-row center space-children">
-          <Icon type="people" />
-          <p style={{ margin: 'unset' }}>
-            <T id="BorrowersPage.BorrowerAdder.twoBorrowers" />
-          </p>
-        </div>
+        <T id="BorrowersPage.BorrowerAdder.twoBorrowers" />
       </Button>
     </div>
   </div>

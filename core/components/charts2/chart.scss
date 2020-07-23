@@ -1,0 +1,83 @@
+.highcharts-root {
+  fill: white;
+}
+
+.highcharts-plot-background {
+  fill: white;
+}
+
+.highcharts-color-0 {
+  fill: #2e7eff;
+  stroke: #2e7eff;
+}
+.highcharts-color-1 {
+  fill: #5bb5ff;
+  stroke: #5bb5ff;
+}
+
+.highcharts-color-2 {
+  fill: #dbeeff;
+  stroke: #dbeeff;
+}
+
+// TBD
+// .highcharts-color-3 {
+//   fill: #53A8E2;
+//   stroke: #53A8E2;
+// }
+
+// .highcharts-color-4 {
+//   fill: #6AC6FF;
+//   stroke: #6AC6FF;
+// }
+
+// .highcharts-color-5 {
+//   fill: #005bea;
+//   stroke: #005bea;
+// }
+
+.highcharts-tooltip-box {
+	fill: white;
+	fill-opacity: 0.6;
+  stroke-width: 0;
+  
+  text {
+    fill: $body-text;
+    stroke: transparent;
+  }
+}
+
+.highcharts-tooltip text {
+	fill: white;
+}
+
+.highcharts-label{
+  fill: transparent;
+  stroke: transparent;
+
+  text {
+    fill: $body-text;
+    stroke: transparent;
+  }
+}
+
+.highcharts-series {
+  filter: url(#glow);
+}
+
+.highcharts-legend-item {
+  text {
+    fill: $body-text;
+    stroke: transparent;
+  }
+}
+
+.highcharts-title {
+  font-size: 20px;
+  fill: $body-text;
+  stroke: transparent;
+}
+
+.highcharts-strong {
+  font-weight: $bold;
+}

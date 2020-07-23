@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { SUCCESS } from '../../api/constants';
 import Icon from '../Icon';
-import T from '../Translation';
+import T from '../Translation/FormattedMessage';
 
 const StatusIcon = React.forwardRef(
   ({ id, status, style = {}, tooltip, ...rest }, ref) => {

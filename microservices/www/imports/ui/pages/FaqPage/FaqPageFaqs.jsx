@@ -1,5 +1,5 @@
 import React from 'react';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import Accordion from '@material-ui/core/Accordion';
 import PropTypes from 'prop-types';
 
 import Faq from './Faq';
@@ -7,10 +7,10 @@ import Faq from './Faq';
 const FaqPageFaqs = ({ faqs }) => (
   <>
     {faqs.map(faq => (
-      <ExpansionPanel key={faq}>
+      <Accordion key={faq}>
         <Faq.Summary faq={faq} />
         <Faq.Details faq={faq} />
-      </ExpansionPanel>
+      </Accordion>
     ))}
   </>
 );

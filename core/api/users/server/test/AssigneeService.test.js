@@ -5,6 +5,7 @@ import moment from 'moment';
 import { resetDatabase } from 'core/utils/testHelpers';
 
 import generator from '../../../factories/server';
+import LoanService from '../../../loans/server/LoanService';
 import { ROLES } from '../../roles/roleConstants';
 import { ASSIGNEE } from '../../userConstants';
 import AssigneeService from '../AssigneeService';
@@ -436,6 +437,60 @@ describe('AssigneeService', () => {
       service.setAssignee(ASSIGNEE.ROUND_ROBIN);
       const user = UserService.get('user2', { assignedEmployeeId: 1 });
       expect(user.assignedEmployeeId).to.equal('advisor2');
+    });
+
+    it('also sets the assignee to the loan if it has no assignee', () => {
+      generator({
+        users: [
+          {
+            _id: 'userId',
+            referredByUser: {
+              assignedEmployee: { _id: 'advisor', _factory: ROLES.ADVISOR },
+            },
+            loans: { _id: 'loan' },
+          },
+        ],
+      });
+
+      const service = new AssigneeService('userId');
+      service.setAssignee();
+      const user = UserService.get('userId', { assignedEmployeeId: 1 });
+      expect(user.assignedEmployeeId).to.equal('advisor');
+      const loan = LoanService.get('loan', { assigneeLinks: 1 });
+      expect(loan?.assigneeLinks?.[0]).to.deep.equal({
+        _id: 'advisor',
+        isMain: true,
+        percent: 100,
+      });
+    });
+
+    it('does not override the loan assignee', () => {
+      generator({
+        users: [
+          { _id: 'advisor2', _factory: ROLES.ADVISOR },
+          {
+            _id: 'userId',
+            referredByUser: {
+              assignedEmployee: { _id: 'advisor1', _factory: ROLES.ADVISOR },
+            },
+            loans: {
+              _id: 'loan',
+              assigneeLinks: [{ _id: 'advisor2', isMain: true, percent: 100 }],
+            },
+          },
+        ],
+      });
+
+      const service = new AssigneeService('userId');
+      service.setAssignee();
+      const user = UserService.get('userId', { assignedEmployeeId: 1 });
+      expect(user.assignedEmployeeId).to.equal('advisor1');
+      const loan = LoanService.get('loan', { assigneeLinks: 1 });
+      expect(loan?.assigneeLinks?.[0]).to.deep.equal({
+        _id: 'advisor2',
+        isMain: true,
+        percent: 100,
+      });
     });
   });
 

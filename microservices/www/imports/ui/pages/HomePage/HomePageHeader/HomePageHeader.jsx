@@ -36,7 +36,12 @@ const HomePageHeader = ({ history }) => {
             raised
             href={Meteor.settings.public.subdomains.app}
             onClick={() => {
-              ctaClicked({ name: CTAS.START, history, routes: WWW_ROUTES });
+              ctaClicked({
+                name: CTAS.START,
+                history,
+                routes: WWW_ROUTES,
+                toPath: Meteor.settings.public.subdomains.app,
+              });
             }}
             style={{ marginRight: 8 }}
           >
