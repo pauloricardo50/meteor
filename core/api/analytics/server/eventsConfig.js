@@ -282,7 +282,7 @@ export const EVENTS_CONFIG = {
     properties: [...dripSharedProperties],
   },
   [EVENTS.DRIP_SUBSCRIBER_BOOKED_AN_EVENT]: {
-    name: 'Drip Subscriber Lost',
+    name: 'Drip Subscriber Booked an Event',
     properties: [...dripSharedProperties],
   },
   [EVENTS.DRIP_SUBSCRIBER_UNSUBSCRIBED]: {
@@ -311,7 +311,7 @@ export const EVENTS_CONFIG = {
     properties: [...dripSharedProperties, 'dripEmailId', 'dripEmailSubject'],
   },
   [EVENTS.DRIP_SUBSCRIBER_COMPLAINED]: {
-    name: 'Drip Subscriber Bounced',
+    name: 'Drip Subscriber Complained',
     properties: [...dripSharedProperties, 'dripEmailId', 'dripEmailSubject'],
   },
   [EVENTS.SUBSCRIBE_TO_NEWSLETTER]: {

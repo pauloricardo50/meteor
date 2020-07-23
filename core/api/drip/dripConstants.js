@@ -16,4 +16,5 @@ export const DRIP_ACTIONS = {
   USER_CREATED: 'User created',
   USER_VALIDATED: 'User validated',
   USER_QUALIFIED: 'User qualified',
+  TEST_ACTION: 'Test action',
 };

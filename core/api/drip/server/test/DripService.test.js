@@ -6,7 +6,11 @@ import NoOpAnalytics from '../../../analytics/server/NoOpAnalytics';
 import ErrorLogger from '../../../errorLogger/server/ErrorLogger';
 import generator from '../../../factories/server';
 import UserService from '../../../users/server/UserService';
-import { ACQUISITION_CHANNELS } from '../../../users/userConstants';
+import {
+  ACQUISITION_CHANNELS,
+  USER_STATUS,
+} from '../../../users/userConstants';
+import { DRIP_ACTIONS, DRIP_TAGS } from '../../dripConstants';
 import DripService from '../DripService';
 
 const SUBSCRIBER_EMAIL = 'subscriber@e-potek.ch';
@@ -184,14 +188,14 @@ describe.only('DripService', function () {
       });
       await removeSubscriber();
 
-      expect(analyticsSpy.args[0][0]).to.deep.include({
+      expect(analyticsSpy.firstCall.args[0]).to.deep.include({
         userId: SUBSCRIBER_ID,
         event: 'Drip Subscriber Created',
       });
     });
   });
 
-  describe('updateSubscriber', async () => {
+  describe('updateSubscriber', () => {
     before(async () => {
       await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
     });
@@ -244,10 +248,385 @@ describe.only('DripService', function () {
         object: { address1: 'Rue du test 1' },
       });
 
-      expect(analyticsSpy.args[0][0]).to.deep.include({
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
         userId: SUBSCRIBER_ID,
         event: 'Drip Subscriber Updated',
       });
+    });
+  });
+
+  describe('removeSubscriber', () => {
+    it('removes a subscriber', async () => {
+      await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
+
+      const { status } = await DripService.removeSubscriber({
+        email: SUBSCRIBER_EMAIL,
+      });
+
+      expect(status).to.equal(204);
+    });
+
+    it('tracks the event', async () => {
+      await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
+
+      await DripService.removeSubscriber({ email: SUBSCRIBER_EMAIL });
+
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Removed',
+      });
+    });
+
+    it('throws if subscriber does not exist on Drip', async () => {
+      try {
+        await DripService.removeSubscriber({ email: SUBSCRIBER_EMAIL });
+        expect(1).to.equal(2, 'Should throw');
+      } catch (error) {
+        expect(error.message).to.include('not found');
+      }
+    });
+  });
+
+  describe('trackEvent', () => {
+    after(async () => {
+      await removeSubscriber();
+    });
+
+    it('tracks an event', async () => {
+      await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
+      const { status } = await DripService.trackEvent({
+        event: { action: DRIP_ACTIONS.TEST_ACTION },
+        email: SUBSCRIBER_EMAIL,
+      });
+
+      expect(status).to.equal(204);
+    });
+
+    it('tracks the event in analytics', async () => {
+      await DripService.trackEvent({
+        event: { action: DRIP_ACTIONS.TEST_ACTION },
+        email: SUBSCRIBER_EMAIL,
+      });
+
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Event Recorded',
+      });
+    });
+  });
+
+  // Webhooks
+  // Cannot trigger Drip to call our webhooks in tests
+  describe('handleAppliedTag', () => {
+    const event = 'subscriber.applied_tag';
+
+    it('does nothing if tag is not handled by us', async () => {
+      await DripService.handleWebhook({
+        body: { event, data: { properties: { tag: 'not_handled' } } },
+      });
+
+      expect(analyticsSpy.called).to.equal(false);
+    });
+
+    it('does nothing if tag is not LOST,QUALIFIED or CALENDLY', async () => {
+      await DripService.handleWebhook({
+        body: { event, data: { properties: { tag: DRIP_TAGS.TEST } } },
+      });
+
+      expect(analyticsSpy.called).to.equal(false);
+    });
+
+    it('sets the user status to LOST if tag is LOST and tracks the event in analytics', async () => {
+      await DripService.handleWebhook({
+        body: {
+          event,
+          data: {
+            properties: { tag: DRIP_TAGS.LOST },
+            subscriber: { email: SUBSCRIBER_EMAIL },
+          },
+        },
+      });
+
+      const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
+
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Lost',
+      });
+      expect(status).to.equal(USER_STATUS.LOST);
+    });
+
+    it('sets the user status to QUALIFIED if tag is QUALIFIED and tracks the event in analytics', async () => {
+      await DripService.handleWebhook({
+        body: {
+          event,
+          data: {
+            properties: { tag: DRIP_TAGS.QUALIFIED },
+            subscriber: { email: SUBSCRIBER_EMAIL },
+          },
+        },
+      });
+
+      const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
+
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Qualified',
+      });
+      expect(status).to.equal(USER_STATUS.QUALIFIED);
+    });
+
+    it('sets the user status to QUALIFIED if tag is CALENDLY and tracks the event in analytics', async () => {
+      await DripService.handleWebhook({
+        body: {
+          event,
+          data: {
+            properties: { tag: DRIP_TAGS.CALENDLY },
+            subscriber: { email: SUBSCRIBER_EMAIL },
+          },
+        },
+      });
+
+      const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
+
+      expect(analyticsSpy.firstCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Booked an Event',
+      });
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Qualified',
+      });
+      expect(status).to.equal(USER_STATUS.QUALIFIED);
+    });
+  });
+
+  describe('handleDeleted', () => {
+    const event = 'subscriber.deleted';
+
+    it('sets the user status to LOST', async () => {
+      await DripService.handleWebhook({
+        body: {
+          event,
+          data: {
+            subscriber: { email: SUBSCRIBER_EMAIL },
+          },
+        },
+      });
+
+      const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
+
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Removed',
+      });
+      expect(status).to.equal(USER_STATUS.LOST);
+    });
+
+    it('does nothing if user is not found', async () => {
+      await DripService.handleWebhook({
+        body: {
+          event,
+          data: {
+            subscriber: { email: 'wrong@e-potek.ch' },
+          },
+        },
+      });
+
+      expect(analyticsSpy.called).to.equal(false);
+    });
+  });
+
+  describe('handleUnsubscribe', () => {
+    const event = 'subscriber.unsubscribed_all';
+
+    after(() => {
+      removeSubscriber();
+    });
+
+    // All checks are performed in one test to avoid calling Drip API multiple times
+    it('sets the user status to LOST, tags the subscriber to LOST and tracks the event in analytics', async () => {
+      await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
+      await DripService.handleWebhook({
+        body: {
+          event,
+          data: {
+            subscriber: { email: SUBSCRIBER_EMAIL },
+          },
+        },
+      });
+
+      const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
+
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Unsubscribed',
+      });
+      expect(status).to.equal(USER_STATUS.LOST);
+
+      const { subscribers } = await DripService.fetchSubscriber({
+        subscriber: { email: SUBSCRIBER_EMAIL },
+      });
+      const [{ tags }] = subscribers;
+
+      expect(tags).to.include(DRIP_TAGS.LOST);
+    });
+  });
+
+  // TODO: add email activity
+  // Waiting on Drip's answer regarding the email name
+  describe.skip('handleReceivedEmail', () => {
+    const event = 'subscriber.received_email';
+
+    it('adds the email activity and tracks the event in analytics', async () => {
+      await DripService.handleWebhook({
+        body: {
+          event,
+          data: {
+            properties: { email_id: 'emailId', email_subject: 'emailSubject' },
+            subscriber: { email: SUBSCRIBER_EMAIL },
+          },
+        },
+      });
+    });
+  });
+
+  describe('openedEmail', () => {
+    const event = 'subscriber.opened_email';
+
+    it('tracks the event in analytics', async () => {
+      await DripService.handleWebhook({
+        body: {
+          event,
+          data: {
+            properties: { email_id: 'emailId', email_subject: 'emailSubject' },
+            subscriber: { email: SUBSCRIBER_EMAIL },
+          },
+        },
+      });
+
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Opened Email',
+      });
+      expect(analyticsSpy.lastCall.args[0].properties).to.deep.include({
+        dripEmailId: 'emailId',
+        dripEmailSubject: 'emailSubject',
+      });
+    });
+  });
+
+  describe('handleClickedEmail', () => {
+    const event = 'subscriber.clicked_email';
+
+    it('tracks the event in analytics', async () => {
+      await DripService.handleWebhook({
+        body: {
+          event,
+          data: {
+            properties: {
+              email_id: 'emailId',
+              email_subject: 'emailSubject',
+              url: 'someUrl',
+            },
+            subscriber: { email: SUBSCRIBER_EMAIL },
+          },
+        },
+      });
+
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Clicked Email',
+      });
+      expect(analyticsSpy.lastCall.args[0].properties).to.deep.include({
+        dripEmailId: 'emailId',
+        dripEmailSubject: 'emailSubject',
+        dripEmailUrl: 'someUrl',
+      });
+    });
+  });
+
+  describe('handleBounced', () => {
+    const event = 'subscriber.bounced';
+
+    after(() => {
+      removeSubscriber();
+    });
+
+    // All checks are performed in one test to avoid calling Drip API multiple times
+    it('sets the user status to LOST, tags the subscriber to LOST and tracks the event in analytics', async () => {
+      await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
+      await DripService.handleWebhook({
+        body: {
+          event,
+          data: {
+            subscriber: { email: SUBSCRIBER_EMAIL },
+            properties: { email_id: 'emailId', email_subject: 'emailSubject' },
+          },
+        },
+      });
+
+      const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
+
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Bounced',
+      });
+      expect(analyticsSpy.lastCall.args[0].properties).to.deep.include({
+        dripEmailId: 'emailId',
+        dripEmailSubject: 'emailSubject',
+      });
+
+      expect(status).to.equal(USER_STATUS.LOST);
+
+      const { subscribers } = await DripService.fetchSubscriber({
+        subscriber: { email: SUBSCRIBER_EMAIL },
+      });
+      const [{ tags }] = subscribers;
+
+      expect(tags).to.include(DRIP_TAGS.LOST);
+    });
+  });
+
+  describe('handleComplained', () => {
+    const event = 'subscriber.complained';
+
+    after(() => {
+      removeSubscriber();
+    });
+
+    // All checks are performed in one test to avoid calling Drip API multiple times
+    it('sets the user status to LOST, tags the subscriber to LOST and tracks the event in analytics', async () => {
+      await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
+      await DripService.handleWebhook({
+        body: {
+          event,
+          data: {
+            subscriber: { email: SUBSCRIBER_EMAIL },
+            properties: { email_id: 'emailId', email_subject: 'emailSubject' },
+          },
+        },
+      });
+
+      const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
+
+      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Complained',
+      });
+      expect(analyticsSpy.lastCall.args[0].properties).to.deep.include({
+        dripEmailId: 'emailId',
+        dripEmailSubject: 'emailSubject',
+      });
+
+      expect(status).to.equal(USER_STATUS.LOST);
+
+      const { subscribers } = await DripService.fetchSubscriber({
+        subscriber: { email: SUBSCRIBER_EMAIL },
+      });
+      const [{ tags }] = subscribers;
+
+      expect(tags).to.include(DRIP_TAGS.LOST);
     });
   });
 });

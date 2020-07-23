@@ -35,12 +35,14 @@ const config = function () {
     }),
     tagSubscriber: ({ subscriber, tag }) => ({
       method: 'tagSubscriber',
-      params: { tags: [{ email: subscriber?.email, tag }] },
+      params: { email: subscriber?.email, tag },
     }),
+    // Not used (yet?)
     removeSubscriberTag: ({ subscriber, tag }) => ({
       method: 'removeSubscriberTag',
       params: [subscriber?.email, tag],
     }),
+    // Not used (yet?)
     unsubscribeFromAllMailings: ({ subscriber }) => ({
       method: 'unsubscribeFromAllMailings',
       params: subscriber?.email,
@@ -55,6 +57,8 @@ const config = function () {
     }),
   };
 
+  // This is the list of all webhooks sent by Drip
+  // 'undefined' webhooks are not (yet?) handled by our backend
   const webhookEvents = {
     'subscriber.created': undefined,
     'subscriber.deleted': 'handleDeleted',
@@ -102,7 +106,11 @@ const config = function () {
       return this.dripClient[method](
         ...(Array.isArray(params) ? params : [params]),
       )
-        .then(response => response.body)
+        .then(response => {
+          // Append the status to the body for the tests
+          const { body, statusCode: status } = response;
+          return { ...body, status };
+        })
         .catch(error => {
           ErrorLogger.logError({
             error,
@@ -240,7 +248,7 @@ export class DripService {
       subscriber,
     });
 
-    // Response should be a 204 No Content
+    // Response should be a 204 No Content, no need to append it to the returned result
     await this.trackEvent({
       event: { action: DRIP_ACTIONS.USER_CREATED },
       email,
@@ -249,6 +257,10 @@ export class DripService {
     return res;
   }
 
+  // Note from Drip: Concurrently updating the same subscriber via multiple API calls is not supported
+  // and will fail with a rate limit error and the message "Too many concurrent requests for the same subscriber".
+  // You should retry the call after a short wait period to let the other requests to the same subscriber complete.
+  // Triggering this rate limit does not mean you've consumed your overall API rate limited capacity.
   async updateSubscriber({ email, object }) {
     const res = await this.upsertSubscriber({
       subscriber: { email, ...object },
@@ -298,7 +310,7 @@ export class DripService {
     const tag = properties?.tag;
 
     // This tag is not handled by our backend
-    if (!this.tags.includes(tag)) {
+    if (!Object.values(this.tags).includes(tag)) {
       return Promise.resolve();
     }
 
