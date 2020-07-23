@@ -7,7 +7,7 @@ const BorrowersCardHeader = ({ progress }) => (
   <div className="borrowers-card-header">
     <div style={{ width: '100%' }}>
       <div className="flex-row title">
-        <h2 className="flex-row">
+        <h2 className="flex-row center-align">
           <T id="collections.borrowers" />
           &nbsp;-&nbsp;
           <PercentWithStatus

@@ -33,10 +33,16 @@ const defaultTheme = fontSize => ({
       containedPrimary: {
         backgroundImage: colors.primaryGradient,
         color: 'white',
+        '&$disabled': {
+          backgroundImage: 'unset',
+        },
       },
       containedSecondary: {
         backgroundImage: colors.secondaryGradient,
         color: 'white',
+        '&$disabled': {
+          backgroundImage: 'unset',
+        },
       },
     },
     MuiFormLabel: {

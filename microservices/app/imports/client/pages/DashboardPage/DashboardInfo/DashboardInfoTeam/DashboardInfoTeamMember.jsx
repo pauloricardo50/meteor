@@ -41,7 +41,7 @@ const DashboardInfoTeamMember = ({
         />
       )}
 
-      <a href={`mailto:${email}`}>
+      <a className="ml-4" href={`mailto:${email}`}>
         <IconButton
           type="mail"
           tooltip={
@@ -51,7 +51,7 @@ const DashboardInfoTeamMember = ({
       </a>
 
       {phoneNumber && (
-        <a href={`tel:${phoneNumber}`}>
+        <a className="ml-4" href={`tel:${phoneNumber}`}>
           <IconButton
             type="phone"
             tooltip={
