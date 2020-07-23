@@ -74,7 +74,14 @@ describe('Public onboarding', () => {
   });
 
   it('should create a new account before revealing maxPropertyValue', () => {
-    cy.callMethod('generateProFixtures');
+    cy.callMethod('generateScenario', {
+      scenario: {
+        organisations: {
+          features: [ORGANISATION_FEATURES.LENDER],
+          lenderRules: {},
+        },
+      },
+    });
     cy.contains('button', 'Acquisition').click();
 
     cy.get('.borrowers-adder').find('button').first().click();
