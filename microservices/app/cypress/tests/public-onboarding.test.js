@@ -378,7 +378,7 @@ describe('Public onboarding', () => {
   describe('refinancings', () => {
     it('creates a refinancing loan and gets to the end', () => {
       cy.callMethod('generateProFixtures');
-      cy.contains('button', 'Refinancement').click();
+      cy.contains('button', 'Renouvellement').click();
 
       cy.contains('Ajouter un bien').click();
       cy.get('[name="value"]').type('1000000');
