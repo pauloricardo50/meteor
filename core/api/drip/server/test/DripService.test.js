@@ -28,14 +28,25 @@ describe.only('DripService', function () {
     logErrorSpy = sinon.spy(ErrorLogger, 'logError');
     analyticsSpy = sinon.spy(NoOpAnalytics.prototype, 'track');
     generator({
-      users: {
-        _id: 'admin',
-        firstName: 'Lydia',
-        lastName: 'Abraha',
-        _factory: 'advisor',
-        emails: [{ address: 'lydia@e-potek.ch', verified: true }],
-      },
-      organisations: { _id: 'org', name: 'Organisation' },
+      users: [
+        {
+          _id: 'admin',
+          firstName: 'Lydia',
+          lastName: 'Abraha',
+          _factory: 'advisor',
+          emails: [{ address: 'lydia@e-potek.ch', verified: true }],
+        },
+        {
+          _id: SUBSCRIBER_ID,
+          emails: [{ address: SUBSCRIBER_EMAIL, verified: true }],
+          firstName: SUBSCRIBER_FIRSTNAME,
+          lastName: SUBSCRIBER_LASTNAME,
+          phoneNumbers: [SUBSCRIBER_PHONE],
+          assignedEmployee: { _id: 'admin' },
+          referredByOrganisation: { name: 'Organisation' },
+          loans: { promotions: { name: 'Promotion' } },
+        },
+      ],
     });
   });
 
@@ -44,8 +55,9 @@ describe.only('DripService', function () {
     analyticsSpy.restore();
   });
 
-  describe('createSubscriber', () => {
+  context('createSubscriber', () => {
     it('throws if user is not found', async () => {
+      await UserService.remove({ userId: SUBSCRIBER_ID });
       try {
         await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
         expect(1).to.equal(2, 'Should throw');
@@ -55,18 +67,6 @@ describe.only('DripService', function () {
     });
 
     it('creates a subscriber', async () => {
-      generator({
-        users: {
-          _id: SUBSCRIBER_ID,
-          emails: [{ address: SUBSCRIBER_EMAIL, verified: true }],
-          firstName: SUBSCRIBER_FIRSTNAME,
-          lastName: SUBSCRIBER_LASTNAME,
-          phoneNumbers: [SUBSCRIBER_PHONE],
-          assignedEmployee: { _id: 'admin' },
-          referredByOrganisation: { _id: 'org' },
-          loans: { promotions: { name: 'Promotion' } },
-        },
-      });
       const { subscribers } = await DripService.createSubscriber({
         email: SUBSCRIBER_EMAIL,
       });
@@ -92,23 +92,12 @@ describe.only('DripService', function () {
       });
     });
 
-    context('sets the correct tags', () => {
+    describe('sets the correct tags', () => {
       let upsertSubscriberStub;
       beforeEach(() => {
         // We stub upsertSubscriber because this endpoint is tested above and it would slow the tests
         upsertSubscriberStub = sinon.stub(DripService, 'upsertSubscriber');
         upsertSubscriberStub.resolves({});
-        generator({
-          users: {
-            _id: SUBSCRIBER_ID,
-            emails: [{ address: SUBSCRIBER_EMAIL, verified: true }],
-            firstName: SUBSCRIBER_FIRSTNAME,
-            lastName: SUBSCRIBER_LASTNAME,
-            phoneNumbers: [SUBSCRIBER_PHONE],
-            assignedEmployee: { _id: 'admin' },
-            referredByOrganisation: { _id: 'org' },
-          },
-        });
       });
 
       afterEach(() => {
@@ -190,19 +179,6 @@ describe.only('DripService', function () {
     });
 
     it('tracks the event in analytics', async () => {
-      generator({
-        users: {
-          _id: SUBSCRIBER_ID,
-          emails: [{ address: SUBSCRIBER_EMAIL, verified: true }],
-          firstName: SUBSCRIBER_FIRSTNAME,
-          lastName: SUBSCRIBER_LASTNAME,
-          phoneNumbers: [SUBSCRIBER_PHONE],
-          assignedEmployee: { _id: 'admin' },
-          referredByOrganisation: { _id: 'org' },
-          loans: { promotions: { name: 'Promotion' } },
-        },
-      });
-
       await DripService.createSubscriber({
         email: SUBSCRIBER_EMAIL,
       });
@@ -211,6 +187,66 @@ describe.only('DripService', function () {
       expect(analyticsSpy.args[0][0]).to.deep.include({
         userId: SUBSCRIBER_ID,
         event: 'Drip Subscriber Created',
+      });
+    });
+  });
+
+  describe('updateSubscriber', async () => {
+    before(async () => {
+      await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
+    });
+
+    after(async () => {
+      await removeSubscriber();
+    });
+
+    it('updates a subscriber', async () => {
+      const { subscribers } = await DripService.updateSubscriber({
+        email: SUBSCRIBER_EMAIL,
+        object: { address1: 'Rue du test 1' },
+      });
+      const [subscriber] = subscribers;
+
+      expect(subscriber).to.deep.include({ address1: 'Rue du test 1' });
+    });
+
+    it('overrides existing property', async () => {
+      const { subscribers } = await DripService.updateSubscriber({
+        email: SUBSCRIBER_EMAIL,
+        object: { first_name: 'Dude' },
+      });
+      const [subscriber] = subscribers;
+
+      expect(subscriber).to.deep.include({ first_name: 'Dude' });
+    });
+
+    it('does not override the entire custom_fields when updating one custom field', async () => {
+      const { subscribers } = await DripService.updateSubscriber({
+        email: SUBSCRIBER_EMAIL,
+        object: { custom_fields: { assigneeName: 'Chuck Norris' } },
+      });
+      const [subscriber] = subscribers;
+
+      expect(subscriber.custom_fields).to.deep.include({
+        assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
+        assigneeEmailAddress: 'lydia@e-potek.ch',
+        assigneeName: 'Chuck Norris',
+        first_name: 'Dude',
+        last_name: SUBSCRIBER_LASTNAME,
+        phone: SUBSCRIBER_PHONE,
+        referringOrganisationName: 'Organisation',
+      });
+    });
+
+    it('tracks the event in analytics', async () => {
+      await DripService.updateSubscriber({
+        email: SUBSCRIBER_EMAIL,
+        object: { address1: 'Rue du test 1' },
+      });
+
+      expect(analyticsSpy.args[0][0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Updated',
       });
     });
   });

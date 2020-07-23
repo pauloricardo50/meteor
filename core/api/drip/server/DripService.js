@@ -8,6 +8,7 @@ import Analytics from '../../analytics/server/Analytics';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import UserService from '../../users/server/UserService';
 import { ACQUISITION_CHANNELS } from '../../users/userConstants';
+import { DRIP_ACTIONS, DRIP_TAGS } from '../dripConstants';
 
 const IS_TEST = Meteor.isTest;
 const IS_PRODUCTION = Meteor.isProduction;
@@ -47,13 +48,9 @@ const config = function () {
     recordEvent: ({ subscriber, action, properties }) => ({
       method: 'recordEvent',
       params: {
-        events: [
-          {
-            email: subscriber?.email,
-            action,
-            properties,
-          },
-        ],
+        email: subscriber?.email,
+        action,
+        properties,
       },
     }),
   };
@@ -88,20 +85,11 @@ const config = function () {
     'subscriber.updated_alias': undefined,
   };
 
-  const tags = {
-    TEST: 'test',
-    PROMO: 'promo',
-    ORGANIC: 'organic',
-    [ACQUISITION_CHANNELS.REFERRAL_API]: 'referral_API',
-    [ACQUISITION_CHANNELS.REFERRAL_ORGANIC]: 'referral_organic',
-    [ACQUISITION_CHANNELS.REFERRAL_PRO]: 'referral_pro',
-  };
-
   const instance = this;
   instance.endpoints = endpoints;
   instance.webhookEvents = webhookEvents;
   instance.dripClient = dripNodeJs({ token: TOKEN, accountId: ACCOUNT_ID });
-  instance.tags = tags;
+  instance.tags = DRIP_TAGS;
 
   Object.keys(endpoints).forEach(endpoint => {
     instance[endpoint] = function (...args) {
@@ -212,9 +200,12 @@ export class DripService {
       user?.acquisitionChannel === ACQUISITION_CHANNELS.REFERRAL_ADMIN
         ? []
         : [this.tags[user?.acquisitionChannel] || this.tags.ORGANIC];
-    if (IS_TEST) {
+
+    // Subscribers with 'test' tag get removed by our Drip workflow 10 minutes after they are created
+    if (!IS_PRODUCTION) {
       tags = [...tags, this.tags.TEST];
     }
+
     if (hasAPromotion) {
       tags = [...tags, this.tags.PROMO];
     }
@@ -247,6 +238,12 @@ export class DripService {
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_CREATED,
       subscriber,
+    });
+
+    // Response should be a 204 No Content
+    await this.trackEvent({
+      event: { action: DRIP_ACTIONS.USER_CREATED },
+      email,
     });
 
     return res;
