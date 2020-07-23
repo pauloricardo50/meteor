@@ -16,7 +16,8 @@ const CityMarker = ({ city, mapSize, index }) => {
   if (!x || !y || count < MARKER_COUNT_THRESHOLD) {
     return null;
   }
-  const size = 50;
+  const size = 40;
+
   return (
     <Tooltip
       title={
@@ -47,8 +48,8 @@ const CityMarker = ({ city, mapSize, index }) => {
           style={{
             position: 'absolute',
             top: size / 4,
-            fontSize: 11,
-            lineHeight: '11px',
+            fontSize: 10,
+            lineHeight: '10px',
           }}
         >
           <b>{count}</b>
