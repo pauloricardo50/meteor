@@ -406,7 +406,7 @@ ServerEventService.addAfterMethodListener(
     const { email } = UserService.get(userId, { email: 1 });
     ActivityService.addEmailActivity({
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
-      to: [{ email: address }],
+      to: address,
       from: assigneeAddress,
       isServerGenerated: true,
       loanLink: { _id: loanId },

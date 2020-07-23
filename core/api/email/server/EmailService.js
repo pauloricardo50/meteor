@@ -170,7 +170,7 @@ class EmailService {
     const title = `Email envoyé`;
     const description = `${subject}, de ${from}`;
 
-    if (['rejected', 'invalid'].includes(status)) {
+    if (['rejected', 'invalid'].includes(status) && !isEmailTestEnv) {
       throw new Meteor.Error(
         reject_reason,
         `Echec de l'envoi de l'email: ${reject_reason}`,
@@ -180,7 +180,7 @@ class EmailService {
 
     ActivityService.addEmailActivity({
       emailId,
-      to,
+      to: to?.length === 1 ? to[0].email : to,
       from,
       response,
       content,
