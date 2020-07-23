@@ -222,11 +222,7 @@ export class UserServiceClass extends CollectionService {
   getLoginToken = ({ userId }) => {
     const user = this.get(userId, { services: 1 });
 
-    return (
-      user.services.password &&
-      user.services.password.reset &&
-      user.services.password.reset.token
-    );
+    return user?.services?.password?.reset?.token;
   };
 
   testCreateUser = ({ user }) => Users.insert(user);
@@ -382,10 +378,7 @@ export class UserServiceClass extends CollectionService {
     let userId;
 
     if (proUserId) {
-      pro = this.get(proUserId, {
-        name: 1,
-        organisations: { name: 1 },
-      });
+      pro = this.get(proUserId, { name: 1, organisations: { name: 1 } });
     }
 
     if (isNewUser) {
@@ -542,7 +535,7 @@ export class UserServiceClass extends CollectionService {
     }
     if (!organisationId) {
       const mainOrg = this.getUserMainOrganisation(proId);
-      organisationId = mainOrg && mainOrg._id;
+      organisationId = mainOrg?._id;
     }
 
     const newReferral = this.get(proId, {

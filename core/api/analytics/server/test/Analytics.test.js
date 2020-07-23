@@ -80,9 +80,9 @@ describe('Analytics', () => {
 
         const analytics = new Analytics({ connection: { id: connectionId } });
         const data = {
-          url: 'url',
-          route: 'route',
           path: 'path',
+          route: 'route',
+          url: 'url',
         };
 
         analytics.track(EVENTS.CTA_CLICKED, data);
@@ -93,7 +93,12 @@ describe('Analytics', () => {
         expect(slackSpy.firstCall.args[0].additionalData[0]).to.deep.include({
           event: EVENTS.CTA_CLICKED,
           data,
-          pickedProperties: { name: undefined, ...data, referrer: undefined },
+          pickedProperties: {
+            name: undefined,
+            referrer: undefined,
+            toPath: undefined,
+            ...data,
+          },
         });
         expect(analyticsSpy.callCount).to.equal(1);
         SlackService.sendError.restore();
