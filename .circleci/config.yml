@@ -687,10 +687,6 @@ jobs:
   Www - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    filters:
-      branches:
-        only:
-          - staging
     steps:
       - add_ssh_keys
       - setup_remote_docker:
@@ -773,10 +769,6 @@ jobs:
   App - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    filters:
-      branches:
-        only:
-          - staging
     steps:
       - add_ssh_keys
       - setup_remote_docker:
@@ -859,10 +851,6 @@ jobs:
   Admin - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    filters:
-      branches:
-        only:
-          - staging
     steps:
       - add_ssh_keys
       - setup_remote_docker:
@@ -947,10 +935,6 @@ jobs:
   Pro - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    filters:
-      branches:
-        only:
-          - staging
     steps:
       - add_ssh_keys
       - setup_remote_docker:
@@ -1033,10 +1017,6 @@ jobs:
   Backend - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
-    filters:
-      branches:
-        only:
-          - staging
     steps:
       - add_ssh_keys
       - setup_remote_docker:
@@ -1153,9 +1133,16 @@ workflows:
             - App - e2e tests
             - Admin - e2e tests
             - Pro - e2e tests
+          filters: &ref_2
+            branches:
+              only:
+                - staging
       - Admin - deploy:
           requires: *ref_1
+          filters: *ref_2
       - Pro - deploy:
           requires: *ref_1
+          filters: *ref_2
       - Backend - deploy:
           requires: *ref_1
+          filters: *ref_2

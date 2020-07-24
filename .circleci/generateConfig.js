@@ -105,7 +105,7 @@ const restoreCache = (name, key) => ({
         (keys, _, index, parts) => [
           ...keys,
           parts.slice(0, parts.length - index).join('-') +
-            (index === 0 ? '' : '-'),
+          (index === 0 ? '' : '-'),
         ],
         [],
       ),
@@ -222,13 +222,6 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
 const makeDeployJob = ({ name, job }) => ({
   ...job,
   ...defaultJobValues,
-  filters: {
-    branches: {
-      only: [
-        STAGING_BRANCH
-      ]
-    }
-  },
   steps: [
     'add_ssh_keys',
     {
@@ -250,8 +243,8 @@ const makeDeployJob = ({ name, job }) => ({
       cacheKeys.minifierCache(name),
     ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
-    runCommand('Install GCloud', 
-    `
+    runCommand('Install GCloud',
+      `
       cd ~
       echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
       apt-get install apt-transport-https ca-certificates gnupg
@@ -300,6 +293,14 @@ const testJobs = [
   'Pro - e2e tests'
 ]
 
+const deployBranchFilter = {
+  branches: {
+    only: [
+      STAGING_BRANCH
+    ]
+  },
+}
+
 // Final config
 const makeConfig = () => ({
   version: 2,
@@ -340,10 +341,10 @@ const makeConfig = () => ({
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
         { 'Pro - e2e tests': { requires: ['Prepare'] } },
-        { 'App - deploy': { requires: testJobs } },
-        { 'Admin - deploy': { requires: testJobs } },
-        { 'Pro - deploy': { requires: testJobs } },
-        { 'Backend - deploy': { requires: testJobs } },
+        { 'App - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
       ],
     },
   },
