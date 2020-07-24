@@ -14,12 +14,12 @@ import DataTable from '../..';
 
 describe('DataTable', () => {
   beforeEach(async () => {
-    console.time('DataTable - beforeEach');
+    console.log('DataTable - start beforeEach');
     await cleanup();
-    console.time('resetDatabase');
+    console.log('resetDatabase start');
     await callMethod('resetDatabase');
-    console.timeEnd('resetDatabase');
-    console.timeEnd('DataTable - beforeEach');
+    console.log('resetDatabase finished');
+    console.log('DataTable - finished beforeEach');
   });
 
   it('queries and displays data', async () => {

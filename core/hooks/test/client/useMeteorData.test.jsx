@@ -45,14 +45,21 @@ describe('useMeteorData', function () {
   this.timeout(1000 * 5);
 
   beforeEach(async () => {
+    console.log('cleanup');
     await cleanup();
+    console.log('reset database');
     await resetDatabase();
+    console.log('logout');
     await new Promise(res => Meteor.logout(res));
+    console.log('login');
     await userLogin({ role: ROLES.ADMIN });
+    console.log('finished before each');
   });
 
   afterEach(async () => {
+    console.log('log out');
     await new Promise(res => Meteor.logout(res));
+    console.log('finish log out');
   });
 
   describe('useStaticMeteorData', () => {
