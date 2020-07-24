@@ -580,7 +580,7 @@ describe.only('dripListeners', function () {
       });
     });
 
-    it('tracks the events in analytics', async () => {
+    it('tracks the event in analytics', async () => {
       await ddpWithUserId('dev', () =>
         assignAdminToUser.run({ userId: 'user', adminId: 'admin2' }),
       );
