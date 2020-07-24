@@ -68,21 +68,8 @@ export const migrateToLatest = new Method({
   name: 'migrateToLatest',
 });
 
-export const migrateRoles = new Method({
-  name: 'migrateRoles',
-});
-
 export const updateDocument = new Method({
   name: 'updateDocument',
-  params: {
-    collection: String,
-    docId: String,
-    object: Object,
-  },
-});
-
-export const updateDocumentUnset = new Method({
-  name: 'updateDocumentUnset',
   params: {
     collection: String,
     docId: String,
@@ -107,4 +94,21 @@ export const referralExists = new Method({
 export const cleanDatabase = new Method({
   name: 'cleanDatabase',
   params: {},
+});
+
+export const revertLastMigration = new Method({
+  name: 'revertLastMigration',
+});
+
+export const getMigrationControl = new Method({
+  name: 'getMigrationControl',
+});
+
+export const migrateTo = new Method({
+  name: 'migrateTo',
+  params: { version: Number },
+});
+
+export const unlockMigrationControl = new Method({
+  name: 'unlockMigrationControl',
 });

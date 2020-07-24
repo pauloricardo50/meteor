@@ -20,6 +20,7 @@ export const apiProperty = {
   insideArea: 1,
   landArea: 1,
   terraceArea: 1,
+  balconyArea: 1,
   constructionYear: 1,
   externalUrl: 1,
   useOpenGraph: 1,

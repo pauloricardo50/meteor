@@ -169,7 +169,7 @@ export const anonymousCreateUser = new Method({
       lastName: Match.Maybe(String),
       phoneNumber: Match.Maybe(String),
     },
-    trackingId: String,
+    trackingId: Match.Maybe(Match.OneOf(String, null)),
     referralId: Match.Maybe(String),
     ctaId: Match.Maybe(String),
   },
@@ -191,4 +191,9 @@ export const userPasswordReset = new Method({
 // Used only to trigger activity listener
 export const userVerifyEmail = new Method({
   name: 'userVerifyEmail',
+});
+
+export const getEnrollUrl = new Method({
+  name: 'getEnrollUrl',
+  params: { userId: String },
 });

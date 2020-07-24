@@ -32,7 +32,7 @@ meteorhacks:inject-initial
 edgee:slingshot
 dburles:google-maps
 tmeasday:acceptance-test-driver
-montiapm:agent@2.39.0-beta.4
+montiapm:agent@2.39.0-beta.5
 aldeed:schema-index
 aldeed:schema-deny
 dynamic-import
@@ -41,9 +41,10 @@ matb33:collection-hooks
 percolate:migrations
 littledata:synced-cron
 qualia:prod-shell
-jquery
 montiapm:profiler
+epotek:google-maps
+dburles:mongo-collection-instances
 
 # Backend doesn't need a client architecture
 # Minifier to remove client js to reduce deployment time
-zodern:remove-client-js
+# zodern:remove-client-js

@@ -1,0 +1,26 @@
+.gps-stats {
+  align-items: center;
+  overflow: hidden;
+  
+  &-map {
+    position: relative;
+    margin: auto;
+  }
+
+  @media screen and (min-width: $med + 1) {
+    display: flex;
+
+    &-content {
+      flex-basis: 50%;
+      padding-right: 32px;
+
+      p {
+        font-size: 20px;
+      }
+    }
+
+    &-map {
+      flex-basis: 50%;
+    }
+  }
+}

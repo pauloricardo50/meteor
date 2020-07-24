@@ -53,7 +53,7 @@ const OfferList = ({ loan }) => {
           { key: 'createdAt' },
         ].map(({ key, id }) => ({
           id: key || id,
-          label: <T id={`offer.${key || id}`} />,
+          label: <T id={`Forms.${key || id}`} />,
         }))}
         handleChange={setSort}
         handleChangeOrder={toggleAscending}

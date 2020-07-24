@@ -50,12 +50,7 @@ describe('REST: addLoanNote', function() {
   this.timeout(10000);
 
   before(function() {
-    if (Meteor.settings.public.microservice !== 'pro') {
-      this.parent.pending = true;
-      this.skip();
-    } else {
-      api.start();
-    }
+    api.start();
   });
 
   after(() => {

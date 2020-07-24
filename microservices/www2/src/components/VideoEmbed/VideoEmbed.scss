@@ -1,0 +1,24 @@
+.video-embed {
+  margin: 50px auto;
+
+  &__wrapper {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* default for 16:9 videos */
+  }
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .post & {
+    max-width: 684px;
+    padding-left: 23px;
+    padding-right: 23px;
+  }
+}

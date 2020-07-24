@@ -6,6 +6,8 @@ import omit from 'lodash/omit';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 
+import { TASK_TYPES } from 'core/api/tasks/taskConstants';
+
 import {
   FEEDBACK_OPTIONS,
   makeFeedback,
@@ -18,6 +20,8 @@ import { getZipcodeForCanton } from '../../../utils/zipcodes';
 import { ACTIVITY_EVENT_METADATA } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
+import ChecklistService from '../../checklists/server/ChecklistService';
+import CHECKLIST_TEMPLATES from '../../checklists/server/checklistTemplates';
 import {
   calculatorLoan,
   lenderRules as lenderRulesFragment,
@@ -42,6 +46,7 @@ import {
 } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
 import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenues/revenueConstants';
+import { TASK_STATUS } from '../../tasks/taskConstants';
 import UserService from '../../users/server/UserService';
 import {
   APPLICATION_TYPES,
@@ -474,17 +479,26 @@ class LoanService extends CollectionService {
     } = this.get(loanId, {
       referralId: 1,
       properties: { loans: { _id: 1 }, address1: 1, category: 1 },
-      borrowers: { loans: { _id: 1 }, name: 1 },
+      borrowers: {
+        loans: { _id: 1 },
+        name: 1,
+        $options: { sort: { createdAt: 1 } },
+      },
       anonymous: 1,
       assigneeLinks: 1,
     });
-    const user = UserService.get(userId, { assignedEmployee: { name: 1 } });
+    const user = UserService.get(userId, {
+      assignedEmployee: { name: 1 },
+      firstName: 1,
+      lastName: 1,
+      loans: { _id: 1 },
+    });
 
     let newAssignee;
 
     // Only assign someone new to this loan if there are no current assignees
     if (!assigneeLinks || assigneeLinks.length === 0) {
-      newAssignee = user && user.assignedEmployee && user.assignedEmployee._id;
+      newAssignee = user?.assignedEmployee?._id;
     }
 
     borrowers.forEach(({ loans = [], name }) => {
@@ -521,11 +535,19 @@ class LoanService extends CollectionService {
     }
 
     borrowers.forEach(({ _id: borrowerId }) => {
-      BorrowerService.update({ borrowerId, object: { userId } });
+      BorrowerService.addLink({
+        id: borrowerId,
+        linkName: 'user',
+        linkId: userId,
+      });
     });
     properties.forEach(({ _id: propertyId, category }) => {
       if (category === PROPERTY_CATEGORY.USER) {
-        PropertyService.update({ propertyId, object: { userId } });
+        PropertyService.addLink({
+          id: propertyId,
+          linkName: 'user',
+          linkId: userId,
+        });
       }
     });
 
@@ -560,6 +582,19 @@ class LoanService extends CollectionService {
         }
       }
     }
+
+    if ((user.loans?.length === 0 || !user.loans) && borrowers?.length > 0) {
+      // If this is the user's first loan, set his name on the borrower
+      BorrowerService.update({
+        borrowerId: borrowers[0]._id,
+        object: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
+      });
+    }
+
+    return referralId;
   }
 
   switchBorrower({ loanId, borrowerId, oldBorrowerId }) {
@@ -717,10 +752,11 @@ class LoanService extends CollectionService {
     // If there are at least 3 organisations, show a special label
     // that combines the best and secondBest org
     const maxOrganisationLabel = showSecondMax
-      ? `${secondMax &&
-          secondMax.organisationName}${ORGANISATION_NAME_SEPARATOR}${
-          max.organisationName
-        } (${(max.borrowRatio * 100).toFixed(2)}%)`
+      ? `${
+          secondMax && secondMax.organisationName
+        }${ORGANISATION_NAME_SEPARATOR}${max.organisationName} (${(
+          max.borrowRatio * 100
+        ).toFixed(2)}%)`
       : max.organisationName;
 
     return {
@@ -915,9 +951,7 @@ class LoanService extends CollectionService {
   }
 
   expireAnonymousLoans() {
-    const lastWeek = moment()
-      .subtract(5, 'days')
-      .toDate();
+    const lastWeek = moment().subtract(5, 'days').toDate();
 
     return this.baseUpdate(
       {
@@ -955,66 +989,6 @@ class LoanService extends CollectionService {
     } else {
       throw new Meteor.Error('Invalid borrowers number');
     }
-  }
-
-  // Useful for demos
-  resetLoan({ loanId }) {
-    const loan = this.get(loanId, { structures: 1, borrowerIds: 1, status: 1 });
-    const { structures = [], borrowerIds = [], status } = loan;
-
-    if (status !== LOAN_STATUS.TEST) {
-      throw new Meteor.Error(
-        'Seuls les dossiers avec le statut TEST peuvent être réinitialisés !',
-      );
-    }
-
-    // Set step to solvency
-    this.setStep({ loanId, nextStep: STEPS.SOLVENCY });
-
-    // Set application type to simple
-    this.update({
-      loanId,
-      object: { applicationType: APPLICATION_TYPES.SIMPLE },
-    });
-
-    // Remove structures and an empty one
-    // structures.forEach(({ _id: structureId }) => {
-    //   this.removeStructure({ loanId, structureId });
-    // });
-    // this.addNewStructure({ loanId });
-
-    // Remove MaxPropertyValue
-    this.update({
-      loanId,
-      object: { maxPropertyValue: true },
-      operator: '$unset',
-    });
-
-    // Reset borrowers financing info
-    // borrowerIds.forEach((borrowerId) => {
-    //   BorrowerService.update({
-    //     borrowerId,
-    //     object: {
-    //       netSalary: null,
-    //       salary: null,
-    //       bankFortune: null,
-    //       insurance2: [],
-    //       insurance3A: [],
-    //       bank3A: [],
-    //       insurance3B: [],
-    //       otherIncome: [],
-    //       otherFortune: [],
-    //       expenses: [],
-    //       realEstate: [],
-    //       bonusExists: false,
-    //       bonus2015: null,
-    //       bonus2016: null,
-    //       bonus2017: null,
-    //       bonus2018: null,
-    //       bonus2019: null,
-    //     },
-    //   });
-    // });
   }
 
   linkPromotion({ promotionId, loanId }) {
@@ -1078,7 +1052,16 @@ class LoanService extends CollectionService {
     return loanId;
   }
 
-  setAdminNote({ loanId, adminNoteId, note, userId }) {
+  setAdminNote({ loanId, adminNoteId, note, userId, notifyPros }) {
+    if (notifyPros) {
+      const { assigneeLinks = [] } = this.get(loanId, { assigneeLinks: 1 });
+
+      if (!assigneeLinks.length) {
+        throw new Meteor.Error(
+          'Il faut un conseiller principal sur le dossier',
+        );
+      }
+    }
     return setAdminNote.bind(this)({
       docId: loanId,
       adminNoteId,
@@ -1101,9 +1084,19 @@ class LoanService extends CollectionService {
 
     const disbursedIn10Days = this.fetch({
       $filters: {
+        status: { $nin: [LOAN_STATUS.UNSUCCESSFUL, LOAN_STATUS.TEST] },
         disbursementDate: {
-          $lte: in11Days.startOf('day').toDate(),
+          $exists: true,
+          $lt: in11Days.startOf('day').toDate(),
           $gte: in10Days.startOf('day').toDate(),
+        },
+        tasksCache: {
+          $not: {
+            $elemMatch: {
+              type: TASK_TYPES.LOAN_DISBURSED_SOON,
+              status: TASK_STATUS.ACTIVE,
+            },
+          },
         },
       },
       _id: 1,
@@ -1181,6 +1174,14 @@ class LoanService extends CollectionService {
       properties: { address: 1, totalValue: 1 },
     });
 
+    // In case a property is unlinked from any loan
+    const unlinkedUserProperties = PropertyService.fetch({
+      $filters: { userId },
+      address: 1,
+      totalValue: 1,
+      loans: { _id: 1 },
+    }).filter(({ loans = [] }) => loans.length === 0);
+
     const reusableProperties = loans
       .reduce(
         (allProperties, { properties = [] }) => [
@@ -1193,11 +1194,42 @@ class LoanService extends CollectionService {
         ({ _id }) => !currentProperties.some(property => _id === property._id),
       );
 
-    return reusableProperties;
+    return [...reusableProperties, ...unlinkedUserProperties];
   }
 
   linkProperty({ loanId, propertyId }) {
     this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
+  }
+
+  addClosingChecklists({ loanId }) {
+    let template;
+    const { hasPromotion, purchaseType } = this.get(loanId, {
+      hasPromotion: 1,
+      purchaseType: 1,
+    });
+
+    if (hasPromotion) {
+      template = 'PROMOTION_ACQUISITION';
+    } else if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
+      template = 'ACQUISITION';
+    } else if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+      template = 'REFINANCING';
+    } else {
+      throw new Meteor.Error('Pas de template pour ce dossier');
+    }
+
+    const checklists = CHECKLIST_TEMPLATES[template];
+
+    checklists.forEach(checklist => {
+      ChecklistService.insertTemplate({
+        template: checklist,
+        closingLoanId: loanId,
+      });
+    });
+  }
+
+  updateInsurancePotential({ loanId, insurancePotential }) {
+    return this._update({ id: loanId, object: { insurancePotential } });
   }
 }
 

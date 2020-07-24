@@ -6,8 +6,9 @@ export const analyticsLogin = new Method({
   name: 'analyticsLogin',
   doNotRefetchQueries: true,
   params: {
-    type: String,
+    loginType: String,
   },
+  hideClientError: true,
 });
 
 export const analyticsPage = new Method({
@@ -21,26 +22,38 @@ export const analyticsPage = new Method({
     queryString: Object,
   },
   doNotRefetchQueries: true,
+  hideClientError: true,
 });
 
 export const analyticsVerifyEmail = new Method({
   name: 'analyticsVerifyEmail',
   params: {
-    trackingId: Match.Maybe(String), // Can be optional if cookies are blocked
+    trackingId: Match.Maybe(Match.OneOf(String, null)), // Can be optional if cookies are blocked
   },
   doNotRefetchQueries: true,
+  hideClientError: true,
 });
 
 export const analyticsCTA = new Method({
   name: 'analyticsCTA',
   params: {
-    name: String,
     cookies: Object,
-    sessionStorage: Object,
+    name: String,
     path: String,
     route: String,
-    queryParams: Object,
-    queryString: Object,
+    toPath: Match.Maybe(String),
+  },
+  doNotRefetchQueries: true,
+  hideClientError: true,
+});
+
+export const analyticsOpenedIntercom = new Method({
+  name: 'analyticsOpenedIntercom',
+  params: {
+    trackingId: Match.Maybe(Match.OneOf(String, null)),
+    lastPageTitle: Match.Maybe(String),
+    lastPagePath: Match.Maybe(String),
+    lastPageMicroservice: Match.Maybe(String),
   },
   doNotRefetchQueries: true,
 });

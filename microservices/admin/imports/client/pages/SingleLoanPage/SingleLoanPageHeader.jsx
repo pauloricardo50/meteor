@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LOAN_CATEGORIES, LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { LOAN_CATEGORIES } from 'core/api/loans/loanConstants';
 import { USERS_COLLECTION } from 'core/api/users/userConstants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
@@ -8,7 +8,6 @@ import Calculator from 'core/utils/Calculator';
 import { toMoney } from 'core/utils/conversionFunctions';
 
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
-import ResetLoanButton from '../../components/ResetLoanButton/ResetLoanButton';
 import LoanStatusModifier from './LoanStatusModifier/LoanStatusModifier';
 import SingleLoanPageCustomName from './SingleLoanPageCustomName';
 
@@ -73,11 +72,6 @@ const SingleLoanPageHeader = ({
       {withPdf && (
         <div className="right">
           <GetLoanPDF loan={loan} />
-        </div>
-      )}
-      {status === LOAN_STATUS.TEST && (
-        <div className="right">
-          <ResetLoanButton loan={loan} />
         </div>
       )}
     </div>

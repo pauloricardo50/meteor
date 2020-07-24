@@ -18,7 +18,7 @@ export const Uploader = ({
   const {
     collection,
     docId,
-    fileMeta: { id, requiredByAdmin, category, tooltip },
+    fileMeta: { id, requiredByAdmin, category, tooltip, checklistItemId },
   } = rest;
 
   return (
@@ -38,6 +38,7 @@ export const Uploader = ({
           }}
           id={id}
           className={cx({ 'visibility-hidden': id === DOCUMENTS.OTHER })}
+          disabled={!!checklistItemId}
         />
       )}
       <BaseUploader {...rest} />

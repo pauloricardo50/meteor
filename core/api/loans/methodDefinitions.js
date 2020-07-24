@@ -149,11 +149,11 @@ export const loanShareSolvency = new Method({
 export const anonymousLoanInsert = new Method({
   name: 'anonymousLoanInsert',
   params: {
-    trackingId: String,
-    proPropertyId: Match.Maybe(String),
-    referralId: Match.Maybe(String),
     existingAnonymousLoanId: Match.Maybe(Match.OneOf(String, null)),
+    proPropertyId: Match.Maybe(String),
     purchaseType: Match.Maybe(String),
+    referralId: Match.Maybe(String),
+    trackingId: Match.Maybe(Match.OneOf(String, null)),
   },
 });
 
@@ -162,13 +162,6 @@ export const loanInsertBorrowers = new Method({
   params: {
     loanId: String,
     amount: Number,
-  },
-});
-
-export const adminLoanReset = new Method({
-  name: 'adminLoanReset',
-  params: {
-    loanId: String,
   },
 });
 
@@ -196,11 +189,6 @@ export const loanSetCreatedAtActivityDescription = new Method({
 export const loanSetStatus = new Method({
   name: 'loanSetStatus',
   params: { loanId: String, status: String },
-});
-
-export const loanUpdateCreatedAt = new Method({
-  name: 'loanUpdateCreatedAt',
-  params: { loanId: String, createdAt: Date },
 });
 
 export const sendLoanChecklist = new Method({
@@ -259,4 +247,19 @@ export const loanGetReusableProperties = new Method({
 export const loanLinkProperty = new Method({
   name: 'loanLinkProperty',
   params: { loanId: String, propertyId: String },
+});
+
+export const addClosingChecklists = new Method({
+  name: 'addClosingChecklists',
+  params: { loanId: String },
+});
+
+export const notifyInsuranceTeamForPotential = new Method({
+  name: 'notifyInsuranceTeamForPotential',
+  params: { loanId: String },
+});
+
+export const updateInsurancePotential = new Method({
+  name: 'updateInsurancePotential',
+  params: { loanId: String, insurancePotential: String },
 });

@@ -775,14 +775,6 @@ describe('Collection Security', () => {
       let user;
       const prefix = 'FileSecurity.test';
 
-      before(function() {
-        if (Meteor.settings.public.microservice !== 'pro') {
-          // When running these tests in parallel, it breaks tests
-          this.parent.pending = true;
-          this.skip();
-        }
-      });
-
       beforeEach(async () => {
         resetDatabase();
         await clearBucket(prefix);

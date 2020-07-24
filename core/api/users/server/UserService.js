@@ -9,6 +9,7 @@ import NodeRSA from 'node-rsa';
 
 import CollectionService from '../../helpers/server/CollectionService';
 import { selectorForFastCaseInsensitiveLookup } from '../../helpers/server/mongoServerHelpers';
+import IntercomService from '../../intercom/server/IntercomService';
 import LoanService from '../../loans/server/LoanService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import PromotionService from '../../promotions/server/PromotionService';
@@ -63,6 +64,8 @@ export class UserServiceClass extends CollectionService {
     }
     Roles.setUserRoles(newUserId, role);
 
+    IntercomService.getIntercomId({ userId: newUserId });
+
     return newUserId;
   };
 
@@ -92,8 +95,7 @@ export class UserServiceClass extends CollectionService {
     }
 
     if (setAssignee) {
-      const assigneeService = new AssigneeService(newUserId);
-      assigneeService.setAssignee(assignedEmployeeId);
+      new AssigneeService(newUserId).setAssignee(assignedEmployeeId);
     }
 
     this.setAcquisitionChannel({
@@ -118,17 +120,15 @@ export class UserServiceClass extends CollectionService {
       ...user,
       phoneNumbers: [phoneNumber].filter(x => x),
       sendEnrollmentEmail: true,
+      setAssignee: false,
     });
+    let loanReferralId;
 
     if (loanId) {
-      LoanService.assignLoanToUser({ userId, loanId });
+      loanReferralId = LoanService.assignLoanToUser({ userId, loanId });
     }
 
-    if (referralId) {
-      this.update({
-        userId,
-        object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC },
-      });
+    if (referralId && !loanReferralId) {
       const referralUser = this.get(
         { _id: referralId, 'roles._id': ROLES.PRO },
         { _id: 1 },
@@ -142,6 +142,28 @@ export class UserServiceClass extends CollectionService {
           organisationId: referralId,
         });
       }
+    }
+
+    const { referredByUser, referredByOrganisation } = this.get(userId, {
+      referredByUser: { _id: 1 },
+      referredByOrganisation: { _id: 1 },
+    });
+
+    // If the user comes out of this function with a referral, assume it's an organic referral
+    if (referredByUser?._id || referredByOrganisation?._id) {
+      this.update({
+        userId,
+        object: { acquisitionChannel: ACQUISITION_CHANNELS.REFERRAL_ORGANIC },
+      });
+    }
+
+    const newAssigneeId = new AssigneeService(userId).setAssignee();
+
+    if (loanId && newAssigneeId) {
+      LoanService.setAssignees({
+        loanId,
+        assignees: [{ _id: newAssigneeId, percent: 100, isMain: true }],
+      });
     }
 
     return userId;
@@ -200,11 +222,7 @@ export class UserServiceClass extends CollectionService {
   getLoginToken = ({ userId }) => {
     const user = this.get(userId, { services: 1 });
 
-    return (
-      user.services.password &&
-      user.services.password.reset &&
-      user.services.password.reset.token
-    );
+    return user?.services?.password?.reset?.token;
   };
 
   testCreateUser = ({ user }) => Users.insert(user);
@@ -360,10 +378,7 @@ export class UserServiceClass extends CollectionService {
     let userId;
 
     if (proUserId) {
-      pro = this.get(proUserId, {
-        name: 1,
-        organisations: { name: 1 },
-      });
+      pro = this.get(proUserId, { name: 1, organisations: { name: 1 } });
     }
 
     if (isNewUser) {
@@ -403,6 +418,12 @@ export class UserServiceClass extends CollectionService {
       return this.proReferUser({ user, proUserId, shareSolvency });
     }
 
+    if (promotionIds?.length) {
+      promotionIds.forEach(promotionId => {
+        PromotionService.checkPromotionIsReady({ promotionId });
+      });
+    }
+
     const { invitedBy } = user;
     const { userId, pro, isNewUser } = this.proCreateUser({
       user,
@@ -426,6 +447,7 @@ export class UserServiceClass extends CollectionService {
           promotionLotIds: user.promotionLotIds,
           showAllLots: user.showAllLots,
           shareSolvency,
+          skipCheckPromotionIsReady: true,
         }),
       );
     }
@@ -462,8 +484,7 @@ export class UserServiceClass extends CollectionService {
     }
 
     if (isNewUser) {
-      const assigneeService = new AssigneeService(userId);
-      assigneeService.setAssignee();
+      new AssigneeService(userId).setAssignee();
     }
     const { assignedEmployee: admin } = this.get(userId, {
       assignedEmployee: { name: 1 },
@@ -514,7 +535,7 @@ export class UserServiceClass extends CollectionService {
     }
     if (!organisationId) {
       const mainOrg = this.getUserMainOrganisation(proId);
-      organisationId = mainOrg && mainOrg._id;
+      organisationId = mainOrg?._id;
     }
 
     const newReferral = this.get(proId, {

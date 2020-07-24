@@ -1,0 +1,56 @@
+.quote {
+  // when section appears on a blog post
+  .post & {
+    max-width: 684px;
+    margin: 60px auto 40px;
+    padding-left: 23px;
+    padding-right: 23px;
+
+    figure {
+      margin: 0;
+    }
+
+    blockquote {
+      margin: 0;
+      margin-top: 12px;
+      margin-bottom: 16px;
+      font-size: 20px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: 1.4;
+      letter-spacing: normal;
+      color: var(--2c2c2c);
+    }
+
+    figcaption {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 300;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: #000000;
+    }
+
+    @media screen and (min-width: $med) {
+      blockquote {
+        margin-bottom: 17px;
+        font-size: 28px;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
+        color: var(--2c2c2c);
+      }
+
+      figcaption {
+        font-size: 12px;
+        font-weight: 300;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #000000;
+      }
+    }
+  }
+}

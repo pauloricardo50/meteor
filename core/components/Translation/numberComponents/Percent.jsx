@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { IntlNumber } from '..';
+import IntlNumber from './IntlNumber';
 
 const Percent = ({ value, rounded, showPlus }) => (
   <IntlNumber

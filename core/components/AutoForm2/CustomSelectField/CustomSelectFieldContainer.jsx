@@ -1,9 +1,7 @@
-import createQuery from 'meteor/cultofcoders:grapher/lib/createQuery';
-
 import React, { PureComponent } from 'react';
 import { injectIntl } from 'react-intl';
 
-import Loading from '../../Loading';
+import { createQuery } from '../../../api/queries';
 import Chip from '../../Material/Chip';
 import T from '../../Translation';
 import { OTHER_ALLOWED_VALUE } from '../autoFormConstants';
@@ -127,18 +125,25 @@ export default Component => {
           .then(result => this.setState({ values: result }))
           .finally(() => this.setState({ loading: false }));
       } else if (typeof customAllowedValues === 'object') {
-        const { query, params, allowNull } = customAllowedValues;
+        const {
+          query,
+          params,
+          allowNull,
+          postProcess = x => x,
+        } = customAllowedValues;
 
         getQuery({ query, params, model }).fetch((error, data) => {
           if (error) {
             return this.setState({ error, loading: false });
           }
 
-          const ids = data.map(({ _id }) => _id);
+          const processedData = postProcess(data);
+
+          const ids = processedData.map(({ _id }) => _id);
 
           this.setState({
             values: allowNull ? [null, ...ids] : ids,
-            data: allowNull ? [null, ...data] : data,
+            data: allowNull ? [null, ...processedData] : processedData,
             error: null,
             loading: false,
           });

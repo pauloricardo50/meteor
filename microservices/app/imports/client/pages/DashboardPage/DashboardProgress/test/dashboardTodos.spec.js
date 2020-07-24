@@ -39,6 +39,7 @@ describe('dashboardTodos', () => {
         dashboardTodosObject.completeFirstStructure.isDone({
           structures: [
             {
+              id: 'struct',
               propertyValue: 1000000,
               wantedLoan: 800000,
               ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 250000 }],
@@ -49,8 +50,9 @@ describe('dashboardTodos', () => {
       expect(
         dashboardTodosObject.completeFirstStructure.isDone({
           structures: [
-            {},
+            { id: 'a' },
             {
+              id: 'b',
               propertyValue: 1000000,
               wantedLoan: 800000,
               ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 250000 }],
@@ -154,7 +156,15 @@ describe('dashboardTodos', () => {
         callEpotek.hide({
           maxPropertyValue: { date: new Date() },
           structure: { property: {}, offer: {} },
-          structures: [{}, {}],
+          structures: [
+            {
+              id: 'struct',
+              propertyValue: 1000000,
+              wantedLoan: 800000,
+              ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 250000 }],
+            },
+            {},
+          ],
           borrowers: [{ salary: 2000, bankFortune: [{ value: 3000 }] }],
           properties: [{}],
         }),

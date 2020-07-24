@@ -19,7 +19,7 @@ const LoanPercentField = connectField(
       value={value}
       onChange={onChange}
       onBlur={() => {
-        if (formRef && formRef.current) {
+        if (formRef?.current) {
           formRef.current.submit();
         }
       }}

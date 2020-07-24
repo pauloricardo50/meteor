@@ -11,7 +11,7 @@ const RevenuesTab = ({ loan }) => {
   const [revenueSuggestion, setRevenueSuggestion] = useState();
   const [open, setOpen] = useState(false);
 
-  const suggestRevenue = (revenue) => {
+  const suggestRevenue = revenue => {
     setRevenueSuggestion(revenue);
     setOpen(true);
   };

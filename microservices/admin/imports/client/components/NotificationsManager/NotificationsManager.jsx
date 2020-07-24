@@ -1,55 +1,62 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-import { adminNotifications } from 'core/api/notifications/queries';
+import { NOTIFICATIONS_COLLECTION } from 'core/api/notifications/notificationConstants';
+import { createQuery } from 'core/api/queries';
 import Icon from 'core/components/Icon';
 import StickyPopover from 'core/components/StickyPopover';
+import useCurrentUser from 'core/hooks/useCurrentUser';
+import useMeteorData from 'core/hooks/useMeteorData';
 
 import NotificationList from './NotificationList';
-import NotificationsManagerContainer from './NotificationsManagerContainer';
 
-class NotificationsManager extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { data: null };
-  }
+const unreadFilters = currentUserId => ({
+  recipientLinks: {
+    $elemMatch: {
+      _id: currentUserId,
+      read: false,
+      $or: [
+        { snoozeDate: { $exists: false } },
+        { snoozeDate: { $lte: new Date() } },
+      ],
+    },
+  },
+});
 
-  getData = () => {
-    adminNotifications
-      .clone({
-        unread: true,
-        $body: {
-          recipientLinks: 1,
-          title: 1,
-          relatedDoc: 1,
-          createdAt: 1,
-        },
-      })
-      .fetch((err, data) => {
-        this.setState({ data });
-      });
+const NotificationsManager = () => {
+  const currentUser = useCurrentUser();
+  const { data: count } = useMeteorData(
+    {
+      query: NOTIFICATIONS_COLLECTION,
+      params: { $filters: unreadFilters(currentUser?._id) },
+      type: 'count',
+    },
+    [currentUser?._id],
+  );
+  const [data, setData] = useState(null);
+
+  const getData = () => {
+    createQuery({
+      notifications: {
+        $filters: unreadFilters(currentUser?._id),
+        recipientLinks: 1,
+        title: 1,
+        relatedDoc: 1,
+        createdAt: 1,
+      },
+    }).fetch((err, result) => setData(result));
   };
 
-  render() {
-    const { unreadNotifications } = this.props;
-    const { data } = this.state;
+  return (
+    <StickyPopover
+      component={<NotificationList notifications={data} refetch={getData} />}
+      placement="bottom"
+      onMouseEnter={getData}
+    >
+      <div className="notifications-manager">
+        <Icon type="notifications" badgeContent={count} />
+      </div>
+    </StickyPopover>
+  );
+};
 
-    return (
-      <StickyPopover
-        component={
-          <NotificationList notifications={data} refetch={this.getData} />
-        }
-        placement="bottom"
-        onMouseEnter={this.getData}
-      >
-        <div className="notifications-manager">
-          <Icon
-            type="notifications"
-            badgeContent={unreadNotifications.length}
-          />
-        </div>
-      </StickyPopover>
-    );
-  }
-}
-
-export default NotificationsManagerContainer(NotificationsManager);
+export default NotificationsManager;

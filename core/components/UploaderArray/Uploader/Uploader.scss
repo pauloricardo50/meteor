@@ -8,7 +8,7 @@
 
     padding: 4px 0;
 
-    border-top: 1px solid $light-grey;
+    border-top: 1px solid $border-grey-light;
 
     &-name {
       display: block;
@@ -50,7 +50,7 @@
   margin-bottom: 16px;
   padding: 16px;
 
-  border: 1px solid $light-grey;
+  border: 1px solid $border-grey-light;
   border-radius: 4px;
 
   .title {
@@ -100,9 +100,13 @@
     display: flex;
     align-items: center;
 
-    h4,
-    h5 {
+    h3 {
       margin: 0;
+      display: inline;
+    }
+
+    .file-count {
+      white-space: nowrap;
     }
   }
 }
@@ -150,7 +154,7 @@
   &:hover {
     cursor: pointer;
 
-    background-color: $light-grey;
+    background-color: $border-grey-light;
   }
 }
 

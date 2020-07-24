@@ -1,6 +1,6 @@
 body,
 html,
-#react-root {
+#react-root, #___gatsby, #gatsby-focus-wrapper {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -10,29 +10,35 @@ html,
   min-height: 100%;
 }
 
+
 body {
   background-color: $background-color;
 }
 
 // Nicer styling for a tags, removes horrible blue color
-// And avoid it if this is a button
-a:not([role='button']) {
+a {
   cursor: pointer;
+  color: $primary;
+  transition: opacity 200ms $bezier;
+  // color: inherit;
+  // &.color,
+  // &.color > * {
+  //   transition: color 200ms $bezier;
 
-  color: inherit;
-  &.color,
-  &.color > * {
-    transition: color 200ms $bezier;
+  //   color: $primary !important;
 
-    color: $primary !important;
-
-    &:hover {
-      color: $success !important;
-    }
-  }
+  //   &:hover {
+  //     color: $success !important;
+  //   }
+  // }
   &:hover {
-    color: inherit;
+    opacity: 0.8;
+    text-decoration: underline;
   }
+}
+
+a[role='button'] {
+  // color: unset;
 }
 
 // Don't mix these 2 together, or they cancel each other on firefox
@@ -47,7 +53,7 @@ hr {
   height: 1px;
 
   border: none;
-  background-color: $border-grey;
+  background-color: $border-grey-light;
 }
 
 // White backgrounds with shadows to put things on
@@ -289,6 +295,10 @@ p.description,
   margin: 0;
 }
 
+.mr-0 {
+  margin-right: 0;
+}
+
 .m-2 {
   margin: 2px;
 }
@@ -315,6 +325,13 @@ p.description,
 .p-32 {
   padding: 32px;
 }
+
+.pb-4 {padding-bottom: 4px;}
+.pt-4 {padding-top: 4px;}
+.pl-4 {padding-left: 4px;}
+.pb-8 {padding-bottom: 8px;}
+.pt-8 {padding-top: 8px;}
+.pl-8 {padding-left: 8px;}
 
 .mb-0 {
   margin-bottom: 0;
@@ -387,6 +404,10 @@ p.description,
 
 .mt-32 {
   margin-top: 32px;
+}
+
+.ml-32 {
+  margin-left: 32px;
 }
 
 .mt-40 {
@@ -489,4 +510,23 @@ p.description,
 
 .no-wrap {
   white-space: nowrap;
+}
+
+// Use this class for accessible text that should be hidden
+// Such as with icons, add text and apply this class to the text
+.visible-hidden {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.visible-hidden:focus {
+  clip: auto;
+  height: auto;
+  overflow: auto;
+  position: absolute;
+  width: auto;
 }

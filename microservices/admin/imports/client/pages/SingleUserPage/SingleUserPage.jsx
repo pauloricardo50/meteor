@@ -17,7 +17,7 @@ import AdminTimeline from '../../components/AdminTimeline/AdminTimeline';
 import EmailList from '../../components/EmailList';
 import InsuranceRequestsSummaryList from '../../components/InsuranceRequestsSummaryList/InsuranceRequestsSummaryList';
 import LoanSummaryList from '../../components/LoanSummaryList';
-import CollectionTasksTable from '../../components/TasksTable/CollectionTasksTable';
+import CollectionTasksDataTable from '../../components/TasksDataTable/CollectionTasksDataTable';
 import PromotionList from './PromotionList';
 import SingleUserPageContainer from './SingleUserPageContainer';
 import SingleUserPageHeader from './SingleUserPageHeader';
@@ -56,10 +56,9 @@ const SingleUserPage = ({
         withActivityAdder={false}
       />
 
-      <CollectionTasksTable
-        doc={user}
-        withTaskInsert
-        withQueryTaskInsert
+      <CollectionTasksDataTable
+        docId={user._id}
+        collection={user._collection}
         className="mt-40"
       />
 

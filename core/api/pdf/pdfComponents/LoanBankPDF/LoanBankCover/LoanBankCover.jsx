@@ -76,12 +76,14 @@ const coverContent = ({
       {organisation && (
         <img src={organisation.logo} className="organisation-logo" />
       )}
-      <h1 className="title">Demande de financement hypothécaire</h1>
+      <h1 className="title">
+        <T id="PDF.LoanBankCover.title" />
+      </h1>
       {!anonymous && borrowersNames(borrowers)}
       <hr />
       <h2 className="loan-type">
-        <T id={`PDF.purchaseType.${purchaseType}`} />{' '}
-        <T id={`PDF.residenceType.${residenceType}`} />
+        <T id={`Forms.purchaseType.${purchaseType}`} />{' '}
+        <T id={`Forms.residenceType.${residenceType}`} />
         {' – '}
         {getPropertyType({ propertyType, flatType, houseType })}
       </h2>
@@ -102,7 +104,9 @@ const coverContent = ({
         structureIds={structureIds}
       />
       <div className="loan-background-info">
-        <h5>Notes sur le dossier</h5>
+        <h5>
+          <T id="PDF.LoanBankCover.backgroundInfo" />
+        </h5>
         <p>{backgroundInfo}</p>
       </div>
     </div>

@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
-import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
+import ImpersonateNotification from 'core/components/ImpersonateNotification';
 import useCurrentUser from 'core/hooks/useCurrentUser';
+import useIntercom from 'core/hooks/useIntercom';
 
 import AnonymousLoanClaimer from './AnonymousLoanClaimer';
 import AnonymousLoanRemover from './AnonymousLoanRemover';
@@ -23,7 +24,7 @@ const renderMobile = props => {
     },
     loan,
   } = props;
-  const isSimple = loan && loan.applicationType === APPLICATION_TYPES.SIMPLE;
+  const isSimple = loan?.applicationType === APPLICATION_TYPES.SIMPLE;
 
   if (isSimple) {
     return true;
@@ -42,6 +43,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
   const currentUser = useCurrentUser();
   const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
   const rootClasses = classnames('app-root', { mobile: renderMobile(props) });
+  useIntercom();
 
   if (redirect) {
     return <Redirect to={redirect} />;
@@ -58,7 +60,7 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
         </LayoutErrorBoundary>
       </div>
 
-      <ContactButton />
+      <ImpersonateNotification />
       {currentUser && <AnonymousLoanClaimer currentUser={currentUser} />}
       <AnonymousLoanRemover />
     </div>

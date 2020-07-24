@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 import FinancingLabels from '../FinancingLabels';
 import { makeRenderDetail } from './financingSectionHelpers';
@@ -16,13 +16,13 @@ export default class FinancingSectionDetails extends PureComponent {
     const { structures } = sectionProps;
 
     return (
-      <ExpansionPanelDetails className="section-detail">
+      <AccordionDetails className="section-detail">
         <FinancingLabels config={detailConfig} />
 
         {structures.map(structure =>
           this.renderDetail(structure, sectionProps),
         )}
-      </ExpansionPanelDetails>
+      </AccordionDetails>
     );
   }
 }

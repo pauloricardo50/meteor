@@ -1,10 +1,12 @@
 import moment from 'moment';
 
+import { employeesByEmail } from '../../../arrays/epotekEmployees';
 import ServerEventService from '../../events/server/ServerEventService';
 import { getUserNameAndOrganisation } from '../../helpers';
 import { LOANS_COLLECTION } from '../../loans/loanConstants';
 import {
   loanShareSolvency,
+  notifyInsuranceTeamForPotential,
   setMaxPropertyValueOrBorrowRatio,
 } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
@@ -24,6 +26,7 @@ import {
 } from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
 import { USERS_COLLECTION } from '../../users/userConstants';
+import { TASK_TYPES } from '../taskConstants';
 import TaskService from './TaskService';
 
 const newUserTask = ({ userId, ...params }) =>
@@ -269,6 +272,7 @@ ServerEventService.addAfterMethodListener(
             disbursementDate,
           ).format('DD.MM.YYYY')}`,
           description: "S'assurer que tout est prêt pour le décaissement",
+          type: TASK_TYPES.LOAN_DISBURSED_SOON,
         },
       });
     });
@@ -288,6 +292,23 @@ ServerEventService.addAfterMethodListener(
         docId: promotionId,
         title: `Nouveau client intéressé par ${promotionName}, depuis notre site web`,
         description: `Nom: ${name}\nEmail: ${email}\nTél: ${phoneNumber}\nDétails: ${details}`,
+      },
+    });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  notifyInsuranceTeamForPotential,
+  ({ context, params: { loanId } }) => {
+    context.unblock();
+
+    TaskService.insert({
+      object: {
+        collection: LOANS_COLLECTION,
+        docId: loanId,
+        assigneeLink: { _id: employeesByEmail['jeanluc@e-potek.ch']._id },
+        createdBy: context.userId,
+        title: 'Valider le potentiel prévoyance identifié sur ce dossier',
       },
     });
   },

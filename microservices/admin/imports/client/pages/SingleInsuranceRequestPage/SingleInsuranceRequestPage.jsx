@@ -9,6 +9,7 @@ import SingleInsuranceRequestPageHeader from './SingleInsuranceRequestPageHeader
 
 const SingleInsuranceRequestPage = props => {
   const { insuranceRequest, enableTabRouting } = props;
+
   return (
     <section className="single-insurance-request-page">
       <Helmet>
@@ -17,9 +18,7 @@ const SingleInsuranceRequestPage = props => {
       <SingleInsuranceRequestPageHeader insuranceRequest={insuranceRequest} />
       <div className="single-insurance-request-page-sub-header">
         <InsuranceRequestTasksTable
-          doc={insuranceRequest}
-          withTaskInsert
-          withQueryTaskInsert
+          insuranceRequest={insuranceRequest}
           className="single-insurance-request-page-tasks card1 card-top"
         />
         <SingleInsuranceRequestPageContacts

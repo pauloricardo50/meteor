@@ -15,7 +15,11 @@ Cypress.Commands.add(
 
     const {
       uri,
-      options: { shouldRender: expectedDomElement, dropdownShouldRender },
+      options: {
+        shouldRender: expectedDomElement,
+        shouldContain,
+        dropdownShouldRender,
+      },
     } = pageRoute;
 
     if (options.reloadWindowOnNavigation) {
@@ -26,17 +30,20 @@ Cypress.Commands.add(
     }
 
     cy.routeShouldExist(uri);
-    cy.get(expectedDomElement).should('exist');
-    cy.dropdownShouldRender(dropdownShouldRender);
+    if (expectedDomElement) {
+      cy.get(expectedDomElement).should('exist');
+    }
+    if (shouldContain) {
+      cy.contains(shouldContain).should('exist');
+    }
+    if (dropdownShouldRender) {
+      cy.dropdownShouldRender(dropdownShouldRender);
+    }
   },
 );
 
 // select dropdown items and check if what we want gets rendered
 Cypress.Commands.add('dropdownShouldRender', dropdownAssertionConfig => {
-  if (!dropdownAssertionConfig) {
-    return;
-  }
-
   Object.keys(dropdownAssertionConfig).forEach(dropdownSelector => {
     const items = dropdownAssertionConfig[dropdownSelector];
     items.forEach(({ item: itemSelector, shouldRender }) => {
@@ -64,6 +71,7 @@ Cypress.Commands.add(
   (prevSubject, name, value) => {
     if (prevSubject) {
       if (typeof value === 'string') {
+        prevSubject.find(`input[name=${name}]`).should('not.be.disabled');
         prevSubject
           .find(`input[name=${name}]`)
           .parent()
@@ -71,6 +79,7 @@ Cypress.Commands.add(
           .get(`[data-value=${value}]`)
           .click();
       } else {
+        prevSubject.find(`input[name=${name}]`).should('not.be.disabled');
         prevSubject
           .find(`input[name=${name}]`)
           .parent()
@@ -81,6 +90,7 @@ Cypress.Commands.add(
           .click();
       }
     } else if (typeof value === 'string') {
+      cy.get(`input[name=${name}]`).should('not.be.disabled');
       cy.get(`input[name=${name}]`)
         .parent()
         .click()
@@ -88,6 +98,7 @@ Cypress.Commands.add(
         .click();
     } else {
       // Support clicking on nth item
+      cy.get(`input[name=${name}]`).should('not.be.disabled');
       cy.get(`input[name=${name}]`)
         .parent()
         .click()
@@ -122,3 +133,20 @@ Cypress.Commands.add('initiateTest', () => {
 
   cy.get('.logo');
 });
+
+Cypress.Commands.add('startTest', ({ url = '/' } = {}) => {
+  cy.visit(url);
+  cy.window().should('have.property', 'appReady', true);
+  cy.checkConnection();
+});
+
+const clearLocalStorage = () => {
+  localStorage.clear();
+};
+const doNotClearLocalStorage = () => {};
+
+// By default Cypress clears local storage between every spec. We disable Cypress local storage clearing function, so that we can test local storage usage
+// TODO after Cypress adds support for lifecycle events use them instead to do it: https://github.com/cypress-io/cypress/issues/686
+Cypress.LocalStorage.clear = doNotClearLocalStorage;
+// We need own version to manually clear local storage in tests, because above one disables also cy.clearLocalStorage
+Cypress.Commands.add('clearLocalStorage', clearLocalStorage);

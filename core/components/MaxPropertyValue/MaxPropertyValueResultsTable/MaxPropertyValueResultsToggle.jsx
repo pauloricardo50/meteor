@@ -18,7 +18,7 @@ const MaxPropertyValueResultsToggle = ({
     toggled={showBest}
     onToggle={setShowBest}
     labelLeft={
-      <div className="flex-col">
+      <div className="flex-col pointer" onClick={() => setShowBest(false)}>
         <span className={cx({ secondary: showBest })}>
           <T
             id={
@@ -37,7 +37,7 @@ const MaxPropertyValueResultsToggle = ({
       </div>
     }
     labelRight={
-      <div className="flex-col">
+      <div className="flex-col pointer" onClick={() => setShowBest(true)}>
         <span className={cx({ secondary: !showBest })}>
           <T
             id={

@@ -256,9 +256,7 @@ const createUsers = ({
           status: PROMOTION_OPTION_AGREEMENT_STATUS.RECEIVED,
           date: today,
           startDate: today,
-          expirationDate: moment(today)
-            .add(30, 'days')
-            .valueOf(),
+          expirationDate: moment(today).add(30, 'days').valueOf(),
         },
         reservationDeposit: {
           status: PROMOTION_OPTION_DEPOSIT_STATUS.PAID,

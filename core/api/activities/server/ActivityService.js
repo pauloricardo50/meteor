@@ -28,28 +28,12 @@ class ActivityService extends CollectionService {
     });
   }
 
-  addEmailActivity({ emailId, to, from, response, ...rest }) {
+  addEmailActivity({ emailId, to, from, response, content, ...rest }) {
     return this.insert({
       type: ACTIVITY_TYPES.EMAIL,
-      metadata: { emailId, to, from, response },
+      metadata: { emailId, to, from, response, content },
       ...rest,
     });
-  }
-
-  updateCreatedAtActivity({ createdAt, loanId }) {
-    const createdAtActivity = this.get(
-      {
-        'loanLink._id': loanId,
-        metadata: { event: ACTIVITY_EVENT_METADATA.CREATED },
-      },
-      { _id: 1 },
-    );
-    this.rawCollection.update(
-      {
-        _id: createdAtActivity._id,
-      },
-      { $set: { date: createdAt } },
-    );
   }
 
   updateDescription({ id, description }) {

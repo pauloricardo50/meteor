@@ -23,7 +23,7 @@ const initializeHighcharts = () => {
   ReactHighcharts.Highcharts.wrap(
     ReactHighcharts.Highcharts.Chart.prototype,
     'init',
-    function(proceed, options, callback) {
+    function (proceed, options, callback) {
       if (options.chart && options.chart.forExport && options.series) {
         options.series.forEach(serie => {
           if (serie.visible === false) {
@@ -83,7 +83,7 @@ export default class BaseChart extends PureComponent {
 
     return (
       <ReactHighcharts
-        config={{ ...defaultConfig, ...config }}
+        config={config}
         ref={c => {
           this.chart = c;
         }}

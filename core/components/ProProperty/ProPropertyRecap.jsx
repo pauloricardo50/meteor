@@ -8,6 +8,7 @@ const INFOS_TO_DISPLAY = {
   insideArea: { type: 'area' },
   landArea: { type: 'area' },
   terraceArea: { type: 'area' },
+  balconyArea: { type: 'area' },
   gardenArea: { type: 'area' },
   constructionYear: { type: 'number' },
 };

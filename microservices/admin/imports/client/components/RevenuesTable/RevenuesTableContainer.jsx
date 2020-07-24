@@ -29,7 +29,7 @@ const formatDateTime = (date, status) => {
   return text;
 };
 
-const getColumnOptions = (firstColumnLabel) =>
+const getColumnOptions = firstColumnLabel =>
   [
     { id: 'loan', label: firstColumnLabel || 'Dossier' },
     { id: 'revenueStatus' },
@@ -39,11 +39,12 @@ const getColumnOptions = (firstColumnLabel) =>
     { id: 'sourceOrganisationLink' },
     { id: 'amount', align: 'right', style: { whiteSpace: 'nowrap' } },
     { id: 'actions' },
-  ].map((i) => ({ ...i, label: i.label || <T id={`Forms.${i.id}`} /> }));
+  ].map(i => ({ ...i, label: i.label || <T id={`Forms.${i.id}`} /> }));
 
-export const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (
-  revenue,
-) => {
+export const makeMapRevenue = ({
+  setOpenModifier,
+  setRevenueToModify,
+}) => revenue => {
   const {
     _collection,
     _id: revenueId,
@@ -117,7 +118,7 @@ export const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (
         ),
       },
       <RevenueConsolidator revenue={revenue} key="revenue-consolidator" />,
-    ].filter((cell) => cell !== null),
+    ].filter(cell => cell !== null),
     handleClick: () => {
       setRevenueToModify(revenue);
       setOpenModifier(true);
@@ -130,35 +131,42 @@ export default compose(
   withState('revenueToModify', 'setRevenueToModify', null),
   withSmartQuery({
     query: REVENUES_COLLECTION,
-    params: ({ filterRevenues, ...props }) => ({
-      ...(filterRevenues ? { $filters: filterRevenues(props) } : {}),
-      amount: 1,
-      assigneeLink: 1,
-      description: 1,
-      expectedAt: 1,
-      loan: {
-        name: 1,
-        borrowers: { name: 1 },
-        user: { name: 1 },
-        userCache: 1,
-        assigneeLinks: 1,
-      },
-      paidAt: 1,
-      sourceOrganisationLink: 1,
-      sourceOrganisation: { name: 1 },
-      status: 1,
-      type: 1,
-      organisationLinks: 1,
-      organisations: { name: 1 },
-      insurance: {
-        name: 1,
-        insuranceRequest: { _id: 1 },
-        borrower: { name: 1 },
-      },
-      insuranceRequest: { name: 1 },
-    }),
-    deps: [],
+    params: ({ filterRevenues, ...props }) => {
+      const filters =
+        typeof filterRevenues === 'function'
+          ? filterRevenues(props)
+          : filterRevenues;
+      return {
+        ...(filterRevenues ? { $filters: filters } : {}),
+        amount: 1,
+        assigneeLink: 1,
+        description: 1,
+        expectedAt: 1,
+        loan: {
+          name: 1,
+          borrowers: { name: 1 },
+          user: { name: 1 },
+          userCache: 1,
+          assigneeLinks: 1,
+        },
+        paidAt: 1,
+        sourceOrganisationLink: 1,
+        sourceOrganisation: { name: 1 },
+        status: 1,
+        type: 1,
+        organisationLinks: 1,
+        organisations: { name: 1 },
+        insurance: {
+          name: 1,
+          insuranceRequest: { _id: 1 },
+          borrower: { name: 1 },
+        },
+        insuranceRequest: { name: 1 },
+      };
+    },
+    deps: ({ deps = [] }) => deps,
     dataName: 'revenues',
+    skip: ({ revenues }) => !!revenues,
   }),
   withProps(({ revenues, postFilter }) => {
     if (postFilter) {

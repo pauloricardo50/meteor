@@ -85,6 +85,20 @@ const LightTheme = ({ children }) => (
             opacity: 0.54,
           },
         },
+        MuiSwitch: {
+          switchBase: {
+            border: 'none',
+          },
+          colorPrimary: {
+            color: 'white',
+            '&$checked': {
+              color: 'white',
+            },
+            '&$checked + $track': {
+              backgroundColor: 'white',
+            },
+          },
+        },
       },
     }}
   >

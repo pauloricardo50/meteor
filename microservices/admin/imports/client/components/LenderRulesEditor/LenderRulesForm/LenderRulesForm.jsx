@@ -8,7 +8,7 @@ import LenderRulesFormOperator from './LenderRulesFormOperator';
 import LenderRulesFormValue from './LenderRulesFormValue';
 
 const shouldRenderAdditionalFields = (model, index) =>
-  model.rules && model.rules[index] && model.rules[index].variable;
+  model.rules?.[index]?.variable;
 
 const schema = new SimpleSchema({
   name: { type: String, optional: true },

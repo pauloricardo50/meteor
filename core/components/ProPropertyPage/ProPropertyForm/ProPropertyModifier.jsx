@@ -9,4 +9,5 @@ export default mapProps(({ property }) => ({
   onSubmit: object => propertyUpdate.run({ propertyId: property._id, object }),
   buttonProps: { label: <T id="general.modify" /> },
   model: property,
+  title: <T id="general.modify" />,
 }))(ProPropertyForm);

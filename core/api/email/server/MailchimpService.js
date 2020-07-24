@@ -92,8 +92,9 @@ class MailchimpService {
 
       if (result.statusText !== 'OK') {
         throw new Error(
-          `Mailchimp error [${result.status}]: ${parsed?.detail ||
-            result.statusText}`,
+          `Mailchimp error [${result.status}]: ${
+            parsed?.detail || result.statusText
+          }`,
         );
       }
 
@@ -102,10 +103,7 @@ class MailchimpService {
   }
 
   getSubscriberHash(email) {
-    return crypto
-      .createHash('md5')
-      .update(email.toLowerCase())
-      .digest('hex');
+    return crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
   }
 
   getLastCampaigns() {
@@ -163,7 +161,7 @@ class MailchimpService {
     return this.callApi({
       endpoint: 'upsertMember',
       params: { subscriberHash: this.getSubscriberHash(email) },
-      body: { status: MAILCHIMP_LIST_STATUS.SUBSCRIBED },
+      body: { status: MAILCHIMP_LIST_STATUS.SUBSCRIBED, email_address: email },
     });
   }
 

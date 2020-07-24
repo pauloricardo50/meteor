@@ -71,14 +71,9 @@ describe('REST: deleteFile', function() {
   this.timeout(10000);
 
   before(function() {
-    if (Meteor.settings.public.microservice !== 'pro') {
-      this.parent.pending = true;
-      this.skip();
-    } else {
-      makeFileUploadDir();
-      flushFileUploadDir();
-      api.start();
-    }
+    makeFileUploadDir();
+    flushFileUploadDir();
+    api.start();
   });
 
   after(() => {

@@ -23,7 +23,7 @@ const getCostLines = ({ loan, structureId, calculator }) => {
       value: propertyValue,
     },
     {
-      label: 'Travaux de plus-value',
+      label: <T id="Forms.propertyWork" />,
       value: propertyWork,
       condition: propertyWork > 0,
     },
@@ -51,7 +51,8 @@ const getFinancingLines = ({ loan, structureId, calculator }) => {
     {
       label: (
         <>
-          Prêt hypothécaire&nbsp;
+          <T id="Forms.variable.wantedLoan" />
+          &nbsp;
           <span className="secondary">
             (<Percent value={borrowRatio} />)
           </span>
@@ -63,7 +64,8 @@ const getFinancingLines = ({ loan, structureId, calculator }) => {
     {
       label: (
         <>
-          Fonds propres épargne&nbsp;
+          <T id="PDF.StructurePage.cashRatio" />
+          &nbsp;
           <span className="secondary">
             (<Percent value={cashRatio} />)
           </span>
@@ -75,7 +77,8 @@ const getFinancingLines = ({ loan, structureId, calculator }) => {
     {
       label: (
         <>
-          Fonds propres prévoyance professionnelle&nbsp;
+          <T id="PDF.StructurePage.insurance2Ratio" />
+          &nbsp;
           <span className="secondary">
             (<Percent value={insurance2Ratio} />)
           </span>
@@ -90,10 +93,16 @@ const getFinancingLines = ({ loan, structureId, calculator }) => {
 
 const ProjectBalanceSheet = ({ loan, structureId, calculator }) => (
   <BalanceSheetTable
-    titles={['Projet', 'Financement']}
+    titles={[
+      <T id="Recap.project" key="project" />,
+      <T id="Recap.financing" key="financing" />,
+    ]}
     leftRows={getCostLines({ loan, structureId, calculator })}
     rightRows={getFinancingLines({ loan, structureId, calculator })}
-    bottomTitles={['Total', 'Total']}
+    bottomTitles={[
+      <T id="Recap.total" key="total1" />,
+      <T id="Recap.total" key="total2" />,
+    ]}
     bottomValues={[
       <Money
         currency={false}

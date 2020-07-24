@@ -1,0 +1,115 @@
+.equal-split {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  align-items: center;
+
+  &-image,
+  &-content {
+    flex-basis: 40%;
+    flex-grow: 1;
+    box-sizing: border-box;
+
+    h1,
+    h2 {
+      font-size: 40px;
+      color: $body-text;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    p {
+      font-size: 20px;
+      line-height: 1.4;
+      font-weight: 400;
+      // letter-spacing: normal;
+    }
+
+    @media screen and (max-width: $med) {
+      flex-basis: initial;
+
+      h1,
+      h2 {
+        font-size: 24px;
+      }
+
+      p {
+        font-size: 14px;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &-content {
+    padding: 16px 0;
+    padding-right: 32px;
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (max-width: $med) {
+      padding-right: 0;
+    }
+  }
+
+  &-image-gatsby {
+    height: auto;
+    max-width: 400px;
+    margin: 0 auto;
+
+    @media screen and (max-width: $med) {
+      height: 240px;
+    }
+
+    @media screen and (max-width: $small) {
+      height: 200px;
+    }
+
+    @media screen and (max-width: $xsmall) {
+      height: 140px;
+    }
+  }
+
+  .cta-buttons {
+    margin-top: 32px;
+  }
+
+  @media screen and (max-width: $med) {
+    flex-direction: column;
+    align-items: stretch;
+
+    .cta-buttons {
+      margin-top: 16px;
+    }
+
+    &-content {
+      padding-bottom: 0;
+    }
+
+    #Home\ page & {
+      padding-top: 16px;
+      padding-bottom: 16px;
+
+    }
+  }
+}
+
+.full-width {
+  margin-bottom: 100px;
+
+  &-image {
+    // margin: 0 -16px;
+    height: 600px;
+
+    @media screen and (max-width: $med) {
+      height: 300px;
+    }
+  }
+
+  &-content {
+    width: 100%;
+    max-width: $site-width;
+    padding: 16px;
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
+}

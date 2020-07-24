@@ -18,7 +18,6 @@ import {
 
 const WWW_URL = Meteor.settings.public.subdomains.www;
 const APP_URL = Meteor.settings.public.subdomains.app;
-const ADMIN_URL = Meteor.settings.public.subdomains.admin;
 const PRO_URL = Meteor.settings.public.subdomains.pro;
 
 const { formatMessage } = intl;
@@ -173,7 +172,11 @@ export const addEmailListener = ({
 }) => {
   let methodNames = ServerEventService.addAfterMethodListener(method, props => {
     props.context.unblock();
-    func(props);
+    Meteor.defer(() => {
+      // Send emails asynchronously after the method returns
+      // FYI: This loses the current fiber data
+      func(props);
+    });
   });
 
   if (typeof methodNames === 'string') {

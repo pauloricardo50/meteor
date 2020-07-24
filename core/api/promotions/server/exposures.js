@@ -8,7 +8,6 @@ import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
 import { PROMOTION_STATUS } from '../promotionConstants';
 import {
-  adminPromotions,
   appPromotion,
   proPromotionUsers,
   proPromotions,
@@ -16,28 +15,6 @@ import {
   promotionsList,
 } from '../queries';
 import { makePromotionLotAnonymizer } from './promotionServerHelpers';
-
-exposeQuery({
-  query: adminPromotions,
-  options: { allowFilterById: true },
-  overrides: {
-    embody: body => {
-      body.$filter = ({ filters, params: { _id, hasTimeline, status } }) => {
-        if (hasTimeline) {
-          filters['constructionTimeline.0'] = { $exists: true };
-        }
-
-        if (status) {
-          filters.status = status;
-        }
-      };
-    },
-    validateParams: {
-      hasTimeline: Match.Maybe(Boolean),
-      status: Match.Maybe(Match.OneOf(String, Object)),
-    },
-  },
-});
 
 exposeQuery({
   query: appPromotion,
@@ -177,12 +154,17 @@ exposeQuery({
   overrides: {
     firewall() {},
     embody: body => {
-      body.$filter = ({ filters }) => {
+      body.$filter = ({ filters, params }) => {
         filters.isTest = { $ne: true };
         filters.status = {
           $in: [PROMOTION_STATUS.OPEN, PROMOTION_STATUS.FINISHED],
         };
+        if (params.canton) {
+          filters.canton = { $in: params.canton };
+        }
       };
+      body.$options = { sort: { name: 1 } };
     },
+    validateParams: { canton: Match.Maybe(Array) },
   },
 });

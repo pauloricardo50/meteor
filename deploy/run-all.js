@@ -158,13 +158,21 @@ function runInSerial() {
           `*** Running for ${name} - ${environment} ***`.toUpperCase(),
         ),
       );
+      if (isDeploying) {
+        sh.cd(__dirname + '/../scripts')
+        sh.exec(`bash setup-microservice.sh ${name}`)
+        sh.cd(__dirname + '/' + environment)
+      }
+
       runMup(`--config ${name}.mup.js ${mupCommands.join(' ')}`);
     });
     sh.cd('..');
   });
 }
 
-if (argv.parallel || isDeploying) {
+const singleApp = wantedApps && wantedApps.length === 1
+
+if (argv.parallel || (isDeploying && !singleApp)) {
   runInParallel();
 } else {
   runInSerial();

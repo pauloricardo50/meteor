@@ -1,5 +1,5 @@
 import React from 'react';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import Accordion from '@material-ui/core/Accordion';
 import { withStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
 import { compose, lifecycle, withState } from 'recompose';
@@ -47,7 +47,7 @@ const FinancingSectionExpansionPanel = ({
   sectionProps,
   sectionItemProps,
 }) => (
-  <ExpansionPanel
+  <Accordion
     className={cx('financing-structures-section', className, { expanded })}
     CollapseProps={{ classes: { container, entered } }}
     expanded={expanded}
@@ -65,7 +65,7 @@ const FinancingSectionExpansionPanel = ({
       sectionProps={sectionProps}
       sectionItemProps={sectionItemProps}
     />
-  </ExpansionPanel>
+  </Accordion>
 );
 
 export default compose(

@@ -6,7 +6,6 @@ import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { calculatorLoan } from 'core/api/fragments';
 import { currentInterestRates } from 'core/api/interestRates/queries';
 import { userLoans } from 'core/api/loans/queries';
-import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
 import { injectCalculator } from 'core/containers/withCalculator';
 import withMatchParam from 'core/containers/withMatchParam';
@@ -51,7 +50,7 @@ export const getRedirect = (currentUser, pathname) => {
   return false;
 };
 
-const fragment = merge({}, calculatorLoan(), {
+const loanFragment = merge({}, calculatorLoan(), {
   applicationType: 1,
   borrowers: { age: 1, name: 1, $options: { sort: { createdAt: 1 } } },
   contacts: 1,
@@ -66,7 +65,8 @@ const fragment = merge({}, calculatorLoan(), {
     },
     organisation: { logo: 1 },
   },
-  userCache: 1,
+  maxPropertyValue: 1,
+  maxPropertyValueExists: 1,
   name: 1,
   promotionOptions: {
     name: 1,
@@ -82,15 +82,15 @@ const fragment = merge({}, calculatorLoan(), {
   },
   properties: { address: 1, $options: { sort: { createdAt: 1 } } },
   shareSolvency: 1,
+  showClosingChecklists: 1,
   step: 1,
+  userCache: 1,
   userFormsEnabled: 1,
-  maxPropertyValue: 1,
-  maxPropertyValueExists: 1,
 });
 
 const withUserLoan = withSmartQuery({
   query: userLoans,
-  params: ({ loanId }) => ({ loanId, $body: fragment }),
+  params: ({ loanId }) => ({ loanId, $body: loanFragment }),
   deps: ({ loanId }) => {
     // Make sure the currentUser is in the dependencies here, or else
     // the query can get stuck when it's undefined on initial launch
@@ -138,5 +138,4 @@ export default compose(
   })),
   withSideNavContextProvider,
   withSideNavContext,
-  withContactButtonProvider,
 );

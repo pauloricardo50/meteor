@@ -1,7 +1,7 @@
 import React from 'react';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import { withState } from 'recompose';
 
 import { LenderRulesEditorSchema } from 'core/api/lenderRules/schemas/lenderRulesSchema';
@@ -29,8 +29,8 @@ const LenderRulesEditorSingle = ({
   formKeys,
   setFormKeys,
 }) => (
-  <ExpansionPanel className="card1 card-top lender-rules-editor-filter">
-    <ExpansionPanelSummary>
+  <Accordion className="card1 card-top lender-rules-editor-filter">
+    <AccordionSummary>
       <div className="filter-title">
         <LenderRulesEditorTitle filter={filter} name={name} order={order} />
         <LenderRulesModifier
@@ -39,9 +39,9 @@ const LenderRulesEditorSingle = ({
           lenderRulesId={lenderRulesId}
         />
       </div>
-    </ExpansionPanelSummary>
+    </AccordionSummary>
 
-    <ExpansionPanelDetails className="lender-rules-editor-filter-details">
+    <AccordionDetails className="lender-rules-editor-filter-details">
       <DropdownMenu
         options={LenderRulesEditorSchema._schemaKeys
           .filter(key => !formKeys.includes(key) && !key.includes('$'))
@@ -64,8 +64,8 @@ const LenderRulesEditorSingle = ({
         rules={rules}
         updateLenderRules={updateLenderRules}
       />
-    </ExpansionPanelDetails>
-  </ExpansionPanel>
+    </AccordionDetails>
+  </Accordion>
 );
 
 export default withState(

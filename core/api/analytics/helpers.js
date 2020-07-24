@@ -43,23 +43,14 @@ export const getMatchingPath = ({
   );
 };
 
-export const ctaClicked = ({ name, history, routes = {} }) => {
-  const { path, route, params, searchParams, queryString } = getMatchingPath({
+export const ctaClicked = ({ name, history, routes = {}, toPath }) => {
+  const { path, route } = getMatchingPath({
     pathname: history.location.pathname,
     routes,
     history,
   });
 
   const cookies = parseCookies();
-  const { sessionStorage } = window;
 
-  return analyticsCTA.run({
-    name,
-    cookies,
-    sessionStorage,
-    path,
-    route,
-    queryParams: params,
-    queryString,
-  });
+  return analyticsCTA.run({ name, cookies, path, route, toPath });
 };

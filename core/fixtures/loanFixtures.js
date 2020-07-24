@@ -181,7 +181,7 @@ export const addLoanWithData = ({
   LoanService.update({ loanId, object: loanData });
   const loan = LoanService.get(loanId, { structures: { id: 1 } });
   const propertyId = properties.length
-    ? PropertyService.insert({ property: {}, userId })
+    ? PropertyService.insert({ property: { userId } })
     : undefined;
 
   if (propertyId) {

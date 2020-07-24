@@ -36,12 +36,8 @@ export default class HistoryWatcher extends Component {
     const trackingId = getCookie(TRACKING_COOKIE);
     if (!trackingId) {
       const randomId =
-        Math.random()
-          .toString(36)
-          .substr(2) +
-        Math.random()
-          .toString(36)
-          .substr(2);
+        Math.random().toString(36).substr(2) +
+        Math.random().toString(36).substr(2);
       setCookie(TRACKING_COOKIE, randomId);
     }
   }
@@ -55,13 +51,7 @@ export default class HistoryWatcher extends Component {
 
   loadPage(location) {
     const { pathname } = location;
-    const {
-      path,
-      route,
-      params,
-      searchParams,
-      queryString,
-    } = this.getMatchingPath(pathname);
+    const { path, route, params, queryString } = this.getMatchingPath(pathname);
     const cookies = parseCookies();
     const { sessionStorage } = window;
     analyticsPage.run({

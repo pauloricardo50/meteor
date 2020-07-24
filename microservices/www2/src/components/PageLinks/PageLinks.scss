@@ -1,0 +1,40 @@
+.page-links {
+  border-bottom: 1px solid $border-grey;
+  display: flex;
+  justify-content: center;
+
+  &-link {
+    padding: 16px;
+    color: $body-text !important;
+    transition: transform 200ms $bezier, opacity 200ms $bezier;
+
+    &:hover {
+      text-decoration: none !important;
+      opacity: 0.7;
+      transform: scale(1.02);
+    }
+
+    &.active-link {
+      border-bottom: 2px solid $primary;
+    }
+  }
+
+  @media screen and (max-width: $med) {
+    border-bottom: none;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 240px;
+    margin-bottom: 40px;
+
+    &-link {
+      padding: 8px;
+      text-align: left;
+      border-left: 2px solid transparent;
+
+      &.active-link {
+        border-bottom: none;
+        border-left: 2px solid $primary;
+      }
+    }
+  }
+}

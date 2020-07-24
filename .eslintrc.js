@@ -50,6 +50,7 @@ module.exports = {
     es6: true,
     node: true,
     browser: true,
+    jest: true
     // 'cypress/globals': true,
   },
   globals: {},
@@ -87,13 +88,14 @@ module.exports = {
     'multiline-ternary': ['error', 'always-multiline'],
     'no-debugger': 0,
     'no-nested-ternary': 0,
-    'newline-per-chained-call': [2, { ignoreChainWithDepth: 4 }],
+    // Let this be managed by prettier
+    'newline-per-chained-call': 0,
     'prefer-arrow-callback': 0,
     // Let this rule be managed by prettier
     // https://github.com/prettier/prettier/issues/5309
     'arrow-parens': 0,
     'prefer-destructuring': [
-      'error',
+      'warn',
       {
         VariableDeclarator: {
           array: true,
@@ -107,7 +109,7 @@ module.exports = {
       { enforceForRenamedProperties: false },
     ],
     camelcase: [
-      'error',
+      'warn',
       {
         ignoreDestructuring: true,
         allow: [
@@ -138,6 +140,7 @@ module.exports = {
     'consistent-return': 0,
     // They're very useful for confirming things, and much more performant than Dialogs
     'no-alert': 0,
+    'no-param-reassign': "warn",
 
     // eslint-plugin-import rules
 
@@ -163,6 +166,8 @@ module.exports = {
     // the original module during tests.
     // So for testing, importing the same module as named is helpful
     'import/no-named-as-default': 0,
+    'import/no-cycle': 1,
+    "import/no-named-as-default-member": 1,
 
     // eslint-plugin-jsx-a11y rules
 
@@ -202,6 +207,8 @@ module.exports = {
     ],
     'react/jsx-props-no-spreading': 0,
     'react/prop-types': 0,
+    'react/jsx-filename-extension': 1,
+    'react/no-array-index-key': 1,
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 0,
