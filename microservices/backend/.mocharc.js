@@ -1,3 +1,3 @@
 module.exports = {
-  forbidOnly: !!process.env.CIRCLE_CI
+  forbidOnly: false && !!process.env.CIRCLE_CI
 }
