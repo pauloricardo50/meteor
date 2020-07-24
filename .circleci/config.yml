@@ -1147,11 +1147,9 @@ workflows:
             - Prepare
       - Www - deploy:
           requires: &ref_1
-            - Www - unit tests
             - App - unit tests
             - Admin - unit tests
             - Core - unit tests
-            - Www - e2e tests
             - App - e2e tests
             - Admin - e2e tests
             - Pro - e2e tests
