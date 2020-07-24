@@ -1,14 +1,15 @@
-import React from 'react';
-import SimpleDDP from 'simpleDDP';
+import ws from 'isomorphic-ws';
+import SimpleDDP from 'simpleddp';
 
-export const MeteorClientContext = React.createContext();
+import { getTrackingId } from './tracking';
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 const opts = {
-  endpoint:
-    process.env.NODE_ENV === 'production'
-      ? 'ws://backend.e-potek.ch/websocket'
-      : 'ws://localhost:5500/websocket',
-  SocketConstructor: WebSocket,
+  endpoint: isDevelopment
+    ? 'ws://localhost:5500/websocket' // wss protocol doesn't seem to work in local
+    : 'wss://backend.e-potek.ch/websocket',
+  SocketConstructor: ws,
 };
 
 const meteorClient = new SimpleDDP(opts);
@@ -26,5 +27,17 @@ if (process.env.NODE_ENV === 'development') {
     console.log('Meteor client error', e);
   });
 }
+
+export const callMethod = (method, params) =>
+  meteorClient.call(method, params, {
+    trackingId: getTrackingId(),
+    location: window
+      ? {
+          href: window.location.href,
+          host: window.location.host,
+          pathname: window.location.pathname,
+        }
+      : undefined,
+  });
 
 export default meteorClient;

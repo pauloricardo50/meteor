@@ -20,3 +20,6 @@ core/assets/public/files/frontPlugin/*.js
 **/npm-debug.log*
 **/yarn-debug.log*
 **/yarn-error.log*
+
+# Temporary files
+deploy/tmuxinator.yml

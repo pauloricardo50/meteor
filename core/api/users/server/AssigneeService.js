@@ -1,5 +1,6 @@
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import IntercomService from '../../intercom/server/IntercomService';
+import LoanService from '../../loans/server/LoanService';
 import SecurityService from '../../security';
 import { ROLES } from '../roles/roleConstants';
 import { ASSIGNEE } from '../userConstants';
@@ -29,17 +30,20 @@ class AssigneeService {
       return;
     }
 
-    const { referredByUser, referredByOrganisation, roles } = UserService.get(
-      newUserId,
-      {
-        referredByUser: {
-          assignedEmployeeId: 1,
-          organisations: { assigneeLink: 1 },
-        },
-        referredByOrganisation: { assigneeLink: 1 },
-        roles: 1,
+    const {
+      referredByUser,
+      referredByOrganisation,
+      roles,
+      loans = [],
+    } = UserService.get(newUserId, {
+      referredByUser: {
+        assignedEmployeeId: 1,
+        organisations: { assigneeLink: 1 },
       },
-    );
+      referredByOrganisation: { assigneeLink: 1 },
+      roles: 1,
+      loans: { assigneeLinks: 1 },
+    });
 
     this.referredByUserAssignee = referredByUser?.assignedEmployeeId;
     const referredByUserMainOrganisation = referredByUser?.organisations?.find(
@@ -52,6 +56,9 @@ class AssigneeService {
     this.shouldAutoAssign = SecurityService.hasAssignedRole(
       { roles },
       ROLES.USER,
+    );
+    this.loansWithoutAssignee = loans.filter(
+      ({ assigneeLinks }) => !assigneeLinks?.length,
     );
   }
 
@@ -107,6 +114,14 @@ class AssigneeService {
       IntercomService.updateContactOwner({
         userId: this.newUserId,
         adminId: assigneeId,
+      });
+
+      // Set user's loans main assignee to assigneeId if they don't already have an assignee
+      this.loansWithoutAssignee?.forEach?.(({ _id: loanId }) => {
+        LoanService.setAssignees({
+          loanId,
+          assignees: [{ _id: assigneeId, isMain: true, percent: 100 }],
+        });
       });
     }
 

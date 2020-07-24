@@ -11,7 +11,7 @@ const WelcomeScreenCtas = ({ insertLoan, loading }) => (
     <h2 className="font-size-3">Quel est votre projet?</h2>
     <Button
       raised
-      secondary
+      primary
       onClick={() => insertLoan({ purchaseType: PURCHASE_TYPE.ACQUISITION })}
       className="welcome-screen-cta mb-8"
       loading={loading}

@@ -24,7 +24,7 @@ const remainingFundsTableData = ({ loan, structureId, calculator }) =>
         ),
     )
     .map(type => ({
-      label: <T id={`PDF.ownFund.${type}`} />,
+      label: <T id={`Forms.${type}`} />,
       data: toMoney(
         calculator.getRemainingFundsOfType({ loan, type, structureId }),
       ),
@@ -41,7 +41,7 @@ const getRemainingOwnFundsRows = ({ loan, structureId, calculator }) => [
     type: ROW_TYPES.TITLE,
   },
   {
-    label: <T id="PDF.ownFund.bankFortune" />,
+    label: <T id="Forms.bankFortune" />,
     data: toMoney(
       calculator.getRemainingFundsOfType({
         loan,

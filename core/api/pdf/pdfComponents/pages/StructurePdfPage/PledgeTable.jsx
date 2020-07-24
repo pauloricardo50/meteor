@@ -47,7 +47,7 @@ const getPledgeRows = ({ loan, structureId, calculator }) => {
 
   return [
     {
-      label: 'Nantissements',
+      label: <T id="PDF.StructurePage.pledges" />,
       colspan: 2,
       type: ROW_TYPES.TITLE,
     },
@@ -61,7 +61,7 @@ const getPledgeRows = ({ loan, structureId, calculator }) => {
       data: toMoney(value),
     })),
     {
-      label: 'Total',
+      label: <T id="Recap.total" />,
       data: toMoney(calculator.getTotalPledged({ loan, structureId })),
       type: ROW_TYPES.SUM,
     },

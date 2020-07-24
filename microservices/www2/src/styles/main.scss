@@ -1,9 +1,31 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300..400&display=swap');
+@font-face {
+  font-family: 'Manrope-variable';
+  // Get full range of weights
+  font-weight: 1 999;
+  font-style: normal;
+
+  font-display: swap;
+  src: url('/public/fonts/Manrope-variable.ttf') format('truetype');
+}
+
 @import '../../node_modules/normalize-scss/sass/normalize';
 @include normalize();
 
-html,
-body,
-#___gatsby,
-#gatsby-focus-wrapper {
-  height: 100%;
-}
+// e-Potek core styles
+@import '../core/assets/css/variables.scss';
+@import '../core/assets/css/mixins.scss';
+@import '../core/assets/css/typography.scss';
+@import '../core/assets/css/core-styles.scss';
+@import '../core/components/Loading/Loading.scss';
+@import '../core/components/Recap2/Recap2.scss';
+@import '../core/components/charts2/chart.scss';
+@import '../core/assets/css/external-styles/animate.scss';
+
+
+// gatsby / prismic specific styles
+@import './base';
+@import './404';
+@import './prismic-edit-button';

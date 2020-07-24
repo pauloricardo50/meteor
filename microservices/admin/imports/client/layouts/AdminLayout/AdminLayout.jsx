@@ -75,6 +75,7 @@ const AdminLayout = ({
   }
 
   if (redirect && !isLogin) {
+    console.log('redirect:', redirect);
     return <Redirect to={redirect} />;
   }
 

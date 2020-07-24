@@ -106,6 +106,7 @@ export const submitPromotionInterestForm = new Method({
     name: String,
     phoneNumber: Match.Maybe(String),
     promotionId: String,
+    trackingId: Match.Maybe(Match.OneOf(String, null)),
   },
   rateLimit: { global: { limit: 3, timeRange: 30000 } },
 });

@@ -19,7 +19,7 @@ const defaultJobValues = {
         NODE_ENV: 'development', // Some packages require this during tests
         TOOL_NODE_FLAGS:
           '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // NodeJS kung-fu to make your builds run faster, without running out of memory
-        METEOR_PROFILE: 100, // If you need to debug meteor, set this to a number (in ms)
+        // METEOR_PROFILE: 100, // If you need to debug meteor, set this to a number (in ms)
         CIRCLE_CI: 1, // Helpful in your tests, to know whether you're in circle CI or not
         DEBUG: false, // Helps
         METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
@@ -307,7 +307,7 @@ const makeConfig = () => ({
   version: 2,
   jobs: {
     Prepare: makePrepareJob(),
-    'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
+    // 'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
     'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
     'Core - unit tests': testMicroserviceJob({ name: 'backend', testsType: 'unit' }),
     'Admin - unit tests': testMicroserviceJob({
@@ -315,7 +315,7 @@ const makeConfig = () => ({
       testsType: 'unit',
     }),
     // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
-    'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
+    // 'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
     'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
     'Admin - e2e tests': testMicroserviceJob({
       name: 'admin',
@@ -333,12 +333,12 @@ const makeConfig = () => ({
     'Test and deploy': {
       jobs: [
         'Prepare',
-        { 'Www - unit tests': { requires: ['Prepare'] } },
+        // { 'Www - unit tests': { requires: ['Prepare'] } },
         { 'App - unit tests': { requires: ['Prepare'] } },
         { 'Core - unit tests': { requires: ['Prepare'] } },
         { 'Admin - unit tests': { requires: ['Prepare'] } },
         // { 'Pro - unit tests': { requires: ['Prepare'] } },
-        { 'Www - e2e tests': { requires: ['Prepare'] } },
+        // { 'Www - e2e tests': { requires: ['Prepare'] } },
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
         { 'Pro - e2e tests': { requires: ['Prepare'] } },

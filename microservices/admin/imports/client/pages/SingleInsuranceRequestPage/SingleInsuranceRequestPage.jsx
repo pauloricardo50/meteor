@@ -9,6 +9,7 @@ import SingleInsuranceRequestPageHeader from './SingleInsuranceRequestPageHeader
 
 const SingleInsuranceRequestPage = props => {
   const { insuranceRequest, enableTabRouting } = props;
+
   return (
     <section className="single-insurance-request-page">
       <Helmet>

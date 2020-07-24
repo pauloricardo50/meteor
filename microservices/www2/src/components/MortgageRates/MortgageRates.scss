@@ -1,0 +1,61 @@
+.mortgage-rates {
+  margin-bottom: 50px;
+  padding-top: 0;
+
+  .last-update {
+    margin-bottom: 40px;
+  }
+
+  .rates-table {
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      // border-bottom: 1px solid $body-text-light;
+      padding-bottom: 16px;
+      color: #2e7eff;
+    }
+
+    .heading-0,
+    .rate-type {
+      flex: 1;
+    }
+
+
+    .heading-2,
+    .rate-range {
+      flex: 1;
+      text-align: right;
+    }
+
+    &-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0 16px;
+      border-top: 1px solid $body-text-light;
+
+    }
+  }
+
+  @media screen and (min-width: $med) {
+    .rates-table {
+      &-header {
+        padding-bottom: 24px;
+      }
+    }
+  }
+
+  .trend-icon {
+    &--down {
+      transform: rotate(45deg);
+      color: #10b000;
+    }
+
+    &--up {
+      transform: rotate(-45deg);
+      color: #b00000;
+    }
+  }
+}

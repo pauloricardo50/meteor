@@ -50,11 +50,17 @@
     flex-direction: column;
     min-height: 64px;
     justify-content: space-around;
+    color: $body-text;
+
+    &:hover, &:hover a.active {
+      color: white;
+    }
 
     a {
       display: flex;
       align-items: center;
       flex-direction: column;
+      color: inherit;
 
       &.active {
         color: $primary;

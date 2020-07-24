@@ -1,4 +1,3 @@
-import SecurityService from '../../security';
 import {
   analyticsCTA,
   analyticsLogin,
@@ -8,9 +7,7 @@ import {
 } from '../methodDefinitions';
 
 // All these analytics methods are used to trigger analytics listeners
-analyticsLogin.setHandler(() => {
-  SecurityService.checkLoggedIn();
-});
+analyticsLogin.setHandler(() => {});
 
 analyticsPage.setHandler(() => {});
 

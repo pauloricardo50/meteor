@@ -3,12 +3,9 @@ import capitalize from 'lodash/capitalize';
 
 import { getTestUserByRole } from './e2eHelpers';
 
-let testData;
-
 const generateTestsForPages = (pages, getTestData) => {
   before(() => {
-    cy.visit('/');
-    testData = getTestData();
+    cy.routeTo('/');
   });
 
   Object.keys(pages)
@@ -16,10 +13,12 @@ const generateTestsForPages = (pages, getTestData) => {
     .forEach(pageAuthentication => {
       describe(capitalize(pageAuthentication), () => {
         before(() => {
-          cy.initiateTest();
+          cy.routeTo('/');
 
           if (pageAuthentication !== 'public') {
-            cy.visit('/login');
+            cy.meteorLogout(); // Avoid login page redirect
+            cy.routeTo('/login');
+            cy.checkConnection();
             cy.meteorLogin(getTestUserByRole(pageAuthentication));
           }
         });
@@ -32,7 +31,7 @@ const generateTestsForPages = (pages, getTestData) => {
 
               cy.routeShouldRenderSuccessfully(
                 pages[pageAuthentication][pageName],
-                testData,
+                getTestData && getTestData(),
               );
             });
         });

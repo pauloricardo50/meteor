@@ -14,9 +14,10 @@ $font-size-m: 18px;
 $font-size-l: 20px;
 
 // App colors
-$primary: #005bea;
+$primary: #2e7eff;
 $secondary: #00c6ff;
-$primary-light: $secondary;
+$primary-light: #5bb5ff;
+$primary-gradient: linear-gradient(to left, $primary-light, $primary);
 $tertiary: #001a8f;
 $primary-dark: $tertiary;
 $success: #21d3b5;
@@ -30,17 +31,20 @@ $grey1: #d8d8d8;
 $grey2: #eee;
 $grey3: #f8f8f8;
 $grey4: #aaa;
-$border-grey: #dee2e6;
-$light-grey: #eee;
+$border-grey: #ccc;
+$border-grey-light: #f2f2f2;
 $icon: #444;
 $icon-hover: #888;
 $background-color: #f8f8f8;
+$background-light: #dbeeff;
 
 // Font variables
 $regular: 300;
-$bold: 500;
+$title: 400;
+$bold: 700;
 $title-bold: 600;
 $body-text: #2c2c2c;
+$body-text-light: #2c2c2c33;
 $title-text: #2c2c2c;
 
 // Other
@@ -50,3 +54,6 @@ $z-nav: 100;
 $shadow-level-1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 $shadow-level-2: 0 2px 30px 5px rgba(0, 0, 0, 0.2);
 $border-radius: 8px;
+
+// Marketing website
+$site-width: 1200px;

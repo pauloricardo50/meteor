@@ -149,11 +149,11 @@ export const loanShareSolvency = new Method({
 export const anonymousLoanInsert = new Method({
   name: 'anonymousLoanInsert',
   params: {
-    trackingId: Match.Maybe(Match.OneOf(String, null)),
-    proPropertyId: Match.Maybe(String),
-    referralId: Match.Maybe(String),
     existingAnonymousLoanId: Match.Maybe(Match.OneOf(String, null)),
+    proPropertyId: Match.Maybe(String),
     purchaseType: Match.Maybe(String),
+    referralId: Match.Maybe(String),
+    trackingId: Match.Maybe(Match.OneOf(String, null)),
   },
 });
 
@@ -162,13 +162,6 @@ export const loanInsertBorrowers = new Method({
   params: {
     loanId: String,
     amount: Number,
-  },
-});
-
-export const adminLoanReset = new Method({
-  name: 'adminLoanReset',
-  params: {
-    loanId: String,
   },
 });
 

@@ -1,6 +1,6 @@
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
-const numberMask = {
+export const numberMask = {
   prefix: '',
   suffix: '',
   includeThousandsSeparator: true,

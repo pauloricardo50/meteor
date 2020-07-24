@@ -29,6 +29,11 @@
     }
   }
 
+  &.editing {
+    background-color: white;
+    color: $body-text;
+  }
+
   &.not-allowed-to-edit:hover {
     opacity: 1;
     color: $primary;

@@ -1,0 +1,12 @@
+.cta-buttons {
+  display: inherit;
+
+  @media screen and (max-width: $med) {
+    display: table;
+    margin: 0 auto;
+  }
+}
+
+.cta--button {
+  margin: 4px;
+}

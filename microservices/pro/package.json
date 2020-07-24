@@ -4,6 +4,7 @@
   "scripts": {
     "bundle-size": "node -r esm ../../scripts/npm-scripts/run-script.js bundle-size",
     "start": "node -r esm ../../scripts/npm-scripts/run-script.js start",
+    "start-hmr": "HMR_ENABLED=true node -r esm ../../scripts/npm-scripts/run-script.js start",
     "script": "node -r esm ../../scripts/npm-scripts/run-script.js custom",
     "test": "node -r esm ../../scripts/npm-scripts/run-script.js test",
     "test-e2e": "node -r esm ../../scripts/npm-scripts/run-script.js test-e2e",
@@ -32,7 +33,7 @@
     "@fortawesome/pro-duotone-svg-icons": "^5.13.0",
     "@fortawesome/pro-light-svg-icons": "^5.12.0",
     "@fortawesome/react-fontawesome": "^0.1.10",
-    "@material-ui/core": "4.9.13",
+    "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@react-pdf/renderer": "^2.0.0-beta.6",
     "@testing-library/react": "^10.0.4",

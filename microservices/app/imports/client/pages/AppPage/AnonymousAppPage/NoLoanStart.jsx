@@ -1,14 +1,28 @@
-import React from 'react';
-import { withState } from 'recompose';
+import React, { useEffect, useState } from 'react';
+
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import useSearchParams from 'core/hooks/useSearchParams';
 
 import { WelcomeScreen } from '../../../components/WelcomeScreen/WelcomeScreen';
 import WelcomeScreenCtas from '../../../components/WelcomeScreen/WelcomeScreenCtas';
 
-const NoLoanStart = ({ insertAnonymousLoan, loading, setLoading }) => {
+const NoLoanStart = ({ insertAnonymousLoan }) => {
+  const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+
   const addLoan = ({ purchaseType }) => {
     setLoading(true);
     insertAnonymousLoan({ purchaseType }).finally(() => setLoading(false));
   };
+
+  useEffect(() => {
+    if (
+      searchParams.purchaseType &&
+      Object.values(PURCHASE_TYPE).includes(searchParams.purchaseType)
+    ) {
+      addLoan({ purchaseType: searchParams.purchaseType });
+    }
+  }, []);
 
   return (
     <WelcomeScreen
@@ -18,4 +32,4 @@ const NoLoanStart = ({ insertAnonymousLoan, loading, setLoading }) => {
   );
 };
 
-export default withState('loading', 'setLoading', false)(NoLoanStart);
+export default NoLoanStart;

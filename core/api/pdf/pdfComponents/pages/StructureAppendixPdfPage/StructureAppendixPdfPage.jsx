@@ -43,7 +43,8 @@ const StructureAppendixPdfPage = ({
       />
 
       <h3 className="finma-ratio">
-        Taux d'effort*&nbsp;
+        <T id="Forms.incomeRatio" />
+        *&nbsp;
         <span>
           <PercentWithStatus
             value={incomeRatio}
@@ -59,8 +60,9 @@ const StructureAppendixPdfPage = ({
       />
 
       <i>
-        * Le taux d'effort se calcule en divisant les charges par les
-        revenus:&nbsp;{toMoney(Math.round(totalExpenses))} /{' '}
+        *&nbsp;
+        <T id="PDF.StructureAppendixPage.incomeRatioTooltip" />
+        :&nbsp;{toMoney(Math.round(totalExpenses))} /{' '}
         {toMoney(Math.round(totalIncome))} = <Percent value={incomeRatio} />
       </i>
     </PdfPage>
