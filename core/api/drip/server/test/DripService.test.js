@@ -22,7 +22,7 @@ const SUBSCRIBER_PHONE = '+41 123456';
 const removeSubscriber = () =>
   DripService.removeSubscriber({ email: SUBSCRIBER_EMAIL });
 
-describe.only('DripService', function () {
+describe('DripService', function () {
   this.timeout(10000);
   let logErrorSpy;
   let analyticsSpy;

@@ -188,7 +188,7 @@ export const userPasswordReset = new Method({
   name: 'userPasswordReset',
 });
 
-// Used only to trigger activity listener
+// Used only to trigger activity and drip listener
 export const userVerifyEmail = new Method({
   name: 'userVerifyEmail',
 });

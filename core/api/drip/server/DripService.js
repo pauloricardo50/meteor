@@ -99,32 +99,38 @@ const config = function () {
     instance[endpoint] = function (...args) {
       const { method, params } = this.endpoints[endpoint](...args);
 
-      if (!ENABLE_API) {
-        return Promise.resolve({});
-      }
-
-      return this.dripClient[method](
-        ...(Array.isArray(params) ? params : [params]),
-      )
-        .then(response => {
-          // Append the status to the body for the tests
-          const { body, statusCode: status } = response;
-          return { ...body, status };
-        })
-        .catch(error => {
-          ErrorLogger.logError({
-            error,
-            additionalData: ['Drip Client Error'],
-          });
-          throw error;
-        });
+      return this.callDripAPI(method, params);
     };
   });
 };
 
 export class DripService {
-  constructor() {
+  constructor({ enableAPI = ENABLE_API }) {
     config.bind(this)();
+    this.enableAPI = enableAPI;
+  }
+
+  // Useful for test stubs
+  callDripAPI(method, params) {
+    if (!this.enableAPI) {
+      return Promise.resolve({});
+    }
+
+    return this.dripClient[method](
+      ...(Array.isArray(params) ? params : [params]),
+    )
+      .then(response => {
+        // Append the status to the body for the tests
+        const { body, statusCode: status } = response;
+        return { ...body, status };
+      })
+      .catch(error => {
+        ErrorLogger.logError({
+          error,
+          additionalData: ['Drip Client Error'],
+        });
+        throw error;
+      });
   }
 
   handleWebhook({ body }) {
@@ -501,4 +507,4 @@ export class DripService {
   }
 }
 
-export default new DripService();
+export default new DripService({});

@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import { employeesByEmail } from '../../../arrays/epotekEmployees';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
@@ -13,18 +15,30 @@ import {
 import UserService from '../../users/server/UserService';
 import { ROLES, USER_STATUS } from '../../users/userConstants';
 import { DRIP_ACTIONS } from '../dripConstants';
-import DripService from './DripService';
+import { DripService as DripServiceClass } from './DripService';
+
+// Avoids all tests that call the listened methods to
+// call Drip API and trigger "Too many concurrent requests for the same subscriber"
+const DripService = new DripServiceClass({ enableAPI: !Meteor.isTest });
 
 ServerEventService.addAfterMethodListener(
   [proInviteUser, anonymousCreateUser],
-  ({ params: { user: email } }) => {
+  ({
+    params: {
+      user: { email },
+    },
+  }) => {
     DripService.createSubscriber({ email });
   },
 );
 
 ServerEventService.addAfterMethodListener(
   adminCreateUser,
-  ({ params: { user: email } }) => {
+  ({
+    params: {
+      user: { email },
+    },
+  }) => {
     const user = UserService.getByEmail(email, { _id: 1 });
 
     if (user?._id) {
@@ -94,7 +108,7 @@ ServerEventService.addAfterMethodListener(
   changeEmail,
   async ({ result: { oldEmail, newEmail } }) => {
     try {
-      const { subscribers } = await DripService.fetchSubscriber({
+      const { subscribers = [] } = await DripService.fetchSubscriber({
         subscriber: { email: oldEmail },
       });
       const [subscriber] = subscribers;

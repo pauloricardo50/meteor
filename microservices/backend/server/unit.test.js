@@ -41,6 +41,7 @@ import '/imports/core/api/checklists/server/test/ChecklistService.test.js';
 import '/imports/core/api/commissionRates/server/test/CommissionRateService.test.js';
 import '/imports/core/api/cron/server/test/CronitorService.test.js';
 import '/imports/core/api/drip/server/test/DripService.test.js';
+import '/imports/core/api/drip/server/test/dripListeners.test.js';
 import '/imports/core/api/email/server/test/EmailService.test.js';
 import '/imports/core/api/email/server/test/MailchimpService.test.js';
 import '/imports/core/api/email/server/test/accountsEmails.test.js';
