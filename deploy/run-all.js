@@ -25,7 +25,6 @@ function getMupCommand() {
   removeOption('-e', true);
   removeOption('--apps', true);
   removeOption('--parallel', false);
-  removeOption('--deploy-ci', false);
 
   return commands;
 }
@@ -62,10 +61,6 @@ const { argv } = yargs
   .option('parallel', {
     description: 'Run command in parallel for all apps',
     type: 'boolean',
-  })
-  .option('deploy-ci', {
-    description: 'forces deploys to be done in serial',
-    type: 'boolean'
   })
   .describe('apps', 'comma separated list of app names to run the command for');
 
@@ -175,7 +170,9 @@ function runInSerial() {
   });
 }
 
-if (argv.parallel || (isDeploying && !argv.deployCi)) {
+const singleApp = wantedApps && wantedApps.length === 1
+
+if (argv.parallel || (isDeploying && !singleApp)) {
   runInParallel();
 } else {
   runInSerial();

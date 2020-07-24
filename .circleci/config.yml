@@ -761,7 +761,7 @@ jobs:
                     # Uses the fingerprint as the name
                     mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
                     node run-all -e $ENVIRONMENT --apps www validate
-                    node run-all --deploy-ci -e $ENVIRONMENT --apps www deploy
+                    node run-all -e $ENVIRONMENT --apps www deploy
                   
           no_output_timeout: 30m
       - save_cache:
@@ -847,7 +847,7 @@ jobs:
                     # Uses the fingerprint as the name
                     mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
                     node run-all -e $ENVIRONMENT --apps app validate
-                    node run-all --deploy-ci -e $ENVIRONMENT --apps app deploy
+                    node run-all -e $ENVIRONMENT --apps app deploy
                   
           no_output_timeout: 30m
       - save_cache:
@@ -935,7 +935,7 @@ jobs:
                     # Uses the fingerprint as the name
                     mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
                     node run-all -e $ENVIRONMENT --apps admin validate
-                    node run-all --deploy-ci -e $ENVIRONMENT --apps admin deploy
+                    node run-all -e $ENVIRONMENT --apps admin deploy
                   
           no_output_timeout: 30m
       - save_cache:
@@ -1021,7 +1021,7 @@ jobs:
                     # Uses the fingerprint as the name
                     mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
                     node run-all -e $ENVIRONMENT --apps pro validate
-                    node run-all --deploy-ci -e $ENVIRONMENT --apps pro deploy
+                    node run-all -e $ENVIRONMENT --apps pro deploy
                   
           no_output_timeout: 30m
       - save_cache:
@@ -1111,7 +1111,7 @@ jobs:
                     # Uses the fingerprint as the name
                     mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
                     node run-all -e $ENVIRONMENT --apps backend validate
-                    node run-all --deploy-ci -e $ENVIRONMENT --apps backend deploy
+                    node run-all -e $ENVIRONMENT --apps backend deploy
                   
           no_output_timeout: 30m
       - save_cache:

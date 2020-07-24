@@ -279,7 +279,7 @@ const makeDeployJob = ({ name, job }) => ({
         # Uses the fingerprint as the name
         mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
         node run-all -e $ENVIRONMENT --apps ${name} validate
-        node run-all --deploy-ci -e $ENVIRONMENT --apps ${name} deploy
+        node run-all -e $ENVIRONMENT --apps ${name} deploy
       `,
       '30m'
     ),
