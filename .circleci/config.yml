@@ -1145,7 +1145,7 @@ workflows:
       - Pro - e2e tests:
           requires:
             - Prepare
-      - Www - deploy:
+      - App - deploy:
           requires: &ref_1
             - App - unit tests
             - Admin - unit tests
@@ -1153,8 +1153,6 @@ workflows:
             - App - e2e tests
             - Admin - e2e tests
             - Pro - e2e tests
-      - App - deploy:
-          requires: *ref_1
       - Admin - deploy:
           requires: *ref_1
       - Pro - deploy:

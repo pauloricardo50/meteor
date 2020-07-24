@@ -340,7 +340,6 @@ const makeConfig = () => ({
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
         { 'Pro - e2e tests': { requires: ['Prepare'] } },
-        { 'Www - deploy': { requires: testJobs } },
         { 'App - deploy': { requires: testJobs } },
         { 'Admin - deploy': { requires: testJobs } },
         { 'Pro - deploy': { requires: testJobs } },
