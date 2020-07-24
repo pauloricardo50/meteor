@@ -20,7 +20,7 @@ jobs:
           METEOR_DISABLE_OPTIMISTIC_CACHING: 1
           RTL_SKIP_AUTO_CLEANUP: 1
           HOME: /home/circleci
-    resource_class: large
+    resource_class: medium
     steps:
       - restore_cache:
           name: Restore source
@@ -684,9 +684,447 @@ jobs:
           path: ./e2e-results
       - store_artifacts:
           path: ./e2e-results
+  Www - deploy:
+    working_directory: /home/circleci/app
+    docker: *ref_0
+    filters:
+      branches:
+        only:
+          - staging
+    steps:
+      - add_ssh_keys
+      - setup_remote_docker:
+          version: 19.03.12
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_16-{{ .Branch }}-'
+            - source_master_16-
+      - restore_cache:
+          name: Restore node_modules
+          keys:
+            - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
+      - restore_cache:
+          name: Restore meteor system
+          keys:
+            - >-
+              meteor_system_master_16_www_2_{{ checksum
+              "./microservices/www/.meteor/release" }}_{{ checksum
+              "./microservices/www/.meteor/versions" }}
+      - restore_cache:
+          name: Restore meteor microservice
+          keys:
+            - 'meteor_microservice_master_16_www-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_16_www-{{ .Branch }}-'
+            - meteor_microservice_master_16_www-
+      - restore_cache:
+          name: Restore minifier cache
+          keys:
+            - 'minifier_microservice_master_16_www-{{ .Branch }}-{{ .Revision }}'
+            - 'minifier_microservice_master_16_www-{{ .Branch }}-'
+            - minifier_microservice_master_16_www-
+      - run:
+          name: Install meteor
+          command: ./scripts/circleci/install_meteor.sh
+      - run:
+          name: Install GCloud
+          command: |2-
+
+                  cd ~
+                  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+                  apt-get install apt-transport-https ca-certificates gnupg
+                  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+                  apt-get update && apt-get install -y google-cloud-sdk
+
+                  echo "$GCLOUD_SDK_KEY" > ./gcloud-key.json
+                  gcloud auth activate-service-account  --key-file=./gcloud-key.json
+                  rm ./gcloud-key.json
+                
+      - run:
+          name: Install Docker
+          command: 'wget -qO- https://get.docker.com/ | sh'
+      - run:
+          name: Deploy
+          command: |2-
+
+                    cd deploy
+                    ENVIRONMENT="staging"
+
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
+                      ENVIRONMENT="staging"
+                    else
+                      echo "Deployments not configured for this branch"
+                      exit 1
+                    fi
+
+                    # Uses the fingerprint as the name
+                    mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
+                    node run-all -e $ENVIRONMENT --apps www validate
+                    node run-all -e $ENVIRONMENT --apps www deploy
+                  
+          no_output_timeout: 30m
+      - save_cache:
+          name: Save minifier cache
+          key: 'minifier_microservice_master_16_www-{{ .Branch }}-{{ .Revision }}'
+          paths:
+            - >-
+              ./microservices/www/.meteor/local/plugin-cache/zodern_standard-minifier-js
+  App - deploy:
+    working_directory: /home/circleci/app
+    docker: *ref_0
+    filters:
+      branches:
+        only:
+          - staging
+    steps:
+      - add_ssh_keys
+      - setup_remote_docker:
+          version: 19.03.12
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_16-{{ .Branch }}-'
+            - source_master_16-
+      - restore_cache:
+          name: Restore node_modules
+          keys:
+            - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
+      - restore_cache:
+          name: Restore meteor system
+          keys:
+            - >-
+              meteor_system_master_16_app_2_{{ checksum
+              "./microservices/app/.meteor/release" }}_{{ checksum
+              "./microservices/app/.meteor/versions" }}
+      - restore_cache:
+          name: Restore meteor microservice
+          keys:
+            - 'meteor_microservice_master_16_app-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_16_app-{{ .Branch }}-'
+            - meteor_microservice_master_16_app-
+      - restore_cache:
+          name: Restore minifier cache
+          keys:
+            - 'minifier_microservice_master_16_app-{{ .Branch }}-{{ .Revision }}'
+            - 'minifier_microservice_master_16_app-{{ .Branch }}-'
+            - minifier_microservice_master_16_app-
+      - run:
+          name: Install meteor
+          command: ./scripts/circleci/install_meteor.sh
+      - run:
+          name: Install GCloud
+          command: |2-
+
+                  cd ~
+                  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+                  apt-get install apt-transport-https ca-certificates gnupg
+                  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+                  apt-get update && apt-get install -y google-cloud-sdk
+
+                  echo "$GCLOUD_SDK_KEY" > ./gcloud-key.json
+                  gcloud auth activate-service-account  --key-file=./gcloud-key.json
+                  rm ./gcloud-key.json
+                
+      - run:
+          name: Install Docker
+          command: 'wget -qO- https://get.docker.com/ | sh'
+      - run:
+          name: Deploy
+          command: |2-
+
+                    cd deploy
+                    ENVIRONMENT="staging"
+
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
+                      ENVIRONMENT="staging"
+                    else
+                      echo "Deployments not configured for this branch"
+                      exit 1
+                    fi
+
+                    # Uses the fingerprint as the name
+                    mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
+                    node run-all -e $ENVIRONMENT --apps app validate
+                    node run-all -e $ENVIRONMENT --apps app deploy
+                  
+          no_output_timeout: 30m
+      - save_cache:
+          name: Save minifier cache
+          key: 'minifier_microservice_master_16_app-{{ .Branch }}-{{ .Revision }}'
+          paths:
+            - >-
+              ./microservices/app/.meteor/local/plugin-cache/zodern_standard-minifier-js
+  Admin - deploy:
+    working_directory: /home/circleci/app
+    docker: *ref_0
+    filters:
+      branches:
+        only:
+          - staging
+    steps:
+      - add_ssh_keys
+      - setup_remote_docker:
+          version: 19.03.12
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_16-{{ .Branch }}-'
+            - source_master_16-
+      - restore_cache:
+          name: Restore node_modules
+          keys:
+            - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
+      - restore_cache:
+          name: Restore meteor system
+          keys:
+            - >-
+              meteor_system_master_16_admin_2_{{ checksum
+              "./microservices/admin/.meteor/release" }}_{{ checksum
+              "./microservices/admin/.meteor/versions" }}
+      - restore_cache:
+          name: Restore meteor microservice
+          keys:
+            - 'meteor_microservice_master_16_admin-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_16_admin-{{ .Branch }}-'
+            - meteor_microservice_master_16_admin-
+      - restore_cache:
+          name: Restore minifier cache
+          keys:
+            - >-
+              minifier_microservice_master_16_admin-{{ .Branch }}-{{ .Revision
+              }}
+            - 'minifier_microservice_master_16_admin-{{ .Branch }}-'
+            - minifier_microservice_master_16_admin-
+      - run:
+          name: Install meteor
+          command: ./scripts/circleci/install_meteor.sh
+      - run:
+          name: Install GCloud
+          command: |2-
+
+                  cd ~
+                  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+                  apt-get install apt-transport-https ca-certificates gnupg
+                  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+                  apt-get update && apt-get install -y google-cloud-sdk
+
+                  echo "$GCLOUD_SDK_KEY" > ./gcloud-key.json
+                  gcloud auth activate-service-account  --key-file=./gcloud-key.json
+                  rm ./gcloud-key.json
+                
+      - run:
+          name: Install Docker
+          command: 'wget -qO- https://get.docker.com/ | sh'
+      - run:
+          name: Deploy
+          command: |2-
+
+                    cd deploy
+                    ENVIRONMENT="staging"
+
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
+                      ENVIRONMENT="staging"
+                    else
+                      echo "Deployments not configured for this branch"
+                      exit 1
+                    fi
+
+                    # Uses the fingerprint as the name
+                    mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
+                    node run-all -e $ENVIRONMENT --apps admin validate
+                    node run-all -e $ENVIRONMENT --apps admin deploy
+                  
+          no_output_timeout: 30m
+      - save_cache:
+          name: Save minifier cache
+          key: 'minifier_microservice_master_16_admin-{{ .Branch }}-{{ .Revision }}'
+          paths:
+            - >-
+              ./microservices/admin/.meteor/local/plugin-cache/zodern_standard-minifier-js
+  Pro - deploy:
+    working_directory: /home/circleci/app
+    docker: *ref_0
+    filters:
+      branches:
+        only:
+          - staging
+    steps:
+      - add_ssh_keys
+      - setup_remote_docker:
+          version: 19.03.12
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_16-{{ .Branch }}-'
+            - source_master_16-
+      - restore_cache:
+          name: Restore node_modules
+          keys:
+            - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
+      - restore_cache:
+          name: Restore meteor system
+          keys:
+            - >-
+              meteor_system_master_16_pro_2_{{ checksum
+              "./microservices/pro/.meteor/release" }}_{{ checksum
+              "./microservices/pro/.meteor/versions" }}
+      - restore_cache:
+          name: Restore meteor microservice
+          keys:
+            - 'meteor_microservice_master_16_pro-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_master_16_pro-{{ .Branch }}-'
+            - meteor_microservice_master_16_pro-
+      - restore_cache:
+          name: Restore minifier cache
+          keys:
+            - 'minifier_microservice_master_16_pro-{{ .Branch }}-{{ .Revision }}'
+            - 'minifier_microservice_master_16_pro-{{ .Branch }}-'
+            - minifier_microservice_master_16_pro-
+      - run:
+          name: Install meteor
+          command: ./scripts/circleci/install_meteor.sh
+      - run:
+          name: Install GCloud
+          command: |2-
+
+                  cd ~
+                  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+                  apt-get install apt-transport-https ca-certificates gnupg
+                  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+                  apt-get update && apt-get install -y google-cloud-sdk
+
+                  echo "$GCLOUD_SDK_KEY" > ./gcloud-key.json
+                  gcloud auth activate-service-account  --key-file=./gcloud-key.json
+                  rm ./gcloud-key.json
+                
+      - run:
+          name: Install Docker
+          command: 'wget -qO- https://get.docker.com/ | sh'
+      - run:
+          name: Deploy
+          command: |2-
+
+                    cd deploy
+                    ENVIRONMENT="staging"
+
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
+                      ENVIRONMENT="staging"
+                    else
+                      echo "Deployments not configured for this branch"
+                      exit 1
+                    fi
+
+                    # Uses the fingerprint as the name
+                    mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
+                    node run-all -e $ENVIRONMENT --apps pro validate
+                    node run-all -e $ENVIRONMENT --apps pro deploy
+                  
+          no_output_timeout: 30m
+      - save_cache:
+          name: Save minifier cache
+          key: 'minifier_microservice_master_16_pro-{{ .Branch }}-{{ .Revision }}'
+          paths:
+            - >-
+              ./microservices/pro/.meteor/local/plugin-cache/zodern_standard-minifier-js
+  Backend - deploy:
+    working_directory: /home/circleci/app
+    docker: *ref_0
+    filters:
+      branches:
+        only:
+          - staging
+    steps:
+      - add_ssh_keys
+      - setup_remote_docker:
+          version: 19.03.12
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_16-{{ .Branch }}-'
+            - source_master_16-
+      - restore_cache:
+          name: Restore node_modules
+          keys:
+            - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
+      - restore_cache:
+          name: Restore meteor system
+          keys:
+            - >-
+              meteor_system_master_16_backend_2_{{ checksum
+              "./microservices/backend/.meteor/release" }}_{{ checksum
+              "./microservices/backend/.meteor/versions" }}
+      - restore_cache:
+          name: Restore meteor microservice
+          keys:
+            - >-
+              meteor_microservice_master_16_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'meteor_microservice_master_16_backend-{{ .Branch }}-'
+            - meteor_microservice_master_16_backend-
+      - restore_cache:
+          name: Restore minifier cache
+          keys:
+            - >-
+              minifier_microservice_master_16_backend-{{ .Branch }}-{{ .Revision
+              }}
+            - 'minifier_microservice_master_16_backend-{{ .Branch }}-'
+            - minifier_microservice_master_16_backend-
+      - run:
+          name: Install meteor
+          command: ./scripts/circleci/install_meteor.sh
+      - run:
+          name: Install GCloud
+          command: |2-
+
+                  cd ~
+                  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+                  apt-get install apt-transport-https ca-certificates gnupg
+                  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+                  apt-get update && apt-get install -y google-cloud-sdk
+
+                  echo "$GCLOUD_SDK_KEY" > ./gcloud-key.json
+                  gcloud auth activate-service-account  --key-file=./gcloud-key.json
+                  rm ./gcloud-key.json
+                
+      - run:
+          name: Install Docker
+          command: 'wget -qO- https://get.docker.com/ | sh'
+      - run:
+          name: Deploy
+          command: |2-
+
+                    cd deploy
+                    ENVIRONMENT="staging"
+
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
+                      ENVIRONMENT="staging"
+                    else
+                      echo "Deployments not configured for this branch"
+                      exit 1
+                    fi
+
+                    # Uses the fingerprint as the name
+                    mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
+                    node run-all -e $ENVIRONMENT --apps backend validate
+                    node run-all -e $ENVIRONMENT --apps backend deploy
+                  
+          no_output_timeout: 30m
+      - save_cache:
+          name: Save minifier cache
+          key: >-
+            minifier_microservice_master_16_backend-{{ .Branch }}-{{ .Revision
+            }}
+          paths:
+            - >-
+              ./microservices/backend/.meteor/local/plugin-cache/zodern_standard-minifier-js
 workflows:
   version: 2
-  Build and test:
+  Test and deploy:
     jobs:
       - Prepare
       - App - unit tests:
@@ -707,3 +1145,17 @@ workflows:
       - Pro - e2e tests:
           requires:
             - Prepare
+      - App - deploy:
+          requires: &ref_1
+            - App - unit tests
+            - Admin - unit tests
+            - Core - unit tests
+            - App - e2e tests
+            - Admin - e2e tests
+            - Pro - e2e tests
+      - Admin - deploy:
+          requires: *ref_1
+      - Pro - deploy:
+          requires: *ref_1
+      - Backend - deploy:
+          requires: *ref_1

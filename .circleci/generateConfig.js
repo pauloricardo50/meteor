@@ -2,6 +2,7 @@ import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '/home/circleci/app';
 const CACHE_VERSION = 'master_16'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const STAGING_BRANCH = 'staging';
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -41,6 +42,8 @@ const cacheKeys = {
     `meteor_system_${CACHE_VERSION}_${name}_2_{{ checksum "./microservices/${name}/.meteor/release" }}_{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
+  minifierCache: name =>
+    `minifier_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
   nodeModules: () =>
     `node_modules_${CACHE_VERSION}_{{ checksum "./package-lock.json" }}`,
   source: () => `source_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
@@ -55,6 +58,9 @@ const cachePaths = {
     `./microservices/${name}/.meteor/local/plugin-cache`,
     `./microservices/${name}/.meteor/local/resolver-result-cache.json`,
   ],
+  minifierCache: name =>
+    `./microservices/${name}/.meteor/local/plugin-cache/zodern_standard-minifier-js`
+  ,
   nodeModules: () => './node_modules',
   source: () => '.',
 };
@@ -114,7 +120,7 @@ const storeArtifacts = path => ({ store_artifacts: { path } });
 // Create preparation job with shared work
 const makePrepareJob = () => ({
   ...defaultJobValues,
-  resource_class: 'large',
+  resource_class: 'medium',
   steps: [
     // Update source cache with latest code
     restoreCache('Restore source', cacheKeys.source()),
@@ -213,6 +219,87 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
   ].filter(x => x),
 });
 
+const makeDeployJob = ({ name, job }) => ({
+  ...job,
+  ...defaultJobValues,
+  filters: {
+    branches: {
+      only: [
+        STAGING_BRANCH
+      ]
+    }
+  },
+  steps: [
+    'add_ssh_keys',
+    {
+      setup_remote_docker: {
+        version: '19.03.12'
+      }
+    },
+    restoreCache('Restore source', cacheKeys.source()),
+    restoreCache('Restore node_modules', cacheKeys.nodeModules()),
+    restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
+    restoreCache(
+      'Restore meteor microservice',
+      cacheKeys.meteorMicroservice(name),
+    ),
+    // The microservice cache only has files from building for development,
+    // which doesn't minify
+    restoreCache(
+      'Restore minifier cache',
+      cacheKeys.minifierCache(name),
+    ),
+    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
+    runCommand('Install GCloud', 
+    `
+      cd ~
+      echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+      apt-get install apt-transport-https ca-certificates gnupg
+      curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+      apt-get update && apt-get install -y google-cloud-sdk
+
+      echo "$GCLOUD_SDK_KEY" > ./gcloud-key.json
+      gcloud auth activate-service-account  --key-file=./gcloud-key.json
+      rm ./gcloud-key.json
+    `),
+    runCommand('Install Docker', 'wget -qO- https://get.docker.com/ | sh'),
+    runCommand(
+      'Deploy',
+      `
+        cd deploy
+        ENVIRONMENT="staging"
+
+        if [ "$CIRCLE_BRANCH" = "${STAGING_BRANCH}" ]; then
+          ENVIRONMENT="staging"
+        else
+          echo "Deployments not configured for this branch"
+          exit 1
+        fi
+
+        # Uses the fingerprint as the name
+        mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
+        node run-all -e $ENVIRONMENT --apps ${name} validate
+        node run-all -e $ENVIRONMENT --apps ${name} deploy
+      `,
+      '30m'
+    ),
+    saveCache(
+      'Save minifier cache',
+      cacheKeys.minifierCache(name),
+      cachePaths.minifierCache(name)
+    )
+  ]
+})
+
+const testJobs = [
+  'App - unit tests',
+  'Admin - unit tests',
+  'Core - unit tests',
+  'App - e2e tests',
+  'Admin - e2e tests',
+  'Pro - e2e tests'
+]
+
 // Final config
 const makeConfig = () => ({
   version: 2,
@@ -233,10 +320,15 @@ const makeConfig = () => ({
       testsType: 'e2e',
     }),
     'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
+    'Www - deploy': makeDeployJob({ name: 'www' }),
+    'App - deploy': makeDeployJob({ name: 'app' }),
+    'Admin - deploy': makeDeployJob({ name: 'admin' }),
+    'Pro - deploy': makeDeployJob({ name: 'pro' }),
+    'Backend - deploy': makeDeployJob({ name: 'backend' }),
   },
   workflows: {
     version: 2,
-    'Build and test': {
+    'Test and deploy': {
       jobs: [
         'Prepare',
         // { 'Www - unit tests': { requires: ['Prepare'] } },
@@ -248,6 +340,10 @@ const makeConfig = () => ({
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
         { 'Pro - e2e tests': { requires: ['Prepare'] } },
+        { 'App - deploy': { requires: testJobs } },
+        { 'Admin - deploy': { requires: testJobs } },
+        { 'Pro - deploy': { requires: testJobs } },
+        { 'Backend - deploy': { requires: testJobs } },
       ],
     },
   },
