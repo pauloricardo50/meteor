@@ -2,7 +2,7 @@ import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '/home/circleci/app';
 const CACHE_VERSION = 'master_16'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
-const STAGING_BRANCH = 'chore/deploy-staging-ci';
+const STAGING_BRANCH = 'staging';
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,

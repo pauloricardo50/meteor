@@ -690,7 +690,7 @@ jobs:
     filters:
       branches:
         only:
-          - chore/deploy-staging-ci
+          - staging
     steps:
       - add_ssh_keys
       - setup_remote_docker:
@@ -751,7 +751,7 @@ jobs:
                     cd deploy
                     ENVIRONMENT="staging"
 
-                    if [ "$CIRCLE_BRANCH" = "chore/deploy-staging-ci" ]; then
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
                     else
                       echo "Deployments not configured for this branch"
@@ -776,7 +776,7 @@ jobs:
     filters:
       branches:
         only:
-          - chore/deploy-staging-ci
+          - staging
     steps:
       - add_ssh_keys
       - setup_remote_docker:
@@ -837,7 +837,7 @@ jobs:
                     cd deploy
                     ENVIRONMENT="staging"
 
-                    if [ "$CIRCLE_BRANCH" = "chore/deploy-staging-ci" ]; then
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
                     else
                       echo "Deployments not configured for this branch"
@@ -862,7 +862,7 @@ jobs:
     filters:
       branches:
         only:
-          - chore/deploy-staging-ci
+          - staging
     steps:
       - add_ssh_keys
       - setup_remote_docker:
@@ -925,7 +925,7 @@ jobs:
                     cd deploy
                     ENVIRONMENT="staging"
 
-                    if [ "$CIRCLE_BRANCH" = "chore/deploy-staging-ci" ]; then
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
                     else
                       echo "Deployments not configured for this branch"
@@ -950,7 +950,7 @@ jobs:
     filters:
       branches:
         only:
-          - chore/deploy-staging-ci
+          - staging
     steps:
       - add_ssh_keys
       - setup_remote_docker:
@@ -1011,7 +1011,7 @@ jobs:
                     cd deploy
                     ENVIRONMENT="staging"
 
-                    if [ "$CIRCLE_BRANCH" = "chore/deploy-staging-ci" ]; then
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
                     else
                       echo "Deployments not configured for this branch"
@@ -1036,7 +1036,7 @@ jobs:
     filters:
       branches:
         only:
-          - chore/deploy-staging-ci
+          - staging
     steps:
       - add_ssh_keys
       - setup_remote_docker:
@@ -1101,7 +1101,7 @@ jobs:
                     cd deploy
                     ENVIRONMENT="staging"
 
-                    if [ "$CIRCLE_BRANCH" = "chore/deploy-staging-ci" ]; then
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
                     else
                       echo "Deployments not configured for this branch"
