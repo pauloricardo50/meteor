@@ -14,9 +14,10 @@ import {
   proInviteUser,
   removeUser,
   setRole,
+  setUserStatus,
   userVerifyEmail,
 } from '../../../users/methodDefinitions';
-import { ROLES } from '../../../users/userConstants';
+import { ROLES, USER_STATUS } from '../../../users/userConstants';
 import { DRIP_ACTIONS } from '../../dripConstants';
 import { DripService } from '../DripService';
 
@@ -592,6 +593,82 @@ describe.only('dripListeners', function () {
       expect(dripAnalyticsArgs).to.deep.include({
         userId: 'user',
         event: 'Drip Subscriber Updated',
+      });
+    });
+  });
+
+  describe('setUserStatus', () => {
+    beforeEach(() => {
+      generator({
+        users: {
+          _id: 'user',
+          emails: [{ address: SUBSCRIBER_EMAIL, verified: true }],
+          firstName: SUBSCRIBER_FIRSTNAME,
+          lastName: SUBSCRIBER_LASTNAME,
+          phoneNumbers: [SUBSCRIBER_PHONE],
+        },
+      });
+    });
+
+    it('does nothing if status is PROSPECT', async () => {
+      await ddpWithUserId('admin', () =>
+        setUserStatus.run({ userId: 'user', status: USER_STATUS.PROSPECT }),
+      );
+
+      expect(callDripAPIStub.called).to.equal(false);
+    });
+
+    it('records the event when status is QUALIFIED', async () => {
+      await ddpWithUserId('admin', () =>
+        setUserStatus.run({ userId: 'user', status: USER_STATUS.QUALIFIED }),
+      );
+
+      const [[method, params]] = await waitForStub(callDripAPIStub);
+
+      expect(method).to.equal('recordEvent');
+      expect(params).to.deep.include({
+        email: SUBSCRIBER_EMAIL,
+        action: DRIP_ACTIONS.USER_QUALIFIED,
+        properties: undefined,
+      });
+    });
+
+    it('tracks the events in analytics when status is QUALIFIED', async () => {
+      await ddpWithUserId('admin', () =>
+        setUserStatus.run({ userId: 'user', status: USER_STATUS.QUALIFIED }),
+      );
+
+      await waitForStub(callDripAPIStub);
+      const [analyticsArgs] = await waitForStub(analyticsSpy);
+
+      expect(analyticsArgs[0]).to.deep.include({
+        userId: 'user',
+        event: 'Drip Subscriber Event Recorded',
+      });
+    });
+
+    it('removes the subscriber when status is LOST', async () => {
+      await ddpWithUserId('admin', () =>
+        setUserStatus.run({ userId: 'user', status: USER_STATUS.LOST }),
+      );
+
+      const [[method, params]] = await waitForStub(callDripAPIStub);
+
+      expect(method).to.equal('deleteSubscriber');
+      expect(params).to.equal(SUBSCRIBER_EMAIL);
+    });
+
+    it('tracks the events in analytics when status is LOST', async () => {
+      await ddpWithUserId('admin', () =>
+        setUserStatus.run({ userId: 'user', status: USER_STATUS.QUALIFIED }),
+      );
+
+      await waitForStub(callDripAPIStub);
+      const [analyticsArgs] = await waitForStub(analyticsSpy);
+
+      expect(analyticsArgs[0]).to.deep.include({
+        userId: 'user',
+        event: 'Drip Subscriber Event Recorded',
       });
     });
   });

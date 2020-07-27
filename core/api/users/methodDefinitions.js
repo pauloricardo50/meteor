@@ -197,3 +197,8 @@ export const getEnrollUrl = new Method({
   name: 'getEnrollUrl',
   params: { userId: String },
 });
+
+export const setUserStatus = new Method({
+  name: 'setUserStatus',
+  params: { userId: String, status: String },
+});

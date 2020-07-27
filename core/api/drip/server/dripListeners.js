@@ -10,6 +10,7 @@ import {
   proInviteUser,
   removeUser,
   setRole,
+  setUserStatus,
   userVerifyEmail,
 } from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
@@ -143,6 +144,33 @@ ServerEventService.addAfterMethodListener(
       });
     } catch (error) {
       // Subscriber did not exist on Drip
+    }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  setUserStatus,
+  ({ params: { userId, status } }) => {
+    if (status === USER_STATUS.PROSPECT) {
+      return;
+    }
+
+    const { email } = UserService.get(userId, { email: 1 });
+
+    switch (status) {
+      case USER_STATUS.QUALIFIED: {
+        return DripService.trackEvent({
+          event: { action: DRIP_ACTIONS.USER_QUALIFIED },
+          email,
+        });
+      }
+
+      case USER_STATUS.LOST: {
+        return DripService.removeSubscriber({ email });
+      }
+
+      default:
+        return undefined;
     }
   },
 );

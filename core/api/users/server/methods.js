@@ -23,6 +23,7 @@ import {
   setRole,
   setUserReferredBy,
   setUserReferredByOrganisation,
+  setUserStatus,
   testCreateUser,
   testUserAccount,
   toggleAccount,
@@ -253,4 +254,9 @@ getEnrollUrl.setHandler((context, { userId }) => {
     }
     return `${Meteor.settings.public.subdomains.app}/enroll-account/${token}`;
   }
+});
+
+setUserStatus.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.setStatus(params);
 });
