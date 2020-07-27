@@ -1,3 +1,5 @@
+import { Random } from 'meteor/random';
+
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -13,22 +15,25 @@ import {
 import { DRIP_ACTIONS, DRIP_TAGS } from '../../dripConstants';
 import DripService from '../DripService';
 
-const SUBSCRIBER_EMAIL = 'subscriber@e-potek.ch';
-const SUBSCRIBER_ID = 'subscriber';
 const SUBSCRIBER_FIRSTNAME = 'Subscriber';
 const SUBSCRIBER_LASTNAME = 'E-Potek';
 const SUBSCRIBER_PHONE = '+41 123456';
 
-const removeSubscriber = () =>
-  DripService.removeSubscriber({ email: SUBSCRIBER_EMAIL });
+const getSubscriberEmail = () => `subscriber-${Random.id()}@e-potek.ch`;
+
+const removeSubscriber = email => DripService.removeSubscriber({ email });
 
 describe('DripService', function () {
   this.timeout(10000);
   let logErrorSpy;
   let analyticsSpy;
+  let SUBSCRIBER_EMAIL;
+  let SUBSCRIBER_ID;
 
   beforeEach(() => {
     resetDatabase();
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
     logErrorSpy = sinon.spy(ErrorLogger, 'logError');
     analyticsSpy = sinon.spy(NoOpAnalytics.prototype, 'track');
     generator({
@@ -47,7 +52,7 @@ describe('DripService', function () {
           lastName: SUBSCRIBER_LASTNAME,
           phoneNumbers: [SUBSCRIBER_PHONE],
           assignedEmployee: { _id: 'admin' },
-          referredByOrganisation: { name: 'Organisation' },
+          referredByOrganisation: { _id: 'org', name: 'Organisation' },
           loans: { promotions: { name: 'Promotion' } },
         },
       ],
@@ -74,7 +79,7 @@ describe('DripService', function () {
       const { subscribers } = await DripService.createSubscriber({
         email: SUBSCRIBER_EMAIL,
       });
-      await removeSubscriber();
+      await removeSubscriber(SUBSCRIBER_EMAIL);
       const [subscriber] = subscribers;
       expect(subscriber).to.deep.include({
         email: SUBSCRIBER_EMAIL,
@@ -186,7 +191,7 @@ describe('DripService', function () {
       await DripService.createSubscriber({
         email: SUBSCRIBER_EMAIL,
       });
-      await removeSubscriber();
+      await removeSubscriber(SUBSCRIBER_EMAIL);
 
       expect(analyticsSpy.firstCall.args[0]).to.deep.include({
         userId: SUBSCRIBER_ID,
@@ -196,17 +201,32 @@ describe('DripService', function () {
   });
 
   describe('updateSubscriber', () => {
+    const subscriberEmail = getSubscriberEmail();
+    const subscriberId = Random.id();
+
     before(async () => {
-      await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
+      generator({
+        users: {
+          _id: subscriberId,
+          emails: [{ address: subscriberEmail, verified: true }],
+          firstName: SUBSCRIBER_FIRSTNAME,
+          lastName: SUBSCRIBER_LASTNAME,
+          phoneNumbers: [SUBSCRIBER_PHONE],
+          assignedEmployee: { _id: 'admin' },
+          referredByOrganisation: { _id: 'org' },
+          loans: { promotions: { name: 'Promotion' } },
+        },
+      });
+      await DripService.createSubscriber({ email: subscriberEmail });
     });
 
     after(async () => {
-      await removeSubscriber();
+      await removeSubscriber(subscriberEmail);
     });
 
     it('updates a subscriber', async () => {
       const { subscribers } = await DripService.updateSubscriber({
-        email: SUBSCRIBER_EMAIL,
+        email: subscriberEmail,
         object: { address1: 'Rue du test 1' },
       });
       const [subscriber] = subscribers;
@@ -216,7 +236,7 @@ describe('DripService', function () {
 
     it('overrides existing property', async () => {
       const { subscribers } = await DripService.updateSubscriber({
-        email: SUBSCRIBER_EMAIL,
+        email: subscriberEmail,
         object: { first_name: 'Dude' },
       });
       const [subscriber] = subscribers;
@@ -226,7 +246,7 @@ describe('DripService', function () {
 
     it('does not override the entire custom_fields when updating one custom field', async () => {
       const { subscribers } = await DripService.updateSubscriber({
-        email: SUBSCRIBER_EMAIL,
+        email: subscriberEmail,
         object: { custom_fields: { assigneeName: 'Chuck Norris' } },
       });
       const [subscriber] = subscribers;
@@ -239,18 +259,6 @@ describe('DripService', function () {
         last_name: SUBSCRIBER_LASTNAME,
         phone: SUBSCRIBER_PHONE,
         referringOrganisationName: 'Organisation',
-      });
-    });
-
-    it('tracks the event in analytics', async () => {
-      await DripService.updateSubscriber({
-        email: SUBSCRIBER_EMAIL,
-        object: { address1: 'Rue du test 1' },
-      });
-
-      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
-        userId: SUBSCRIBER_ID,
-        event: 'Drip Subscriber Updated',
       });
     });
   });
@@ -288,9 +296,9 @@ describe('DripService', function () {
   });
 
   describe('trackEvent', () => {
-    after(async () => {
-      await removeSubscriber();
-    });
+    // after(async () => {
+    //   await removeSubscriber(SUBSCRIBER_EMAIL);
+    // });
 
     it('tracks an event', async () => {
       await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
@@ -441,7 +449,7 @@ describe('DripService', function () {
     const event = 'subscriber.unsubscribed_all';
 
     after(() => {
-      removeSubscriber();
+      removeSubscriber(SUBSCRIBER_EMAIL);
     });
 
     // All checks are performed in one test to avoid calling Drip API multiple times
@@ -550,7 +558,7 @@ describe('DripService', function () {
     const event = 'subscriber.bounced';
 
     after(() => {
-      removeSubscriber();
+      removeSubscriber(SUBSCRIBER_EMAIL);
     });
 
     // All checks are performed in one test to avoid calling Drip API multiple times
@@ -592,7 +600,7 @@ describe('DripService', function () {
     const event = 'subscriber.complained';
 
     after(() => {
-      removeSubscriber();
+      removeSubscriber(SUBSCRIBER_EMAIL);
     });
 
     // All checks are performed in one test to avoid calling Drip API multiple times

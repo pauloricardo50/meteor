@@ -8,7 +8,6 @@ import {
   assignAdminToUser,
   changeEmail,
   proInviteUser,
-  removeUser,
   setRole,
   setUserStatus,
   userVerifyEmail,
@@ -37,20 +36,16 @@ ServerEventService.addAfterMethodListener(
   adminCreateUser,
   ({
     params: {
-      user: { email },
+      user: { email, status },
     },
   }) => {
-    const user = UserService.getByEmail(email, { _id: 1 });
-
-    if (user?._id) {
-      UserService.setStatus({
-        userId: user?._id,
-        status: USER_STATUS.QUALIFIED,
-      });
+    if (status === USER_STATUS.PROSPECT) {
+      DripService.createSubscriber({ email });
     }
   },
 );
 
+// TODO: change method ?
 ServerEventService.addAfterMethodListener(userVerifyEmail, ({ context }) => {
   context.unblock();
   const user = UserService.get(context.userId, {
@@ -78,18 +73,6 @@ ServerEventService.addAfterMethodListener(userVerifyEmail, ({ context }) => {
     email: user?.email,
   });
 });
-
-ServerEventService.addBeforeMethodListener(
-  removeUser,
-  ({ params: { userId } }) => {
-    try {
-      const user = UserService.get(userId, { email: 1 });
-      DripService.removeSubscriber({ email: user?.email });
-    } catch (error) {
-      // The subscriber did not exist on Drip
-    }
-  },
-);
 
 ServerEventService.addAfterMethodListener(
   setRole,
@@ -166,7 +149,10 @@ ServerEventService.addAfterMethodListener(
       }
 
       case USER_STATUS.LOST: {
-        return DripService.removeSubscriber({ email });
+        return DripService.tagSubscriber({
+          subscriber: { email },
+          tag: DripService.tags.LOST,
+        });
       }
 
       default:

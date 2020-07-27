@@ -16,7 +16,14 @@ import PromotionService from '../../promotions/server/PromotionService';
 import PropertyService from '../../properties/server/PropertyService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
 import SecurityService from '../../security';
-import { ACQUISITION_CHANNELS, ROLES } from '../userConstants';
+import TaskService from '../../tasks/server/TaskService';
+import { TASK_TYPES } from '../../tasks/taskConstants';
+import {
+  ACQUISITION_CHANNELS,
+  ROLES,
+  USER_STATUS,
+  USER_STATUS_ORDER,
+} from '../userConstants';
 import Users from '../users';
 import AssigneeService from './AssigneeService';
 
@@ -201,6 +208,14 @@ export class UserServiceClass extends CollectionService {
 
     if (role !== ROLES.ADVISOR) {
       this.baseUpdate(userId, { $unset: { office: true } });
+    }
+
+    if (role !== ROLES.USER) {
+      this.baseUpdate(userId, { $unset: { status: true } });
+    }
+
+    if (role === ROLES.USER) {
+      this.baseUpdate(userId, { $set: { status: USER_STATUS.PROSPECT } });
     }
 
     return Roles.setUserRoles(userId, role);
@@ -757,7 +772,29 @@ export class UserServiceClass extends CollectionService {
   }
 
   setStatus({ userId, status }) {
-    return this._update({ id: userId, object: { status } });
+    const { status: prevStatus } = this.get(userId, { status: 1 });
+
+    if (status === prevStatus) {
+      throw new Meteor.Error(
+        'Vous devez choisir un statut différent du précédent',
+      );
+    }
+
+    if (status === USER_STATUS.PROSPECT) {
+      throw new Meteor.Error('Vous ne pouvez pas revenir au status Prospect');
+    }
+
+    this._update({ id: userId, object: { status } });
+
+    // Remove NEW_CUSTOMER_REMINDER task if QUALIFIED or LOST
+    const task = TaskService.get(
+      { 'userLink._id': userId, type: TASK_TYPES.NEW_CUSTOMER_REMINDER },
+      { _id: 1 },
+    );
+
+    if (task) {
+      TaskService.remove({ taskId: task._id });
+    }
   }
 }
 

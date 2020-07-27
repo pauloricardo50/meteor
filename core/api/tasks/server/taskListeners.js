@@ -35,6 +35,7 @@ const newUserTask = ({ userId, ...params }) =>
       title: 'Nouveau client, prendre contact',
       docId: userId,
       collection: USERS_COLLECTION,
+      type: TASK_TYPES.NEW_CUSTOMER_REMINDER,
       ...params,
     },
   });

@@ -116,9 +116,9 @@ export class DripService {
       return Promise.resolve({});
     }
 
-    return this.dripClient[method](
-      ...(Array.isArray(params) ? params : [params]),
-    )
+    const arrayifiedParams = Array.isArray(params) ? params : [params];
+
+    return this.dripClient[method](...arrayifiedParams)
       .then(response => {
         // Append the status to the body for the tests
         const { body, statusCode: status } = response;
@@ -126,8 +126,8 @@ export class DripService {
       })
       .catch(error => {
         ErrorLogger.logError({
-          error,
-          additionalData: ['Drip Client Error'],
+          error: error.message,
+          additionalData: ['Drip Client Error', ...arrayifiedParams],
         });
         throw error;
       });
@@ -348,6 +348,7 @@ export class DripService {
       }
 
       case this.tags.CALENDLY: {
+        // TODO: add activity
         event = EVENTS.DRIP_SUBSCRIBER_QUALIFIED;
 
         if (user?._id) {

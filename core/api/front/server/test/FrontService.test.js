@@ -1,13 +1,18 @@
 /* eslint-env mocha */
 
+import { Random } from 'meteor/random';
+
 import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { resetDatabase } from '../../../../utils/testHelpers';
+import NoOpAnalytics from '../../../analytics/server/NoOpAnalytics';
+import { DRIP_ACTIONS } from '../../../drip/dripConstants';
+import { DripService } from '../../../drip/server/DripService';
 import generator from '../../../factories/server';
 import LoanService from '../../../loans/server/LoanService';
 import UserService from '../../../users/server/UserService';
-import { ROLES } from '../../../users/userConstants';
+import { ROLES, USER_STATUS } from '../../../users/userConstants';
 import { FrontService, LOANS_TAG_URL } from '../FrontService';
 
 const fetchStub = sinon.stub();
@@ -671,6 +676,164 @@ describe('FrontService', () => {
         );
         expect(method).to.equal('PUT');
         expect(parsedBody).to.deep.equal({ assignee_id: 'admin' });
+      });
+    });
+
+    describe('drip qualify', () => {
+      let analyticsSpy;
+      let callDripAPIStub;
+      const email = `subscriber-${Random.id()}@e-potek.ch`;
+      const userId = Random.id();
+
+      beforeEach(() => {
+        analyticsSpy = sinon.spy(NoOpAnalytics.prototype, 'track');
+        callDripAPIStub = sinon.stub(DripService.prototype, 'callDripAPI');
+        callDripAPIStub.resolves({});
+      });
+
+      afterEach(() => {
+        analyticsSpy.restore();
+        callDripAPIStub.restore();
+      });
+
+      it('does nothing if user is not found in our DB', async () => {
+        await service.handleWebhook({
+          body: {
+            conversation: {
+              id: 'conversationId',
+              last_message: {
+                recipients: [{ handle: email, role: 'from' }],
+              },
+            },
+          },
+          webhookName: 'drip-qualify',
+        });
+
+        expect(callDripAPIStub.called).to.equal(false);
+      });
+
+      it('does nothing if user is not USER', async () => {
+        generator({
+          users: {
+            _id: userId,
+            _factory: 'pro',
+            emails: [{ address: email, verified: true }],
+          },
+        });
+        await service.handleWebhook({
+          body: {
+            conversation: {
+              id: 'conversationId',
+              last_message: {
+                recipients: [{ handle: email, role: 'from' }],
+              },
+            },
+          },
+          webhookName: 'drip-qualify',
+        });
+
+        expect(callDripAPIStub.called).to.equal(false);
+      });
+
+      it('does nothing if user is already QUALIFIED', async () => {
+        generator({
+          users: {
+            _id: userId,
+            status: USER_STATUS.QUALIFIED,
+            emails: [{ address: email, verified: true }],
+          },
+        });
+        await service.handleWebhook({
+          body: {
+            conversation: {
+              id: 'conversationId',
+              last_message: {
+                recipients: [{ handle: email, role: 'from' }],
+              },
+            },
+          },
+          webhookName: 'drip-qualify',
+        });
+
+        expect(callDripAPIStub.called).to.equal(false);
+      });
+
+      it('sets the user status to QUALIFIED', async () => {
+        generator({
+          users: {
+            _id: userId,
+            emails: [{ address: email, verified: true }],
+          },
+        });
+        await service.handleWebhook({
+          body: {
+            conversation: {
+              id: 'conversationId',
+              last_message: {
+                recipients: [{ handle: email, role: 'from' }],
+              },
+            },
+          },
+          webhookName: 'drip-qualify',
+        });
+
+        const { status } = UserService.get(userId, { status: 1 });
+
+        expect(status).to.equal(USER_STATUS.QUALIFIED);
+      });
+
+      it('records the event', async () => {
+        generator({
+          users: {
+            _id: userId,
+            emails: [{ address: email, verified: true }],
+          },
+        });
+        await service.handleWebhook({
+          body: {
+            conversation: {
+              id: 'conversationId',
+              last_message: {
+                recipients: [{ handle: email, role: 'from' }],
+              },
+            },
+          },
+          webhookName: 'drip-qualify',
+        });
+
+        const [[method, params]] = callDripAPIStub.args;
+
+        expect(method).to.equal('recordEvent');
+        expect(params).to.deep.include({
+          action: DRIP_ACTIONS.USER_QUALIFIED,
+          email,
+          properties: undefined,
+        });
+      });
+
+      it('tracks the event in analytics', async () => {
+        generator({
+          users: {
+            _id: userId,
+            emails: [{ address: email, verified: true }],
+          },
+        });
+        await service.handleWebhook({
+          body: {
+            conversation: {
+              id: 'conversationId',
+              last_message: {
+                recipients: [{ handle: email, role: 'from' }],
+              },
+            },
+          },
+          webhookName: 'drip-qualify',
+        });
+
+        expect(analyticsSpy.args[0][0]).to.deep.include({
+          userId,
+          event: 'Drip Subscriber Event Recorded',
+        });
       });
     });
   });

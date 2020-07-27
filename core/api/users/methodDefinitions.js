@@ -45,6 +45,7 @@ export const adminCreateUser = new Method({
       referredByUserId: Match.Maybe(String),
       role: Match.Maybe(String),
       sendEnrollmentEmail: Match.Maybe(Boolean),
+      status: Match.Maybe(String),
     },
   },
 });

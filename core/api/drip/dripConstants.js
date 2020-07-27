@@ -10,6 +10,7 @@ export const DRIP_TAGS = {
   [ACQUISITION_CHANNELS.REFERRAL_API]: 'referral_API',
   [ACQUISITION_CHANNELS.REFERRAL_ORGANIC]: 'referral_organic',
   [ACQUISITION_CHANNELS.REFERRAL_PRO]: 'referral_pro',
+  [ACQUISITION_CHANNELS.REFERRAL_ADMIN]: 'referral_admin',
 };
 
 export const DRIP_ACTIONS = {

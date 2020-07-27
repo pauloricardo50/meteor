@@ -143,6 +143,7 @@ export const UserSchema = new SimpleSchema({
     type: String,
     defaultValue: USER_STATUS.PROSPECT,
     allowedValues: Object.values(USER_STATUS),
+    optional: true,
   },
 });
 

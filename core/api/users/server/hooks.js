@@ -1,9 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 
 import formatNumbersHook from '../../../utils/phoneFormatting';
+import { DripService as DripServiceClass } from '../../drip/server/DripService';
 import NewsletterService from '../../email/server/NewsletterService';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
 import Users from '../users';
+
+// Avoids all tests that remove a user to call Drip API
+const DripService = new DripServiceClass({ enableAPI: !Meteor.isTest });
 
 formatNumbersHook(Users, 'phoneNumbers');
 
@@ -32,7 +36,7 @@ Users.after.update((userId, doc, fieldNames) => {
   }
 });
 
-Users.before.remove((userId, { emails }) => {
+Users.before.remove(async (userId, { emails }) => {
   if (shouldUseNewsletterHooks) {
     try {
       const email = emails[0].address;
@@ -43,5 +47,11 @@ Users.before.remove((userId, { emails }) => {
         userId,
       });
     }
+  }
+  try {
+    const email = emails[0].address;
+    await DripService.removeSubscriber({ email });
+  } catch (error) {
+    // The subscriber did not exist on Drip
   }
 });

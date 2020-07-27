@@ -5,11 +5,13 @@ import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
 import queryString from 'query-string';
 
+import { DRIP_ACTIONS } from '../../drip/dripConstants';
+import DripService from '../../drip/server/DripService';
 import { ERROR_CODES } from '../../errors';
 import LoanService from '../../loans/server/LoanService';
 import { ddpWithUserId } from '../../methods/methodHelpers';
 import UserService from '../../users/server/UserService';
-import { ROLES } from '../../users/userConstants';
+import { ROLES, USER_STATUS } from '../../users/userConstants';
 
 const EPOTEK_IPS = ['213.3.47.70'];
 const FRONT_AUTH_SECRET = Meteor.settings.front?.authSecret;
@@ -75,6 +77,7 @@ const frontEndpoints = {
 const WEBHOOKS = {
   AUTO_TAG: 'auto-tag',
   AUTO_ASSIGN: 'auto-assign',
+  DRIP_QUALIFY: 'drip-qualify',
   TEST: 'test',
 };
 
@@ -206,6 +209,10 @@ export class FrontService {
 
     if (webhookName === WEBHOOKS.AUTO_ASSIGN) {
       return this.handleAutoAssign(body);
+    }
+
+    if (webhookName === WEBHOOKS.DRIP_QUALIFY) {
+      return this.handleDripQualify(body);
     }
 
     if (webhookName === WEBHOOKS.TEST) {
@@ -370,6 +377,9 @@ export class FrontService {
         {
           assignedEmployee: { email: 1 },
           loans: { name: 1, mainAssignee: { email: 1 }, frontTagId: 1 },
+          status: 1,
+          assignedRoles: 1,
+          email: 1,
         },
         { 'roles._id': { $in: [ROLES.USER, ROLES.PRO] } },
       );
@@ -542,6 +552,40 @@ export class FrontService {
     }
 
     return { ...tag, parentTag };
+  }
+
+  async handleDripQualify({ conversation }) {
+    if (!conversation) {
+      return;
+    }
+
+    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
+
+    if (!recipientUser) {
+      // If the user is not found in our DB
+      return;
+    }
+
+    if (recipientUser.assignedRoles?.[0] !== ROLES.USER) {
+      // Only USERs are in the drip
+      return;
+    }
+
+    if (recipientUser.status !== USER_STATUS.PROSPECT) {
+      // We want to qualify PROSPECT
+      // LOST and QUALIFIED subscribers are already out of the drip
+      return;
+    }
+
+    UserService.setStatus({
+      userId: recipientUser._id,
+      status: USER_STATUS.QUALIFIED,
+    });
+
+    return DripService.trackEvent({
+      event: { action: DRIP_ACTIONS.USER_QUALIFIED },
+      email: recipientUser.email,
+    });
   }
 }
 
