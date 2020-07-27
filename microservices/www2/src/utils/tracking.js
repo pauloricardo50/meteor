@@ -32,6 +32,7 @@ const trackPage = pageTrackingId => {
   callMethod('analyticsPage', {
     ...getCurrentBrowserPosition(),
     route: pageTrackingId,
+    microservice: 'www',
   });
 };
 

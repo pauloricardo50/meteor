@@ -20,6 +20,7 @@ export const analyticsPage = new Method({
     route: String,
     queryParams: Object,
     queryString: Object,
+    microservice: String,
   },
   doNotRefetchQueries: true,
   hideClientError: true,
