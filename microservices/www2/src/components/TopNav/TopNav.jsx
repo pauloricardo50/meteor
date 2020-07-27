@@ -37,9 +37,10 @@ const TopNav = () => {
   // initialized before deciding what to do
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'));
   const isLarge = useMediaQuery(theme => theme.breakpoints.up('md'));
+  const isTrueMobile = isMobile && !isLarge;
+  const isTrueLarge = isLarge && !isMobile;
   const { y } = useWindowScroll();
-  const shouldUseDynamicCta =
-    isMobile && !isLarge && pageTrackingId === 'Home page';
+  const shouldUseDynamicCta = isTrueMobile && pageTrackingId === 'Home page';
   const [showCta, setShowCta] = useState(shouldUseDynamicCta ? y === 0 : true);
 
   useEffect(() => {
@@ -64,13 +65,13 @@ const TopNav = () => {
         <div className="top-nav-left">
           <MainMenu />
 
-          {!isMobile && <TopMenu menuName="top-nav" />}
+          {isTrueLarge && <TopMenu menuName="top-nav" />}
         </div>
 
         <TopNavLogo />
 
         <div className="top-nav-right">
-          {!isMobile && <LoginMenu />}
+          {isTrueLarge && <LoginMenu />}
 
           {showCta && (
             <Button
