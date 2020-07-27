@@ -32,11 +32,14 @@ const contentHeight = 400;
 const TopNav = () => {
   const { tracking_id: pageTrackingId } = useLayoutContext();
   const [language] = useContext(LanguageContext);
-  const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'), {
-    noSsr: true, // Otherwise it always returns false at first: https://github.com/mui-org/material-ui/issues/21142
-  });
+  // These 2 media queries return false at first, since in SSR they can't detect
+  // screen size. To avoid any jumps in content, I make sure they're both
+  // initialized before deciding what to do
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'));
+  const isLarge = useMediaQuery(theme => theme.breakpoints.up('md'));
   const { y } = useWindowScroll();
-  const shouldUseDynamicCta = isMobile && pageTrackingId === 'Home page';
+  const shouldUseDynamicCta =
+    isMobile && !isLarge && pageTrackingId === 'Home page';
   const [showCta, setShowCta] = useState(shouldUseDynamicCta ? y === 0 : true);
 
   useEffect(() => {
