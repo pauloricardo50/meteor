@@ -99,6 +99,7 @@ import '/imports/core/api/migrations/server/test/38.test.js';
 import '/imports/core/api/migrations/server/test/39.test.js';
 import '/imports/core/api/migrations/server/test/4.test.js';
 import '/imports/core/api/migrations/server/test/40.test.js';
+import '/imports/core/api/migrations/server/test/41.test.js';
 import '/imports/core/api/migrations/server/test/5.test.js';
 import '/imports/core/api/migrations/server/test/6.test.js';
 import '/imports/core/api/migrations/server/test/7.test.js';
