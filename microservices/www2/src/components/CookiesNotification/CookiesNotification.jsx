@@ -7,7 +7,6 @@ import { useCookies } from 'react-cookie';
 import LanguageContext from '../../contexts/LanguageContext';
 import useContentBlock from '../../hooks/useContentBlock';
 import { getLanguageData } from '../../utils/languages.js';
-import { linkResolver } from '../../utils/linkResolver';
 import Button from '../Button';
 import { RichText } from '../prismic';
 
@@ -51,8 +50,7 @@ const CookiesNotification = () => {
   const [cookies, setCookie] = useCookies(acceptCookie);
   const hasSetCookie = !!cookies[acceptCookie];
   const [visible, setVisible] = useState(
-    true,
-    // process.env.NODE_ENV === 'production' && !hasSetCookie,
+    process.env.NODE_ENV === 'production' && !hasSetCookie,
   );
   const contentClasses = useSnackbarContentStyles();
   const snackbarClasses = useSnackbarStyles();
@@ -63,10 +61,6 @@ const CookiesNotification = () => {
   });
 
   if (!cookieNotification) return null;
-
-  const message = (
-    <RichText render={cookieNotification} linkResolver={linkResolver} />
-  );
 
   const handleAccept = () => {
     setCookie(acceptCookie, 'all', cookieOptions);
@@ -82,7 +76,7 @@ const CookiesNotification = () => {
     <Snackbar open={visible} classes={snackbarClasses}>
       <SnackbarContent
         classes={contentClasses}
-        message={message}
+        message={<RichText render={cookieNotification} />}
         elevation={1}
         action={[
           <Button
