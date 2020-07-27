@@ -32,8 +32,7 @@ describe('DripService', function () {
 
   beforeEach(() => {
     resetDatabase();
-    SUBSCRIBER_EMAIL = getSubscriberEmail();
-    SUBSCRIBER_ID = Random.id();
+
     logErrorSpy = sinon.spy(ErrorLogger, 'logError');
     analyticsSpy = sinon.spy(NoOpAnalytics.prototype, 'track');
     generator({
@@ -65,6 +64,8 @@ describe('DripService', function () {
   });
 
   context('createSubscriber', () => {
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
     it('throws if user is not found', async () => {
       await UserService.remove({ userId: SUBSCRIBER_ID });
       try {
@@ -201,14 +202,14 @@ describe('DripService', function () {
   });
 
   describe('updateSubscriber', () => {
-    const subscriberEmail = getSubscriberEmail();
-    const subscriberId = Random.id();
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
 
     before(async () => {
       generator({
         users: {
-          _id: subscriberId,
-          emails: [{ address: subscriberEmail, verified: true }],
+          _id: SUBSCRIBER_ID,
+          emails: [{ address: SUBSCRIBER_EMAIL, verified: true }],
           firstName: SUBSCRIBER_FIRSTNAME,
           lastName: SUBSCRIBER_LASTNAME,
           phoneNumbers: [SUBSCRIBER_PHONE],
@@ -217,16 +218,12 @@ describe('DripService', function () {
           loans: { promotions: { name: 'Promotion' } },
         },
       });
-      await DripService.createSubscriber({ email: subscriberEmail });
-    });
-
-    after(async () => {
-      await removeSubscriber(subscriberEmail);
+      await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
     });
 
     it('updates a subscriber', async () => {
       const { subscribers } = await DripService.updateSubscriber({
-        email: subscriberEmail,
+        email: SUBSCRIBER_EMAIL,
         object: { address1: 'Rue du test 1' },
       });
       const [subscriber] = subscribers;
@@ -236,7 +233,7 @@ describe('DripService', function () {
 
     it('overrides existing property', async () => {
       const { subscribers } = await DripService.updateSubscriber({
-        email: subscriberEmail,
+        email: SUBSCRIBER_EMAIL,
         object: { first_name: 'Dude' },
       });
       const [subscriber] = subscribers;
@@ -246,7 +243,7 @@ describe('DripService', function () {
 
     it('does not override the entire custom_fields when updating one custom field', async () => {
       const { subscribers } = await DripService.updateSubscriber({
-        email: subscriberEmail,
+        email: SUBSCRIBER_EMAIL,
         object: { custom_fields: { assigneeName: 'Chuck Norris' } },
       });
       const [subscriber] = subscribers;
@@ -264,6 +261,8 @@ describe('DripService', function () {
   });
 
   describe('removeSubscriber', () => {
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
     it('removes a subscriber', async () => {
       await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
 
@@ -296,9 +295,8 @@ describe('DripService', function () {
   });
 
   describe('trackEvent', () => {
-    // after(async () => {
-    //   await removeSubscriber(SUBSCRIBER_EMAIL);
-    // });
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
 
     it('tracks an event', async () => {
       await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
@@ -326,6 +324,8 @@ describe('DripService', function () {
   // Webhooks
   // Cannot trigger Drip to call our webhooks in tests
   describe('handleAppliedTag', () => {
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
     const event = 'subscriber.applied_tag';
 
     it('does nothing if tag is not handled by us', async () => {
@@ -410,6 +410,8 @@ describe('DripService', function () {
   });
 
   describe('handleDeleted', () => {
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
     const event = 'subscriber.deleted';
 
     it('sets the user status to LOST', async () => {
@@ -446,11 +448,9 @@ describe('DripService', function () {
   });
 
   describe('handleUnsubscribe', () => {
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
     const event = 'subscriber.unsubscribed_all';
-
-    after(() => {
-      removeSubscriber(SUBSCRIBER_EMAIL);
-    });
 
     // All checks are performed in one test to avoid calling Drip API multiple times
     it('sets the user status to LOST, tags the subscriber to LOST and tracks the event in analytics', async () => {
@@ -484,6 +484,8 @@ describe('DripService', function () {
   // TODO: add email activity
   // Waiting on Drip's answer regarding the email name
   describe.skip('handleReceivedEmail', () => {
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
     const event = 'subscriber.received_email';
 
     it('adds the email activity and tracks the event in analytics', async () => {
@@ -500,6 +502,8 @@ describe('DripService', function () {
   });
 
   describe('openedEmail', () => {
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
     const event = 'subscriber.opened_email';
 
     it('tracks the event in analytics', async () => {
@@ -525,6 +529,8 @@ describe('DripService', function () {
   });
 
   describe('handleClickedEmail', () => {
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
     const event = 'subscriber.clicked_email';
 
     it('tracks the event in analytics', async () => {
@@ -555,11 +561,9 @@ describe('DripService', function () {
   });
 
   describe('handleBounced', () => {
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
     const event = 'subscriber.bounced';
-
-    after(() => {
-      removeSubscriber(SUBSCRIBER_EMAIL);
-    });
 
     // All checks are performed in one test to avoid calling Drip API multiple times
     it('sets the user status to LOST, tags the subscriber to LOST and tracks the event in analytics', async () => {
@@ -598,10 +602,8 @@ describe('DripService', function () {
 
   describe('handleComplained', () => {
     const event = 'subscriber.complained';
-
-    after(() => {
-      removeSubscriber(SUBSCRIBER_EMAIL);
-    });
+    SUBSCRIBER_EMAIL = getSubscriberEmail();
+    SUBSCRIBER_ID = Random.id();
 
     // All checks are performed in one test to avoid calling Drip API multiple times
     it('sets the user status to LOST, tags the subscriber to LOST and tracks the event in analytics', async () => {
