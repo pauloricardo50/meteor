@@ -169,7 +169,7 @@ addAnalyticsListener({
         _id: referringOrganisationId,
         name: referringOrganisationName,
       } = {},
-      assignedEmployee: { _id: assigneeId, name: assigneeName },
+      assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = UserService.get(userId, {
       name: 1,
       email: 1,

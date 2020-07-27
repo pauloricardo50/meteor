@@ -179,6 +179,7 @@ const config = {
         'Forms',
         'general',
         'GoogleMap',
+        'ImpersonateNotification',
         'Impersonation',
         'InterestsTable',
         'LayoutError',
