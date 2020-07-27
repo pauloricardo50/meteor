@@ -6,14 +6,13 @@ import { Helmet } from 'react-helmet';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import useIntercom from '../../hooks/useIntercom';
-import epotekLogo from '../../images/epotek_logo.png';
 import {
   getLanguageData,
   getLongLang,
   getShortLang,
 } from '../../utils/languages.js';
 import { linkResolver } from '../../utils/linkResolver';
-import { getOgUrl, getPageTitle } from '../../utils/seo';
+import { getOgImage, getOgUrl, getPageTitle } from '../../utils/seo';
 import { useTracking } from '../../utils/tracking';
 import CookiesNotification from '../CookiesNotification';
 import Footer from '../Footer';
@@ -43,6 +42,7 @@ const Layout = ({ children, pageContext, data }) => {
   const pageLang = getShortLang('fr-ch');
   const pageType = pageContext.type;
   const ogUrl = getOgUrl(pageObject._meta, pageLang);
+  const { url: ogImage, width, height } = getOgImage(pageObject);
 
   const [language, setLanguage] = useState(pageLang);
 
@@ -77,7 +77,9 @@ const Layout = ({ children, pageContext, data }) => {
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content={title} />
         <meta property="og:locale" content={pageContext.lang} />
-        <meta property="og:image" content={epotekLogo} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content={width} />
+        <meta property="og:image:height" content={height} />
         <meta property="og:url" content={ogUrl} />
         <meta property="fb:app_id" content="1868218996582233" />
       </Helmet>

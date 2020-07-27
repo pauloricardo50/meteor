@@ -19,3 +19,28 @@ export const getOgUrl = (meta, lang) => {
 
   return `${BASE_URL}/${lang}/${meta.uid}`;
 };
+
+export const getOgImage = pageObject => {
+  if (pageObject?.seo_image?.url) {
+    return {
+      url: pageObject.seo_image.url,
+      ...pageObject.seo_image.dimensions,
+    };
+  }
+  let url;
+  let dimensions;
+
+  if (pageObject?.body?.[0]?.type === 'hero') {
+    url =
+      pageObject.body[0].primary?.image?.url ||
+      pageObject.body[0].primary?.images?.url;
+    dimensions =
+      pageObject.body[0].primary?.image?.dimensions ||
+      pageObject.body[0].primary?.images?.dimensions;
+  }
+
+  return {
+    url: url || 'https://d2gb1cl8lbi69k.cloudfront.net/facebook-img.png',
+    ...dimensions,
+  };
+};
