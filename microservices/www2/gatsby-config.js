@@ -25,7 +25,12 @@ module.exports = {
           '@import "src/core/assets/css/variables.scss";@import "src/core/assets/css/mixins.scss";',
       },
     },
-    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        exclude: ['/'],
+      },
+    },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
