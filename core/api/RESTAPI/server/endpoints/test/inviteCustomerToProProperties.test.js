@@ -73,10 +73,10 @@ const inviteCustomerToProProperties = ({
   });
 };
 
-describe('REST: inviteCustomerToProProperties', function() {
+describe('REST: inviteCustomerToProProperties', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     api.start();
   });
 

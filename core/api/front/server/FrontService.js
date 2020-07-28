@@ -364,7 +364,7 @@ export class FrontService {
     });
   }
 
-  getRecipientUser({ conversation, role }) {
+  getRecipientUser({ conversation, role, fragment }) {
     const { last_message: { recipients = [] } = {} } = conversation;
     const recipient = recipients.find(
       ({ role: recipientRole, handle }) => recipientRole === role && !!handle,
@@ -374,7 +374,7 @@ export class FrontService {
       email &&
       UserService.getByEmail(
         email,
-        {
+        fragment || {
           assignedEmployee: { email: 1 },
           loans: { name: 1, mainAssignee: { email: 1 }, frontTagId: 1 },
           status: 1,
@@ -403,7 +403,11 @@ export class FrontService {
       return;
     }
 
-    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
+    const recipientUser = this.getRecipientUser({
+      conversation,
+      role: 'from',
+      fragment: { loans: { name: 1, frontTagId: 1 } },
+    });
 
     if (!recipientUser) {
       // If the user is not found in our DB
@@ -502,7 +506,14 @@ export class FrontService {
       return;
     }
 
-    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
+    const recipientUser = this.getRecipientUser({
+      conversation,
+      role: 'from',
+      fragment: {
+        loans: { mainAssignee: { email: 1 } },
+        assignedEmployee: { email: 1 },
+      },
+    });
 
     if (!recipientUser) {
       // User not found
@@ -559,7 +570,11 @@ export class FrontService {
       return;
     }
 
-    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
+    const recipientUser = this.getRecipientUser({
+      conversation,
+      role: 'from',
+      fragment: { email: 1, assignedRoles: 1, status: 1 },
+    });
 
     if (!recipientUser) {
       // If the user is not found in our DB

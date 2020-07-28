@@ -53,6 +53,15 @@ export const EVENTS_CONFIG = {
     name: 'User Verified',
     properties: [...eventsSharedProperties],
   },
+  [EVENTS.USER_CHANGED_STATUS]: {
+    name: 'User Changed Status',
+    properties: [
+      ...eventsSharedProperties,
+      'nextStatus',
+      { name: 'prevStatus', optional: true },
+      { name: 'statusChangeReason', optional: true },
+    ],
+  },
   [EVENTS.LOAN_ANONYMOUS_LOAN_CLAIMED]: {
     name: 'Loan Anonymous loan claimed',
     properties: [...eventsSharedProperties, 'loanId', 'loanName'],
@@ -275,11 +284,17 @@ export const EVENTS_CONFIG = {
   },
   [EVENTS.DRIP_SUBSCRIBER_LOST]: {
     name: 'Drip Subscriber Lost',
-    properties: [...dripSharedProperties],
+    properties: [
+      ...dripSharedProperties,
+      { name: 'lostReason', optional: true },
+    ],
   },
   [EVENTS.DRIP_SUBSCRIBER_QUALIFIED]: {
     name: 'Drip Subscriber Qualified',
-    properties: [...dripSharedProperties],
+    properties: [
+      ...dripSharedProperties,
+      { name: 'qualifyReason', optional: true },
+    ],
   },
   [EVENTS.DRIP_SUBSCRIBER_BOOKED_AN_EVENT]: {
     name: 'Drip Subscriber Booked an Event',

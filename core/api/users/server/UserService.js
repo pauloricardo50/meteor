@@ -7,6 +7,8 @@ import { Roles } from 'meteor/alanning:roles';
 import omit from 'lodash/omit';
 import NodeRSA from 'node-rsa';
 
+import EVENTS from '../../analytics/events';
+import Analytics from '../../analytics/server/Analytics';
 import CollectionService from '../../helpers/server/CollectionService';
 import { selectorForFastCaseInsensitiveLookup } from '../../helpers/server/mongoServerHelpers';
 import IntercomService from '../../intercom/server/IntercomService';
@@ -771,8 +773,19 @@ export class UserServiceClass extends CollectionService {
     }
   }
 
-  setStatus({ userId, status }) {
-    const { status: prevStatus } = this.get(userId, { status: 1 });
+  setStatus({ userId, status, analyticsProperties = {} }) {
+    const user = this.get(userId, {
+      status: 1,
+      firstName: 1,
+      lastName: 1,
+      name: 1,
+      email: 1,
+      assignedEmployee: { name: 1, email: 1 },
+      referredByOrganisation: { name: 1 },
+      referredByUser: { name: 1 },
+    });
+
+    const { status: prevStatus } = user;
 
     if (status === prevStatus) {
       throw new Meteor.Error(
@@ -786,15 +799,23 @@ export class UserServiceClass extends CollectionService {
 
     this._update({ id: userId, object: { status } });
 
-    // Remove NEW_CUSTOMER_REMINDER task if QUALIFIED or LOST
-    const task = TaskService.get(
-      { 'userLink._id': userId, type: TASK_TYPES.NEW_CUSTOMER_REMINDER },
-      { _id: 1 },
-    );
+    const analytics = new Analytics({ userId });
+    analytics.track(EVENTS.USER_CHANGED_STATUS, {
+      prevStatus,
+      nextStatus: status,
+      userId: user?._id,
+      userName: user?.name,
+      userEmail: user?.email,
+      referringUserId: user?.referredByUser?._id,
+      referringUserName: user?.referredByUser?.name,
+      referringOrganisationId: user?.referredByOrganisation?._id,
+      referringOrganisationName: user?.referredByOrganisation?.name,
+      assigneeId: user?.assignedEmployee?._id,
+      assigneeName: user?.assignedEmployee?.name,
+      ...analyticsProperties,
+    });
 
-    if (task) {
-      TaskService.remove({ taskId: task._id });
-    }
+    return { prevStatus, nextStatus: status };
   }
 }
 

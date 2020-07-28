@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import { employeesByEmail } from '../../../arrays/epotekEmployees';
+import { analyticsVerifyEmail } from '../../analytics/methodDefinitions';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   adminCreateUser,
@@ -45,34 +46,36 @@ ServerEventService.addAfterMethodListener(
   },
 );
 
-// TODO: change method ?
-ServerEventService.addAfterMethodListener(userVerifyEmail, ({ context }) => {
-  context.unblock();
-  const user = UserService.get(context.userId, {
-    email: 1,
-    firstName: 1,
-    lastName: 1,
-    phoneNumbers: 1,
-    assignedRoles: 1,
-  });
+ServerEventService.addAfterMethodListener(
+  [userVerifyEmail, analyticsVerifyEmail],
+  ({ context }) => {
+    context.unblock();
+    const user = UserService.get(context.userId, {
+      email: 1,
+      firstName: 1,
+      lastName: 1,
+      phoneNumbers: 1,
+      assignedRoles: 1,
+    });
 
-  if (user?.assignedRoles?.[0] !== ROLES.USER) {
-    return;
-  }
+    if (user?.assignedRoles?.[0] !== ROLES.USER) {
+      return;
+    }
 
-  DripService.updateSubscriber({
-    email: user?.email,
-    object: {
-      first_name: user?.firstName,
-      last_name: user?.lastName,
-      phone: user?.phoneNumbers?.[0],
-    },
-  });
-  DripService.trackEvent({
-    event: { action: DRIP_ACTIONS.USER_VALIDATED },
-    email: user?.email,
-  });
-});
+    DripService.updateSubscriber({
+      email: user?.email,
+      object: {
+        first_name: user?.firstName,
+        last_name: user?.lastName,
+        phone: user?.phoneNumbers?.[0],
+      },
+    });
+    DripService.trackEvent({
+      event: { action: DRIP_ACTIONS.USER_VALIDATED },
+      email: user?.email,
+    });
+  },
+);
 
 ServerEventService.addAfterMethodListener(
   setRole,

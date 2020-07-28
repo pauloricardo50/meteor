@@ -832,6 +832,10 @@ describe('FrontService', () => {
 
         expect(analyticsSpy.args[0][0]).to.deep.include({
           userId,
+          event: 'User Changed Status',
+        });
+        expect(analyticsSpy.args[1][0]).to.deep.include({
+          userId,
           event: 'Drip Subscriber Event Recorded',
         });
       });

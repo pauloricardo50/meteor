@@ -47,14 +47,6 @@ describe('dripListeners', function () {
     callDripAPIStub.resolves({});
     generator({
       organisations: { _id: 'org', name: 'Organisation' },
-      properties: { _id: 'prop', category: PROPERTY_CATEGORY.PRO },
-      promotions: {
-        _id: 'promo',
-        name: 'Promotion',
-        status: PROMOTION_STATUS.OPEN,
-        assignedEmployeeId: 'admin',
-        promotionLots: { _id: 'pLot' },
-      },
       users: [
         {
           _id: 'dev',
@@ -66,24 +58,6 @@ describe('dripListeners', function () {
           emails: [{ address: 'lydia@e-potek.ch', verified: true }],
           firstName: 'Lydia',
           lastName: 'Abraha',
-        },
-        {
-          _id: 'pro1',
-          _factory: 'pro',
-          assignedEmployee: { _id: 'admin' },
-          organisations: {
-            _id: 'org',
-            name: 'Organisation',
-            $metadata: { isMain: true },
-          },
-          proProperties: {
-            _id: 'prop',
-            $metadata: { permissions: { canInviteCustomers: true } },
-          },
-          promotions: {
-            _id: 'promo',
-            $metadata: { permissions: { canInviteCustomers: true } },
-          },
         },
       ],
     });
@@ -107,7 +81,7 @@ describe('dripListeners', function () {
       first_name: SUBSCRIBER_FIRSTNAME,
       last_name: SUBSCRIBER_LASTNAME,
       phone: SUBSCRIBER_PHONE,
-      tags: ['referral_pro', 'test'],
+      tags: ['REFERRAL_PRO', 'TEST'],
       custom_fields: {
         assigneeEmailAddress: 'lydia@e-potek.ch',
         assigneeName: 'Lydia Abraha',
@@ -116,6 +90,37 @@ describe('dripListeners', function () {
         promotionName: undefined,
       },
     };
+
+    beforeEach(() => {
+      generator({
+        properties: { _id: 'prop', category: PROPERTY_CATEGORY.PRO },
+        promotions: {
+          _id: 'promo',
+          name: 'Promotion',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'admin',
+          promotionLots: { _id: 'pLot' },
+        },
+        users: {
+          _id: 'pro1',
+          _factory: 'pro',
+          assignedEmployee: { _id: 'admin' },
+          organisations: {
+            _id: 'org',
+            name: 'Organisation',
+            $metadata: { isMain: true },
+          },
+          proProperties: {
+            _id: 'prop',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+          promotions: {
+            _id: 'promo',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+        },
+      });
+    });
 
     it('creates the subscriber to refer only', async () => {
       let userId;
@@ -169,7 +174,7 @@ describe('dripListeners', function () {
       expect(params).to.deep.include({
         ...expectedParams,
         user_id: userId,
-        tags: ['referral_pro', 'test', 'promo'],
+        tags: ['REFERRAL_PRO', 'TEST', 'PROMO'],
         custom_fields: {
           ...expectedParams.custom_fields,
           promotionName: 'Promotion',
@@ -239,7 +244,7 @@ describe('dripListeners', function () {
       first_name: SUBSCRIBER_FIRSTNAME,
       last_name: SUBSCRIBER_LASTNAME,
       phone: SUBSCRIBER_PHONE,
-      tags: ['organic', 'test'],
+      tags: ['ORGANIC', 'TEST'],
       custom_fields: {
         assigneeEmailAddress: 'lydia@e-potek.ch',
         assigneeName: 'Lydia Abraha',
@@ -270,7 +275,7 @@ describe('dripListeners', function () {
       expect(params).to.deep.include({
         ...expectedParams,
         user_id: userId,
-        tags: ['referral_organic', 'test'],
+        tags: ['REFERRAL_ORGANIC', 'TEST'],
         custom_fields: {
           ...expectedParams.custom_fields,
           referringOrganisationName: 'Organisation',
@@ -736,9 +741,20 @@ describe('dripListeners', function () {
       );
 
       await waitForStub(callDripAPIStub);
-      const [analyticsArgs] = await waitForStub(analyticsSpy);
+      const analyticsArgs = await waitForStub(analyticsSpy, 2);
 
-      expect(analyticsArgs[0]).to.deep.include({
+      const dripAnalyticsArgs = analyticsArgs.slice(-2).map(args => args[0]);
+      const userChangedStatusEvent = dripAnalyticsArgs.find(
+        ({ event }) => event === 'User Changed Status',
+      );
+      const eventRecordedEvent = dripAnalyticsArgs.find(
+        ({ event }) => event === 'Drip Subscriber Event Recorded',
+      );
+      expect(userChangedStatusEvent).to.deep.include({
+        userId,
+        event: 'User Changed Status',
+      });
+      expect(eventRecordedEvent).to.deep.include({
         userId,
         event: 'Drip Subscriber Event Recorded',
       });
@@ -764,9 +780,20 @@ describe('dripListeners', function () {
       );
 
       await waitForStub(callDripAPIStub);
-      const [analyticsArgs] = await waitForStub(analyticsSpy);
+      const analyticsArgs = await waitForStub(analyticsSpy, 2);
 
-      expect(analyticsArgs[0]).to.deep.include({
+      const dripAnalyticsArgs = analyticsArgs.slice(-2).map(args => args[0]);
+      const userChangedStatusEvent = dripAnalyticsArgs.find(
+        ({ event }) => event === 'User Changed Status',
+      );
+      const eventRecordedEvent = dripAnalyticsArgs.find(
+        ({ event }) => event === 'Drip Subscriber Event Recorded',
+      );
+      expect(userChangedStatusEvent).to.deep.include({
+        userId,
+        event: 'User Changed Status',
+      });
+      expect(eventRecordedEvent).to.deep.include({
         userId,
         event: 'Drip Subscriber Event Recorded',
       });

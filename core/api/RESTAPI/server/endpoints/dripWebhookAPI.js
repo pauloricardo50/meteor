@@ -1,8 +1,8 @@
 import DripService from '../../../drip/server/DripService';
 
-const dripWebhookAPI = ({ body }) => {
+const dripWebhookAPI = async ({ body }) => {
   try {
-    DripService.handleWebhook({ body });
+    await DripService.handleWebhook({ body });
     return {};
   } catch (error) {
     return {

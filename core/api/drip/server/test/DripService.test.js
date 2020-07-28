@@ -87,7 +87,7 @@ describe('DripService', function () {
         first_name: SUBSCRIBER_FIRSTNAME,
         last_name: SUBSCRIBER_LASTNAME,
         phone: SUBSCRIBER_PHONE,
-        tags: ['organic', 'promo', 'test'],
+        tags: ['ORGANIC', 'PROMO', 'TEST'],
         user_id: SUBSCRIBER_ID,
         custom_fields: {
           assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
@@ -397,11 +397,15 @@ describe('DripService', function () {
 
       const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
 
-      expect(analyticsSpy.firstCall.args[0]).to.deep.include({
+      expect(analyticsSpy.args[0][0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'User Changed Status',
+      });
+      expect(analyticsSpy.args[1][0]).to.deep.include({
         userId: SUBSCRIBER_ID,
         event: 'Drip Subscriber Booked an Event',
       });
-      expect(analyticsSpy.lastCall.args[0]).to.deep.include({
+      expect(analyticsSpy.args[2][0]).to.deep.include({
         userId: SUBSCRIBER_ID,
         event: 'Drip Subscriber Qualified',
       });

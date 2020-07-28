@@ -29,28 +29,6 @@ import { USERS_COLLECTION } from '../../users/userConstants';
 import { TASK_TYPES } from '../taskConstants';
 import TaskService from './TaskService';
 
-const newUserTask = ({ userId, ...params }) =>
-  TaskService.insert({
-    object: {
-      title: 'Nouveau client, prendre contact',
-      docId: userId,
-      collection: USERS_COLLECTION,
-      type: TASK_TYPES.NEW_CUSTOMER_REMINDER,
-      ...params,
-    },
-  });
-
-ServerEventService.addAfterMethodListener(
-  [adminCreateUser, anonymousCreateUser],
-  ({ context, result: userId }) => {
-    context.unblock();
-
-    if (userId) {
-      newUserTask({ userId });
-    }
-  },
-);
-
 ServerEventService.addAfterMethodListener(
   proInviteUser,
   ({
@@ -129,21 +107,16 @@ ServerEventService.addAfterMethodListener(
       taskDescription = `${taskDescription}. \nNote du referral:\n${invitationNote}`;
     }
 
-    if (isNewUser) {
-      newUserTask({
-        userId,
+    TaskService.insert({
+      object: {
+        title: isNewUser
+          ? "Invitation d'un nouveau client"
+          : "Invitation d'un client déjà existant",
+        docId: userId,
+        collection: USERS_COLLECTION,
         description: taskDescription,
-      });
-    } else {
-      TaskService.insert({
-        object: {
-          title: "Invitation d'un client déjà existant",
-          docId: userId,
-          collection: USERS_COLLECTION,
-          description: taskDescription,
-        },
-      });
-    }
+      },
+    });
   },
 );
 

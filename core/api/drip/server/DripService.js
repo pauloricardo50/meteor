@@ -127,7 +127,7 @@ export class DripService {
       .catch(error => {
         ErrorLogger.logError({
           error: error.message,
-          additionalData: ['Drip Client Error', ...arrayifiedParams],
+          additionalData: ['Drip Service Error', ...arrayifiedParams],
         });
         throw error;
       });
@@ -155,32 +155,32 @@ export class DripService {
     };
   }
 
-  trackAnalyticsEvent({ event, subscriber, additionalProperties = {} }) {
-    const { email } = subscriber;
+  trackAnalyticsEvent({ event, subscriber, additionalProperties = {}, user }) {
+    const analyticsUser =
+      user ||
+      UserService.getByEmail(subscriber?.email, {
+        name: 1,
+        email: 1,
+        referredByUser: { name: 1 },
+        referredByOrganisation: { name: 1 },
+        assignedEmployee: { name: 1 },
+      });
 
-    const user = UserService.getByEmail(email, {
-      name: 1,
-      email: 1,
-      referredByUser: { name: 1 },
-      referredByOrganisation: { name: 1 },
-      assignedEmployee: { name: 1 },
-    });
-
-    if (!user) {
+    if (!analyticsUser) {
       return;
     }
 
-    const analytics = new Analytics({ userId: user._id });
+    const analytics = new Analytics({ userId: analyticsUser._id });
     return analytics.track(event, {
-      userId: user?._id,
-      userName: user?.name || subscriber?.name,
-      userEmail: user?.email || subscriber?.email,
-      referringUserId: user?.referredByUser?._id,
-      referringUserName: user?.referredByUser?.name,
-      referringOrganisationId: user?.referredByOrganisation?._id,
-      referringOrganisationName: user?.referredByOrganisation?.name,
-      assigneeId: user?.assignedEmployee?._id,
-      assigneeName: user?.assignedEmployee?.name,
+      userId: analyticsUser?._id,
+      userName: analyticsUser?.name || subscriber?.name,
+      userEmail: analyticsUser?.email || subscriber?.email,
+      referringUserId: analyticsUser?.referredByUser?._id,
+      referringUserName: analyticsUser?.referredByUser?.name,
+      referringOrganisationId: analyticsUser?.referredByOrganisation?._id,
+      referringOrganisationName: analyticsUser?.referredByOrganisation?.name,
+      assigneeId: analyticsUser?.assignedEmployee?._id,
+      assigneeName: analyticsUser?.assignedEmployee?.name,
       ...additionalProperties,
     });
   }
@@ -189,9 +189,11 @@ export class DripService {
     const user = UserService.getByEmail(email, {
       firstName: 1,
       lastName: 1,
+      name: 1,
       email: 1,
       assignedEmployee: { name: 1, email: 1 },
       referredByOrganisation: { name: 1 },
+      referredByUser: { name: 1 },
       loans: { promotions: { name: 1 } },
       acquisitionChannel: 1,
       phoneNumbers: 1,
@@ -252,6 +254,7 @@ export class DripService {
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_CREATED,
       subscriber,
+      user,
     });
 
     // Response should be a 204 No Content, no need to append it to the returned result
@@ -302,6 +305,7 @@ export class DripService {
       event: EVENTS.DRIP_SUBSCRIBER_EVENT_RECORDED,
       subscriber: { email },
       additionalProperties: {
+        ...(properties || {}),
         dripEventAction: action,
         dripEventProperties: properties,
       },
@@ -310,38 +314,51 @@ export class DripService {
     return res;
   }
 
-  async handleAppliedTag(data) {
-    const { subscriber, properties } = data;
-
+  async handleAppliedTag({ subscriber, properties }) {
     const tag = properties?.tag;
 
     // This tag is not handled by our backend
     if (!Object.values(this.tags).includes(tag)) {
-      return Promise.resolve();
+      return;
     }
 
     let event;
-    const user = UserService.getByEmail(subscriber?.email, { _id: 1 });
+    let additionalProperties;
+    const user = UserService.getByEmail(subscriber?.email, {
+      name: 1,
+      email: 1,
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+      assignedEmployee: { name: 1 },
+    });
 
     switch (tag) {
       case this.tags.LOST: {
         event = EVENTS.DRIP_SUBSCRIBER_LOST;
+        additionalProperties = { lostReason: 'Webhook: Drip applied tag' };
 
         if (user?._id) {
           UserService.setStatus({
             userId: user?._id,
             status: USER_STATUS.LOST,
+            analyticsProperties: {
+              statusChangeReason: 'Webhook: Drip applied tag',
+            },
           });
         }
         break;
       }
       case this.tags.QUALIFIED: {
         event = EVENTS.DRIP_SUBSCRIBER_QUALIFIED;
+        additionalProperties = { qualifyReason: 'Webhook: Drip applied tag' };
 
         if (user?._id) {
           UserService.setStatus({
             userId: user?._id,
             status: USER_STATUS.QUALIFIED,
+            analyticsProperties: {
+              statusChangeReason: 'Webhook: Drip applied tag',
+            },
           });
         }
         break;
@@ -350,11 +367,15 @@ export class DripService {
       case this.tags.CALENDLY: {
         // TODO: add activity
         event = EVENTS.DRIP_SUBSCRIBER_QUALIFIED;
+        additionalProperties = { qualifyReason: 'Webhook: Drip applied tag' };
 
         if (user?._id) {
           UserService.setStatus({
             userId: user?._id,
             status: USER_STATUS.QUALIFIED,
+            analyticsProperties: {
+              statusChangeReason: 'Subscriber booked an event on Calendly',
+            },
           });
         }
 
@@ -372,36 +393,54 @@ export class DripService {
       await this.trackAnalyticsEvent({
         event,
         subscriber,
+        user,
+        additionalProperties,
       });
     }
-
-    return Promise.resolve();
   }
 
-  async handleDeleted(data) {
-    const { subscriber } = data;
-
-    const user = UserService.getByEmail(subscriber?.email, { _id: 1 });
+  async handleDeleted({ subscriber }) {
+    const user = UserService.getByEmail(subscriber?.email, {
+      name: 1,
+      email: 1,
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+      assignedEmployee: { name: 1 },
+    });
 
     if (user?._id) {
-      UserService.setStatus({ userId: user?._id, status: USER_STATUS.LOST });
+      UserService.setStatus({
+        userId: user?._id,
+        status: USER_STATUS.LOST,
+        analyticsProperties: { statusChangeReason: 'Subscriber deleted' },
+      });
     }
 
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_REMOVED,
       subscriber,
+      user,
+      additionalProperties: {
+        removeReason: 'Webhook: Subscriber deleted on drip',
+      },
     });
-
-    return Promise.resolve();
   }
 
-  async handleUnsubscribe(data) {
-    const { subscriber } = data;
-
-    const user = UserService.getByEmail(subscriber?.email, { _id: 1 });
+  async handleUnsubscribe({ subscriber }) {
+    const user = UserService.getByEmail(subscriber?.email, {
+      name: 1,
+      email: 1,
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+      assignedEmployee: { name: 1 },
+    });
 
     if (user?._id) {
-      UserService.setStatus({ userId: user?._id, status: USER_STATUS.LOST });
+      UserService.setStatus({
+        userId: user?._id,
+        status: USER_STATUS.LOST,
+        analyticsProperties: { statusChangeReason: 'Subscriber unsubscribed' },
+      });
     }
 
     await this.tagSubscriber({ subscriber, tag: this.tags.LOST });
@@ -409,15 +448,15 @@ export class DripService {
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_UNSUBSCRIBED,
       subscriber,
+      user,
+      additionalProperties: {
+        unsubscribeReason: 'Webhook: Subscriber unsubscribed',
+      },
     });
-
-    return Promise.resolve();
   }
 
-  async handleReceivedEmail(data) {
+  async handleReceivedEmail({ subscriber, properties }) {
     // TODO: add email activity
-    const { subscriber, properties } = data;
-
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_RECEIVED_EMAIL,
       subscriber,
@@ -426,13 +465,9 @@ export class DripService {
         dripEmailSubject: properties?.email_subject,
       },
     });
-
-    return Promise.resolve();
   }
 
-  async handleOpenedEmail(data) {
-    const { subscriber, properties } = data;
-
+  async handleOpenedEmail({ subscriber, properties }) {
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_OPENED_EMAIL,
       subscriber,
@@ -441,13 +476,9 @@ export class DripService {
         dripEmailSubject: properties?.email_subject,
       },
     });
-
-    return Promise.resolve();
   }
 
-  async handleClickedEmail(data) {
-    const { subscriber, properties } = data;
-
+  async handleClickedEmail({ subscriber, properties }) {
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_CLICKED_EMAIL,
       subscriber,
@@ -457,17 +488,23 @@ export class DripService {
         dripEmailUrl: properties?.url,
       },
     });
-
-    return Promise.resolve();
   }
 
-  async handleBounced(data) {
-    const { subscriber, properties } = data;
-
-    const user = UserService.getByEmail(subscriber?.email, { _id: 1 });
+  async handleBounced({ subscriber, properties }) {
+    const user = UserService.getByEmail(subscriber?.email, {
+      name: 1,
+      email: 1,
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+      assignedEmployee: { name: 1 },
+    });
 
     if (user?._id) {
-      UserService.setStatus({ userId: user?._id, status: USER_STATUS.LOST });
+      UserService.setStatus({
+        userId: user?._id,
+        status: USER_STATUS.LOST,
+        analyticsProperties: { statusChangeReason: 'Subscriber bounced' },
+      });
     }
 
     await this.tagSubscriber({ subscriber, tag: this.tags.LOST });
@@ -475,22 +512,29 @@ export class DripService {
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_BOUNCED,
       subscriber,
+      user,
       additionalProperties: {
         dripEmailId: properties?.email_id,
         dripEmailSubject: properties?.email_subject,
       },
     });
-
-    return Promise.resolve();
   }
 
-  async handleComplained(data) {
-    const { subscriber, properties } = data;
-
-    const user = UserService.getByEmail(subscriber?.email, { _id: 1 });
+  async handleComplained({ subscriber, properties }) {
+    const user = UserService.getByEmail(subscriber?.email, {
+      name: 1,
+      email: 1,
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+      assignedEmployee: { name: 1 },
+    });
 
     if (user?._id) {
-      UserService.setStatus({ userId: user?._id, status: USER_STATUS.LOST });
+      UserService.setStatus({
+        userId: user?._id,
+        status: USER_STATUS.LOST,
+        analyticsProperties: { statusChangeReason: 'Subscriber complained' },
+      });
     }
 
     await this.tagSubscriber({ subscriber, tag: this.tags.LOST });
@@ -498,13 +542,12 @@ export class DripService {
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_COMPLAINED,
       subscriber,
+      user,
       additionalProperties: {
         dripEmailId: properties?.email_id,
         dripEmailSubject: properties?.email_subject,
       },
     });
-
-    return Promise.resolve();
   }
 }
 
