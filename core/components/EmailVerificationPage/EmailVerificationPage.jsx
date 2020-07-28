@@ -1,13 +1,13 @@
+import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
 import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { TRACKING_COOKIE } from '../../api/analytics/analyticsConstants';
 import { analyticsVerifyEmail } from '../../api/analytics/methodDefinitions';
 import { userVerifyEmail } from '../../api/users/methodDefinitions';
-import { getCookie } from '../../utils/cookiesHelpers';
+import pollUntilReady from '../../utils/pollUntilReady';
 
 const EmailVerificationPage = () => {
   const { formatMessage } = useIntl();
@@ -32,8 +32,11 @@ const EmailVerificationPage = () => {
           message.success(msg, 2);
         });
 
-        analyticsVerifyEmail.run({ trackingId: getCookie(TRACKING_COOKIE) });
-        userVerifyEmail.run({});
+        pollUntilReady(() => !!Meteor.userId(), 250).then(() => {
+          // Make sure we're logged in for tracking to work properly
+          analyticsVerifyEmail.run();
+          userVerifyEmail.run();
+        });
 
         history.push('/');
       }

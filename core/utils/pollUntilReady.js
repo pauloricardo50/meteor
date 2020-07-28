@@ -26,9 +26,7 @@ const pollUntilReady = (
 
     poll = setInterval(() => {
       if (isReadyFunc.then) {
-        return isReadyFunc()
-          .then(handleIsReady)
-          .catch(reject);
+        return isReadyFunc().then(handleIsReady).catch(reject);
       }
 
       handleIsReady(isReadyFunc());

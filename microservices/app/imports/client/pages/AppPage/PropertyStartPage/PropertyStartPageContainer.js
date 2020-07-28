@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 
 import { compose, lifecycle, withProps } from 'recompose';
 
-import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
 import {
@@ -11,7 +10,6 @@ import {
 } from 'core/api/loans/methodDefinitions';
 import { anonymousProperty } from 'core/api/properties/queries';
 import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
-import { parseCookies } from 'core/utils/cookiesHelpers';
 import { createRoute } from 'core/utils/routerUtils';
 
 import APP_ROUTES from '../../../../startup/client/appRoutes';
@@ -73,7 +71,6 @@ export default compose(
         .run({
           proPropertyId: propertyId,
           referralId: localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined,
-          trackingId: parseCookies()[TRACKING_COOKIE],
           existingAnonymousLoanId: localStorage.getItem(
             LOCAL_STORAGE_ANONYMOUS_LOAN,
           ),

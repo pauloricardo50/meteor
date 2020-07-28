@@ -141,7 +141,7 @@ class Analytics {
     });
   }
 
-  identify(trackingId) {
+  identify(trackingId = getClientTrackingId()) {
     this.alias(trackingId);
 
     this.analytics.identify({
