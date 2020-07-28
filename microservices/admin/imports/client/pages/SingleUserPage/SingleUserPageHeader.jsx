@@ -63,8 +63,9 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
       <div className="top">
         <h1>
           {name}
-
-          <UserStatusModifier user={user} className="ml-16" />
+          {roles[0]._id === ROLES.USER && (
+            <UserStatusModifier user={user} className="ml-16" />
+          )}
         </h1>
 
         <UserModifier user={user} />

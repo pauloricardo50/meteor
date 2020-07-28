@@ -49,6 +49,7 @@ export default {
         referredByOrganisation: { name: 1 },
         referredByUser: { name: 1 },
         roles: 1,
+        status: 1,
       },
       cb,
     ),

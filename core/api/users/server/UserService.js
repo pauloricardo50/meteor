@@ -395,7 +395,13 @@ export class UserServiceClass extends CollectionService {
   };
 
   proCreateUser = ({
-    user: { email, firstName, lastName, phoneNumber },
+    user: {
+      email,
+      firstName,
+      lastName,
+      phoneNumber,
+      status = USER_STATUS.PROSPECT,
+    },
     proUserId,
     setAssignee,
   }) => {
@@ -422,6 +428,7 @@ export class UserServiceClass extends CollectionService {
         phoneNumbers: [phoneNumber].filter(x => x),
         referredByUserId: proUserId,
         setAssignee,
+        status,
       });
     } else {
       const { _id: existingUserId } = this.getByEmail(email, { _id: 1 });

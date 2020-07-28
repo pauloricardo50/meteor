@@ -27,7 +27,30 @@ import { DripService as DripServiceClass } from './DripService';
 const DripService = new DripServiceClass({ enableAPI: !Meteor.isTest });
 
 ServerEventService.addAfterMethodListener(
-  [proInviteUser, anonymousCreateUser],
+  [proInviteUser],
+  ({
+    context,
+    params: {
+      user: { email, status },
+    },
+  }) => {
+    context.unblock();
+    const { userId } = context;
+    const user = UserService.get(userId, { assignedRoles: 1 });
+
+    if (user.assignedRoles[0] === ROLES.PRO) {
+      return DripService.createSubscriber({ email });
+    }
+
+    // Is performed by an admin
+    if (status === USER_STATUS.PROSPECT) {
+      DripService.createSubscriber({ email });
+    }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  [anonymousCreateUser],
   ({
     params: {
       user: { email },

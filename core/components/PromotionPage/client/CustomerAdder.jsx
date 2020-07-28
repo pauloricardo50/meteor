@@ -1,4 +1,7 @@
+import { Meteor } from 'meteor/meteor';
+
 import React, { useMemo, useState } from 'react';
+import ListItemText from '@material-ui/core/ListItemText';
 import { useHistory } from 'react-router-dom';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
@@ -6,6 +9,7 @@ import SimpleSchema from 'simpl-schema';
 import { proPromotionLots } from '../../../api/promotionLots/queries';
 import { PROMOTION_STATUS } from '../../../api/promotions/promotionConstants';
 import { proInviteUser } from '../../../api/users/methodDefinitions';
+import { USER_STATUS } from '../../../api/users/userConstants';
 import useSearchParams from '../../../hooks/useSearchParams';
 import { createRoute } from '../../../utils/routerUtils';
 import { AutoFormDialog } from '../../AutoForm2';
@@ -17,6 +21,8 @@ SimpleSchema.setDefaultMessages({
     fr: { emptyPromotionLotIds: 'Veuillez préselectionner au moins un lot' },
   },
 });
+
+const isAdmin = Meteor.microservice === 'admin';
 
 export const CustomerAdderUserSchema = ({
   promotion: { _id: promotionId, users = [] },
@@ -71,6 +77,30 @@ export const CustomerAdderUserSchema = ({
       condition: ({ promotionLotIds = [] }) => promotionLotIds.length > 0,
       optional: true,
     },
+    ...(isAdmin
+      ? {
+          status: {
+            type: String,
+            allowedValues: Object.values(USER_STATUS).filter(
+              status => status !== USER_STATUS.LOST,
+            ),
+            uniforms: {
+              transform: status => (
+                <ListItemText
+                  primary={
+                    status === USER_STATUS.PROSPECT ? 'Prospect' : 'Qualifié'
+                  }
+                  secondary={
+                    status === USER_STATUS.PROSPECT
+                      ? "L'utilisateur sera drippé"
+                      : "L'utilisateur ne sera pas drippé"
+                  }
+                />
+              ),
+            },
+          },
+        }
+      : {}),
     invitationNote: { type: String, optional: true },
   });
 
@@ -102,7 +132,11 @@ const CustomerAdder = ({
       schema={schema}
       onSubmit={({ invitationNote, ...user }) =>
         proInviteUser
-          .run({ user, promotionIds: [promotionId], invitationNote })
+          .run({
+            user: { ...user, status: user.status || USER_STATUS.PROSPECT },
+            promotionIds: [promotionId],
+            invitationNote,
+          })
           .then(() => {
             resetForm();
             history.push(
