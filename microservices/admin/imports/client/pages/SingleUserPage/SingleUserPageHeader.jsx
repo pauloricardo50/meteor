@@ -38,6 +38,7 @@ import SingleUserPageInformation, {
   SingleUserPageInformationItem,
 } from './SingleUserPageInformation';
 import UserDeleter from './UserDeleter';
+import UserStatusModifier from './UserStatusModifier';
 
 const SingleUserPageHeader = ({ user, currentUser }) => {
   const {
@@ -60,7 +61,11 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
   return (
     <div className="single-user-page-header">
       <div className="top">
-        <h1>{name}</h1>
+        <h1>
+          {name}
+
+          <UserStatusModifier user={user} className="ml-16" />
+        </h1>
 
         <UserModifier user={user} />
         <ConfirmMethod

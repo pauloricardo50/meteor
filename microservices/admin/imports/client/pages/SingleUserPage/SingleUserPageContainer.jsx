@@ -54,6 +54,7 @@ export default compose(
       referredByUser: { name: 1 },
       roundRobinTimeout: 1,
       intercomId: 1,
+      status: 1,
     }),
     queryOptions: { reactive: false, single: true },
     dataName: 'user',

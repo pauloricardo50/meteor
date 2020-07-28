@@ -1,4 +1,7 @@
 {
+  "Forms.status.PROSPECT": "Prospect (Drip en cours)",
+  "Forms.status.QUALIFIED": "Qualifié",
+  "Forms.status.LOST": "Lost",
   "emails.PROSPECT_FOR_TOO_LONG_NOTIFICATION.BODY": "Attention: ces utilisateurs sont restés en prospect plus de 21 jours.{verticalSpace}{details}",
   "emails.PROSPECT_FOR_TOO_LONG_NOTIFICATION.SUBJECT": "Utilisateurs prospect depuis plus de 21 jours",
   "emails.PROSPECT_FOR_TOO_LONG_NOTIFICATION.TITLE": "Utilisateurs prospect depuis plus de 21 jours",

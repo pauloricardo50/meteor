@@ -39,6 +39,7 @@ import {
   REVENUE_STATUS,
 } from '../../api/revenues/revenueConstants';
 import { TASKS_COLLECTION, TASK_STATUS } from '../../api/tasks/taskConstants';
+import { USERS_COLLECTION, USER_STATUS } from '../../api/users/userConstants';
 import colors from '../../config/colors';
 import DropdownMenu from '../DropdownMenu';
 import T from '../Translation';
@@ -136,6 +137,13 @@ export const getStatuses = collection => {
         [INSURANCE_STATUS.SIGNED]: colors.tertiary,
         [INSURANCE_STATUS.POLICED]: colors.success,
         [INSURANCE_STATUS.DECLINED]: colors.error,
+      };
+
+    case USERS_COLLECTION:
+      return {
+        [USER_STATUS.PROSPECT]: colors.warning,
+        [USER_STATUS.QUALIFIED]: colors.success,
+        [USER_STATUS.LOST]: colors.error,
       };
 
     default:
