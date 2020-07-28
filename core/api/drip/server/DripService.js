@@ -3,6 +3,11 @@ import { Meteor } from 'meteor/meteor';
 import dripNodeJs from 'drip-nodejs';
 
 import { employeesByEmail } from '../../../arrays/epotekEmployees';
+import {
+  ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
+} from '../../activities/activityConstants';
+import ActivityService from '../../activities/server/ActivityService';
 import EVENTS from '../../analytics/events';
 import Analytics from '../../analytics/server/Analytics';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
@@ -365,7 +370,6 @@ export class DripService {
       }
 
       case this.tags.CALENDLY: {
-        // TODO: add activity
         event = EVENTS.DRIP_SUBSCRIBER_QUALIFIED;
         additionalProperties = { qualifyReason: 'Webhook: Drip applied tag' };
 
@@ -376,6 +380,13 @@ export class DripService {
             analyticsProperties: {
               statusChangeReason: 'Subscriber booked an event on Calendly',
             },
+          });
+
+          ActivityService.addServerActivity({
+            title: 'A booké un rendez-vous sur Calendly',
+            type: ACTIVITY_TYPES.EVENT,
+            userLink: { _id: user._id },
+            metadata: { event: ACTIVITY_EVENT_METADATA.USER_BOOKED_CALENDLY },
           });
         }
 
@@ -456,10 +467,30 @@ export class DripService {
   }
 
   async handleReceivedEmail({ subscriber, properties }) {
-    // TODO: add email activity
+    const user = UserService.getByEmail(subscriber?.email, {
+      name: 1,
+      email: 1,
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+      assignedEmployee: { name: 1 },
+    });
+
+    if (user?._id) {
+      ActivityService.addServerActivity({
+        title: 'Email Drip',
+        type: ACTIVITY_TYPES.DRIP,
+        userLink: { _id: user._id },
+        metadata: {
+          dripEmailId: properties?.email_id,
+          dripEmailSubject: properties?.email_subject,
+        },
+      });
+    }
+
     await this.trackAnalyticsEvent({
       event: EVENTS.DRIP_SUBSCRIBER_RECEIVED_EMAIL,
       subscriber,
+      user,
       additionalProperties: {
         dripEmailId: properties?.email_id,
         dripEmailSubject: properties?.email_subject,

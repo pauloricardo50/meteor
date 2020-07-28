@@ -85,6 +85,15 @@ const ActivityEmailSchema = ActivitySchema.extend({
   'metadata.content.$': { type: Object, blackbox: true, optional: true },
 });
 
+const ActivityDripSchema = ActivitySchema.extend({
+  metadata: { type: Object, optional: true, defaultValue: {} },
+  'metadata.dripEmailId': {
+    type: String,
+    optional: true,
+  },
+  'metadata.dripEmailSubject': { type: String, optional: true },
+});
+
 const ActivityPhoneSchema = ActivitySchema;
 const ActivityOtherSchema = ActivitySchema;
 const ActivityMailSchema = ActivitySchema;
@@ -111,6 +120,9 @@ Activities.attachSchema(ActivityMeetingSchema, {
 });
 Activities.attachSchema(ActivityPlanningSchema, {
   selector: { type: ACTIVITY_TYPES.FINANCIAL_PLANNING },
+});
+Activities.attachSchema(ActivityDripSchema, {
+  selector: { type: ACTIVITY_TYPES.DRIP },
 });
 
 export default Activities;

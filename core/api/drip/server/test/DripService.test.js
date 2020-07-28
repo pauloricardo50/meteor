@@ -4,6 +4,8 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { resetDatabase } from '../../../../utils/testHelpers';
+import { ACTIVITY_TYPES } from '../../../activities/activityConstants';
+import ActivityService from '../../../activities/server/ActivityService';
 import NoOpAnalytics from '../../../analytics/server/NoOpAnalytics';
 import ErrorLogger from '../../../errorLogger/server/ErrorLogger';
 import generator from '../../../factories/server';
@@ -485,9 +487,7 @@ describe('DripService', function () {
     });
   });
 
-  // TODO: add email activity
-  // Waiting on Drip's answer regarding the email name
-  describe.skip('handleReceivedEmail', () => {
+  describe('handleReceivedEmail', () => {
     SUBSCRIBER_EMAIL = getSubscriberEmail();
     SUBSCRIBER_ID = Random.id();
     const event = 'subscriber.received_email';
@@ -497,10 +497,31 @@ describe('DripService', function () {
         body: {
           event,
           data: {
-            properties: { email_id: 'emailId', email_subject: 'emailSubject' },
+            properties: {
+              email_id: 'emailId',
+              email_subject: 'emailSubject',
+            },
             subscriber: { email: SUBSCRIBER_EMAIL },
           },
         },
+      });
+
+      const [activity] = ActivityService.fetch({
+        $filters: { 'userLink._id': SUBSCRIBER_ID },
+        type: 1,
+        title: 1,
+        metadata: 1,
+      });
+
+      expect(activity).to.deep.include({
+        title: 'Email Drip',
+        type: ACTIVITY_TYPES.DRIP,
+        metadata: { dripEmailId: 'emailId', dripEmailSubject: 'emailSubject' },
+      });
+
+      expect(analyticsSpy.args[0][0]).to.deep.include({
+        userId: SUBSCRIBER_ID,
+        event: 'Drip Subscriber Received Email',
       });
     });
   });
