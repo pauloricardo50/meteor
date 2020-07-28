@@ -1,7 +1,6 @@
 {
   "presets": [
-    "meteor",
-    "@babel/preset-flow"
+    "meteor"
   ],
   "plugins": [
     [

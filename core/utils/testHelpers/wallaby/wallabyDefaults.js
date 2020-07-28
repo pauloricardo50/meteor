@@ -28,7 +28,7 @@ function setWallabyConfig(name, overrides = {}) {
         tests: ['imports/**/*.spec.js*', '!imports/core/node_modules/**'],
         compilers: {
           '**/*.js?(x)': wallaby.compilers.babel({
-            presets: ['meteor', '@babel/preset-react', '@babel/preset-flow'],
+            presets: ['meteor', '@babel/preset-react'],
             plugins: [
               '@babel/plugin-transform-modules-commonjs',
               '@babel/plugin-proposal-class-properties',

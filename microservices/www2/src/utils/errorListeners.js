@@ -1,4 +1,4 @@
-import { callMethod } from './meteorClient';
+import callMethod from './meteorClient/callMethod';
 
 const handleError = (error, additionalData) => {
   const payload = {

@@ -11,7 +11,7 @@ import TextInput from 'core/components/TextInput/TextInput';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
-import { callMethod } from '../../utils/meteorClient';
+import callMethod from '../../utils/meteorClient/callMethod';
 import Button from '../Button';
 import { RichText } from '../prismic';
 import RecentNewsletters from './RecentNewsletters';

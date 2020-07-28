@@ -11,8 +11,9 @@
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "local": "npx --node-arg '-r esm' npm run develop -- -H 0.0.0.0",
     "serve": "npx --node-arg '-r esm' gatsby serve -H 0.0.0.0",
-    "start": "npx --node-arg '-r esm' npm run develop",
-    "test": "jest --watch"
+    "start": "npx --node-arg '-r esm' ./scripts/start.js",
+    "test": "jest --watch",
+    "test-e2e": "npx --node-arg '-r esm' ./scripts/test-e2e.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
@@ -80,6 +81,7 @@
     "babel-preset-gatsby": "^0.5.2",
     "identity-obj-proxy": "^3.0.0",
     "ignore-styles": "^5.0.1",
-    "jest": "^26.1.0"
+    "jest": "^26.1.0",
+    "start-server-and-test": "^1.11.2"
   }
 }

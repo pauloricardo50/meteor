@@ -4,7 +4,7 @@ import { useLocation } from '@reach/router';
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { parseCookies } from 'core/utils/cookiesHelpers';
 
-import { callMethod } from '../utils/meteorClient';
+import callMethod from '../utils/meteorClient/callMethod';
 
 const defaultSettings = {
   alignment: 'right',

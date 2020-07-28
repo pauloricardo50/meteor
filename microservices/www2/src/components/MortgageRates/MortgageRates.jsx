@@ -6,7 +6,7 @@ import T from 'core/components/Translation/FormattedMessage';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
-import { callMethod } from '../../utils/meteorClient';
+import callMethod from '../../utils/meteorClient/callMethod';
 import TrendIcon from './TrendIcon';
 
 const makePercent = num =>

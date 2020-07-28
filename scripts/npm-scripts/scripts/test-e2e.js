@@ -1,9 +1,9 @@
 import { MICROSERVICE_PORTS, PORT_OFFSETS } from '../constants';
 import Process from './Process';
 import runBackend from './run-backend';
+import waitForServer from './waitForServer';
 
 const path = require('path');
-const http = require('http');
 
 const [microservice, ...args] = process.argv.slice(2);
 
@@ -44,26 +44,8 @@ server.spawn({
   },
 });
 
-const waitServer = (retries, cb) => {
-  http
-    .get(`http://localhost:${port}`, res => {
-      res.on('data', () => {});
-      res.on('end', () => {
-        cb();
-      });
-    })
-    .on('error', e => {
-      if (retries > 0) {
-        setTimeout(() => waitServer(--retries, cb), 1000);
-      } else {
-        server.kill();
-        process.exit(1);
-      }
-    });
-};
-
-waitServer(50, () => {
-  console.log('Running cypress');
+waitForServer({ port, onError: () => server.kill() }, () => {
+  console.log('Running cypress...');
   cypress.spawn({
     command: '../../node_modules/cypress/bin/cypress',
     args: ['open'],

@@ -13,7 +13,7 @@ import { AutoField, AutoForm } from 'uniforms-material';
 import FormattedMessage from 'core/components/Translation/FormattedMessage';
 import useMedia from 'core/hooks/useMedia';
 
-import { callMethod } from '../../utils/meteorClient';
+import callMethod from '../../utils/meteorClient/callMethod';
 import Button from '../Button';
 
 const SubmitField = (
