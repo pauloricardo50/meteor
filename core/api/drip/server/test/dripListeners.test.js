@@ -35,7 +35,7 @@ const SUBSCRIBER_FIRSTNAME = 'Tom';
 const SUBSCRIBER_LASTNAME = 'Sawyer';
 const SUBSCRIBER_PHONE = '+41 123456';
 
-// In this test suite, all Drip API calls are stubed
+// In this test suite, all Drip API calls are stubbed
 // because they are tested in DripService.test.js
 describe('dripListeners', function () {
   this.timeout(5000);
