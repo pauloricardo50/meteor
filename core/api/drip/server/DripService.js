@@ -198,7 +198,7 @@ export class DripService {
       email: 1,
       assignedEmployee: { name: 1, email: 1 },
       referredByOrganisation: { name: 1 },
-      referredByUser: { name: 1 },
+      referredByUser: { name: 1, organisations: { name: 1 } },
       loans: { promotions: { name: 1 } },
       acquisitionChannel: 1,
       phoneNumbers: 1,
@@ -231,13 +231,29 @@ export class DripService {
       tags = [...tags, this.tags.PROMO];
     }
 
+    let referringOrganisationName;
+
+    if (hasOnePromotion) {
+      const invitedBy = user?.loans?.[0]?.promotions?.[0].$metadata?.invitedBy;
+      const pro =
+        invitedBy && UserService.get(invitedBy, { organisations: { name: 1 } });
+      referringOrganisationName = pro?.organisations?.find(
+        ({ $metadata: { isMain } }) => isMain,
+      )?.name;
+    } else {
+      referringOrganisationName =
+        user?.referredByUser?.organisations?.find(
+          ({ $metadata: { isMain } }) => isMain,
+        )?.name || user?.referredByOrganisation?.name;
+    }
+
     // Set custom fields
     const custom_fields = {
       assigneeEmailAddress: user?.assignedEmployee?.email,
       assigneeName: user?.assignedEmployee?.name,
       assigneeCalendlyLink:
         employeesByEmail[user?.assignedEmployee?.email]?.calendly,
-      referringOrganisationName: user?.referredByOrganisation?.name,
+      referringOrganisationName,
       promotionName: hasOnePromotion
         ? user?.loans?.find(({ promotions = [] }) => promotions.length)
             ?.promotions?.[0]?.name
@@ -483,6 +499,7 @@ export class DripService {
         metadata: {
           dripEmailId: properties?.email_id,
           dripEmailSubject: properties?.email_subject,
+          dripStatus: 'received',
         },
       });
     }
@@ -535,6 +552,16 @@ export class DripService {
         userId: user?._id,
         status: USER_STATUS.LOST,
         analyticsProperties: { statusChangeReason: 'Subscriber bounced' },
+      });
+      ActivityService.addServerActivity({
+        title: 'Email Drip - Rejet',
+        type: ACTIVITY_TYPES.DRIP,
+        userLink: { _id: user._id },
+        metadata: {
+          dripEmailId: properties?.email_id,
+          dripEmailSubject: properties?.email_subject,
+          dripStatus: 'bounced',
+        },
       });
     }
 

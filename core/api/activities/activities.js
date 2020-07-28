@@ -92,6 +92,7 @@ const ActivityDripSchema = ActivitySchema.extend({
     optional: true,
   },
   'metadata.dripEmailSubject': { type: String, optional: true },
+  'metadata.dripStatus': { type: String, optional: true },
 });
 
 const ActivityPhoneSchema = ActivitySchema;

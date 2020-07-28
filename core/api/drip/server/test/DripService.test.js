@@ -38,7 +38,15 @@ describe('DripService', function () {
     logErrorSpy = sinon.spy(ErrorLogger, 'logError');
     analyticsSpy = sinon.spy(NoOpAnalytics.prototype, 'track');
     generator({
+      organisations: { _id: 'org', name: 'Organisation' },
       users: [
+        {
+          _id: 'pro',
+          organisations: {
+            _id: 'org',
+            $metadata: { isMain: true },
+          },
+        },
         {
           _id: 'admin',
           firstName: 'Lydia',
@@ -53,8 +61,13 @@ describe('DripService', function () {
           lastName: SUBSCRIBER_LASTNAME,
           phoneNumbers: [SUBSCRIBER_PHONE],
           assignedEmployee: { _id: 'admin' },
-          referredByOrganisation: { _id: 'org', name: 'Organisation' },
-          loans: { promotions: { name: 'Promotion' } },
+          referredByOrganisation: { _id: 'org' },
+          referredByUser: {
+            _id: 'pro',
+          },
+          loans: {
+            promotions: { name: 'Promotion', $metadata: { invitedBy: 'pro' } },
+          },
         },
       ],
     });
@@ -516,7 +529,11 @@ describe('DripService', function () {
       expect(activity).to.deep.include({
         title: 'Email Drip',
         type: ACTIVITY_TYPES.DRIP,
-        metadata: { dripEmailId: 'emailId', dripEmailSubject: 'emailSubject' },
+        metadata: {
+          dripEmailId: 'emailId',
+          dripEmailSubject: 'emailSubject',
+          dripStatus: 'received',
+        },
       });
 
       expect(analyticsSpy.args[0][0]).to.deep.include({
@@ -591,7 +608,7 @@ describe('DripService', function () {
     const event = 'subscriber.bounced';
 
     // All checks are performed in one test to avoid calling Drip API multiple times
-    it('sets the user status to LOST, tags the subscriber to LOST and tracks the event in analytics', async () => {
+    it('sets the user status to LOST, tags the subscriber to LOST, tracks the event in analytics and adds the activity', async () => {
       await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
       await DripService.handleWebhook({
         body: {
@@ -622,6 +639,23 @@ describe('DripService', function () {
       const [{ tags }] = subscribers;
 
       expect(tags).to.include(DRIP_TAGS.LOST);
+
+      const [activity] = ActivityService.fetch({
+        $filters: { 'userLink._id': SUBSCRIBER_ID },
+        type: 1,
+        title: 1,
+        metadata: 1,
+      });
+
+      expect(activity).to.deep.include({
+        title: 'Email Drip - Rejet',
+        type: ACTIVITY_TYPES.DRIP,
+        metadata: {
+          dripEmailId: 'emailId',
+          dripEmailSubject: 'emailSubject',
+          dripStatus: 'bounced',
+        },
+      });
     });
   });
 

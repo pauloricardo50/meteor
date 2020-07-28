@@ -8,6 +8,8 @@ import {
   resetDatabase,
   waitForStub,
 } from '../../../../utils/testHelpers';
+import { ACTIVITY_TYPES } from '../../../activities/activityConstants';
+import ActivityService from '../../../activities/server/ActivityService';
 import NoOpAnalytics from '../../../analytics/server/NoOpAnalytics';
 import generator from '../../../factories/server';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
@@ -614,14 +616,12 @@ describe('dripListeners', function () {
       expect(params).to.deep.include({ email: 'subscriber+new@e-potek.ch' });
     });
 
-    it('creates the subscriber if it did not exist', async () => {
-      callDripAPIStub.callsFake(method => {
-        // Simulate fetch error
-        if (method === 'fetchSubscriber') {
-          throw new Error('user not found');
-        }
-
-        return Promise.resolve({});
+    it('removes and recreates the subscriber if it bounced', async () => {
+      ActivityService.addServerActivity({
+        userLink: { _id: userId },
+        type: ACTIVITY_TYPES.DRIP,
+        title: 'Some title',
+        metadata: { dripStatus: 'bounced' },
       });
 
       await ddpWithUserId('dev', () =>
@@ -632,8 +632,14 @@ describe('dripListeners', function () {
       );
 
       const dripAPIStubArgs = await waitForStub(callDripAPIStub, 3);
-      const [createSubscriberArgs, recordEventArgs] = dripAPIStubArgs.slice(-2);
+      const [
+        deleteSubscriberArgs,
+        createSubscriberArgs,
+        recordEventArgs,
+      ] = dripAPIStubArgs;
 
+      expect(deleteSubscriberArgs[0]).to.equal('deleteSubscriber');
+      expect(deleteSubscriberArgs[1]).to.equal(SUBSCRIBER_EMAIL);
       expect(createSubscriberArgs[0]).to.equal('createUpdateSubscriber');
       expect(createSubscriberArgs[1]).to.deep.include({
         email: 'subscriber+new@e-potek.ch',
@@ -669,6 +675,21 @@ describe('dripListeners', function () {
           },
         ],
       });
+    });
+
+    it('does not update the subscriber if it has already received a drip', async () => {
+      ActivityService.addServerActivity({
+        userLink: { _id: userId },
+        title: 'Some title',
+        type: ACTIVITY_TYPES.DRIP,
+        metadata: { dripStatus: 'received' },
+      });
+
+      await ddpWithUserId('dev', () =>
+        assignAdminToUser.run({ userId, adminId: 'admin2' }),
+      );
+
+      expect(callDripAPIStub.called).to.equal(false);
     });
 
     it('updates the subscriber', async () => {

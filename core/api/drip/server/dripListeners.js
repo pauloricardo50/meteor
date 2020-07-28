@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
 import { employeesByEmail } from '../../../arrays/epotekEmployees';
+import { ACTIVITY_TYPES } from '../../activities/activityConstants';
+import ActivityService from '../../activities/server/ActivityService';
 import { analyticsVerifyEmail } from '../../analytics/methodDefinitions';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
@@ -93,17 +95,34 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   changeEmail,
-  async ({ result: { oldEmail, newEmail } }) => {
+  async ({ params: { userId }, result: { oldEmail, newEmail } }) => {
+    const bounced = ActivityService.fetch({
+      $filters: {
+        'userLink._id': userId,
+        type: ACTIVITY_TYPES.DRIP,
+        'metadata.dripStatus': 'bounced',
+      },
+      _id: 1,
+    });
+
+    // If old email bounced once with drip
+    // Remove the old subscriber and create a new one (start from scratch)
+    // Otherwise update the subscriber email
     try {
-      const { subscribers = [] } = await DripService.fetchSubscriber({
-        subscriber: { email: oldEmail },
-      });
-      const [subscriber] = subscribers;
-      DripService.upsertSubscriber({
-        subscriber: { id: subscriber?.id, email: newEmail },
-      });
+      if (bounced?.length) {
+        await DripService.removeSubscriber({ email: oldEmail });
+        await DripService.createSubscriber({ email: newEmail });
+      } else {
+        const { subscribers = [] } = await DripService.fetchSubscriber({
+          subscriber: { email: oldEmail },
+        });
+        const [subscriber] = subscribers;
+        DripService.upsertSubscriber({
+          subscriber: { id: subscriber?.id, email: newEmail },
+        });
+      }
     } catch (error) {
-      DripService.createSubscriber({ email: newEmail });
+      //
     }
   },
 );
@@ -115,6 +134,22 @@ ServerEventService.addAfterMethodListener(
       email: 1,
       assignedEmployee: { name: 1, email: 1 },
     });
+
+    // If subscriber already received a drip
+    // do nothing
+    // Otherwise update the subscriber's assignee data
+    const dripActivity = ActivityService.fetch({
+      $filters: {
+        'userLink._id': userId,
+        type: ACTIVITY_TYPES.DRIP,
+        'metadata.dripStatus': 'received',
+      },
+      _id: 1,
+    });
+
+    if (dripActivity?.length) {
+      return;
+    }
 
     try {
       DripService.updateSubscriber({
