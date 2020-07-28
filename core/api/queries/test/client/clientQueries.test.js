@@ -13,16 +13,12 @@ import {
 } from '../collection-app-test';
 
 const insertTestData = n => {
-  console.log('Inserting data');
   const documents = [...Array(n)].map((_, index) => ({
     _id: `test${index}`,
     name: `test${index % 4}`,
     value: index,
   }));
-  return testCollectionInsert.run(documents).then(() => {
-    console.log('Finished inserting data');
-    return {};
-  });
+  return testCollectionInsert.run(documents).then(() => ({}));
 };
 
 const fetchQueries = ({ queries = [], params, promise }) => {
@@ -30,7 +26,6 @@ const fetchQueries = ({ queries = [], params, promise }) => {
     promise = promise.then(
       (items = {}) =>
         new Promise((resolve, reject) => {
-          console.log('starting query');
           query
             .clone(params)
             .fetch((err, queryItems) =>
@@ -42,10 +37,7 @@ const fetchQueries = ({ queries = [], params, promise }) => {
     );
   });
 
-  return promise.then(result => {
-    console.log('finished queries');
-    return result;
-  });
+  return promise;
 };
 
 const insertAndFetchTestData = (

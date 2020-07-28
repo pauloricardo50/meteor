@@ -55,7 +55,7 @@ describe('FileService', function () {
     });
   });
 
-  describe.only('setFileStatus', () => {
+  describe('setFileStatus', () => {
     it('changes the status of a file', () => {
       const nextStatus = 'VALID';
       return FileService.setFileStatus(key1, nextStatus)

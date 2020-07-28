@@ -67,7 +67,6 @@ describe('usePaginatedMeteorData', function () {
   this.retries(2);
 
   beforeEach(async () => {
-    console.log('cleanup');
     await cleanup();
     // Important, hard earned, lesson: Calling resetDatabase on the client resets the websocket
     // connection. This can make methods fail, as the result of a called method
@@ -79,9 +78,7 @@ describe('usePaginatedMeteorData', function () {
     // Take a look at the network tab, you should see 2 websocket connections,
     // 1 for the current microservice, and another for backend
     // if you see a third, you're having issues
-    console.log('reset');
     await resetDatabase();
-    console.log('finished reset');
   });
 
   describe('named queries', () => {

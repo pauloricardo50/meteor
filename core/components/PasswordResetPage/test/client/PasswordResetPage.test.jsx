@@ -30,13 +30,10 @@ describe('PasswordResetPage', () => {
       withRouter: true,
     });
 
-  beforeEach(async () => {
-    console.log('start reset');
+  beforeEach(() => {
     getMountedComponent.reset();
-    console.log('reset');
     props = { token: Random.id(), email: 'john.doe@test.com' };
-    await resetDatabase();
-    console.log('finished reset');
+    return resetDatabase();
   });
 
   it.skip('renders the name', async () => {
