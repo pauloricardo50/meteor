@@ -5,6 +5,8 @@ import { ACTIVITY_TYPES } from '../../activities/activityConstants';
 import ActivityService from '../../activities/server/ActivityService';
 import { analyticsVerifyEmail } from '../../analytics/methodDefinitions';
 import ServerEventService from '../../events/server/ServerEventService';
+import LoanService from '../../loans/server/LoanService';
+import { removeLoanFromPromotion } from '../../promotions/methodDefinitions';
 import {
   adminCreateUser,
   anonymousCreateUser,
@@ -166,6 +168,18 @@ ServerEventService.addAfterMethodListener(
     } catch (error) {
       // Subscriber did not exist on Drip
     }
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  removeLoanFromPromotion,
+  ({ params: { loanId } }) => {
+    const { user } = LoanService.get(loanId, { user: { email: 1 } });
+
+    DripService.trackEvent({
+      event: { action: DRIP_ACTIONS.LOAN_REMOVED_FROM_PROMOTION },
+      email: user?.email,
+    });
   },
 );
 

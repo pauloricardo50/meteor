@@ -5,8 +5,14 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
 import omit from 'lodash/omit';
+import moment from 'moment';
 import NodeRSA from 'node-rsa';
 
+import {
+  ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
+} from '../../activities/activityConstants';
+import ActivityService from '../../activities/server/ActivityService';
 import EVENTS from '../../analytics/events';
 import Analytics from '../../analytics/server/Analytics';
 import CollectionService from '../../helpers/server/CollectionService';
@@ -799,6 +805,14 @@ export class UserServiceClass extends CollectionService {
 
     this._update({ id: userId, object: { status } });
 
+    ActivityService.addServerActivity({
+      userLink: { _id: userId },
+      title: 'Changement de statut',
+      description: `${prevStatus} -> ${status}`,
+      type: ACTIVITY_TYPES.EVENT,
+      metadata: { event: ACTIVITY_EVENT_METADATA.USER_CHANGED_STATUS },
+    });
+
     const analytics = new Analytics({ userId });
     analytics.track(EVENTS.USER_CHANGED_STATUS, {
       prevStatus,
@@ -816,6 +830,21 @@ export class UserServiceClass extends CollectionService {
     });
 
     return { prevStatus, nextStatus: status };
+  }
+
+  getUsersProspectForTooLong() {
+    const twentyOneDaysAgo = moment().subtract(21, 'days').startOf('day');
+
+    const users = this.fetch({
+      $filters: {
+        createdAt: { $lt: twentyOneDaysAgo.toDate() },
+        status: USER_STATUS.PROSPECT,
+      },
+      name: 1,
+      email: 1,
+    });
+
+    return users;
   }
 }
 

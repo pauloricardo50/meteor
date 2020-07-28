@@ -23,6 +23,7 @@ import {
 import PromotionService from '../../promotions/server/PromotionService';
 import PropertyService from '../../properties/server/PropertyService';
 import { proInviteUser } from '../../users/methodDefinitions';
+import { notifyDigitalWithUsersProspectForTooLong } from '../../users/server/methods';
 import UserService from '../../users/server/UserService';
 import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { addEmailListener } from './emailHelpers';
@@ -454,5 +455,22 @@ addEmailListener({
         },
       }),
     ]);
+  },
+});
+
+addEmailListener({
+  description:
+    'Notification à digital@e-potek.ch concernant les utilisateurs en prospect depuis plus de 21 jours',
+  method: notifyDigitalWithUsersProspectForTooLong,
+  func: ({ result: users = [] }) => {
+    if (!users?.length) {
+      return;
+    }
+
+    return sendEmailToAddress.serverRun({
+      emailId: EMAIL_IDS.PROSPECT_FOR_TOO_LONG_NOTIFICATION,
+      address: 'digital@e-potek.ch',
+      params: { details: JSON.stringify(users, null, 2) },
+    });
   },
 });

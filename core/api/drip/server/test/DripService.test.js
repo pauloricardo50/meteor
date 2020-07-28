@@ -641,7 +641,7 @@ describe('DripService', function () {
       expect(tags).to.include(DRIP_TAGS.LOST);
 
       const [activity] = ActivityService.fetch({
-        $filters: { 'userLink._id': SUBSCRIBER_ID },
+        $filters: { 'userLink._id': SUBSCRIBER_ID, type: ACTIVITY_TYPES.DRIP },
         type: 1,
         title: 1,
         metadata: 1,

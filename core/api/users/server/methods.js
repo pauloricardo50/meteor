@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
+import { Method } from '../../methods/methods';
 import PropertyService from '../../properties/server/PropertyService';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import SecurityService from '../../security';
@@ -262,4 +263,13 @@ setUserStatus.setHandler((context, params) => {
     ...params,
     analyticsProperties: { statusChangeReason: 'Manual change' },
   });
+});
+
+export const notifyDigitalWithUsersProspectForTooLong = new Method({
+  name: 'notifyDigitalWithUsersProspectForTooLong',
+});
+
+notifyDigitalWithUsersProspectForTooLong.setHandler(context => {
+  SecurityService.checkIsInternalCall(context);
+  return UserService.getUsersProspectForTooLong();
 });

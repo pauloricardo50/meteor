@@ -2,6 +2,7 @@
 import { Factory } from 'meteor/dburles:factory';
 
 import { expect } from 'chai';
+import moment from 'moment';
 import sinon from 'sinon';
 
 import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
@@ -14,7 +15,8 @@ import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import PropertyService from '../../../properties/server/PropertyService';
 import { proInviteUser } from '../../methodDefinitions';
-import { ACQUISITION_CHANNELS, ROLES } from '../../userConstants';
+import { ACQUISITION_CHANNELS, ROLES, USER_STATUS } from '../../userConstants';
+import { notifyDigitalWithUsersProspectForTooLong } from '../methods';
 import UserService from '../UserService';
 
 describe('UserService', function () {
@@ -1445,6 +1447,79 @@ describe('UserService', function () {
       });
 
       await checkEmails(2);
+    });
+  });
+
+  describe('getUsersProspectForTooLong', () => {
+    it('returns users with PROSPECT status for more than 21 days', () => {
+      UserService.rawCollection.insert({
+        _id: 'u1',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+      });
+      UserService.rawCollection.insert({
+        _id: 'u2',
+        createdAt: moment().subtract(20, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+      });
+      UserService.rawCollection.insert({
+        _id: 'u3',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.QUALIFIED,
+      });
+
+      const users = UserService.getUsersProspectForTooLong();
+
+      expect(users.length).to.equal(1);
+      expect(users[0]._id).to.equal('u1');
+    });
+
+    it('sends the email to digital@e-potek.ch', async () => {
+      UserService.rawCollection.insert({
+        _id: 'u1',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+        firstName: 'Bob',
+        lastName: 'Dylan',
+      });
+      UserService.rawCollection.insert({
+        _id: 'u2',
+        createdAt: moment().subtract(20, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+      });
+      UserService.rawCollection.insert({
+        _id: 'u3',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.QUALIFIED,
+      });
+      UserService.rawCollection.insert({
+        _id: 'u4',
+        createdAt: moment().subtract(23, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+        firstName: 'Mickey',
+        lastName: 'Mouse',
+      });
+
+      await notifyDigitalWithUsersProspectForTooLong.serverRun({});
+
+      const [
+        {
+          address,
+          emailId,
+          template: {
+            message: { global_merge_vars },
+          },
+        },
+      ] = await checkEmails(1);
+
+      expect(address).to.equal('digital@e-potek.ch');
+      expect(emailId).to.equal(EMAIL_IDS.PROSPECT_FOR_TOO_LONG_NOTIFICATION);
+      const [_, body] = global_merge_vars;
+
+      expect(body.content).include('Bob Dylan');
+      expect(body.content).include('Mickey Mouse');
+
+      expect(1).to.equal(1);
     });
   });
 });

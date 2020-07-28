@@ -19,4 +19,5 @@ export const DRIP_ACTIONS = {
   USER_VALIDATED: 'User validated',
   USER_QUALIFIED: 'User qualified',
   TEST_ACTION: 'Test action',
+  LOAN_REMOVED_FROM_PROMOTION: 'Removed from promotion',
 };
