@@ -121,9 +121,10 @@ describe('TaskService', () => {
     });
 
     it('sets the date to monday if done on a saturday', () => {
-      clock.restore();
       const someSaturday = moment('2020-06-27');
-      clock = sinon.useFakeTimers(someSaturday.toDate().getTime());
+      const saturdayClock = sinon.useFakeTimers(
+        someSaturday.toDate().getTime(),
+      );
 
       generator({ tasks: { _id: 'taskId' } });
       TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
@@ -131,12 +132,12 @@ describe('TaskService', () => {
       const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
       expect(moment(dueAt).day()).to.equal(1);
       expect(dueAt.getDate()).to.equal(29);
+      saturdayClock.restore();
     });
 
     it('sets the date to monday if done on a friday', () => {
-      clock.restore();
       const someFriday = moment('2020-06-26');
-      clock = sinon.useFakeTimers(someFriday.toDate().getTime());
+      const fridayClock = sinon.useFakeTimers(someFriday.toDate().getTime());
 
       generator({ tasks: { _id: 'taskId' } });
       TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
@@ -144,6 +145,7 @@ describe('TaskService', () => {
       const { dueAt } = TaskService.get('taskId', { dueAt: 1 });
       expect(moment(dueAt).day()).to.equal(1);
       expect(dueAt.getDate()).to.equal(29);
+      fridayClock.restore();
     });
 
     it('adds multiple days to the date', () => {
@@ -182,6 +184,17 @@ describe('TaskService', () => {
   });
 
   describe('generatePromotionStepReminders', () => {
+    let clock;
+
+    beforeEach(() => {
+      const someMonday = moment('2020-06-29');
+      clock = sinon.useFakeTimers(someMonday.toDate().getTime());
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
     it('generates the tasks', async () => {
       const in10Days = moment().add(10, 'days').startOf('day').toDate();
 
@@ -335,13 +348,13 @@ describe('TaskService', () => {
       let numberOfTasks = await TaskService.generatePromotionStepReminders();
       expect(numberOfTasks).to.equal(1);
 
-      const clock = sinon.useFakeTimers(Date.now());
-      clock.tick(3 * 24 * 60 * 60 * 1000);
+      const futureClock = sinon.useFakeTimers(Date.now());
+      futureClock.tick(3 * 24 * 60 * 60 * 1000);
 
       numberOfTasks = await TaskService.generatePromotionStepReminders();
       expect(numberOfTasks).to.equal(0);
 
-      clock.restore();
+      futureClock.restore();
 
       const tasks = TaskService.fetch({
         loanLink: 1,
