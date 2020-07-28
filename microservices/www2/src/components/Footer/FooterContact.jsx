@@ -51,8 +51,8 @@ const LinkedLocation = ({ location }) => (
       </a>
 
       <img
-        src="https://e-potek-public.s3.eu-central-1.amazonaws.com/e-Potek_logo.png"
-        itemProps="image"
+        src="https://e-potek-public.s3.eu-central-1.amazonaws.com/epotek-localbusiness-image.jpg"
+        itemProp="image"
         alt="e-Potek"
         style={{ display: 'none' }}
       />
