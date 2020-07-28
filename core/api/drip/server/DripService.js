@@ -356,14 +356,14 @@ export class DripService {
     switch (tag) {
       case this.tags.LOST: {
         event = EVENTS.DRIP_SUBSCRIBER_LOST;
-        additionalProperties = { lostReason: 'Webhook: Drip applied tag' };
+        additionalProperties = { lostReason: 'Webhook: Drip applied LOST tag' };
 
         if (user?._id) {
           UserService.setStatus({
             userId: user?._id,
             status: USER_STATUS.LOST,
             analyticsProperties: {
-              statusChangeReason: 'Webhook: Drip applied tag',
+              statusChangeReason: 'Webhook: Drip applied LOST tag',
             },
           });
         }
@@ -371,14 +371,16 @@ export class DripService {
       }
       case this.tags.QUALIFIED: {
         event = EVENTS.DRIP_SUBSCRIBER_QUALIFIED;
-        additionalProperties = { qualifyReason: 'Webhook: Drip applied tag' };
+        additionalProperties = {
+          qualifyReason: 'Webhook: Drip applied QUALIFIED tag',
+        };
 
         if (user?._id) {
           UserService.setStatus({
             userId: user?._id,
             status: USER_STATUS.QUALIFIED,
             analyticsProperties: {
-              statusChangeReason: 'Webhook: Drip applied tag',
+              statusChangeReason: 'Webhook: Drip applied QUALIFIED tag',
             },
           });
         }
@@ -387,7 +389,9 @@ export class DripService {
 
       case this.tags.CALENDLY: {
         event = EVENTS.DRIP_SUBSCRIBER_QUALIFIED;
-        additionalProperties = { qualifyReason: 'Webhook: Drip applied tag' };
+        additionalProperties = {
+          qualifyReason: 'Webhook: Drip applied CALENDLY tag',
+        };
 
         if (user?._id) {
           UserService.setStatus({

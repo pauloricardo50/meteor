@@ -258,5 +258,8 @@ getEnrollUrl.setHandler((context, { userId }) => {
 
 setUserStatus.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return UserService.setStatus(params);
+  return UserService.setStatus({
+    ...params,
+    analyticsProperties: { statusChangeReason: 'Manual change' },
+  });
 });

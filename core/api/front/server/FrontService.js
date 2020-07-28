@@ -595,6 +595,7 @@ export class FrontService {
     UserService.setStatus({
       userId: recipientUser._id,
       status: USER_STATUS.QUALIFIED,
+      analyticsProperties: { statusChangeReason: 'Sent an email' },
     });
 
     return DripService.trackEvent({
