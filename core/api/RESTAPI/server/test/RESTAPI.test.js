@@ -62,7 +62,7 @@ Meteor.methods({
   isAPI,
 });
 
-describe('RESTAPI', function() {
+describe('RESTAPI', function () {
   this.timeout(10000);
   let user;
 
@@ -133,7 +133,7 @@ describe('RESTAPI', function() {
     endpointName: 'Test fiber API user',
   });
 
-  before(function() {
+  before(function () {
     makeFileUploadDir();
     flushFileUploadDir();
     api.start();
@@ -680,6 +680,7 @@ describe('RESTAPI', function() {
         'isDisabled',
         'defaultBoardId',
         'isInRoundRobin',
+        'status',
       ]);
       return fetchAndCheckResponse({
         url: '/fiberAPIUser',
