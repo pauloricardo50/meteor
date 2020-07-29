@@ -70,7 +70,7 @@ jobs:
           command: npm --prefix microservices/www2 ci
       - run:
           name: Run tests
-          command: npm --prefix microservices/www2 test-ci
+          command: npm --prefix microservices/www2 run test-ci
 workflows:
   version: 2
   Test and deploy:

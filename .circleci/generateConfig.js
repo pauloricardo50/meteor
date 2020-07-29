@@ -225,7 +225,7 @@ const testGatsbyJob = () => ({
     restoreCache('Restore source', cacheKeys.source()),
     
     runCommand('Install node_modules', 'npm --prefix microservices/www2 ci'),
-    runCommand('Run tests', 'npm --prefix microservices/www2 test-ci'),
+    runCommand('Run tests', 'npm --prefix microservices/www2 run test-ci'),
 
   ]
 })
