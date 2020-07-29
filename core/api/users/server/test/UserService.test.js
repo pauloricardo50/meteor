@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 
 import { expect } from 'chai';
@@ -1346,20 +1347,48 @@ describe('UserService', function () {
         }),
       );
 
-      const { tasks = [] } = UserService.getByEmail(userToInvite.email, {
-        tasks: { description: 1, assigneeLink: 1 },
+      const invitedUser = UserService.getByEmail(userToInvite.email, {
+        activities: { title: 1, description: 1 },
+        loans: { activities: { title: 1, description: 1 } },
       });
 
-      expect(tasks.length).to.equal(1);
-      const [
-        {
-          description,
-          assigneeLink: { _id: assigneeId },
-        },
-      ] = tasks;
+      const { activities: customerActivities = [] } = invitedUser;
+      const { activities: loanActivities = [] } = invitedUser.loans?.[0] || {};
 
-      expect(description).to.include('Ma man');
-      expect(assigneeId).to.equal('adminId');
+      let activities = [...customerActivities, ...loanActivities];
+      let intervalCount = 0;
+
+      activities = await new Promise((resolve, reject) => {
+        const interval = Meteor.setInterval(() => {
+          if (activities.length === 0 && intervalCount < 10) {
+            const { loans, activities: userActs = [] } = UserService.getByEmail(
+              invitedUser.email,
+              {
+                loans: { shareSolvency: 1, activities: { description: 1 } },
+                activities: { description: 1 },
+              },
+            );
+
+            const { activities: loanActs = [] } = loans?.[0] || {};
+
+            activities = [...userActs, ...loanActs];
+
+            intervalCount++;
+          } else {
+            Meteor.clearInterval(interval);
+            if (intervalCount >= 10) {
+              reject('Fetch activities timeout');
+            }
+            resolve(activities);
+          }
+        }, 100);
+      });
+
+      expect(activities.length).to.equal(3);
+      expect(activities[0].description).to.contain('John Doe');
+      expect(activities[0].description).to.contain('Ma man');
+      expect(activities[1].title).to.contain('Dossier créé');
+      expect(activities[2].description).to.contain('Ma man');
 
       await checkEmails(2);
     });
@@ -1451,18 +1480,18 @@ describe('UserService', function () {
   });
 
   describe('getUsersProspectForTooLong', () => {
-    it('returns users with PROSPECT status for more than 21 days', () => {
-      UserService.rawCollection.insert({
+    it('returns users with PROSPECT status for more than 21 days', async () => {
+      await UserService.rawCollection.insert({
         _id: 'u1',
         createdAt: moment().subtract(22, 'days').toDate(),
         status: USER_STATUS.PROSPECT,
       });
-      UserService.rawCollection.insert({
+      await UserService.rawCollection.insert({
         _id: 'u2',
         createdAt: moment().subtract(20, 'days').toDate(),
         status: USER_STATUS.PROSPECT,
       });
-      UserService.rawCollection.insert({
+      await UserService.rawCollection.insert({
         _id: 'u3',
         createdAt: moment().subtract(22, 'days').toDate(),
         status: USER_STATUS.QUALIFIED,
@@ -1475,24 +1504,24 @@ describe('UserService', function () {
     });
 
     it('sends the email to digital@e-potek.ch', async () => {
-      UserService.rawCollection.insert({
+      await UserService.rawCollection.insert({
         _id: 'u1',
         createdAt: moment().subtract(22, 'days').toDate(),
         status: USER_STATUS.PROSPECT,
         firstName: 'Bob',
         lastName: 'Dylan',
       });
-      UserService.rawCollection.insert({
+      await UserService.rawCollection.insert({
         _id: 'u2',
         createdAt: moment().subtract(20, 'days').toDate(),
         status: USER_STATUS.PROSPECT,
       });
-      UserService.rawCollection.insert({
+      await UserService.rawCollection.insert({
         _id: 'u3',
         createdAt: moment().subtract(22, 'days').toDate(),
         status: USER_STATUS.QUALIFIED,
       });
-      UserService.rawCollection.insert({
+      await UserService.rawCollection.insert({
         _id: 'u4',
         createdAt: moment().subtract(23, 'days').toDate(),
         status: USER_STATUS.PROSPECT,
@@ -1518,8 +1547,6 @@ describe('UserService', function () {
 
       expect(body.content).include('Bob Dylan');
       expect(body.content).include('Mickey Mouse');
-
-      expect(1).to.equal(1);
     });
   });
 });

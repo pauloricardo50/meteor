@@ -454,6 +454,8 @@ export class UserServiceClass extends CollectionService {
       });
     }
 
+    let loanIds = [];
+
     const { invitedBy } = user;
     const { userId, pro, isNewUser } = this.proCreateUser({
       user,
@@ -462,24 +464,30 @@ export class UserServiceClass extends CollectionService {
     });
 
     if (propertyIds && propertyIds.length) {
-      PropertyService.inviteUser({
-        propertyIds,
-        userId,
-        shareSolvency,
-      });
+      loanIds = [
+        ...loanIds,
+        PropertyService.inviteUser({
+          propertyIds,
+          userId,
+          shareSolvency,
+        }),
+      ];
     }
     if (promotionIds && promotionIds.length) {
-      promotionIds.map(promotionId =>
-        PromotionService.inviteUser({
-          promotionId,
-          userId,
-          pro,
-          promotionLotIds: user.promotionLotIds,
-          showAllLots: user.showAllLots,
-          shareSolvency,
-          skipCheckPromotionIsReady: true,
-        }),
-      );
+      loanIds = [
+        ...loanIds,
+        ...promotionIds.map(promotionId =>
+          PromotionService.inviteUser({
+            promotionId,
+            userId,
+            pro,
+            promotionLotIds: user.promotionLotIds,
+            showAllLots: user.showAllLots,
+            shareSolvency,
+            skipCheckPromotionIsReady: true,
+          }),
+        ),
+      ];
     }
     if (properties && properties.length) {
       const internalPropertyIds = properties.map(property => {
@@ -506,11 +514,14 @@ export class UserServiceClass extends CollectionService {
         return propertyId;
       });
 
-      PropertyService.inviteUser({
-        propertyIds: internalPropertyIds,
-        userId,
-        shareSolvency,
-      });
+      loanIds = [
+        ...loanIds,
+        ...PropertyService.inviteUser({
+          propertyIds: internalPropertyIds,
+          userId,
+          shareSolvency,
+        }),
+      ];
     }
 
     if (isNewUser) {
@@ -526,6 +537,7 @@ export class UserServiceClass extends CollectionService {
       proId: proUserId || invitedBy,
       admin,
       pro,
+      loanIds,
     };
   };
 

@@ -279,36 +279,49 @@ describe('REST: inviteCustomerToProProperties', function () {
     const customer = UserService.getByEmail(customerToInvite.email, {
       referredByUserLink: 1,
       referredByOrganisationLink: 1,
-      loans: { shareSolvency: 1 },
-      tasks: { description: 1 },
+      loans: { shareSolvency: 1, activities: { description: 1, title: 1 } },
+      activities: { description: 1, title: 1 },
     });
 
     expect(customer.loans[0].shareSolvency).to.equal(true);
 
-    let { tasks = [] } = customer;
+    const { activities: customerActivities = [] } = customer;
+    const { activities: loanActivities = [] } = customer.loans?.[0] || {};
+
+    let activities = [...customerActivities, ...loanActivities];
     let intervalCount = 0;
 
-    tasks = await new Promise((resolve, reject) => {
+    activities = await new Promise((resolve, reject) => {
       const interval = Meteor.setInterval(() => {
-        if (tasks.length === 0 && intervalCount < 10) {
-          tasks =
-            UserService.getByEmail(customerToInvite.email, {
-              tasks: { description: 1 },
-            }).tasks || [];
+        if (activities.length === 0 && intervalCount < 10) {
+          const { loans, activities: userActs = [] } = UserService.getByEmail(
+            customerToInvite.email,
+            {
+              loans: { shareSolvency: 1, activities: { description: 1 } },
+              activities: { description: 1 },
+            },
+          );
+
+          const { activities: loanActs = [] } = loans?.[0] || {};
+
+          activities = [...userActs, ...loanActs];
+
           intervalCount++;
         } else {
           Meteor.clearInterval(interval);
           if (intervalCount >= 10) {
-            reject('Fetch tasks timeout');
+            reject('Fetch activities timeout');
           }
-          resolve(tasks);
+          resolve(activities);
         }
       }, 100);
     });
 
-    expect(tasks.length).to.equal(1);
-    expect(tasks[0].description).to.contain('TestFirstName TestLastName');
-    expect(tasks[0].description).to.contain('testNote');
+    expect(activities.length).to.equal(3);
+    expect(activities[0].description).to.contain('TestFirstName TestLastName');
+    expect(activities[0].description).to.contain('testNote');
+    expect(activities[1].title).to.contain('Dossier créé');
+    expect(activities[2].description).to.contain('TestNote');
 
     await checkEmails(2);
   });

@@ -64,10 +64,10 @@ const referCustomer = ({
   });
 };
 
-describe('REST: referCustomer', function() {
+describe('REST: referCustomer', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     api.start();
   });
 
@@ -181,36 +181,37 @@ describe('REST: referCustomer', function() {
       referredByUserLink: 1,
       referredByOrganisationLink: 1,
       loans: { shareSolvency: 1 },
-      tasks: { description: 1 },
+      activities: { description: 1, title: 1 },
     });
     expect(customer.referredByUserLink).to.equal('pro');
     expect(customer.referredByOrganisationLink).to.equal('org');
     expect(customer.loans[0].shareSolvency).to.equal(undefined);
 
-    let { tasks = [] } = customer;
+    let { activities = [] } = customer;
+
     let intervalCount = 0;
 
-    tasks = await new Promise((resolve, reject) => {
+    activities = await new Promise((resolve, reject) => {
       const interval = Meteor.setInterval(() => {
-        if (tasks.length === 0 && intervalCount < 10) {
-          tasks =
+        if (activities.length === 0 && intervalCount < 10) {
+          activities =
             UserService.getByEmail(customerToRefer.email, {
-              tasks: { description: 1 },
-            }).tasks || [];
+              activities: { title: 1, description: 1 },
+            }).activities || [];
           intervalCount++;
         } else {
           Meteor.clearInterval(interval);
           if (intervalCount >= 10) {
-            reject('Fetch tasks timeout');
+            reject('Fetch activities timeout');
           }
-          resolve(tasks);
+          resolve(activities);
         }
       }, 100);
     });
 
-    expect(tasks.length).to.equal(1);
-    expect(tasks[0].description).to.contain('TestFirstName TestLastName');
-    expect(tasks[0].description).to.contain('testNote');
+    expect(activities.length).to.equal(1);
+    expect(activities[0].description).to.contain('TestFirstName TestLastName');
+    expect(activities[0].description).to.contain('testNote');
 
     await checkEmails(2);
   });

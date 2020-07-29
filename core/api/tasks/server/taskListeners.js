@@ -2,7 +2,6 @@ import moment from 'moment';
 
 import { employeesByEmail } from '../../../arrays/epotekEmployees';
 import ServerEventService from '../../events/server/ServerEventService';
-import { getUserNameAndOrganisation } from '../../helpers';
 import { LOANS_COLLECTION } from '../../loans/loanConstants';
 import {
   loanShareSolvency,
@@ -18,107 +17,8 @@ import {
 import { submitPromotionInterestForm } from '../../promotions/methodDefinitions';
 import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
 import PromotionService from '../../promotions/server/PromotionService';
-import PropertyService from '../../properties/server/PropertyService';
-import {
-  adminCreateUser,
-  anonymousCreateUser,
-  proInviteUser,
-} from '../../users/methodDefinitions';
-import UserService from '../../users/server/UserService';
-import { USERS_COLLECTION } from '../../users/userConstants';
 import { TASK_TYPES } from '../taskConstants';
 import TaskService from './TaskService';
-
-ServerEventService.addAfterMethodListener(
-  proInviteUser,
-  ({
-    result: { userId },
-    context,
-    params: { invitationNote, properties, propertyIds, promotionIds },
-  }) => {
-    const { userId: proId } = context;
-    context.unblock();
-
-    const user = UserService.get(userId, {
-      assignedEmployeeId: 1,
-      createdAt: 1,
-    });
-    const pro = UserService.get(proId, { name: 1, organisations: { name: 1 } });
-
-    let isNewUser = true;
-    const now = new Date();
-
-    // If a user has been created more than 10 seconds ago, assume it already existed
-    if (now.valueOf() - user.createdAt.valueOf() > 10000) {
-      isNewUser = false;
-    }
-
-    let taskDescription = `Invitation par ${getUserNameAndOrganisation({
-      user: pro,
-    })}`;
-
-    let addresses = [];
-    let promotions = [];
-
-    if (properties && properties.length) {
-      addresses = properties.map(({ address1 }) => address1);
-    }
-
-    if (propertyIds && propertyIds.length) {
-      addresses = [
-        ...addresses,
-        ...propertyIds.map(
-          id => PropertyService.get(id, { address1: 1 }).address1,
-        ),
-      ];
-    }
-
-    if (promotionIds && promotionIds.length) {
-      promotions = promotionIds.map(
-        id => PromotionService.get(id, { name: 1 }).name,
-      );
-    }
-
-    if (addresses.length) {
-      const formattedAddresses = [
-        addresses.slice(0, -1).join(', '),
-        addresses.slice(-1)[0],
-      ].join(addresses.length < 2 ? '' : ' et ');
-
-      taskDescription = `${taskDescription}. Invité sur ${
-        addresses.length === 1
-          ? 'le bien immobilier: '
-          : 'les biens immobiliers: '
-      } ${formattedAddresses}`;
-    }
-
-    if (promotions.length) {
-      const formattedPromotions = [
-        promotions.slice(0, -1).join(', '),
-        promotions.slice(-1)[0],
-      ].join(promotions.length < 2 ? '' : ' et');
-
-      taskDescription = `${taskDescription}. Invité sur ${
-        promotions.length === 1 ? 'la promotion: ' : 'les promotions: '
-      } ${formattedPromotions}`;
-    }
-
-    if (invitationNote) {
-      taskDescription = `${taskDescription}. \nNote du referral:\n${invitationNote}`;
-    }
-
-    TaskService.insert({
-      object: {
-        title: isNewUser
-          ? "Invitation d'un nouveau client"
-          : "Invitation d'un client déjà existant",
-        docId: userId,
-        collection: USERS_COLLECTION,
-        description: taskDescription,
-      },
-    });
-  },
-);
 
 ServerEventService.addAfterMethodListener(
   loanShareSolvency,
