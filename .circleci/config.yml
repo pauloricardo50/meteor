@@ -2,7 +2,7 @@ version: 2
 jobs:
   Prepare:
     working_directory: /home/circleci/app
-    docker:
+    docker: &ref_0
       - image: 'cypress/base:12'
         environment:
           LANG: C.UTF-8
@@ -57,6 +57,7 @@ jobs:
             - ./node_modules
   Www2 - unit tests:
     working_directory: /home/circleci/app
+    docker: *ref_0
     steps:
       - restore_cache:
           name: Restore source

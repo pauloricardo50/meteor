@@ -220,7 +220,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
 });
 
 const testGatsbyJob = () => ({
-  working_directory: WORKING_DIRECTORY,
+  ...defaultJobValues,
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
