@@ -20,7 +20,7 @@ import UnpaidCommissions from './UnpaidCommissions';
 
 const AdminDashboardStats = () => {
   const [showAll, setShowAll] = useState(false);
-  const [showStats, setShowStats] = useState(true);
+  const [showStats, setShowStats] = useState(false);
 
   if (!showStats) {
     return (
