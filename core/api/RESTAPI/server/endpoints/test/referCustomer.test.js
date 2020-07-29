@@ -1,8 +1,8 @@
-/* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
-
 import { expect } from 'chai';
 import sinon from 'sinon';
+
+/* eslint-env mocha */
+import pollUntilReady from 'core/utils/pollUntilReady';
 
 import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
@@ -189,24 +189,17 @@ describe('REST: referCustomer', function () {
 
     let { activities = [] } = customer;
 
-    let intervalCount = 0;
+    activities = await pollUntilReady(() => {
+      if (activities.length > 0) {
+        return activities;
+      }
 
-    activities = await new Promise((resolve, reject) => {
-      const interval = Meteor.setInterval(() => {
-        if (activities.length === 0 && intervalCount < 10) {
-          activities =
-            UserService.getByEmail(customerToRefer.email, {
-              activities: { title: 1, description: 1 },
-            }).activities || [];
-          intervalCount++;
-        } else {
-          Meteor.clearInterval(interval);
-          if (intervalCount >= 10) {
-            reject('Fetch activities timeout');
-          }
-          resolve(activities);
-        }
-      }, 100);
+      activities =
+        UserService.getByEmail(customerToRefer.email, {
+          activities: { title: 1, description: 1 },
+        }).activities || [];
+
+      return !!activities.length && activities;
     });
 
     expect(activities.length).to.equal(1);

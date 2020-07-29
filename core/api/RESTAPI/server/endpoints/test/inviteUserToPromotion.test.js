@@ -1,7 +1,8 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 
 import { expect } from 'chai';
+
+import pollUntilReady from 'core/utils/pollUntilReady';
 
 import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
@@ -184,32 +185,25 @@ describe('REST: inviteUserToPromotion', function () {
     const { activities: loanActivities = [] } = invitedUser.loans?.[0] || {};
 
     let activities = [...customerActivities, ...loanActivities];
-    let intervalCount = 0;
 
-    activities = await new Promise((resolve, reject) => {
-      const interval = Meteor.setInterval(() => {
-        if (activities.length === 0 && intervalCount < 10) {
-          const { loans, activities: userActs = [] } = UserService.getByEmail(
-            invitedUser.email,
-            {
-              loans: { shareSolvency: 1, activities: { description: 1 } },
-              activities: { description: 1 },
-            },
-          );
+    activities = await pollUntilReady(() => {
+      if (activities.length > 0) {
+        return activities;
+      }
 
-          const { activities: loanActs = [] } = loans?.[0] || {};
+      const { loans, activities: userActs = [] } = UserService.getByEmail(
+        invitedUser.email,
+        {
+          loans: { shareSolvency: 1, activities: { description: 1 } },
+          activities: { description: 1 },
+        },
+      );
 
-          activities = [...userActs, ...loanActs];
+      const { activities: loanActs = [] } = loans?.[0] || {};
 
-          intervalCount++;
-        } else {
-          Meteor.clearInterval(interval);
-          if (intervalCount >= 10) {
-            reject('Fetch activities timeout');
-          }
-          resolve(activities);
-        }
-      }, 100);
+      activities = [...userActs, ...loanActs];
+
+      return !!activities.length && activities;
     });
 
     expect(activities.length).to.equal(3);
