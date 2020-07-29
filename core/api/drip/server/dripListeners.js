@@ -137,6 +137,14 @@ ServerEventService.addAfterMethodListener(
       if (bounced?.length) {
         await DripService.removeSubscriber({ email: oldEmail });
         await DripService.createSubscriber({ email: newEmail });
+        UserService.setStatus({
+          userId,
+          status: USER_STATUS.PROSPECT,
+          serverRun: true,
+          analyticsProperties: {
+            statusChangeReason: 'Email address updated after bounce',
+          },
+        });
       } else {
         const { subscribers = [] } = await DripService.fetchSubscriber({
           subscriber: { email: oldEmail },
@@ -187,6 +195,8 @@ ServerEventService.addAfterMethodListener(
               employeesByEmail[user?.assignedEmployee?.email]?.calendly,
             assigneeJobTitle:
               employeesByEmail[user?.assignedEmployee?.email]?.title,
+            assigneePhone:
+              employeesByEmail[user?.assignedEmployee?.email]?.phoneNumber,
           },
         },
       });

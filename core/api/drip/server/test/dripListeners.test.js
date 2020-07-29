@@ -89,6 +89,7 @@ describe('dripListeners', function () {
         assigneeName: 'Lydia Abraha',
         assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
         assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
+        assigneePhone: '+41 22 566 82 92',
         referringOrganisationName: 'Organisation',
         promotionName: undefined,
       },
@@ -253,6 +254,7 @@ describe('dripListeners', function () {
         assigneeName: 'Lydia Abraha',
         assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
         assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
+        assigneePhone: '+41 22 566 82 92',
         referringOrganisationName: undefined,
         promotionName: undefined,
       },
@@ -345,6 +347,7 @@ describe('dripListeners', function () {
         assigneeName: 'Lydia Abraha',
         assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
         assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
+        assigneePhone: '+41 22 566 82 92',
         referringOrganisationName: undefined,
         promotionName: undefined,
       },
@@ -627,6 +630,8 @@ describe('dripListeners', function () {
         metadata: { dripStatus: 'bounced' },
       });
 
+      UserService.setStatus({ userId, status: USER_STATUS.LOST });
+
       await ddpWithUserId('dev', () =>
         changeEmail.run({
           userId,
@@ -653,6 +658,10 @@ describe('dripListeners', function () {
         action: DRIP_ACTIONS.USER_CREATED,
         properties: undefined,
       });
+
+      const { status } = UserService.get(userId, { status: 1 });
+
+      expect(status).to.equal(USER_STATUS.PROSPECT);
     });
   });
 
@@ -710,6 +719,7 @@ describe('dripListeners', function () {
           assigneeName: 'Elise Juanola',
           assigneeCalendlyLink: 'https://calendly.com/epotek-elise',
           assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
+          assigneePhone: '+41 22 566 82 98',
         },
       });
     });

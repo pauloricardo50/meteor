@@ -254,6 +254,8 @@ export class DripService {
       assigneeCalendlyLink:
         employeesByEmail[user?.assignedEmployee?.email]?.calendly,
       assigneeJobTitle: employeesByEmail[user?.assignedEmployee?.email]?.title,
+      assigneePhone:
+        employeesByEmail[user?.assignedEmployee?.email]?.phoneNumber,
       referringOrganisationName,
       promotionName: hasOnePromotion
         ? user?.loans?.find(({ promotions = [] }) => promotions.length)

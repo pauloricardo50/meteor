@@ -791,7 +791,7 @@ export class UserServiceClass extends CollectionService {
     }
   }
 
-  setStatus({ userId, status, analyticsProperties = {} }) {
+  setStatus({ userId, status, analyticsProperties = {}, serverRun = false }) {
     const user = this.get(userId, {
       status: 1,
       firstName: 1,
@@ -811,7 +811,7 @@ export class UserServiceClass extends CollectionService {
       );
     }
 
-    if (status === USER_STATUS.PROSPECT) {
+    if (!serverRun && status === USER_STATUS.PROSPECT) {
       throw new Meteor.Error('Vous ne pouvez pas revenir au status Prospect');
     }
 
