@@ -4,7 +4,7 @@ jobs:
     working_directory: /home/circleci/app
     docker:
       - image: 'cypress/base:12'
-        environment: &ref_0
+        environment:
           LANG: C.UTF-8
           LANGUAGE: C.UTF-8
           LC_ALL: C.UTF-8
@@ -59,8 +59,22 @@ jobs:
     working_directory: /home/circleci/app
     docker:
       - image: 'cypress/base:12'
-        environment: *ref_0
-        NODE_ENV: test
+        environment:
+          LANG: C.UTF-8
+          LANGUAGE: C.UTF-8
+          LC_ALL: C.UTF-8
+          LC_NUMERIC: en_US.UTF-8
+          METEOR_VERSION: 1.10.2
+          NODE_ENV: test
+          TOOL_NODE_FLAGS: >-
+            --max_old_space_size=8192 --optimize_for_size --gc_interval=100
+            --min_semi_space_size=8 --max_semi_space_size=256
+          CIRCLE_CI: 1
+          DEBUG: false
+          METEOR_ALLOW_SUPERUSER: true
+          METEOR_DISABLE_OPTIMISTIC_CACHING: 1
+          RTL_SKIP_AUTO_CLEANUP: 1
+          HOME: /home/circleci
     steps:
       - checkout
       - restore_cache:

@@ -1,3 +1,5 @@
+import merge from 'lodash/merge';
+
 import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '/home/circleci/app';
@@ -26,7 +28,7 @@ const defaultJobValues = {
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
         METEOR_DISABLE_OPTIMISTIC_CACHING: 1, // big speed issue https://github.com/meteor/meteor/issues/10786
         RTL_SKIP_AUTO_CLEANUP: 1,
-        HOME: '/home/circleci' // parts of CirceCI are hard coded to use /home/circleci, but cypress installs to $HOME
+        HOME: '/home/circleci', // parts of CirceCI are hard coded to use /home/circleci, but cypress installs to $HOME
       },
     },
   ],
@@ -37,7 +39,8 @@ const defaultJobValues = {
 // like: "my_cache_name_${CACHE_VERSION}"
 // Then follow with the variable identifiers, each separated by a hyphen "-"
 const cacheKeys = {
-  global: () => `global_${CACHE_VERSION}_2-{{ checksum "./package-lock.json" }}`,
+  global: () =>
+    `global_${CACHE_VERSION}_2-{{ checksum "./package-lock.json" }}`,
   meteorSystem: name =>
     `meteor_system_${CACHE_VERSION}_${name}_2_{{ checksum "./microservices/${name}/.meteor/release" }}_{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
@@ -61,8 +64,7 @@ const cachePaths = {
     `./microservices/${name}/.meteor/local/resolver-result-cache.json`,
   ],
   minifierCache: name =>
-    `./microservices/${name}/.meteor/local/plugin-cache/zodern_standard-minifier-js`
-  ,
+    `./microservices/${name}/.meteor/local/plugin-cache/zodern_standard-minifier-js`,
   nodeModules: () => './node_modules',
   microserviceNodeModules: name => `./microservices/${name}/node_modules`,
   source: () => '.',
@@ -74,7 +76,7 @@ const runCommand = (name, command, timeout, background = false) => ({
     name,
     command,
     ...(background ? { background: true } : {}),
-    ...(timeout ? { no_output_timeout: timeout } : {})
+    ...(timeout ? { no_output_timeout: timeout } : {}),
   },
 });
 const runTestsCommand = (name, testsType) => {
@@ -108,7 +110,7 @@ const restoreCache = (name, key) => ({
         (keys, _, index, parts) => [
           ...keys,
           parts.slice(0, parts.length - index).join('-') +
-          (index === 0 ? '' : '-'),
+            (index === 0 ? '' : '-'),
         ],
         [],
       ),
@@ -152,7 +154,8 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
   resource_class: 'medium+',
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
-    testsType === 'e2e' && restoreCache('Restore global cache', cacheKeys.global()),
+    testsType === 'e2e' &&
+      restoreCache('Restore global cache', cacheKeys.global()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
     restoreCache(
@@ -163,18 +166,22 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       'Restore meteor backend',
       cacheKeys.meteorMicroservice('backend'),
     ),
-    testsType === 'unit' && runCommand(
-      'Setup display',
-      `
+    testsType === 'unit' &&
+      runCommand(
+        'Setup display',
+        `
         echo "export DISPLAY=':99.0'" >> $BASH_ENV
         apt-get update && apt-get install xvfb -y
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1
-      `, null, true
-    ),
-    testsType === 'e2e' && runCommand(
-      'Install netcat',
-      'apt-get update && apt-get install -y netcat'
-    ),
+      `,
+        null,
+        true,
+      ),
+    testsType === 'e2e' &&
+      runCommand(
+        'Install netcat',
+        'apt-get update && apt-get install -y netcat',
+      ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Create results directory', 'mkdir ./results'),
     // runCommand(
@@ -191,7 +198,9 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
 
       installBackend &
 
-      ${name !== 'backend' ? 'meteor npm --prefix microservices/backend ci' : ''}
+      ${
+        name !== 'backend' ? 'meteor npm --prefix microservices/backend ci' : ''
+      }
 
       until [ -f $HOME/.npm-backend-done ]; do
         echo "$HOME/.npm-backend-done does not exist. Waiting 1s"
@@ -199,7 +208,8 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
       done
       `,
     ),
-    name !== 'backend' && runCommand('Generate language files', `npm run lang ${name}`),
+    name !== 'backend' &&
+      runCommand('Generate language files', `npm run lang ${name}`),
     runTestsCommand(name, testsType),
     saveCache(
       'Cache meteor system',
@@ -223,15 +233,19 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
 });
 
 const testGatsbyJob = () => ({
-  ...defaultJobValues,
-  // "NODE_ENV test" is required by babel-preset-gatsby
-  docker: [{ ...defaultJobValues.docker[0], NODE_ENV: 'test' }],
+  ...merge({}, defaultJobValues, {
+    // "NODE_ENV test" is required by babel-preset-gatsby
+    docker: [{ environment: { NODE_ENV: 'test' } }]
+  }),
   steps: [
     'checkout',
 
     // restoreCache('Restore source', cacheKeys.source()),
-    restoreCache('Restore microservice node_modules', cacheKeys.microserviceNodeModules('www2')),
-  
+    restoreCache(
+      'Restore microservice node_modules',
+      cacheKeys.microserviceNodeModules('www2'),
+    ),
+
     runCommand('Install node_modules', 'npm --prefix microservices/www2 ci'),
     saveCache(
       'Cache meteor microservice',
@@ -240,8 +254,8 @@ const testGatsbyJob = () => ({
     ),
 
     runCommand('Run tests', 'npm run test-ci --prefix microservices/www2'),
-  ]
-})
+  ],
+});
 
 const makeDeployJob = ({ name, job }) => ({
   ...job,
@@ -250,8 +264,8 @@ const makeDeployJob = ({ name, job }) => ({
     'add_ssh_keys',
     {
       setup_remote_docker: {
-        version: '19.03.12'
-      }
+        version: '19.03.12',
+      },
     },
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
@@ -262,12 +276,10 @@ const makeDeployJob = ({ name, job }) => ({
     ),
     // The microservice cache only has files from building for development,
     // which doesn't minify
-    restoreCache(
-      'Restore minifier cache',
-      cacheKeys.minifierCache(name),
-    ),
+    restoreCache('Restore minifier cache', cacheKeys.minifierCache(name)),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
-    runCommand('Install GCloud',
+    runCommand(
+      'Install GCloud',
       `
       cd ~
       echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
@@ -278,7 +290,8 @@ const makeDeployJob = ({ name, job }) => ({
       echo "$GCLOUD_SDK_KEY" > ./gcloud-key.json
       gcloud auth activate-service-account  --key-file=./gcloud-key.json
       rm ./gcloud-key.json
-    `),
+    `,
+    ),
     runCommand('Install Docker', 'wget -qO- https://get.docker.com/ | sh'),
     runCommand(
       'Deploy',
@@ -298,15 +311,15 @@ const makeDeployJob = ({ name, job }) => ({
         node run-all -e $ENVIRONMENT --apps ${name} validate
         node run-all -e $ENVIRONMENT --apps ${name} deploy
       `,
-      '30m'
+      '30m',
     ),
     saveCache(
       'Save minifier cache',
       cacheKeys.minifierCache(name),
-      cachePaths.minifierCache(name)
-    )
-  ]
-})
+      cachePaths.minifierCache(name),
+    ),
+  ],
+});
 
 const testJobs = [
   'App - unit tests',
@@ -314,16 +327,14 @@ const testJobs = [
   'Core - unit tests',
   'App - e2e tests',
   'Admin - e2e tests',
-  'Pro - e2e tests'
-]
+  'Pro - e2e tests',
+];
 
 const deployBranchFilter = {
   branches: {
-    only: [
-      STAGING_BRANCH
-    ]
+    only: [STAGING_BRANCH],
   },
-}
+};
 
 // Final config
 const makeConfig = () => ({
@@ -354,7 +365,7 @@ const makeConfig = () => ({
   workflows: {
     version: 2,
     'Test and deploy': {
-      jobs: ['Www2 - unit tests']
+      jobs: ['Www2 - unit tests'],
       // jobs: [
       //   'Prepare',
       //   { 'Www2 - unit tests': { requires: ['Prepare'] } },
