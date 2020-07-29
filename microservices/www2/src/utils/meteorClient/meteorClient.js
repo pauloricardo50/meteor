@@ -20,7 +20,9 @@ const opts = {
 };
 
 const meteorClient = new SimpleDDP(opts);
-window.meteorClient = meteorClient;
+if (global.window) {
+  window.meteorClient = meteorClient;
+}
 
 if (process.env.NODE_ENV === 'development') {
   meteorClient.on('connected', () => {
