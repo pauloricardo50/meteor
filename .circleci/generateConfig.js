@@ -49,8 +49,6 @@ const cacheKeys = {
     `minifier_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
   nodeModules: () =>
     `node_modules_${CACHE_VERSION}_{{ checksum "./package-lock.json" }}`,
-  microserviceNodeModules: name =>
-    `node_modules_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/package-lock.json" }}`,
   source: () => `source_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
 };
 
@@ -66,7 +64,6 @@ const cachePaths = {
   minifierCache: name =>
     `./microservices/${name}/.meteor/local/plugin-cache/zodern_standard-minifier-js`,
   nodeModules: () => './node_modules',
-  microserviceNodeModules: name => `./microservices/${name}/node_modules`,
   source: () => '.',
 };
 
@@ -233,26 +230,10 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
 });
 
 const testGatsbyJob = () => ({
-  ...merge({}, defaultJobValues, {
-    // "NODE_ENV test" is required by babel-preset-gatsby
-    docker: [{ environment: { NODE_ENV: 'test' } }]
-  }),
+  ...defaultJobValues,
   steps: [
-    'checkout',
-
-    // restoreCache('Restore source', cacheKeys.source()),
-    restoreCache(
-      'Restore microservice node_modules',
-      cacheKeys.microserviceNodeModules('www2'),
-    ),
-
+    restoreCache('Restore source', cacheKeys.source()),
     runCommand('Install node_modules', 'npm --prefix microservices/www2 ci'),
-    saveCache(
-      'Cache meteor microservice',
-      cacheKeys.microserviceNodeModules('www2'),
-      cachePaths.microserviceNodeModules('www2'),
-    ),
-
     runCommand('Run tests', 'npm run test-ci --prefix microservices/www2'),
   ],
 });
@@ -365,23 +346,23 @@ const makeConfig = () => ({
   workflows: {
     version: 2,
     'Test and deploy': {
-      jobs: ['Www2 - unit tests'],
-      // jobs: [
-      //   'Prepare',
-      //   { 'Www2 - unit tests': { requires: ['Prepare'] } },
-      //   { 'App - unit tests': { requires: ['Prepare'] } },
-      //   { 'Core - unit tests': { requires: ['Prepare'] } },
-      //   { 'Admin - unit tests': { requires: ['Prepare'] } },
-      //   // { 'Pro - unit tests': { requires: ['Prepare'] } },
-      //   { 'Www2 - e2e tests': { requires: ['Prepare'] } },
-      //   { 'App - e2e tests': { requires: ['Prepare'] } },
-      //   { 'Admin - e2e tests': { requires: ['Prepare'] } },
-      //   { 'Pro - e2e tests': { requires: ['Prepare'] } },
-      //   { 'App - deploy': { requires: testJobs, filters: deployBranchFilter } },
-      //   { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
-      //   { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
-      //   { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
-      // ],
+      // jobs: ['Www2 - unit tests'],
+      jobs: [
+        'Prepare',
+        { 'Www2 - unit tests': { requires: ['Prepare'] } },
+        // { 'App - unit tests': { requires: ['Prepare'] } },
+        // { 'Core - unit tests': { requires: ['Prepare'] } },
+        // { 'Admin - unit tests': { requires: ['Prepare'] } },
+        // // { 'Pro - unit tests': { requires: ['Prepare'] } },
+        // { 'Www2 - e2e tests': { requires: ['Prepare'] } },
+        // { 'App - e2e tests': { requires: ['Prepare'] } },
+        // { 'Admin - e2e tests': { requires: ['Prepare'] } },
+        // { 'Pro - e2e tests': { requires: ['Prepare'] } },
+        // { 'App - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        // { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        // { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        // { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
+      ],
     },
   },
 });

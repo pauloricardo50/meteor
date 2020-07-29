@@ -2,7 +2,7 @@ version: 2
 jobs:
   Prepare:
     working_directory: /home/circleci/app
-    docker:
+    docker: &ref_0
       - image: 'cypress/base:12'
         environment:
           LANG: C.UTF-8
@@ -57,42 +57,17 @@ jobs:
             - ./node_modules
   Www2 - unit tests:
     working_directory: /home/circleci/app
-    docker:
-      - image: 'cypress/base:12'
-        environment:
-          LANG: C.UTF-8
-          LANGUAGE: C.UTF-8
-          LC_ALL: C.UTF-8
-          LC_NUMERIC: en_US.UTF-8
-          METEOR_VERSION: 1.10.2
-          NODE_ENV: test
-          TOOL_NODE_FLAGS: >-
-            --max_old_space_size=8192 --optimize_for_size --gc_interval=100
-            --min_semi_space_size=8 --max_semi_space_size=256
-          CIRCLE_CI: 1
-          DEBUG: false
-          METEOR_ALLOW_SUPERUSER: true
-          METEOR_DISABLE_OPTIMISTIC_CACHING: 1
-          RTL_SKIP_AUTO_CLEANUP: 1
-          HOME: /home/circleci
+    docker: *ref_0
     steps:
-      - checkout
       - restore_cache:
-          name: Restore microservice node_modules
+          name: Restore source
           keys:
-            - >-
-              node_modules_master_16_www2_{{ checksum
-              "./microservices/www2/package-lock.json" }}
+            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_16-{{ .Branch }}-'
+            - source_master_16-
       - run:
           name: Install node_modules
           command: npm --prefix microservices/www2 ci
-      - save_cache:
-          name: Cache meteor microservice
-          key: >-
-            node_modules_master_16_www2_{{ checksum
-            "./microservices/www2/package-lock.json" }}
-          paths:
-            - ./microservices/www2/node_modules
       - run:
           name: Run tests
           command: npm run test-ci --prefix microservices/www2
@@ -100,4 +75,7 @@ workflows:
   version: 2
   Test and deploy:
     jobs:
-      - Www2 - unit tests
+      - Prepare
+      - Www2 - unit tests:
+          requires:
+            - Prepare
