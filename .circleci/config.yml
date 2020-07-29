@@ -55,22 +55,6 @@ jobs:
           key: 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
           paths:
             - ./node_modules
-  Www2 - unit tests:
-    working_directory: /home/circleci/app
-    docker: *ref_0
-    steps:
-      - restore_cache:
-          name: Restore source
-          keys:
-            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_16-{{ .Branch }}-'
-            - source_master_16-
-      - run:
-          name: Install node_modules
-          command: npm --prefix microservices/www2 ci
-      - run:
-          name: Run tests
-          command: npm run test-ci --prefix microservices/www2
   Www2 - e2e tests:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -161,6 +145,6 @@ workflows:
   Test and deploy:
     jobs:
       - Prepare
-      - Www2 - unit tests:
+      - Www2 - e2e tests:
           requires:
             - Prepare
