@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import { DRIP_TAGS } from 'core/api/drip/dripConstants';
 import DripService from 'core/api/drip/server/DripService';
 import FrontService from 'core/api/front/server/FrontService';
 import IntercomService from 'core/api/intercom/server/IntercomService';
@@ -195,7 +196,7 @@ api.addEndpoint('/drip-webhook', 'POST', dripWebhookAPI, {
 
     // Avoid tests calls to be tracked on production backend
     const subscriber = data?.subscriber || Subscriber;
-    const hasTestTag = subscriber?.tags?.includes?.(this.tags?.TEST);
+    const hasTestTag = subscriber?.tags?.includes?.(DRIP_TAGS.TEST);
 
     if (hasTestTag) {
       req.skipTracking = true;
