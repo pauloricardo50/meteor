@@ -16,7 +16,7 @@ export const userSchema = new SimpleSchema({
   firstName: String,
   lastName: String,
   email: { type: String, regEx: SimpleSchema.RegEx.Email },
-  phoneNumber: String,
+  phoneNumber: { type: String, optional: true },
 });
 
 export default compose(
