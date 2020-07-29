@@ -1,6 +1,19 @@
 {
   "name": "epotek-brand-website",
   "private": true,
+  "scripts": {
+    "build": "npx --node-arg '-r esm' gatsby build",
+    "clean": "gatsby clean",
+    "predeploy": "npm run clean && npm run build",
+    "deploy": "netlifyctl deploy",
+    "deploy-draft": "netlifyctl deploy --draft",
+    "develop": "npx --node-arg '-r esm' gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "local": "npx --node-arg '-r esm' npm run develop -- -H 0.0.0.0",
+    "serve": "npx --node-arg '-r esm' gatsby serve -H 0.0.0.0",
+    "start": "npx --node-arg '-r esm' npm run develop",
+    "test": "jest --watch"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
@@ -60,19 +73,6 @@
     "uniforms": "^2.6.9",
     "uniforms-bridge-simple-schema-2": "^2.6.9",
     "uniforms-material": "^2.6.9"
-  },
-  "scripts": {
-    "build": "npx --node-arg '-r esm' gatsby build",
-    "clean": "gatsby clean",
-    "predeploy": "npm run clean && npm run build",
-    "deploy": "netlifyctl deploy",
-    "deploy-draft": "netlifyctl deploy --draft",
-    "develop": "npx --node-arg '-r esm' gatsby develop",
-    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "local": "npx --node-arg '-r esm' npm run develop -- -H 0.0.0.0",
-    "serve": "npx --node-arg '-r esm' gatsby serve -H 0.0.0.0",
-    "start": "npx --node-arg '-r esm' npm run develop",
-    "test": "jest --watch"
   },
   "devDependencies": {
     "@testing-library/react": "^10.4.4",

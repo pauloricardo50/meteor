@@ -1,12 +1,12 @@
 import './TopNav.scss';
 
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useWindowScroll from 'react-use/lib/useWindowScroll';
 
 import colors from 'core/config/colors';
-import useMedia from 'core/hooks/useMedia';
 
 import { EPOTEK_APP } from '../../constants';
 import LanguageContext from '../../contexts/LanguageContext';
@@ -27,11 +27,31 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const contentHeight = 400;
+
 const TopNav = () => {
   const { tracking_id: pageTrackingId } = useLayoutContext();
   const [language] = useContext(LanguageContext);
-  const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
-  const isMobile = useMedia({ maxWidth: 768 });
+  // These 2 media queries return false at first, since in SSR they can't detect
+  // screen size. To avoid any jumps in content, I make sure they're both
+  // initialized before deciding what to do
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'));
+  const isLarge = useMediaQuery(theme => theme.breakpoints.up('md'));
+  const isTrueMobile = isMobile && !isLarge;
+  const isTrueLarge = isLarge && !isMobile;
+  const { y } = useWindowScroll();
+  const shouldUseDynamicCta = isTrueMobile && pageTrackingId === 'Home page';
+  const [showCta, setShowCta] = useState(shouldUseDynamicCta ? y === 0 : true);
+
+  useEffect(() => {
+    if (shouldUseDynamicCta && !showCta && y > contentHeight) {
+      setShowCta(true);
+    } else if (shouldUseDynamicCta && showCta && y < contentHeight) {
+      setShowCta(false);
+    } else if (!shouldUseDynamicCta && !showCta) {
+      setShowCta(true);
+    }
+  }, [y, shouldUseDynamicCta]);
 
   return (
     <AppBar
@@ -45,30 +65,33 @@ const TopNav = () => {
         <div className="top-nav-left">
           <MainMenu />
 
-          {matches && <TopMenu menuName="top-nav" />}
+          {isTrueLarge && <TopMenu menuName="top-nav" />}
         </div>
 
         <TopNavLogo />
 
         <div className="top-nav-right">
-          {matches && <LoginMenu />}
+          {isTrueLarge && <LoginMenu />}
 
-          <Button
-            size={isMobile ? 'small' : 'medium'}
-            raised
-            primary
-            component="a"
-            href={EPOTEK_APP}
-            onTrack={() =>
-              trackCTA({
-                buttonTrackingId: 'Topnav start',
-                toPath: EPOTEK_APP,
-                pageTrackingId,
-              })
-            }
-          >
-            {getLanguageData(language).getALoanText}
-          </Button>
+          {showCta && (
+            <Button
+              size={isMobile ? 'small' : 'medium'}
+              raised
+              primary
+              component="a"
+              href={EPOTEK_APP}
+              onTrack={() =>
+                trackCTA({
+                  buttonTrackingId: 'Topnav start',
+                  toPath: EPOTEK_APP,
+                  pageTrackingId,
+                })
+              }
+              className="animated fadeIn"
+            >
+              {getLanguageData(language).getALoanText}
+            </Button>
+          )}
         </div>
       </div>
     </AppBar>

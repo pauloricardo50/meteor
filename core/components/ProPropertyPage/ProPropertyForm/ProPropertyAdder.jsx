@@ -22,6 +22,7 @@ export default compose(
       icon: <Icon type="add" />,
     },
     title: 'Ajouter un bien immobilier',
-    description: 'Vous pourrez y inviter vos collegues et clients après',
+    description:
+      'Vous pourrez toujours modifier ces informations, et y inviter vos collègues et clients après.',
   })),
 )(ProPropertyForm);

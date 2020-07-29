@@ -1,12 +1,10 @@
 import { compose, lifecycle, withProps, withState } from 'recompose';
 
-import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
 import { anonymousLoanInsert } from 'core/api/loans/methodDefinitions';
 import { anonymousLoan } from 'core/api/loans/queries';
 import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
-import { parseCookies } from 'core/utils/cookiesHelpers';
 import { createRoute } from 'core/utils/routerUtils';
 
 import APP_ROUTES from '../../../../startup/client/appRoutes';
@@ -50,7 +48,6 @@ export default compose(
     insertAnonymousLoan: ({ purchaseType } = {}) =>
       anonymousLoanInsert
         .run({
-          trackingId: parseCookies()[TRACKING_COOKIE],
           referralId: localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined,
           existingAnonymousLoanId: localStorage.getItem(
             LOCAL_STORAGE_ANONYMOUS_LOAN,

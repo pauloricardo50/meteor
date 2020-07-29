@@ -131,14 +131,19 @@
       width: 300px;
     }
   }
-}
 
-.signup-form.modal{
-  display: block;
-  margin: 0;
+  &.modal {
+    display: block;
+    margin: 0;
+    font-size: 14px;
 
-  .email {
-    width: auto;
+    p {
+      font-size: 16px;
+    }
+  
+    .email {
+      width: auto;
+    }
   }
 }
 

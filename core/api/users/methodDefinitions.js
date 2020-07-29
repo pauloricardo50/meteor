@@ -170,7 +170,6 @@ export const anonymousCreateUser = new Method({
       lastName: Match.Maybe(String),
       phoneNumber: Match.Maybe(String),
     },
-    trackingId: Match.Maybe(Match.OneOf(String, null)),
     referralId: Match.Maybe(String),
     ctaId: Match.Maybe(String),
   },

@@ -33,10 +33,16 @@ const defaultTheme = fontSize => ({
       containedPrimary: {
         backgroundImage: colors.primaryGradient,
         color: 'white',
+        '&$disabled': {
+          backgroundImage: 'unset',
+        },
       },
       containedSecondary: {
         backgroundImage: colors.secondaryGradient,
         color: 'white',
+        '&$disabled': {
+          backgroundImage: 'unset',
+        },
       },
     },
     MuiFormLabel: {
@@ -188,6 +194,16 @@ const defaultTheme = fontSize => ({
     MuiCheckbox: {
       root: {
         border: 'none',
+      },
+    },
+    MuiDialogContent: {
+      root: {
+        '&:first-child': {
+          // dialog without title fix. it does not work when you wrap
+          // content in a form tag for example
+          // https://github.com/mui-org/material-ui/issues/21894
+          paddingTop: 8,
+        },
       },
     },
   },

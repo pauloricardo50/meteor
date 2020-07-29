@@ -6,20 +6,20 @@ import { Helmet } from 'react-helmet';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import useIntercom from '../../hooks/useIntercom';
-import epotekLogo from '../../images/epotek_logo.png';
 import {
   getLanguageData,
   getLongLang,
   getShortLang,
 } from '../../utils/languages.js';
 import { linkResolver } from '../../utils/linkResolver';
+import { getOgImage, getOgUrl, getPageTitle } from '../../utils/seo';
 import { useTracking } from '../../utils/tracking';
 import CookiesNotification from '../CookiesNotification';
 import Footer from '../Footer';
 import TopNav from '../TopNav';
 import { LayoutContext } from './LayoutContext';
 
-const Layout = ({ children, location, pageContext, data }) => {
+const Layout = ({ children, pageContext, data }) => {
   const siteData = useStaticQuery(graphql`
     query SiteQuery {
       site {
@@ -39,9 +39,10 @@ const Layout = ({ children, location, pageContext, data }) => {
   const pageTitle = pageObject.name?.[0]?.text || pageObject.title?.[0]?.text;
   const { seo_title: seoTitle, seo_description: seoDescription } = pageObject;
 
-  // const pageLang = getShortLang(pageContext.lang);
   const pageLang = getShortLang('fr-ch');
   const pageType = pageContext.type;
+  const ogUrl = getOgUrl(pageObject._meta, pageLang);
+  const { url: ogImage, width, height } = getOgImage(pageObject);
 
   const [language, setLanguage] = useState(pageLang);
 
@@ -63,32 +64,38 @@ const Layout = ({ children, location, pageContext, data }) => {
   }, [language]);
 
   return (
-    <LayoutContext.Provider value={pageObject}>
-      <LanguageContext.Provider value={[language, setLanguage]}>
-        <Helmet>
-          <html lang={pageLang} />
-          <title>
-            {seoTitle || `${title}${pageTitle ? ` | ${pageTitle}` : ''}`}
-          </title>
-          <meta name="description" content={seoDescription || description} />
-          <meta name="og:title" content={seoTitle || pageTitle} />
-          <meta name="og:description" content={seoDescription || description} />
-          <meta property="og:type" content="website" />
-          <meta property="og:site_name" content={title} />
-          <meta property="og:locale" content={pageContext.lang} />
-          <meta property="og:image" content={epotekLogo} />
-          {location && <meta property="og:url" content={location.href} />}
-        </Helmet>
+    <>
+      <Helmet>
+        <html lang={pageLang} />
+        <title>{getPageTitle({ seoTitle, title, pageTitle })}</title>
+        <meta name="description" content={seoDescription || description} />
+        <meta property="og:title" content={seoTitle || pageTitle} />
+        <meta
+          property="og:description"
+          content={seoDescription || description}
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={title} />
+        <meta property="og:locale" content={pageContext.lang} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content={width} />
+        <meta property="og:image:height" content={height} />
+        <meta property="og:url" content={ogUrl} />
+        <meta property="fb:app_id" content="1868218996582233" />
+      </Helmet>
 
-        <TopNav />
+      <LayoutContext.Provider value={pageObject}>
+        <LanguageContext.Provider value={[language, setLanguage]}>
+          <TopNav />
 
-        <main>{children}</main>
+          <main>{children}</main>
 
-        <Footer />
+          <Footer />
 
-        <CookiesNotification />
-      </LanguageContext.Provider>
-    </LayoutContext.Provider>
+          <CookiesNotification />
+        </LanguageContext.Provider>
+      </LayoutContext.Provider>
+    </>
   );
 };
 

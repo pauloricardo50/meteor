@@ -1,30 +1,7 @@
 import React from 'react';
 
 import getMenuLinks from '../../utils/getMenuLinks';
-import { linkResolver } from '../../utils/linkResolver';
-
-const MenuItem = ({ item }) => {
-  const { sub_label: label, sub_link: link } = item;
-  const linkType = link?._linkType;
-
-  if (linkType === 'Link.document') {
-    return (
-      <a className="footer-menu-item" href={linkResolver(link._meta)}>
-        {label}
-      </a>
-    );
-  }
-
-  if (linkType === 'Link.web') {
-    return (
-      <a className="footer-menu-item" href={link.url}>
-        {label}
-      </a>
-    );
-  }
-
-  return null;
-};
+import Link from '../Link';
 
 const MenuCategory = ({ category }) => {
   const { primary, fields = [] } = category;
@@ -33,7 +10,15 @@ const MenuCategory = ({ category }) => {
     <div className="footer-menu-category">
       <b className="footer-menu-category-title">{primary.label}</b>
       {fields?.length &&
-        fields.map(item => <MenuItem item={item} key={item.sub_label} />)}
+        fields.map(({ sub_link, sub_label }) => (
+          <Link
+            className="footer-menu-item"
+            prismicLink={sub_link}
+            key={sub_label}
+          >
+            {sub_label}
+          </Link>
+        ))}
     </div>
   );
 };

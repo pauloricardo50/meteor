@@ -1,29 +1,12 @@
-// html {
-//   @include font-size(14px);
-//   @include screen(xsmall, min) {
-//     @include font-size(16px);
-//   }
-//   @include screen(med, min) {
-//     @include font-size(18px);
-//   }
-//   // @include screen(xwide, min) {
-//   //   @include font-size($font-size-m);
-//   // }
-// }
-
 body {
   background-color: #fff;
 
   // Same as .text-m
   font-size: 16px;
   line-height: 1.5;
-  // line-height: 1.44;
-  // letter-spacing: 0.85px;
 
   @media screen and (max-width: $med) {
     font-size: 14px;
-    // line-height: 1.5;
-    // letter-spacing: 0.74px;
   }
 }
 
@@ -37,7 +20,6 @@ body {
     padding-left: 32px;
     padding-right: 32px;
   }
-
 
   @media screen and (min-width: 1264px) {
     padding-left: 0;
@@ -93,13 +75,13 @@ section,
     font-size: 2rem;
     line-height: 2.8rem;
   }
-  
+
   h2,
   .font-size-2 {
     font-size: 1.8rem;
     line-height: 2.7rem;
   }
-  
+
   h3,
   .font-size-3 {
     font-size: 1.6rem;

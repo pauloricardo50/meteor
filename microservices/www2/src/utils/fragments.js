@@ -13,6 +13,7 @@ export const prismicPageFields = graphql`
     tracking_id
     seo_title
     seo_description
+    seo_image
   }
 `;
 

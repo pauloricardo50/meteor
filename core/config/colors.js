@@ -2,7 +2,7 @@ import { INTEREST_RATES } from '../api/interestRates/interestRatesConstants';
 
 const colors = {
   primary: '#2e7eff',
-  primaryArray: [0, 91, 234],
+  primaryArray: [46, 126, 255],
   primaryLight: '#5bb5ff',
   primaryGradient: 'linear-gradient(to left, #5bb5ff, #2e7eff)',
   primaryGradientDark: 'linear-gradient(to left, #5bb5ff, #0048bb)',

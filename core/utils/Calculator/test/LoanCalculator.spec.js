@@ -848,6 +848,57 @@ describe('LoanCalculator', () => {
 
       expect(incomeRatio).to.equal(0);
     });
+
+    it('returns a ratio above 1, but not infinity', () => {
+      const calc = new CalculatorClass({
+        realEstateIncomeConsideration: 0.5,
+      });
+
+      expect(
+        calc.getIncomeRatio({
+          loan: {
+            structure: {
+              wantedLoan: 800000,
+              property: { value: 1000000, investmentRent: 40000 },
+              propertyWork: 0,
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 800000 }],
+            },
+          },
+          interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
+        }),
+      ).to.be.within(2.99999, 3);
+
+      expect(
+        calc.getIncomeRatio({
+          loan: {
+            structure: {
+              wantedLoan: 800000,
+              property: { value: 1000000 },
+              propertyWork: 0,
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 800000 }],
+            },
+          },
+          interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
+        }),
+      ).to.equal(1);
+    });
+
+    it('caps the ratio at 100', () => {
+      expect(
+        Calculator.getIncomeRatio({
+          loan: {
+            structure: {
+              wantedLoan: 800000,
+              property: { value: 1000000 },
+              propertyWork: 0,
+              loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 800000 }],
+            },
+            borrowers: [{ salary: 10 }],
+          },
+          interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
+        }),
+      ).to.equal(9.99);
+    });
   });
 
   describe('getBorrowRatio', () => {

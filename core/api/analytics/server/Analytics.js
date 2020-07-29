@@ -141,7 +141,7 @@ class Analytics {
     });
   }
 
-  identify(trackingId) {
+  identify(trackingId = getClientTrackingId()) {
     this.alias(trackingId);
 
     this.analytics.identify({
@@ -282,7 +282,14 @@ class Analytics {
   }
 
   page(params) {
-    const { cookies, path, route, queryParams, queryString } = params;
+    const {
+      cookies,
+      path,
+      route,
+      queryParams,
+      queryString,
+      microservice,
+    } = params;
     const trackingId = cookies[TRACKING_COOKIE];
     const formattedRoute = this.formatRouteName(route);
 
@@ -299,6 +306,7 @@ class Analytics {
         path,
         url: `${this.host}${path === '/' ? '' : path}`,
         referrer: this.referrer,
+        microservice,
         ...queryString,
         ...queryParams,
       },

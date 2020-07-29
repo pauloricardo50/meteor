@@ -10,10 +10,10 @@ export default class AutoFormSelectFieldInput extends Component {
     super(props);
 
     const {
-      InputProps: { defaultValue },
+      InputProps: { defaultValue, currentValue },
     } = this.props;
     this.state = {
-      value: this.props.InputProps.currentValue || defaultValue || '',
+      value: currentValue || defaultValue || '',
       errorText: '',
       saving: false,
     };
@@ -53,16 +53,7 @@ export default class AutoFormSelectFieldInput extends Component {
 
   render() {
     const {
-      InputProps: {
-        style,
-        label,
-        disabled,
-        options,
-        transform,
-        defaultValue,
-        id,
-        required,
-      },
+      InputProps: { label, disabled, transform, id, required },
       admin,
     } = this.props;
     const { value, saving, errorText } = this.state;

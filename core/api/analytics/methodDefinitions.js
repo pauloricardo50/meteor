@@ -20,6 +20,7 @@ export const analyticsPage = new Method({
     route: String,
     queryParams: Object,
     queryString: Object,
+    microservice: String,
   },
   doNotRefetchQueries: true,
   hideClientError: true,
@@ -27,9 +28,6 @@ export const analyticsPage = new Method({
 
 export const analyticsVerifyEmail = new Method({
   name: 'analyticsVerifyEmail',
-  params: {
-    trackingId: Match.Maybe(Match.OneOf(String, null)), // Can be optional if cookies are blocked
-  },
   doNotRefetchQueries: true,
   hideClientError: true,
 });
@@ -50,7 +48,6 @@ export const analyticsCTA = new Method({
 export const analyticsOpenedIntercom = new Method({
   name: 'analyticsOpenedIntercom',
   params: {
-    trackingId: Match.Maybe(Match.OneOf(String, null)),
     lastPageTitle: Match.Maybe(String),
     lastPagePath: Match.Maybe(String),
     lastPageMicroservice: Match.Maybe(String),

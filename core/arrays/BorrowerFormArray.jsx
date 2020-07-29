@@ -12,8 +12,8 @@ import {
 import { PURCHASE_TYPE } from '../api/loans/loanConstants';
 import { RESIDENCE_TYPE } from '../api/properties/propertyConstants';
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
-import CantonField from '../components/CantonField/CantonField';
-import CityField from '../components/CityField/CityField';
+import CantonField from '../components/CantonField';
+import CityField from '../components/CityField';
 import T, { Money } from '../components/Translation';
 import Calculator from '../utils/Calculator';
 import {

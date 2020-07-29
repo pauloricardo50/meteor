@@ -10,7 +10,7 @@ const RefinancingTab = ({ loan }) => {
 
   return (
     <div className="refinancing-tab">
-      <h1>Refinancement</h1>
+      <h1>Renouvellement</h1>
       <div className="flex-col center-align">
         {previousLoanValue > 0 && (
           <h2 className="text-center">

@@ -5,14 +5,19 @@ import { Link } from 'gatsby';
 
 import { linkResolver } from '../../utils/linkResolver';
 
-const useStyles = makeStyles({
-  gutters: {
-    paddingLeft: '2rem',
+const useStyles = makeStyles(theme => ({
+  root: {
+    [theme.breakpoints.down('md')]: {
+      minHeight: 32,
+    },
   },
-});
+  gutters: {
+    paddingLeft: ({ subMenu }) => (subMenu ? '2rem' : undefined),
+  },
+}));
 
 const MenuItems = ({ menuLinks = [], subMenu, onClick }) => {
-  const classes = useStyles();
+  const classes = useStyles({ subMenu });
 
   return menuLinks?.map((menuLink, idx) => {
     const primaryLink = menuLink.primary?.link || menuLink.sub_link;
@@ -23,7 +28,7 @@ const MenuItems = ({ menuLinks = [], subMenu, onClick }) => {
         <MenuItem
           key={idx}
           component={Link}
-          classes={subMenu && classes}
+          classes={classes}
           to={linkResolver(primaryLink._meta)}
           role="button"
           onClick={onClick}
@@ -37,7 +42,7 @@ const MenuItems = ({ menuLinks = [], subMenu, onClick }) => {
       return (
         <MenuItem
           key={idx}
-          classes={subMenu && classes}
+          classes={classes}
           to={primaryLink.url}
           role="button"
           onClick={onClick}

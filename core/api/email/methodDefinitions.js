@@ -1,10 +1,8 @@
-import { Match } from 'meteor/check';
-
 import { Method } from '../methods/methods';
 
 export const subscribeToNewsletter = new Method({
   name: 'subscribeToNewsletter',
-  params: { email: String, trackingId: Match.Maybe(Match.OneOf(String, null)) },
+  params: { email: String },
 });
 
 export const unsubscribeFromNewsletter = new Method({

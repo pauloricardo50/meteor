@@ -24,7 +24,7 @@ const InsuranceTab = props => {
     referralIsCommissionned,
   } = props;
 
-  if (!insurance?.name) {
+  if (!insurance?.name || !insurance?.insuranceProduct) {
     // Avoid race conditions in E2E tests
     return null;
   }

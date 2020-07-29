@@ -85,7 +85,6 @@ const initializeIntercom = async history => {
         window?.Intercom?.('onShow', function () {
           updateIntercomVisitorTrackingId.run(getTrackingIds());
           analyticsOpenedIntercom.run({
-            trackingId: getTrackingIds().trackingId,
             lastPageTitle: document?.title,
             lastPagePath: history?.location?.pathname,
             lastPageMicroservice: Meteor.microservice,
