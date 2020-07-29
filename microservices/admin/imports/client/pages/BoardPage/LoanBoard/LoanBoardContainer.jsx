@@ -39,7 +39,7 @@ const defaultBody = {
   status: 1,
   structures: { wantedLoan: 1, id: 1, propertyId: 1 },
   tasksCache: 1,
-  user: { name: 1 },
+  user: { name: 1, status: 1 },
   userId: 1,
 };
 
@@ -80,6 +80,7 @@ const getQueryFilters = ({
   lenderId,
   category,
   purchaseType,
+  userStatus,
 }) => {
   const $or = [];
 
@@ -111,6 +112,7 @@ const getQueryFilters = ({
       ? { promotionLinks: { $in: [[], null] } }
       : {}),
     purchaseType,
+    'userCache.status': userStatus,
   };
 };
 

@@ -8,6 +8,7 @@ import {
   INSURANCE_REQUEST_STATUS,
   INSURANCE_REQUEST_STATUS_ORDER,
 } from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { USER_STATUS } from 'core/api/users/userConstants';
 
 import {
   ACTIONS,
@@ -35,6 +36,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   status: undefined,
   insuranceRequestId: '',
   additionalFields: [],
+  userStatus: { $in: [USER_STATUS.QUALIFIED] },
 });
 
 const getMissingColumns = (groupBy, groups) => {

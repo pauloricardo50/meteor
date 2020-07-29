@@ -27,7 +27,7 @@ const defaultBody = {
     borrower: { name: 1 },
   },
   mainAssigneeLink: 1,
-  user: { name: 1 },
+  user: { name: 1, status: 1 },
   nextDueTask: 1,
   tasksCache: 1,
   adminNotes: 1,
@@ -47,7 +47,12 @@ const getStatusFilter = status => {
   };
 };
 
-const getQueryFilters = ({ assignedEmployeeId, status, organisationId }) => ({
+const getQueryFilters = ({
+  assignedEmployeeId,
+  status,
+  organisationId,
+  userStatus,
+}) => ({
   assigneeLinks: { $elemMatch: { _id: assignedEmployeeId } },
   status: getStatusFilter(status),
   ...(organisationId
@@ -57,6 +62,7 @@ const getQueryFilters = ({ assignedEmployeeId, status, organisationId }) => ({
         },
       }
     : {}),
+  'userCache.status': userStatus,
 });
 
 export default compose(
