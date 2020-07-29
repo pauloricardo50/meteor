@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
+import { Method } from '../../methods/methods';
 import PropertyService from '../../properties/server/PropertyService';
 import { HTTP_STATUS_CODES } from '../../RESTAPI/server/restApiConstants';
 import SecurityService from '../../security';
@@ -23,6 +24,7 @@ import {
   setRole,
   setUserReferredBy,
   setUserReferredByOrganisation,
+  setUserStatus,
   testCreateUser,
   testUserAccount,
   toggleAccount,
@@ -253,4 +255,21 @@ getEnrollUrl.setHandler((context, { userId }) => {
     }
     return `${Meteor.settings.public.subdomains.app}/enroll-account/${token}`;
   }
+});
+
+setUserStatus.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.setStatus({
+    ...params,
+    analyticsProperties: { statusChangeReason: 'Manual change' },
+  });
+});
+
+export const notifyDigitalWithUsersProspectForTooLong = new Method({
+  name: 'notifyDigitalWithUsersProspectForTooLong',
+});
+
+notifyDigitalWithUsersProspectForTooLong.setHandler(context => {
+  SecurityService.checkIsInternalCall(context);
+  return UserService.getUsersProspectForTooLong();
 });

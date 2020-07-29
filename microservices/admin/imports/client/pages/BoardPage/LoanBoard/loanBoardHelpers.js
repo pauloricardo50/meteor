@@ -7,6 +7,7 @@ import _orderBy from 'lodash/orderBy';
 import moment from 'moment';
 
 import { LOAN_STATUS, LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
+import { USER_STATUS } from 'core/api/users/userConstants';
 import Calculator from 'core/utils/Calculator';
 
 import { ACTIONS, GROUP_BY, SORT_BY, SORT_ORDER } from './loanBoardConstants';
@@ -187,6 +188,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   promotionStatus: undefined,
   additionalFields: [],
   purchaseType: undefined,
+  userStatus: { $in: [USER_STATUS.QUALIFIED] },
 });
 
 export const filterReducer = (state, { type, payload }) => {

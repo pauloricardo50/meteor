@@ -551,6 +551,15 @@ addEmailConfig(EMAIL_IDS.PROMOTION_INTEREST_FORM_ADMIN, {
   }),
 });
 
+addEmailConfig(EMAIL_IDS.PROSPECT_FOR_TOO_LONG_NOTIFICATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  footerType: FOOTER_TYPES.VISITOR,
+  createIntlValues: params => ({
+    ...params,
+    details: params.details || '',
+  }),
+});
+
 Meteor.startup(checkAllEmailAreDefined);
 
 export default emailConfigs;

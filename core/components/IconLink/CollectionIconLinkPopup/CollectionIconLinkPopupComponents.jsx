@@ -24,7 +24,7 @@ import {
   PROPERTIES_COLLECTION,
   PROPERTY_CATEGORY,
 } from '../../../api/properties/propertyConstants';
-import { USERS_COLLECTION } from '../../../api/users/userConstants';
+import { ROLES, USERS_COLLECTION } from '../../../api/users/userConstants';
 import colors from '../../../config/colors';
 import AssignedRole from '../../AssignedRole';
 import FullDate from '../../dateComponents/FullDate';
@@ -83,19 +83,44 @@ export const titles = {
       )}
     </span>
   ),
-  [USERS_COLLECTION]: ({ _id, name, roles, isDisabled }) => (
-    <div className="flex center-align sb">
-      <div>
-        {isDisabled && (
-          <p className="flex center error-box m-0 mb-8">Désactivé</p>
+  [USERS_COLLECTION]: ({
+    _id,
+    name,
+    roles,
+    status,
+    isDisabled,
+    _collection,
+  }) => {
+    const { _id: assignedRole } = roles.find(({ assigned }) => assigned);
+    return (
+      <div className="flex-col">
+        {assignedRole === ROLES.USER && (
+          <StatusLabel
+            status={status}
+            collection={_collection}
+            className="mb-8 flex center"
+            style={{ textAlign: 'center' }}
+          />
         )}
-        {name}
-        &nbsp;
-        <AssignedRole className="secondary" roles={roles} />
+        <div className="flex center-align sb">
+          <div>
+            {isDisabled && (
+              <p className="flex center error-box m-0 mb-8">Désactivé</p>
+            )}
+            {name}
+            &nbsp;
+            <AssignedRole className="secondary" roles={roles} />
+            &nbsp;
+          </div>
+          <ImpersonateLink
+            user={{ _id, roles }}
+            size="small"
+            className="ml-4"
+          />
+        </div>
       </div>
-      <ImpersonateLink user={{ _id, roles }} size="small" className="ml-4" />
-    </div>
-  ),
+    );
+  },
   [BORROWERS_COLLECTION]: ({ name, age }) => (
     <span>
       {name || 'Emprunteur sans nom'}

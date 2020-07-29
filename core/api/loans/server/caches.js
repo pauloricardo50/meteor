@@ -33,10 +33,11 @@ LoanService.cache(
       referredByUserLink: 1,
       assignedEmployeeCache: 1,
       acquisitionChannel: 1,
+      status: 1,
     },
     referenceField: 'userId',
   },
-  // { 'userCache.acquisitionChannel': { $exists: false } },
+  { 'userCache.status': { $exists: false } },
   // {},
 );
 

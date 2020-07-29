@@ -5,7 +5,12 @@ import SimpleSchema from 'simpl-schema';
 import { makeCollectionTransform } from '../helpers/collectionHelpers';
 import { cacheField, createdAt, updatedAt } from '../helpers/sharedSchemas';
 import { autoValueSentenceCase } from '../helpers/sharedSchemaValues';
-import { ACQUISITION_CHANNELS, OFFICES, ROLES } from './userConstants';
+import {
+  ACQUISITION_CHANNELS,
+  OFFICES,
+  ROLES,
+  USER_STATUS,
+} from './userConstants';
 
 export const UserSchema = new SimpleSchema({
   username: {
@@ -133,6 +138,12 @@ export const UserSchema = new SimpleSchema({
     type: String,
     optional: true,
     uniforms: { helperText: 'CTRL + CMD + Espace pour ajouter un emoji' },
+  },
+  status: {
+    type: String,
+    defaultValue: USER_STATUS.PROSPECT,
+    allowedValues: Object.values(USER_STATUS),
+    optional: true,
   },
 });
 

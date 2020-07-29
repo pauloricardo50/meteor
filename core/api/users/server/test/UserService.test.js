@@ -2,7 +2,10 @@
 import { Factory } from 'meteor/dburles:factory';
 
 import { expect } from 'chai';
+import moment from 'moment';
 import sinon from 'sinon';
+
+import pollUntilReady from 'core/utils/pollUntilReady';
 
 import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
@@ -14,7 +17,8 @@ import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import PropertyService from '../../../properties/server/PropertyService';
 import { proInviteUser } from '../../methodDefinitions';
-import { ACQUISITION_CHANNELS, ROLES } from '../../userConstants';
+import { ACQUISITION_CHANNELS, ROLES, USER_STATUS } from '../../userConstants';
+import { notifyDigitalWithUsersProspectForTooLong } from '../methods';
 import UserService from '../UserService';
 
 describe('UserService', function () {
@@ -1344,20 +1348,41 @@ describe('UserService', function () {
         }),
       );
 
-      const { tasks = [] } = UserService.getByEmail(userToInvite.email, {
-        tasks: { description: 1, assigneeLink: 1 },
+      const invitedUser = UserService.getByEmail(userToInvite.email, {
+        activities: { title: 1, description: 1 },
+        loans: { activities: { title: 1, description: 1 } },
       });
 
-      expect(tasks.length).to.equal(1);
-      const [
-        {
-          description,
-          assigneeLink: { _id: assigneeId },
-        },
-      ] = tasks;
+      const { activities: customerActivities = [] } = invitedUser;
+      const { activities: loanActivities = [] } = invitedUser.loans?.[0] || {};
 
-      expect(description).to.include('Ma man');
-      expect(assigneeId).to.equal('adminId');
+      let activities = [...customerActivities, ...loanActivities];
+
+      activities = await pollUntilReady(() => {
+        if (activities.length > 0) {
+          return activities;
+        }
+
+        const { loans, activities: userActs = [] } = UserService.getByEmail(
+          invitedUser.email,
+          {
+            loans: { shareSolvency: 1, activities: { description: 1 } },
+            activities: { description: 1 },
+          },
+        );
+
+        const { activities: loanActs = [] } = loans?.[0] || {};
+
+        activities = [...userActs, ...loanActs];
+
+        return !!activities.length && activities;
+      });
+
+      expect(activities.length).to.equal(3);
+      expect(activities[0].description).to.contain('John Doe');
+      expect(activities[0].description).to.contain('Ma man');
+      expect(activities[1].title).to.contain('Dossier créé');
+      expect(activities[2].description).to.contain('Ma man');
 
       await checkEmails(2);
     });
@@ -1445,6 +1470,77 @@ describe('UserService', function () {
       });
 
       await checkEmails(2);
+    });
+  });
+
+  describe('getUsersProspectForTooLong', () => {
+    it('returns users with PROSPECT status for more than 21 days', async () => {
+      await UserService.rawCollection.insert({
+        _id: 'u1',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+      });
+      await UserService.rawCollection.insert({
+        _id: 'u2',
+        createdAt: moment().subtract(20, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+      });
+      await UserService.rawCollection.insert({
+        _id: 'u3',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.QUALIFIED,
+      });
+
+      const users = UserService.getUsersProspectForTooLong();
+
+      expect(users.length).to.equal(1);
+      expect(users[0]._id).to.equal('u1');
+    });
+
+    it('sends the email to digital@e-potek.ch', async () => {
+      await UserService.rawCollection.insert({
+        _id: 'u1',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+        firstName: 'Bob',
+        lastName: 'Dylan',
+      });
+      await UserService.rawCollection.insert({
+        _id: 'u2',
+        createdAt: moment().subtract(20, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+      });
+      await UserService.rawCollection.insert({
+        _id: 'u3',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.QUALIFIED,
+      });
+      await UserService.rawCollection.insert({
+        _id: 'u4',
+        createdAt: moment().subtract(23, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+        firstName: 'Mickey',
+        lastName: 'Mouse',
+      });
+
+      await notifyDigitalWithUsersProspectForTooLong.serverRun({});
+
+      const [
+        {
+          address,
+          emailId,
+          template: {
+            message: { global_merge_vars },
+          },
+        },
+      ] = await checkEmails(1);
+
+      expect(address).to.equal('digital@e-potek.ch');
+      expect(emailId).to.equal(EMAIL_IDS.PROSPECT_FOR_TOO_LONG_NOTIFICATION);
+      const [_, body] = global_merge_vars;
+
+      expect(body.content).include('Bob Dylan');
+      expect(body.content).include('Mickey Mouse');
     });
   });
 });

@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import ListItemText from '@material-ui/core/ListItemText';
 import { useHistory } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
@@ -9,6 +10,7 @@ import {
   ASSIGNEE,
   ROLES,
   USERS_COLLECTION,
+  USER_STATUS,
 } from 'core/api/users/userConstants';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import Box from 'core/components/Box';
@@ -37,7 +39,7 @@ export const userFormLayout = [
   {
     Component: Box,
     title: <h5>Options</h5>,
-    fields: ['assignedEmployeeId', 'sendEnrollmentEmail'],
+    fields: ['assignedEmployeeId', 'status', 'sendEnrollmentEmail'],
   },
 ];
 
@@ -123,6 +125,26 @@ const getSchema = (organisations, advisors) =>
             format: office =>
               office === 'Auto' ? 'Auto' : <T id={`Forms.office.${office}`} />,
           },
+        },
+      },
+      status: {
+        type: String,
+        allowedValues: Object.values(USER_STATUS).filter(
+          status => status !== USER_STATUS.LOST,
+        ),
+        uniforms: {
+          transform: status => (
+            <ListItemText
+              primary={
+                status === USER_STATUS.PROSPECT ? 'Prospect' : 'Qualifié'
+              }
+              secondary={
+                status === USER_STATUS.PROSPECT
+                  ? "L'utilisateur sera drippé"
+                  : "L'utilisateur ne sera pas drippé"
+              }
+            />
+          ),
         },
       },
     }),

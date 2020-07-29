@@ -154,7 +154,9 @@ ServerEventService.addAfterMethodListener(
   ({
     params: {
       user: { email },
+      invitationNote,
     },
+    result: { loanIds = [] },
     context,
   }) => {
     context.unblock();
@@ -218,6 +220,10 @@ ServerEventService.addAfterMethodListener(
       })`;
     }
 
+    if (invitationNote) {
+      description = `${description} - Note du pro: ${invitationNote}`;
+    }
+
     ActivityService.addCreatedAtActivity({
       createdAt,
       userLink: { _id: userId },
@@ -232,6 +238,25 @@ ServerEventService.addAfterMethodListener(
         },
       },
     });
+
+    if (invitationNote) {
+      loanIds.forEach(loanId => {
+        ActivityService.addServerActivity({
+          loanLink: { _id: loanId },
+          title: 'Note du pro',
+          description: invitationNote,
+          type: ACTIVITY_TYPES.EVENT,
+          metadata: {
+            event: ACTIVITY_EVENT_METADATA.LOAN_INVITATION_NOTE,
+            details: {
+              referredBy: pick(referredBy, ['_id', 'name']),
+              referredByOrg: pick(referredByOrg, ['_id', 'name']),
+              referredByAPIOrg: pick(referredByAPIOrg, ['_id', 'name']),
+            },
+          },
+        });
+      });
+    }
   },
 );
 

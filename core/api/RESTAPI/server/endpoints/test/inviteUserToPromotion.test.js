@@ -1,7 +1,8 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 
 import { expect } from 'chai';
+
+import pollUntilReady from 'core/utils/pollUntilReady';
 
 import { checkEmails, resetDatabase } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
@@ -75,10 +76,10 @@ const setupPromotion = () => {
   });
 };
 
-describe('REST: inviteUserToPromotion', function() {
+describe('REST: inviteUserToPromotion', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     api.start();
   });
 
@@ -174,36 +175,42 @@ describe('REST: inviteUserToPromotion', function() {
     const invitedUser = UserService.getByEmail(userToInvite.email, {
       referredByUserLink: 1,
       referredByOrganisationLink: 1,
-      loans: { shareSolvency: 1 },
-      tasks: { description: 1 },
+      loans: { shareSolvency: 1, activities: { title: 1, description: 1 } },
+      activities: { description: 1, title: 1 },
     });
 
     expect(invitedUser.loans[0].shareSolvency).to.equal(true);
 
-    let { tasks = [] } = invitedUser;
-    let intervalCount = 0;
+    const { activities: customerActivities = [] } = invitedUser;
+    const { activities: loanActivities = [] } = invitedUser.loans?.[0] || {};
 
-    tasks = await new Promise((resolve, reject) => {
-      const interval = Meteor.setInterval(() => {
-        if (tasks.length === 0 && intervalCount < 10) {
-          tasks =
-            UserService.getByEmail(userToInvite.email, {
-              tasks: { description: 1 },
-            }).tasks || [];
-          intervalCount++;
-        } else {
-          Meteor.clearInterval(interval);
-          if (intervalCount >= 10) {
-            reject('Fetch tasks timeout');
-          }
-          resolve(tasks);
-        }
-      }, 100);
+    let activities = [...customerActivities, ...loanActivities];
+
+    activities = await pollUntilReady(() => {
+      if (activities.length > 0) {
+        return activities;
+      }
+
+      const { loans, activities: userActs = [] } = UserService.getByEmail(
+        invitedUser.email,
+        {
+          loans: { shareSolvency: 1, activities: { description: 1 } },
+          activities: { description: 1 },
+        },
+      );
+
+      const { activities: loanActs = [] } = loans?.[0] || {};
+
+      activities = [...userActs, ...loanActs];
+
+      return !!activities.length && activities;
     });
 
-    expect(tasks.length).to.equal(1);
-    expect(tasks[0].description).to.contain('TestFirstName TestLastName');
-    expect(tasks[0].description).to.contain('testNote');
+    expect(activities.length).to.equal(3);
+    expect(activities[0].description).to.contain('TestFirstName TestLastName');
+    expect(activities[0].description).to.contain('testNote');
+    expect(activities[1].title).to.contain('Dossier créé');
+    expect(activities[2].description).to.contain('TestNote');
 
     await checkEmails(2);
   });

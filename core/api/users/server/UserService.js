@@ -5,8 +5,16 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
 import omit from 'lodash/omit';
+import moment from 'moment';
 import NodeRSA from 'node-rsa';
 
+import {
+  ACTIVITY_EVENT_METADATA,
+  ACTIVITY_TYPES,
+} from '../../activities/activityConstants';
+import ActivityService from '../../activities/server/ActivityService';
+import EVENTS from '../../analytics/events';
+import Analytics from '../../analytics/server/Analytics';
 import CollectionService from '../../helpers/server/CollectionService';
 import { selectorForFastCaseInsensitiveLookup } from '../../helpers/server/mongoServerHelpers';
 import IntercomService from '../../intercom/server/IntercomService';
@@ -16,7 +24,14 @@ import PromotionService from '../../promotions/server/PromotionService';
 import PropertyService from '../../properties/server/PropertyService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
 import SecurityService from '../../security';
-import { ACQUISITION_CHANNELS, ROLES } from '../userConstants';
+import TaskService from '../../tasks/server/TaskService';
+import { TASK_TYPES } from '../../tasks/taskConstants';
+import {
+  ACQUISITION_CHANNELS,
+  ROLES,
+  USER_STATUS,
+  USER_STATUS_ORDER,
+} from '../userConstants';
 import Users from '../users';
 import AssigneeService from './AssigneeService';
 
@@ -203,6 +218,14 @@ export class UserServiceClass extends CollectionService {
       this.baseUpdate(userId, { $unset: { office: true } });
     }
 
+    if (role !== ROLES.USER) {
+      this.baseUpdate(userId, { $unset: { status: true } });
+    }
+
+    if (role === ROLES.USER) {
+      this.baseUpdate(userId, { $set: { status: USER_STATUS.PROSPECT } });
+    }
+
     return Roles.setUserRoles(userId, role);
   };
 
@@ -368,7 +391,13 @@ export class UserServiceClass extends CollectionService {
   };
 
   proCreateUser = ({
-    user: { email, firstName, lastName, phoneNumber },
+    user: {
+      email,
+      firstName,
+      lastName,
+      phoneNumber,
+      status = USER_STATUS.PROSPECT,
+    },
     proUserId,
     setAssignee,
   }) => {
@@ -392,6 +421,7 @@ export class UserServiceClass extends CollectionService {
         phoneNumbers: [phoneNumber].filter(x => x),
         referredByUserId: proUserId,
         setAssignee,
+        status,
       });
     } else {
       const { _id: existingUserId } = this.getByEmail(email, { _id: 1 });
@@ -424,6 +454,8 @@ export class UserServiceClass extends CollectionService {
       });
     }
 
+    let loanIds = [];
+
     const { invitedBy } = user;
     const { userId, pro, isNewUser } = this.proCreateUser({
       user,
@@ -432,24 +464,30 @@ export class UserServiceClass extends CollectionService {
     });
 
     if (propertyIds && propertyIds.length) {
-      PropertyService.inviteUser({
-        propertyIds,
-        userId,
-        shareSolvency,
-      });
+      loanIds = [
+        ...loanIds,
+        PropertyService.inviteUser({
+          propertyIds,
+          userId,
+          shareSolvency,
+        }),
+      ];
     }
     if (promotionIds && promotionIds.length) {
-      promotionIds.map(promotionId =>
-        PromotionService.inviteUser({
-          promotionId,
-          userId,
-          pro,
-          promotionLotIds: user.promotionLotIds,
-          showAllLots: user.showAllLots,
-          shareSolvency,
-          skipCheckPromotionIsReady: true,
-        }),
-      );
+      loanIds = [
+        ...loanIds,
+        ...promotionIds.map(promotionId =>
+          PromotionService.inviteUser({
+            promotionId,
+            userId,
+            pro,
+            promotionLotIds: user.promotionLotIds,
+            showAllLots: user.showAllLots,
+            shareSolvency,
+            skipCheckPromotionIsReady: true,
+          }),
+        ),
+      ];
     }
     if (properties && properties.length) {
       const internalPropertyIds = properties.map(property => {
@@ -476,11 +514,14 @@ export class UserServiceClass extends CollectionService {
         return propertyId;
       });
 
-      PropertyService.inviteUser({
-        propertyIds: internalPropertyIds,
-        userId,
-        shareSolvency,
-      });
+      loanIds = [
+        ...loanIds,
+        ...PropertyService.inviteUser({
+          propertyIds: internalPropertyIds,
+          userId,
+          shareSolvency,
+        }),
+      ];
     }
 
     if (isNewUser) {
@@ -496,6 +537,7 @@ export class UserServiceClass extends CollectionService {
       proId: proUserId || invitedBy,
       admin,
       pro,
+      loanIds,
     };
   };
 
@@ -747,6 +789,74 @@ export class UserServiceClass extends CollectionService {
         },
       });
     }
+  }
+
+  setStatus({ userId, status, analyticsProperties = {}, serverRun = false }) {
+    const user = this.get(userId, {
+      status: 1,
+      firstName: 1,
+      lastName: 1,
+      name: 1,
+      email: 1,
+      assignedEmployee: { name: 1, email: 1 },
+      referredByOrganisation: { name: 1 },
+      referredByUser: { name: 1 },
+    });
+
+    const { status: prevStatus } = user;
+
+    if (status === prevStatus) {
+      throw new Meteor.Error(
+        'Vous devez choisir un statut différent du précédent',
+      );
+    }
+
+    if (!serverRun && status === USER_STATUS.PROSPECT) {
+      throw new Meteor.Error('Vous ne pouvez pas revenir au status Prospect');
+    }
+
+    this._update({ id: userId, object: { status } });
+
+    ActivityService.addServerActivity({
+      userLink: { _id: userId },
+      title: 'Changement de statut',
+      description: `${prevStatus} -> ${status}`,
+      type: ACTIVITY_TYPES.EVENT,
+      metadata: { event: ACTIVITY_EVENT_METADATA.USER_CHANGED_STATUS },
+    });
+
+    const analytics = new Analytics({ userId });
+    analytics.track(EVENTS.USER_CHANGED_STATUS, {
+      prevStatus,
+      nextStatus: status,
+      userId: user?._id,
+      userName: user?.name,
+      userEmail: user?.email,
+      referringUserId: user?.referredByUser?._id,
+      referringUserName: user?.referredByUser?.name,
+      referringOrganisationId: user?.referredByOrganisation?._id,
+      referringOrganisationName: user?.referredByOrganisation?.name,
+      assigneeId: user?.assignedEmployee?._id,
+      assigneeName: user?.assignedEmployee?.name,
+      ...analyticsProperties,
+    });
+
+    return { prevStatus, nextStatus: status };
+  }
+
+  getUsersProspectForTooLong() {
+    const twentyOneDaysAgo = moment().subtract(21, 'days').startOf('day');
+
+    const users = this.fetch({
+      $filters: {
+        createdAt: { $lt: twentyOneDaysAgo.toDate() },
+        status: USER_STATUS.PROSPECT,
+      },
+      name: 1,
+      email: 1,
+    });
+
+    return users;
   }
 }
 

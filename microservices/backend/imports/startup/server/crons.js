@@ -1,3 +1,5 @@
+import { notifyDigitalWithUsersProspectForTooLong } from 'imports/core/api/loans/server/methods';
+
 import CronService from 'core/api/cron/server/CronService';
 import FileService from 'core/api/files/server/FileService';
 import Irs10yService from 'core/api/irs10y/server/Irs10yService';
@@ -130,4 +132,17 @@ CronService.addCron(
     func: () => TaskService.generatePromotionStepReminders(),
   },
   { cronitorId: '1qi00X' },
+);
+
+CronService.addCron(
+  {
+    name:
+      'Notify digital@e-potek.ch with users prospects for more than 21 days',
+    frequency: 'every 1 day',
+    func: () =>
+      notifyDigitalWithUsersProspectForTooLong
+        .serverRun({})
+        .then(users => users.length),
+  },
+  { cronitorId: '3TGplg' },
 );

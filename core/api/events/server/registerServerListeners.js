@@ -9,3 +9,4 @@ import '../../notifications/server/notificationListeners';
 import '../../promotions/server/promotionListeners';
 import '../../slack/server/slackListeners';
 import '../../tasks/server/taskListeners';
+import '../../drip/server/dripListeners';

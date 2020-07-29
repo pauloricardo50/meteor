@@ -12,7 +12,7 @@ import {
 
 /* eslint-env mocha */
 
-describe('anonymousCreateUserListener', function() {
+describe('anonymousCreateUserListener', function () {
   this.timeout(10000);
   beforeEach(() => {
     resetDatabase();
@@ -49,7 +49,6 @@ describe('anonymousCreateUserListener', function() {
   it('adds activities on the user', async () => {
     const userId = await anonymousCreateUser.run({
       user: { email: 'john.doe@test.com' },
-      trackingId: '123',
     });
 
     await checkEmails(1);
@@ -81,7 +80,6 @@ describe('anonymousCreateUserListener', function() {
     const userId = await anonymousCreateUser.run({
       user: { email: 'john.doe@test.com' },
       referralId: 'org2',
-      trackingId: '123',
     });
     await checkEmails(1);
 
@@ -120,7 +118,6 @@ describe('anonymousCreateUserListener', function() {
         lastName: 'TestLastName',
       },
       referralId: 'pro1',
-      trackingId: '123',
     });
     await checkEmails(1);
 
@@ -162,7 +159,6 @@ describe('anonymousCreateUserListener', function() {
         lastName: 'TestLastName',
       },
       referralId: 'pro2',
-      trackingId: '123',
     });
     await checkEmails(1);
 

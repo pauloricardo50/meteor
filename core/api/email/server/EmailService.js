@@ -151,7 +151,7 @@ class EmailService {
     }
   };
 
-  addEmailActivity = ({ address, emailId, template = {}, response }) => {
+  addEmailActivity = ({ address, emailId, template = {}, response = {} }) => {
     const user = UserService.getByEmail(address);
 
     if (!user) {

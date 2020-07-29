@@ -113,7 +113,7 @@ describe('Admin promotion', () => {
       cy.contains('Acquéreurs').click();
       cy.get('table tbody tr').should('have.length', 4);
 
-      cy.contains('Pros').click();
+      cy.contains('Pros (').click();
       cy.get('table tbody tr').should('have.length', 2);
     });
 
@@ -179,7 +179,9 @@ describe('Admin promotion', () => {
         .find('input[name=phoneNumber]')
         .type('0790000000');
       cy.setSelect('invitedBy', 1);
+      cy.setSelect('status', 1);
       cy.setSelect('promotionLotIds', 1);
+
       cy.get('[role=dialog] form').submit();
 
       cy.get('.core-tabs-tab').contains('Acquéreurs').click();
