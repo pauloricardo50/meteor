@@ -8,7 +8,7 @@ exports.sourceNodes = async ({
   reporter,
 }) => {
   reporter.info('Creating e-Potek nodes');
-  if (process.env.IS_E2E_TEST) {
+  if (process.env.GATSBY_E2E_TEST) {
     createTestNodes({
       actions,
       createContentDigest,

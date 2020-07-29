@@ -21,8 +21,15 @@ import {
 } from '../../core/config/financeConstants';
 import { PURCHASE_TYPE } from './wwwCalculatorConstants';
 
-export const getLoanValue = (propertyValue, fortune) =>
-  fortune ? propertyValue * (1 + NOTARY_FEES) - fortune : 0;
+export const getLoanValue = (propertyValue, fortune) => {
+  if (!fortune) {
+    return 0;
+  }
+
+  const loanValue = propertyValue * (1 + NOTARY_FEES) - fortune;
+
+  return Math.max(loanValue, 0);
+};
 
 export const suggestSalary = ({ property, fortune }) => {
   const loan = property * (1 + NOTARY_FEES) - fortune;

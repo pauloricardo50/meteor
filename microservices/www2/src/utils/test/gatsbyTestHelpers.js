@@ -10,9 +10,9 @@ const fakeNewsletters = [
 ];
 
 const fakeGpsStats = [
-  { city: 'Genève', count: 10, ...classifiedCities['1201'] },
-  { city: 'Lausanne', count: 10, ...classifiedCities['1000'] },
-  { city: 'Yverdon', count: 10, ...classifiedCities['1400'] },
+  { count: 10, ...classifiedCities['1000'] },
+  { count: 10, ...classifiedCities['1200'] },
+  { count: 10, ...classifiedCities['1400'] },
 ];
 
 const createTestNodes = ({ actions, createContentDigest, createNodeId }) => {

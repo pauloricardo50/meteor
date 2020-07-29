@@ -6,3 +6,14 @@ import '../../api/email/server/test/setupEmailTests';
 import '../../api/queries/test/collection-app-test';
 import '../../api/queries/test/server/serverQueries-app-test';
 import '../../api/methods/server/test/serverMethods-app-test';
+
+import { Meteor } from 'meteor/meteor';
+
+import createGatsbyFixtures from '../../fixtures/gatsbyFixtures';
+
+Meteor.startup(() => {
+  if (process.env.GATSBY_E2E_TEST) {
+    console.log('Inserting gatsby fixtures');
+    createGatsbyFixtures();
+  }
+});

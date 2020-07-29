@@ -10,14 +10,18 @@ const cypress = new Process();
 
 const GATBY_E2E_PORT = 3015;
 
-runBackend({ process: backend, args: ['--test'] });
+runBackend({
+  process: backend,
+  args: ['--test'],
+  env: { GATSBY_E2E_TEST: true },
+});
 
 gatsby.spawn({
   command: 'npm',
   args: ['run', 'develop', '--', '-p', GATBY_E2E_PORT],
   options: {
     cwd: path.resolve(__dirname, '..'),
-    env: { ...process.env, IS_E2E_TEST: true },
+    env: { ...process.env, GATSBY_E2E_TEST: true },
   },
 });
 
@@ -28,7 +32,7 @@ gatsby.process.once('exit', () => {
 });
 
 waitForServer({ port: GATBY_E2E_PORT, onError: () => gatsby.kill() }, () => {
-  console.log('Running cypress...');
+  console.log('Starting cypress...');
   cypress.spawn({
     command: '../../node_modules/cypress/bin/cypress',
     args: ['open'],

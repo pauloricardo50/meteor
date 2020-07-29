@@ -24,13 +24,12 @@ export const IntercomAPI = (method, ...args) => {
 const getTrackingIds = () => {
   const visitorId = window?.Intercom?.('getVisitorId');
   const cookies = parseCookies();
-  const trackingId = cookies?.[TRACKING_COOKIE];
   const intercomId = Object.keys(cookies).reduce(
     (id, cookie) => (cookie.match(/intercom-id/g) ? cookies[cookie] : id),
     undefined,
   );
 
-  return { visitorId, trackingId, intercomId };
+  return { visitorId, intercomId };
 };
 
 const getIntercomUserSettings = async () => {
