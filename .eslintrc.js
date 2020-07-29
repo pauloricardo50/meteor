@@ -180,6 +180,8 @@ module.exports = {
     // Way too much configuration required for these rules to work..
     'jsx-a11y/label-has-for': 0,
     'jsx-a11y/label-has-associated-control': 0,
+    // We only use emojis in admin
+    'jsx-a11y/accessible-emoji': 0,
 
     // eslint-plugin-react rules
 

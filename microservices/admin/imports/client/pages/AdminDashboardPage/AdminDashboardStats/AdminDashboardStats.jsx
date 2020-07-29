@@ -20,8 +20,20 @@ import UnpaidCommissions from './UnpaidCommissions';
 
 const AdminDashboardStats = () => {
   const [showAll, setShowAll] = useState(false);
+  const [showStats, setShowStats] = useState(true);
+
+  if (!showStats) {
+    return (
+      <div className="mt-32 text-center">
+        <Button raised primary size="large" onClick={() => setShowStats(true)}>
+          Afficher les stats
+        </Button>
+      </div>
+    );
+  }
+
   return (
-    <div className="admin-stats">
+    <div className="admin-stats animated fadeIn">
       <div>
         <h2>Stats</h2>
         <div className="flex wrap sa">

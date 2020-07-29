@@ -822,7 +822,10 @@ export class UserServiceClass extends CollectionService {
       title: 'Changement de statut',
       description: `${prevStatus} -> ${status}`,
       type: ACTIVITY_TYPES.EVENT,
-      metadata: { event: ACTIVITY_EVENT_METADATA.USER_CHANGED_STATUS },
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.USER_CHANGED_STATUS,
+        details: { prevStatus, nextStatus: status },
+      },
     });
 
     const analytics = new Analytics({ userId });
