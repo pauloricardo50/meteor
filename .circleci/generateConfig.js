@@ -224,6 +224,8 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
 
 const testGatsbyJob = () => ({
   ...defaultJobValues,
+  // "NODE_ENV test" is required by babel-preset-gatsby
+  docker: [{ ...defaultJobValues.docker[0], NODE_ENV: 'test' }],
   steps: [
     'checkout',
 
