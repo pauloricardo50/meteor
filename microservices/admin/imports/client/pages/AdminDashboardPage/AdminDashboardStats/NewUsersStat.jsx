@@ -86,6 +86,14 @@ const NewUsersStat = () => {
               </tr>
             );
           })}
+
+          <tr className="pb-4 pt-4">
+            <td>Total</td>
+            <td style={{ textAlign: 'right' }}>{prospectUsers?.length || 0}</td>
+            <td style={{ textAlign: 'right' }}>
+              {convertedUsers?.length || 0}
+            </td>
+          </tr>
         </tbody>
       </table>
 
