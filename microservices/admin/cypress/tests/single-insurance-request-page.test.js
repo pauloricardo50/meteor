@@ -86,6 +86,7 @@ describe('Single Insurance Request Page', () => {
     cy.get('input[name=lastName]').type('The tester');
     cy.get('input[name=email]').type('test-insurance@e-potek.ch');
     cy.setSelect('assignedEmployeeId', 3);
+    cy.setSelect('status', 1);
     cy.get('[role="dialog"] form').submit();
     cy.url().should('include', '/users/');
 

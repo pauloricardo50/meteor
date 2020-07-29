@@ -84,6 +84,7 @@ describe('Admin general', () => {
     cy.get('input[name=email]').type('new-user-1@e-potek.ch');
     cy.setSelect('referredByOrganisationId', 0);
     cy.setSelect('assignedEmployeeId', 3);
+    cy.setSelect('status', 1);
     cy.get('[role="dialog"] form').submit();
 
     cy.url().should('include', '/users/');
@@ -97,6 +98,8 @@ describe('Admin general', () => {
     cy.get('input[name=email]').type('new-user-2@e-potek.ch');
     cy.setSelect('referredByUserId', 1);
     cy.setSelect('assignedEmployeeId', 3);
+    cy.setSelect('status', 1);
+
     cy.get('[role="dialog"] form').submit();
 
     cy.url().should('include', '/users/');
