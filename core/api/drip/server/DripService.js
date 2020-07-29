@@ -143,6 +143,15 @@ export class DripService {
 
     const method = this.webhookEvents[event || custom?.event];
 
+    const subscriber = data?.subscriber || Subscriber;
+
+    const hasTestTag = subscriber?.tags.includes(this.tags.TEST);
+
+    // Avoid tests calls to be processed on production backend
+    if (hasTestTag) {
+      return Promise.resolve();
+    }
+
     return method
       ? this[method](data || { ...custom?.data, subscriber: Subscriber })
       : Promise.resolve();
