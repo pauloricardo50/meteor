@@ -223,10 +223,9 @@ const testGatsbyJob = () => ({
   ...defaultJobValues,
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
-    restoreCache('Restore node_modules', cacheKeys.nodeModules()),
     
     runCommand('Install node_modules', 'npm --prefix microservices/www2 ci'),
-    runCommand('Run tests', 'npm --prefix microservices/www2 test'),
+    runCommand('Run tests', 'npm --prefix microservices/www2 test-ci'),
 
   ]
 })

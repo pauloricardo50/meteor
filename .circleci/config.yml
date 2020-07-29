@@ -65,16 +65,12 @@ jobs:
             - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
             - 'source_master_16-{{ .Branch }}-'
             - source_master_16-
-      - restore_cache:
-          name: Restore node_modules
-          keys:
-            - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
       - run:
           name: Install node_modules
           command: npm --prefix microservices/www2 ci
       - run:
           name: Run tests
-          command: npm --prefix microservices/www2 test
+          command: npm --prefix microservices/www2 test-ci
 workflows:
   version: 2
   Test and deploy:
