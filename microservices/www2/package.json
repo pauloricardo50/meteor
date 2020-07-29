@@ -5,7 +5,7 @@
     "build": "npx --node-arg '-r esm' gatsby build",
     "clean": "gatsby clean",
     "predeploy": "npm run clean && npm run build",
-    "deploy": "netlifyctl deploy --prod --publish-directory public",
+    "deploy": "netlifyctl deploy --publish-directory public",
     "deploy-draft": "netlifyctl deploy --draft",
     "develop": "npx --node-arg '-r esm' gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
