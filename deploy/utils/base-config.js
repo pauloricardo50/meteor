@@ -42,7 +42,7 @@ module.exports = function createConfig({
 
   const domains = subDomains.map(subdomain => `${subdomain}.${baseDomain}`);
 
-  let lockRemoved = false;
+  const lockRemoved = false;
 
   return {
     servers: {
@@ -74,7 +74,7 @@ module.exports = function createConfig({
       docker: {
         image: 'zodern/meteor',
         prepareBundle: true,
-        prepareBundleLocally: true,
+        prepareBundleLocally: microservice !== 'backend',
         useBuildKit: true,
         stopAppDuringPrepareBundle: false,
 
@@ -126,19 +126,20 @@ module.exports = function createConfig({
     },
 
     deployNotifications: {
-      slackWebhookUrl: 'https://hooks.slack.com/services/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',
-      slackChannel: '#team-engineering'
+      slackWebhookUrl:
+        'https://hooks.slack.com/services/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',
+      slackChannel: '#team-engineering',
     },
 
     hooks: {
       // "reconfig" is the command that updates the
       // env vars (including METEOR_SETTINGS) and other app configuration
       // It is also run during deploys.
-      'pre.reconfig': function(api) {
+      'pre.reconfig': function (api) {
         // eslint-disable-next-line no-param-reassign
         api.settings = retrieveSecret(`${environment}-meteor-settings`);
       },
-      'pre.setup': async function(api) {
+      'pre.setup': async function (api) {
         sh.set('-e');
 
         // Update atlas whitelist
