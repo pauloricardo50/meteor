@@ -195,7 +195,7 @@ api.addEndpoint('/drip-webhook', 'POST', dripWebhookAPI, {
 
     // Avoid tests calls to be tracked on production backend
     const subscriber = data?.subscriber || Subscriber;
-    const hasTestTag = subscriber?.tags?.includes?.(this.tags.TEST);
+    const hasTestTag = subscriber?.tags?.includes?.(this.tags?.TEST);
 
     if (hasTestTag) {
       req.skipTracking = true;
