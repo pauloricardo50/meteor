@@ -1,4 +1,3 @@
-import random from 'lodash/random';
 import moment from 'moment';
 
 import {
@@ -33,14 +32,7 @@ export const DEMO_PROMOTION = {
   ],
   agreementDuration: 30,
   isTest: true,
-  constructionTimeline: [...Array(10)].map((_, index) => ({
-    description: `Tranche ${index + 1}`,
-    duration: random(1, 3),
-    percent: 0.1,
-  })),
-  signingDate: moment()
-    .add(6, 'months')
-    .toDate(),
+  signingDate: moment().add(6, 'months').toDate(),
 };
 
 export const PERMISSIONS = {

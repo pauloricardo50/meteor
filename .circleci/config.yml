@@ -55,6 +55,22 @@ jobs:
           key: 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
           paths:
             - ./node_modules
+  Www2 - unit tests:
+    working_directory: /home/circleci/app
+    docker: *ref_0
+    steps:
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_16-{{ .Branch }}-'
+            - source_master_16-
+      - run:
+          name: Install node_modules
+          command: npm --prefix microservices/www2 ci
+      - run:
+          name: Run tests
+          command: npm run test-ci --prefix microservices/www2
   App - unit tests:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -74,9 +90,9 @@ jobs:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_16_app_2_{{ checksum
-              "./microservices/app/.meteor/release" }}_{{ checksum
-              "./microservices/app/.meteor/versions" }}
+              meteor_system_master_16_undefined_2_{{ checksum
+              "./microservices/undefined/.meteor/release" }}_{{ checksum
+              "./microservices/undefined/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -178,9 +194,9 @@ jobs:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_16_backend_2_{{ checksum
-              "./microservices/backend/.meteor/release" }}_{{ checksum
-              "./microservices/backend/.meteor/versions" }}
+              meteor_system_master_16_undefined_2_{{ checksum
+              "./microservices/undefined/.meteor/release" }}_{{ checksum
+              "./microservices/undefined/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -281,9 +297,9 @@ jobs:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_16_admin_2_{{ checksum
-              "./microservices/admin/.meteor/release" }}_{{ checksum
-              "./microservices/admin/.meteor/versions" }}
+              meteor_system_master_16_undefined_2_{{ checksum
+              "./microservices/undefined/.meteor/release" }}_{{ checksum
+              "./microservices/undefined/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -390,9 +406,9 @@ jobs:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_16_app_2_{{ checksum
-              "./microservices/app/.meteor/release" }}_{{ checksum
-              "./microservices/app/.meteor/versions" }}
+              meteor_system_master_16_undefined_2_{{ checksum
+              "./microservices/undefined/.meteor/release" }}_{{ checksum
+              "./microservices/undefined/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -496,9 +512,9 @@ jobs:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_16_admin_2_{{ checksum
-              "./microservices/admin/.meteor/release" }}_{{ checksum
-              "./microservices/admin/.meteor/versions" }}
+              meteor_system_master_16_undefined_2_{{ checksum
+              "./microservices/undefined/.meteor/release" }}_{{ checksum
+              "./microservices/undefined/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -602,9 +618,9 @@ jobs:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_master_16_pro_2_{{ checksum
-              "./microservices/pro/.meteor/release" }}_{{ checksum
-              "./microservices/pro/.meteor/versions" }}
+              meteor_system_master_16_undefined_2_{{ checksum
+              "./microservices/undefined/.meteor/release" }}_{{ checksum
+              "./microservices/undefined/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -702,13 +718,6 @@ jobs:
           keys:
             - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
       - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_master_16_www_2_{{ checksum
-              "./microservices/www/.meteor/release" }}_{{ checksum
-              "./microservices/www/.meteor/versions" }}
-      - restore_cache:
           name: Restore meteor microservice
           keys:
             - 'meteor_microservice_master_16_www-{{ .Branch }}-{{ .Revision }}'
@@ -784,13 +793,6 @@ jobs:
           keys:
             - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
       - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_master_16_app_2_{{ checksum
-              "./microservices/app/.meteor/release" }}_{{ checksum
-              "./microservices/app/.meteor/versions" }}
-      - restore_cache:
           name: Restore meteor microservice
           keys:
             - 'meteor_microservice_master_16_app-{{ .Branch }}-{{ .Revision }}'
@@ -865,13 +867,6 @@ jobs:
           name: Restore node_modules
           keys:
             - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
-      - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_master_16_admin_2_{{ checksum
-              "./microservices/admin/.meteor/release" }}_{{ checksum
-              "./microservices/admin/.meteor/versions" }}
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -950,13 +945,6 @@ jobs:
           keys:
             - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
       - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_master_16_pro_2_{{ checksum
-              "./microservices/pro/.meteor/release" }}_{{ checksum
-              "./microservices/pro/.meteor/versions" }}
-      - restore_cache:
           name: Restore meteor microservice
           keys:
             - 'meteor_microservice_master_16_pro-{{ .Branch }}-{{ .Revision }}'
@@ -1032,13 +1020,6 @@ jobs:
           keys:
             - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
       - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_master_16_backend_2_{{ checksum
-              "./microservices/backend/.meteor/release" }}_{{ checksum
-              "./microservices/backend/.meteor/versions" }}
-      - restore_cache:
           name: Restore meteor microservice
           keys:
             - >-
@@ -1107,6 +1088,9 @@ workflows:
   Test and deploy:
     jobs:
       - Prepare
+      - Www2 - unit tests:
+          requires:
+            - Prepare
       - App - unit tests:
           requires:
             - Prepare

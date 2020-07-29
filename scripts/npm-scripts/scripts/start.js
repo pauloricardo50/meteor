@@ -1,9 +1,10 @@
-import { MICROSERVICE_PORTS } from '../constants';
-import Process from './Process';
-import runBackend from './run-backend';
 import fs from 'fs';
 import { resolve } from 'path';
 import sh from 'shelljs';
+
+import { MICROSERVICE_PORTS } from '../constants';
+import Process from './Process';
+import runBackend from './run-backend';
 
 const path = require('path');
 
@@ -25,23 +26,23 @@ const runMicroservice = () => {
   let additionalArgs = [];
 
   if (process.env.HMR_ENABLED) {
-    console.log('')
-    console.log('=> Setting up HMR')
-    const checkoutPath = resolve(__dirname, 'meteor-checkout')
+    console.log('');
+    console.log('=> Setting up HMR');
+    const checkoutPath = resolve(__dirname, 'meteor-checkout');
 
     try {
-      fs.mkdirSync(checkoutPath)
-      sh.exec(`git clone https://github.com/meteor/meteor.git ${checkoutPath}`)
+      fs.mkdirSync(checkoutPath);
+      sh.exec(`git clone https://github.com/meteor/meteor.git ${checkoutPath}`);
     } catch (e) {
       if (e.code !== 'EEXIST') {
-        console.log(e)
-        return
+        console.log(e);
+        return;
       }
     }
-    sh.pushd(checkoutPath)
-    sh.exec(`git checkout hot-module-reload`)
-    sh.exec(`git fetch`)
-    sh.popd()
+    sh.pushd(checkoutPath);
+    sh.exec(`git checkout hot-module-reload`);
+    sh.exec(`git fetch`);
+    sh.popd();
 
     command = `${checkoutPath}/meteor`;
     additionalArgs = ['--extra-packages', 'hot-module-reload'];

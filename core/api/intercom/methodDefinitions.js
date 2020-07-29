@@ -20,7 +20,7 @@ export const getIntercomContact = new Method({
 export const updateIntercomVisitorTrackingId = new Method({
   name: 'updateIntercomVisitorTrackingId',
   params: {
-    visotorId: Match.Maybe(Match.OneOf(String, null)),
+    visitorId: Match.Maybe(Match.OneOf(String, null)),
     intercomId: Match.Maybe(Match.OneOf(String, null)),
   },
   doNotRefetchQueries: true,

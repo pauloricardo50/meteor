@@ -85,7 +85,7 @@ const WwwCalculatorForm = () => {
         }
         style={{ maxWidth: 400, alignSelf: 'center' }}
       >
-        Remettre à zero
+        Remettre à zéro
       </Button>
     </div>
   );

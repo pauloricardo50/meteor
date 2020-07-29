@@ -12,6 +12,7 @@ module.exports = {
     `\\.cache`,
     `<rootDir>.*/public`,
     'src/core',
+    'cypress/',
   ],
   transformIgnorePatterns: [`node_modules/(?!(gatsby)/)`],
   globals: {

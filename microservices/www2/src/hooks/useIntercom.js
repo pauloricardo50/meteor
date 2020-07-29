@@ -4,7 +4,7 @@ import { useLocation } from '@reach/router';
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { parseCookies } from 'core/utils/cookiesHelpers';
 
-import { callMethod } from '../utils/meteorClient';
+import callMethod from '../utils/meteorClient/callMethod';
 
 const defaultSettings = {
   alignment: 'right',
@@ -24,13 +24,12 @@ export const IntercomAPI = (method, ...args) => {
 const getTrackingIds = () => {
   const visitorId = window?.Intercom?.('getVisitorId');
   const cookies = parseCookies();
-  const trackingId = cookies?.[TRACKING_COOKIE];
   const intercomId = Object.keys(cookies).reduce(
     (id, cookie) => (cookie.match(/intercom-id/g) ? cookies[cookie] : id),
     undefined,
   );
 
-  return { visitorId, trackingId, intercomId };
+  return { visitorId, intercomId };
 };
 
 const getIntercomUserSettings = async () => {

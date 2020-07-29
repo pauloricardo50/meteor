@@ -18,6 +18,7 @@ const WwwCalculatorChartForm = () => {
   return (
     <div className="www-calculator-chart-form mt-16">
       <TextField
+        name="interests"
         label={<T id="WwwCalculatorChartForm.interests" />}
         select
         value={interestRate}
@@ -43,6 +44,7 @@ const WwwCalculatorChartForm = () => {
       </TextField>
 
       <Toggle
+        id="includeMaintenance"
         labelLeft={<T id="WwwCalculatorChartForm.includeMaintenance" />}
         toggled={includeMaintenance}
         onToggle={checked =>

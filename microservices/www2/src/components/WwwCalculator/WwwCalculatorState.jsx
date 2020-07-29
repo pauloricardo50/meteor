@@ -6,6 +6,7 @@ import {
   ACTIONS,
   CURRENT_LOAN,
   FORTUNE,
+  MAX_VALUE,
   PROPERTY,
   PURCHASE_TYPE,
   SALARY,
@@ -38,8 +39,13 @@ export const wwwCalculatorReducer = (state, { type, payload }) => {
       return { ...state, ...payload };
     }
     case ACTIONS.SET_VALUE: {
-      const { at, ...rest } = payload;
-      const nextState = setFieldAt(state, at, { isAuto: false, ...rest });
+      const { at, value, ...rest } = payload;
+
+      const nextState = setFieldAt(state, at, {
+        isAuto: false,
+        value: value ? Math.min(value, MAX_VALUE) : undefined,
+        ...rest,
+      });
 
       return setAutoValues(nextState);
     }

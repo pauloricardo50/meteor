@@ -2,7 +2,7 @@ import './WwwCalculator.scss';
 
 import React, { useEffect } from 'react';
 
-import { callMethod } from '../../utils/meteorClient';
+import callMethod from '../../utils/meteorClient/callMethod';
 import WwwCalculatorChart from './WwwCalculatorChart';
 import { ACTIONS } from './wwwCalculatorConstants';
 import WwwCalculatorForm from './WwwCalculatorForm';

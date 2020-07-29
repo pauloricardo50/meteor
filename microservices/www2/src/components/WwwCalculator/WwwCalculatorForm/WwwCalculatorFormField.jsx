@@ -117,8 +117,11 @@ const WwwCalculatorFormField = animated(
 
         <div className="flex nowrap center-align pl-8 ">
           <Slider
+            name={`slider-${field}`}
             value={rounded}
-            onChange={(e, v) => handleChange(v)}
+            onChange={(e, v) => {
+              handleChange(v);
+            }}
             className="mr-16"
             min={0}
             max={sliderMax}

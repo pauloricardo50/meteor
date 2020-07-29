@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
 
+import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
 import EVENTS from '../../analytics/events';
 import Analytics from '../../analytics/server/Analytics';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
@@ -240,19 +241,14 @@ export class IntercomService {
     return data[0];
   }
 
-  async updateVisitorTrackingId({
-    context,
-    visitorId,
-    trackingId,
-    intercomId,
-  }) {
+  async updateVisitorTrackingId({ context, visitorId, intercomId }) {
     const isImpersonating = SessionService.isImpersonatedSession(
       context?.connection?.id,
     );
 
     const userId = visitorId || intercomId;
 
-    if (isImpersonating || !userId || !trackingId) {
+    if (isImpersonating || !userId) {
       return;
     }
 
@@ -274,13 +270,13 @@ export class IntercomService {
     if (visitorType === 'visitor') {
       return this.updateVisitor({
         visitorId: userId,
-        custom_attributes: { epotek_trackingid: trackingId },
+        custom_attributes: { epotek_trackingid: getClientTrackingId() },
       });
     }
     if (visitorType === 'contact') {
       return this.updateContact({
         contactId: visitor.id,
-        custom_attributes: { epotek_trackingid: trackingId },
+        custom_attributes: { epotek_trackingid: getClientTrackingId() },
       });
     }
   }
