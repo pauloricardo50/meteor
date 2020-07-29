@@ -88,6 +88,7 @@ describe('dripListeners', function () {
         assigneeEmailAddress: 'lydia@e-potek.ch',
         assigneeName: 'Lydia Abraha',
         assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
+        assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
         referringOrganisationName: 'Organisation',
         promotionName: undefined,
       },
@@ -251,6 +252,7 @@ describe('dripListeners', function () {
         assigneeEmailAddress: 'lydia@e-potek.ch',
         assigneeName: 'Lydia Abraha',
         assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
+        assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
         referringOrganisationName: undefined,
         promotionName: undefined,
       },
@@ -342,6 +344,7 @@ describe('dripListeners', function () {
         assigneeEmailAddress: 'lydia@e-potek.ch',
         assigneeName: 'Lydia Abraha',
         assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
+        assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
         referringOrganisationName: undefined,
         promotionName: undefined,
       },
@@ -706,6 +709,7 @@ describe('dripListeners', function () {
           assigneeEmailAddress: 'elise@e-potek.ch',
           assigneeName: 'Elise Juanola',
           assigneeCalendlyLink: 'https://calendly.com/epotek-elise',
+          assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
         },
       });
     });

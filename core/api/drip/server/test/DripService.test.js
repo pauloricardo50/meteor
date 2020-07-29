@@ -107,6 +107,7 @@ describe('DripService', function () {
         custom_fields: {
           assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
           assigneeEmailAddress: 'lydia@e-potek.ch',
+          assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
           assigneeName: 'Lydia Abraha',
           first_name: SUBSCRIBER_FIRSTNAME,
           last_name: SUBSCRIBER_LASTNAME,
@@ -266,6 +267,7 @@ describe('DripService', function () {
       expect(subscriber.custom_fields).to.deep.include({
         assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
         assigneeEmailAddress: 'lydia@e-potek.ch',
+        assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
         assigneeName: 'Chuck Norris',
         first_name: 'Dude',
         last_name: SUBSCRIBER_LASTNAME,

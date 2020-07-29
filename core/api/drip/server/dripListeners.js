@@ -185,6 +185,8 @@ ServerEventService.addAfterMethodListener(
             assigneeName: user?.assignedEmployee?.name,
             assigneeCalendlyLink:
               employeesByEmail[user?.assignedEmployee?.email]?.calendly,
+            assigneeJobTitle:
+              employeesByEmail[user?.assignedEmployee?.email]?.title,
           },
         },
       });
