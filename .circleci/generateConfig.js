@@ -50,6 +50,7 @@ const cacheKeys = {
   nodeModules: () =>
     `node_modules_${CACHE_VERSION}_{{ checksum "./package-lock.json" }}`,
   source: () => `source_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
+  gatsby: () => `source_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`
 };
 
 const cachePaths = {
@@ -65,6 +66,7 @@ const cachePaths = {
     `./microservices/${name}/.meteor/local/plugin-cache/zodern_standard-minifier-js`,
   nodeModules: () => './node_modules',
   source: () => '.',
+  gatsby: () => ['./microservices/www2/.cache', './microservices/www2/public']
 };
 
 // Circle CI Commands
@@ -154,7 +156,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     testsType === 'e2e' &&
       restoreCache('Restore global cache', cacheKeys.global()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
-    restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
+    restoreCache('Restore meteor system', cacheKeys.meteorSystem()),
     restoreCache(
       'Restore meteor microservice',
       cacheKeys.meteorMicroservice(name),
@@ -237,6 +239,67 @@ const testGatsbyJob = () => ({
     runCommand('Run tests', 'npm run test-ci --prefix microservices/www2'),
   ],
 });
+
+const testGatsbyJobE2E = () => {
+  const name = 'www2'
+  return ({
+  ...defaultJobValues,
+  steps: [
+    restoreCache('Restore source', cacheKeys.source()),
+    restoreCache('Restore global cache', cacheKeys.global()),
+    restoreCache('Restore node_modules', cacheKeys.nodeModules()),
+    restoreCache('Restore meteor system', cacheKeys.meteorSystem()),
+    restoreCache('Restore gatsby website', cacheKeys.gatsby()),
+    restoreCache(
+      'Restore meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+    ),
+    runCommand(
+      'Install netcat',
+      'apt-get update && apt-get install -y netcat',
+    ),
+    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
+    runCommand('Create results directory', 'mkdir ./results'),
+    runCommand(
+      'Install node_modules',
+      `
+      function installBackend {
+        meteor npm --prefix microservices/${name} ci
+        touch $HOME/.npm-backend-done
+      }
+
+      installBackend &
+
+      ${
+        name !== 'backend' ? 'meteor npm --prefix microservices/backend ci' : ''
+      }
+
+      until [ -f $HOME/.npm-backend-done ]; do
+        echo "$HOME/.npm-backend-done does not exist. Waiting 1s"
+        sleep 1
+      done
+      `,
+    ),
+
+    runCommand(
+      'Run E2E tests',
+      `cd ./microservices/${name} && meteor npm run test-e2e`,
+      '30m',
+    ),
+
+    saveCache(
+      'Cache gatsby website',
+      cacheKeys.gatsby(),
+      cachePaths.gatsby(),
+    ),
+
+    saveCache(
+      'Cache meteor backend',
+      cacheKeys.meteorMicroservice('backend'),
+      cachePaths.meteorMicroservice('backend'),
+    ),
+  ],
+})};
 
 const makeDeployJob = ({ name, job }) => ({
   ...job,
@@ -330,7 +393,7 @@ const makeConfig = () => ({
     //   testsType: 'unit',
     // }),
     // // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
-    // 'Www2 - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
+    'Www2 - e2e tests': testGatsbyJobE2E(),
     // 'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
     // 'Admin - e2e tests': testMicroserviceJob({
     //   name: 'admin',
