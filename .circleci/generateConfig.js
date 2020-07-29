@@ -46,6 +46,8 @@ const cacheKeys = {
     `minifier_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
   nodeModules: () =>
     `node_modules_${CACHE_VERSION}_{{ checksum "./package-lock.json" }}`,
+  microserviceNodeModules: name =>
+    `node_modules_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/package-lock.json" }}`,
   source: () => `source_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
 };
 
@@ -62,6 +64,7 @@ const cachePaths = {
     `./microservices/${name}/.meteor/local/plugin-cache/zodern_standard-minifier-js`
   ,
   nodeModules: () => './node_modules',
+  microserviceNodeModules: name => `./microservices/${name}/node_modules`,
   source: () => '.',
 };
 
@@ -223,10 +226,16 @@ const testGatsbyJob = () => ({
   ...defaultJobValues,
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
-    
+    restoreCache('Restore microservice node_modules', cacheKeys.microserviceNodeModules('www2')),
+  
     runCommand('Install node_modules', 'npm --prefix microservices/www2 ci'),
-    runCommand('Run tests', 'npm --prefix microservices/www2 run test-ci'),
+    saveCache(
+      'Cache meteor microservice',
+      cacheKeys.microserviceNodeModules('www2'),
+      cachePaths.microserviceNodeModules('www2'),
+    ),
 
+    runCommand('Run tests', 'npm run test-ci --prefix microservices/www2'),
   ]
 })
 

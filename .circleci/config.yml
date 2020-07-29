@@ -65,12 +65,25 @@ jobs:
             - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
             - 'source_master_16-{{ .Branch }}-'
             - source_master_16-
+      - restore_cache:
+          name: Restore microservice node_modules
+          keys:
+            - >-
+              node_modules_master_16_www2_{{ checksum
+              "./microservices/www2/package-lock.json" }}
       - run:
           name: Install node_modules
           command: npm --prefix microservices/www2 ci
+      - save_cache:
+          name: Cache meteor microservice
+          key: >-
+            node_modules_master_16_www2_{{ checksum
+            "./microservices/www2/package-lock.json" }}
+          paths:
+            - ./microservices/www2/node_modules
       - run:
           name: Run tests
-          command: npm --prefix microservices/www2 run test-ci
+          command: npm run test-ci --prefix microservices/www2
 workflows:
   version: 2
   Test and deploy:
