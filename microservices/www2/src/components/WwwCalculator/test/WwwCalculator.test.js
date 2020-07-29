@@ -28,7 +28,7 @@ describe('WwwCalculator', () => {
 
     expect(newState.salary).toEqual({
       value: 100,
-      auto: false,
+      isAuto: false,
       sliderMax: 500000,
     });
   });
@@ -47,13 +47,13 @@ describe('WwwCalculator', () => {
     const newState = wwwCalculatorReducer(
       {
         purchaseType: PURCHASE_TYPE.ACQUISITION,
-        salary: { auto: false },
-        property: { auto: true },
-        fortune: { auto: true, value: 1000 },
+        salary: { isAuto: false },
+        property: { isAuto: true },
+        fortune: { isAuto: true, value: 1000 },
       },
       {
         type: ACTIONS.SET_VALUE,
-        payload: { at: SALARY, auto: true },
+        payload: { at: SALARY, isAuto: true },
       },
     );
     expect(newState.fortune.value).toEqual(0);
@@ -63,11 +63,11 @@ describe('WwwCalculator', () => {
     const newState = wwwCalculatorReducer(
       {
         purchaseType: PURCHASE_TYPE.REFINANCING,
-        salary: { auto: false },
-        property: { auto: true },
-        fortune: { auto: true, value: 1000 },
+        salary: { isAuto: false },
+        property: { isAuto: true },
+        fortune: { isAuto: true, value: 1000 },
         currentLoan: {},
-        wantedLoan: { auto: true },
+        wantedLoan: { isAuto: true },
       },
       {
         type: ACTIONS.SET_VALUE,
