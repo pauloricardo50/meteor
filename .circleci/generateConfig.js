@@ -219,6 +219,18 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
   ].filter(x => x),
 });
 
+const testGatsbyJob = () => ({
+  working_directory: WORKING_DIRECTORY,
+  steps: [
+    restoreCache('Restore source', cacheKeys.source()),
+    restoreCache('Restore node_modules', cacheKeys.nodeModules()),
+    
+    runCommand('Install node_modules', 'npm --prefix microservices/www2 ci'),
+    runCommand('Run tests', 'npm --prefix microservices/www2 test'),
+
+  ]
+})
+
 const makeDeployJob = ({ name, job }) => ({
   ...job,
   ...defaultJobValues,
@@ -306,46 +318,47 @@ const makeConfig = () => ({
   version: 2,
   jobs: {
     Prepare: makePrepareJob(),
-    // 'Www - unit tests': testMicroserviceJob({ name: 'www', testsType: 'unit' }),
-    'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
-    'Core - unit tests': testMicroserviceJob({ name: 'backend', testsType: 'unit' }),
-    'Admin - unit tests': testMicroserviceJob({
-      name: 'admin',
-      testsType: 'unit',
-    }),
-    // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
-    // 'Www - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
-    'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
-    'Admin - e2e tests': testMicroserviceJob({
-      name: 'admin',
-      testsType: 'e2e',
-    }),
-    'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
-    'Www - deploy': makeDeployJob({ name: 'www' }),
-    'App - deploy': makeDeployJob({ name: 'app' }),
-    'Admin - deploy': makeDeployJob({ name: 'admin' }),
-    'Pro - deploy': makeDeployJob({ name: 'pro' }),
-    'Backend - deploy': makeDeployJob({ name: 'backend' }),
+    'Www2 - unit tests': testGatsbyJob(),
+    // 'App - unit tests': testMicroserviceJob({ name: 'app', testsType: 'unit' }),
+    // 'Core - unit tests': testMicroserviceJob({ name: 'backend', testsType: 'unit' }),
+    // 'Admin - unit tests': testMicroserviceJob({
+    //   name: 'admin',
+    //   testsType: 'unit',
+    // }),
+    // // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
+    // 'Www2 - e2e tests': testMicroserviceJob({ name: 'www', testsType: 'e2e' }),
+    // 'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
+    // 'Admin - e2e tests': testMicroserviceJob({
+    //   name: 'admin',
+    //   testsType: 'e2e',
+    // }),
+    // 'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
+    // 'Www - deploy': makeDeployJob({ name: 'www' }),
+    // 'App - deploy': makeDeployJob({ name: 'app' }),
+    // 'Admin - deploy': makeDeployJob({ name: 'admin' }),
+    // 'Pro - deploy': makeDeployJob({ name: 'pro' }),
+    // 'Backend - deploy': makeDeployJob({ name: 'backend' }),
   },
   workflows: {
     version: 2,
     'Test and deploy': {
-      jobs: [
-        'Prepare',
-        // { 'Www - unit tests': { requires: ['Prepare'] } },
-        { 'App - unit tests': { requires: ['Prepare'] } },
-        { 'Core - unit tests': { requires: ['Prepare'] } },
-        { 'Admin - unit tests': { requires: ['Prepare'] } },
-        // { 'Pro - unit tests': { requires: ['Prepare'] } },
-        // { 'Www - e2e tests': { requires: ['Prepare'] } },
-        { 'App - e2e tests': { requires: ['Prepare'] } },
-        { 'Admin - e2e tests': { requires: ['Prepare'] } },
-        { 'Pro - e2e tests': { requires: ['Prepare'] } },
-        { 'App - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
-      ],
+      jobs: ['Www2 - unit tests']
+      // jobs: [
+      //   'Prepare',
+      //   { 'Www2 - unit tests': { requires: ['Prepare'] } },
+      //   { 'App - unit tests': { requires: ['Prepare'] } },
+      //   { 'Core - unit tests': { requires: ['Prepare'] } },
+      //   { 'Admin - unit tests': { requires: ['Prepare'] } },
+      //   // { 'Pro - unit tests': { requires: ['Prepare'] } },
+      //   { 'Www2 - e2e tests': { requires: ['Prepare'] } },
+      //   { 'App - e2e tests': { requires: ['Prepare'] } },
+      //   { 'Admin - e2e tests': { requires: ['Prepare'] } },
+      //   { 'Pro - e2e tests': { requires: ['Prepare'] } },
+      //   { 'App - deploy': { requires: testJobs, filters: deployBranchFilter } },
+      //   { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
+      //   { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
+      //   { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
+      // ],
     },
   },
 });
