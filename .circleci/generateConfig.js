@@ -225,7 +225,9 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
 const testGatsbyJob = () => ({
   ...defaultJobValues,
   steps: [
-    restoreCache('Restore source', cacheKeys.source()),
+    'checkout',
+
+    // restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore microservice node_modules', cacheKeys.microserviceNodeModules('www2')),
   
     runCommand('Install node_modules', 'npm --prefix microservices/www2 ci'),

@@ -59,12 +59,7 @@ jobs:
     working_directory: /home/circleci/app
     docker: *ref_0
     steps:
-      - restore_cache:
-          name: Restore source
-          keys:
-            - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
-            - 'source_master_16-{{ .Branch }}-'
-            - source_master_16-
+      - checkout
       - restore_cache:
           name: Restore microservice node_modules
           keys:
