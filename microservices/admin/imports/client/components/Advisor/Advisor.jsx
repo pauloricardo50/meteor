@@ -34,6 +34,9 @@ const Advisor = ({ advisorId, className, tooltip: tooltipExtension }) => {
       <Tooltip
         title={
           <div>
+            <div className="mb-4" style={{ fontSize: '1.2em' }}>
+              {advisor.firstName}
+            </div>
             {tooltip}
             {tooltipExtension && (
               <>

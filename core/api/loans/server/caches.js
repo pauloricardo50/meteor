@@ -37,7 +37,6 @@ LoanService.cache(
     },
     referenceField: 'userId',
   },
-  { 'userCache.status': { $exists: false } },
   // {},
 );
 
