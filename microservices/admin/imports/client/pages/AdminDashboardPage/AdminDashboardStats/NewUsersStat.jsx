@@ -41,6 +41,7 @@ const NewUsersStat = () => {
           'metadata.event': ACTIVITY_EVENT_METADATA.USER_CHANGED_STATUS,
           'metadata.details.prevStatus': USER_STATUS.PROSPECT,
           'metadata.details.nextStatus': USER_STATUS.QUALIFIED,
+          'metadata.details.source': 'drip',
         },
         user: { assignedEmployeeId: 1 },
       },

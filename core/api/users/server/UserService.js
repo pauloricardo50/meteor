@@ -828,7 +828,7 @@ export class UserServiceClass extends CollectionService {
           details: {
             prevStatus,
             nextStatus: status,
-            methodRun: !!methodRun,
+            source: methodRun ? 'method' : 'drip',
             ...analyticsProperties,
           },
         },
