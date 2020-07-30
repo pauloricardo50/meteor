@@ -209,12 +209,14 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   removeLoanFromPromotion,
   ({ params: { loanId } }) => {
-    const { user } = LoanService.get(loanId, { user: { email: 1 } });
+    const { user } = LoanService.get(loanId, { user: { email: 1, status: 1 } });
 
-    DripService.trackEvent({
-      event: { action: DRIP_ACTIONS.LOAN_REMOVED_FROM_PROMOTION },
-      email: user?.email,
-    });
+    if (user?.status === USER_STATUS.PROSPECT) {
+      DripService.trackEvent({
+        event: { action: DRIP_ACTIONS.LOAN_REMOVED_FROM_PROMOTION },
+        email: user?.email,
+      });
+    }
   },
 );
 
