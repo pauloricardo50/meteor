@@ -1,4 +1,5 @@
 {
+  "Forms.type.DRIP": "Drip",
   "Forms.status.PROSPECT": "Prospect (Drip en cours)",
   "Forms.status.QUALIFIED": "Qualifié",
   "Forms.status.LOST": "Lost",

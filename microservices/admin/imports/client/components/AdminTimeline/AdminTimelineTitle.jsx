@@ -16,11 +16,16 @@ const icons = {
   [ACTIVITY_TYPES.MAIL]: 'markunreadMailbox',
   [ACTIVITY_TYPES.MEETING]: 'meetingRoom',
   [ACTIVITY_TYPES.FINANCIAL_PLANNING]: 'trendingUp',
+  [ACTIVITY_TYPES.DRIP]: 'opacity',
   front: { src: '/img/front-logo.svg' },
   task: 'check',
 };
 
 export const getIcon = (type, isServerGenerated, isImportant) => {
+  if (type === ACTIVITY_TYPES.DRIP) {
+    return icons[type] || 'computer';
+  }
+
   if (isImportant) {
     return 'star';
   }

@@ -262,6 +262,7 @@ setUserStatus.setHandler((context, params) => {
   return UserService.setStatus({
     ...params,
     analyticsProperties: { statusChangeReason: 'Manual change' },
+    methodRun: true,
   });
 });
 
