@@ -21,6 +21,7 @@ import {
   submitPromotionInterestForm,
 } from '../../promotions/methodDefinitions';
 import PromotionService from '../../promotions/server/PromotionService';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
 import { proInviteUser } from '../../users/methodDefinitions';
 import { notifyDigitalWithUsersProspectForTooLong } from '../../users/server/methods';
@@ -327,31 +328,61 @@ addEmailListener({
     let customerName;
     let adminName;
     let adminAddress;
+    let customerFirstName;
+    let customerLastName;
+    let proPropertyAddress;
+    let hasProProperty;
 
     if (loanId) {
       const loan = LoanService.get(loanId, {
         name: 1,
-        user: { name: 1 },
+        user: { name: 1, firstName: 1, lastName: 1 },
         mainAssignee: 1,
+        hasProProperty: 1,
+        properties: { category: 1, address1: 1, city: 1, zipCode: 1 },
       });
       loanName = loan?.name;
       customerName = loan?.user?.name;
       adminName = loan?.mainAssignee?.name;
       adminAddress = loan?.mainAssignee?.email;
+      customerFirstName = loan?.user?.firstName;
+      customerLastName = loan?.user?.lastName;
+      hasProProperty = loan?.hasProProperty;
+      const proProperty =
+        hasProProperty &&
+        loan?.properties?.find?.(
+          ({ category }) => category === PROPERTY_CATEGORY.PRO,
+        );
+      proPropertyAddress =
+        (proProperty &&
+          [
+            proProperty?.address1,
+            [proProperty?.zipCode, proProperty?.city].filter(x => x).join(' '),
+          ]
+            .filter(x => x)
+            .join(', ')) ||
+        'N/A';
     } else if (insuranceRequestId) {
       const insuranceRequest = InsuranceRequestService.get(insuranceRequestId, {
         name: 1,
-        user: { name: 1 },
+        user: { name: 1, firstName: 1, lastName: 1 },
         mainAssignee: 1,
       });
       loanName = insuranceRequest?.name;
       customerName = insuranceRequest?.user?.name;
       adminName = insuranceRequest?.mainAssignee?.name;
       adminAddress = insuranceRequest?.mainAssignee?.email;
+      customerFirstName = insuranceRequest?.user?.firstName;
+      customerLastName = insuranceRequest?.user?.lastName;
     }
 
     const notifyWithCta = notifyPros.filter(({ withCta }) => withCta);
     const notifyWithoutCta = notifyPros.filter(({ withCta }) => !withCta);
+
+    const customerFullName =
+      !!customerFirstName && !!customerLastName
+        ? `${customerFirstName} ${customerLastName}`
+        : 'N/A';
 
     if (notifyWithCta.length) {
       sendEmailToAddress.serverRun({
@@ -359,8 +390,11 @@ addEmailListener({
         address: notifyWithCta[0].email,
         params: {
           customerName,
+          customerFullName,
           loanName,
           note,
+          hasProProperty,
+          proPropertyAddress,
           adminName: adminName || 'e-Potek',
           adminAddress,
           bccAddresses: notifyWithCta.slice(1),
@@ -375,8 +409,11 @@ addEmailListener({
         address: notifyWithoutCta[0].email,
         params: {
           customerName,
+          customerFullName,
           loanName,
           note,
+          hasProProperty,
+          proPropertyAddress,
           adminName: adminName || 'e-Potek',
           adminAddress,
           bccAddresses: notifyWithoutCta.slice(1),
