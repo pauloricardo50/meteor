@@ -2,13 +2,9 @@ import moment from 'moment';
 
 import { LOAN_STATUS } from '../../loans/loanConstants';
 import LoanService from '../../loans/server/LoanService';
-import UserService from '../../users/server/UserService';
 
 const dateInPast = days =>
-  moment()
-    .subtract(days, 'days')
-    .startOf('day')
-    .toDate();
+  moment().subtract(days, 'days').startOf('day').toDate();
 
 const getFilter = ({ gte, lte }) => {
   const filter = { createdAt: { $gte: gte } };
@@ -65,28 +61,6 @@ export const loanHistogramResolver = async ({ period, withAnonymous }) => {
   return resolver({
     period,
     filters: withAnonymous ? {} : { anonymous: { $ne: true } },
-  });
-};
-
-export const newUsersResolver = ({ period, verified, roles } = {}) => {
-  const resolver = makeCountResolver(UserService);
-  return resolver({
-    period,
-    filters: {
-      'roles._id': roles,
-      ...(verified ? { 'emails.verified': true } : {}),
-    },
-  });
-};
-
-export const userHistogramResolver = async ({ period, verified, roles }) => {
-  const resolver = makeHistogramResolver(UserService);
-  return resolver({
-    period,
-    filters: {
-      'roles._id': roles,
-      ...(verified ? { 'emails.verified': true } : {}),
-    },
   });
 };
 

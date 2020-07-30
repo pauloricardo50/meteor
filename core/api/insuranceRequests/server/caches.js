@@ -31,7 +31,7 @@ InsuranceRequestService.cache(
     },
     referenceField: 'userLink._id',
   },
-  { 'userCache.status': { $exists: false } },
+  // { 'userCache.status': { $exists: false } },
 );
 
 InsuranceRequestService.cache(
