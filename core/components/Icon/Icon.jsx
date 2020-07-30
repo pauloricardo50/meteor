@@ -63,6 +63,7 @@ import MonetizationOn from '@material-ui/icons/MonetizationOn';
 import MoreIcon from '@material-ui/icons/MoreHoriz';
 import Notifications from '@material-ui/icons/Notifications';
 import OfflinePin from '@material-ui/icons/OfflinePin';
+import Opacity from '@material-ui/icons/Opacity';
 import OpenInNew from '@material-ui/icons/OpenInNew';
 import People from '@material-ui/icons/People';
 import Person from '@material-ui/icons/Person';
@@ -191,6 +192,7 @@ export const iconMap = {
   meetingRoom: MeetingRoom,
   security: Security,
   eventAvailable: EventAvailable,
+  opacity: Opacity,
 };
 
 const getColorStyle = color => ({ color: colors[color], fill: colors[color] });

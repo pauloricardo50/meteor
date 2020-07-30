@@ -2,7 +2,6 @@ const SimpleDDP = require('simpleddp');
 const ws = require('isomorphic-ws');
 
 const getBackendUrl = () => {
-  console.log('process.env:', process.env);
   if (process.env.NODE_ENV === 'production') {
     return 'wss://backend.e-potek.ch/websocket';
   }
@@ -21,6 +20,9 @@ const opts = {
 };
 
 const meteorClient = new SimpleDDP(opts);
+if (global.window) {
+  window.meteorClient = meteorClient;
+}
 
 if (process.env.NODE_ENV === 'development') {
   meteorClient.on('connected', () => {

@@ -13,7 +13,7 @@ import { calculatorLoan } from '../../fragments';
 import LoanService from '../../loans/server/LoanService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
 import UserService from '../../users/server/UserService';
-import { ROLES } from '../../users/userConstants';
+import { ROLES, USER_STATUS } from '../../users/userConstants';
 
 const LOGO_URL =
   'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
@@ -202,6 +202,7 @@ export class SlackServiceClass {
     const APIUser = getAPIUser();
     const username = currentUser?.name;
     const isPro = currentUser && Roles.userIsInRole(currentUser, ROLES.PRO);
+    const userStatus = currentUser?.status;
 
     if (APIUser) {
       const mainOrg =
@@ -226,12 +227,21 @@ export class SlackServiceClass {
         user: { name: referralUser } = {},
         organisation: { name: referralOrg } = {},
       } = UserService.getReferral(currentUser._id);
+      const formattedUserStatus =
+        userStatus &&
+        `- ${
+          userStatus === USER_STATUS.PROSPECT
+            ? 'Prospect'
+            : userStatus === USER_STATUS.QUALIFIED
+            ? 'Qualifié'
+            : 'Lost'
+        }`;
       const referral = referralUser
         ? `(ref ${referralUser} - ${referralOrg})`
         : referralOrg
         ? `(ref ${referralOrg})`
         : undefined;
-      return [username, referral].filter(x => x).join(' ');
+      return [username, referral, formattedUserStatus].filter(x => x).join(' ');
     }
 
     return username;
