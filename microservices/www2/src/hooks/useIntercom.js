@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from '@reach/router';
 
-import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { parseCookies } from 'core/utils/cookiesHelpers';
 
 import callMethod from '../utils/meteorClient/callMethod';
@@ -22,12 +21,13 @@ export const IntercomAPI = (method, ...args) => {
 };
 
 const getTrackingIds = () => {
-  const visitorId = window?.Intercom?.('getVisitorId');
+  const visitorId = window?.Intercom?.('getVisitorId') || null; // Make sure visitorId and intercomId are always passed to avoid Match Failed error
   const cookies = parseCookies();
-  const intercomId = Object.keys(cookies).reduce(
-    (id, cookie) => (cookie.match(/intercom-id/g) ? cookies[cookie] : id),
-    undefined,
-  );
+  const intercomId =
+    Object.keys(cookies).reduce(
+      (id, cookie) => (cookie.match(/intercom-id/g) ? cookies[cookie] : id),
+      undefined,
+    ) || null;
 
   return { visitorId, intercomId };
 };
