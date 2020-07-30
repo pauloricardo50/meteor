@@ -1,1 +1,1 @@
-module.exports = ['app', 'admin', 'backend', 'pro', 'www'];
+module.exports = ['app', 'admin', 'backend', 'pro'];
