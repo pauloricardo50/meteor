@@ -140,7 +140,6 @@ ServerEventService.addAfterMethodListener(
         UserService.setStatus({
           userId,
           status: USER_STATUS.PROSPECT,
-          serverRun: true,
           analyticsProperties: {
             statusChangeReason: 'Email address updated after bounce',
           },

@@ -791,7 +791,7 @@ export class UserServiceClass extends CollectionService {
     }
   }
 
-  setStatus({ userId, status, analyticsProperties = {}, serverRun = false }) {
+  setStatus({ userId, status, analyticsProperties = {}, methodRun }) {
     const user = this.get(userId, {
       status: 1,
       firstName: 1,
@@ -805,44 +805,46 @@ export class UserServiceClass extends CollectionService {
 
     const { status: prevStatus } = user;
 
-    if (status === prevStatus) {
+    if (methodRun && status === prevStatus) {
       throw new Meteor.Error(
         'Vous devez choisir un statut différent du précédent',
       );
     }
 
-    if (!serverRun && status === USER_STATUS.PROSPECT) {
+    if (methodRun && status === USER_STATUS.PROSPECT) {
       throw new Meteor.Error('Vous ne pouvez pas revenir au status Prospect');
     }
 
     this._update({ id: userId, object: { status } });
 
-    ActivityService.addServerActivity({
-      userLink: { _id: userId },
-      title: 'Changement de statut',
-      description: `${prevStatus} -> ${status}`,
-      type: ACTIVITY_TYPES.EVENT,
-      metadata: {
-        event: ACTIVITY_EVENT_METADATA.USER_CHANGED_STATUS,
-        details: { prevStatus, nextStatus: status, ...analyticsProperties },
-      },
-    });
+    if (prevStatus !== status) {
+      ActivityService.addServerActivity({
+        userLink: { _id: userId },
+        title: 'Changement de statut',
+        description: `${prevStatus} -> ${status}`,
+        type: ACTIVITY_TYPES.EVENT,
+        metadata: {
+          event: ACTIVITY_EVENT_METADATA.USER_CHANGED_STATUS,
+          details: { prevStatus, nextStatus: status, ...analyticsProperties },
+        },
+      });
 
-    const analytics = new Analytics({ userId });
-    analytics.track(EVENTS.USER_CHANGED_STATUS, {
-      prevStatus,
-      nextStatus: status,
-      userId: user?._id,
-      userName: user?.name,
-      userEmail: user?.email,
-      referringUserId: user?.referredByUser?._id,
-      referringUserName: user?.referredByUser?.name,
-      referringOrganisationId: user?.referredByOrganisation?._id,
-      referringOrganisationName: user?.referredByOrganisation?.name,
-      assigneeId: user?.assignedEmployee?._id,
-      assigneeName: user?.assignedEmployee?.name,
-      ...analyticsProperties,
-    });
+      const analytics = new Analytics({ userId });
+      analytics.track(EVENTS.USER_CHANGED_STATUS, {
+        prevStatus,
+        nextStatus: status,
+        userId: user?._id,
+        userName: user?.name,
+        userEmail: user?.email,
+        referringUserId: user?.referredByUser?._id,
+        referringUserName: user?.referredByUser?.name,
+        referringOrganisationId: user?.referredByOrganisation?._id,
+        referringOrganisationName: user?.referredByOrganisation?.name,
+        assigneeId: user?.assignedEmployee?._id,
+        assigneeName: user?.assignedEmployee?.name,
+        ...analyticsProperties,
+      });
+    }
 
     return { prevStatus, nextStatus: status };
   }
