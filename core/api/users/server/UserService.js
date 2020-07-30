@@ -825,7 +825,12 @@ export class UserServiceClass extends CollectionService {
         type: ACTIVITY_TYPES.EVENT,
         metadata: {
           event: ACTIVITY_EVENT_METADATA.USER_CHANGED_STATUS,
-          details: { prevStatus, nextStatus: status, ...analyticsProperties },
+          details: {
+            prevStatus,
+            nextStatus: status,
+            methodRun: !!methodRun,
+            ...analyticsProperties,
+          },
         },
       });
 
