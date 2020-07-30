@@ -24,7 +24,7 @@ const AdminDashboardStats = () => {
 
   if (!showStats) {
     return (
-      <div className="mt-32 text-center">
+      <div className="mt-16 mb-16 text-center">
         <Button raised primary size="large" onClick={() => setShowStats(true)}>
           Afficher les stats
         </Button>
