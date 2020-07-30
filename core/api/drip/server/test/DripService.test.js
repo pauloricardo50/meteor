@@ -105,7 +105,7 @@ describe('DripService', function () {
         tags: ['ORGANIC', 'PROMO', 'TEST'],
         user_id: SUBSCRIBER_ID,
         custom_fields: {
-          assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
+          assigneeCalendlyLink: 'https://www.calendly.com/epotek-lydia',
           assigneeEmailAddress: 'lydia@e-potek.ch',
           assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
           assigneePhone: '+41 22 566 82 92',
@@ -266,7 +266,7 @@ describe('DripService', function () {
       const [subscriber] = subscribers;
 
       expect(subscriber.custom_fields).to.deep.include({
-        assigneeCalendlyLink: 'https://calendly.com/epotek-lydia',
+        assigneeCalendlyLink: 'https://www.calendly.com/epotek-lydia',
         assigneeEmailAddress: 'lydia@e-potek.ch',
         assigneeJobTitle: 'Conseillère en Financement & Prévoyance',
         assigneePhone: '+41 22 566 82 92',
