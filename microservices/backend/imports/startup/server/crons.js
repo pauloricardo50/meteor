@@ -1,5 +1,3 @@
-import { notifyDigitalWithUsersProspectForTooLong } from 'imports/core/api/loans/server/methods';
-
 import CronService from 'core/api/cron/server/CronService';
 import FileService from 'core/api/files/server/FileService';
 import Irs10yService from 'core/api/irs10y/server/Irs10yService';
@@ -14,6 +12,7 @@ import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOp
 import SessionService from 'core/api/sessions/server/SessionService';
 import TaskService from 'core/api/tasks/server/TaskService';
 import UpdateWatcherService from 'core/api/updateWatchers/server/UpdateWatcherService';
+import { notifyDigitalWithUsersProspectForTooLong } from 'core/api/users/server/methods';
 
 CronService.init();
 
