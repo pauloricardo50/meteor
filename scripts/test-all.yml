@@ -6,22 +6,15 @@ windows:
       layout: tiled
 
       panes:
-        - www-unit:
-            - cd ../microservices/www
-            - meteor npm run test-console-once
         - app-unit:
             - cd ../microservices/app
             - meteor npm run test-console-once
         - admin-unit:
             - cd ../microservices/admin
             - meteor npm run test-console-once
-        - www-e2e:
-            - cd ../microservices/www
-            - meteor npm run test-e2e-once
         - app-e2e:
             - cd ../microservices/app
             - meteor npm run test-e2e-once
         - admin-e2e:
             - cd ../microservices/admin
             - meteor npm run test-e2e-once
-

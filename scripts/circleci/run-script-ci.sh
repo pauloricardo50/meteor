@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MICROSERVICES=("app" "admin" "pro" "www" "backend")
+MICROSERVICES=("app" "admin" "pro" "backend")
 SCRIPTS=("test-ci" "test-e2e-ci")
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 

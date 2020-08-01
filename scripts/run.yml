@@ -8,17 +8,14 @@ windows:
       panes:
         - admin:
             - cd ../microservices/admin
-            - env MONGO_URL=mongodb://localhost:3001/meteor meteor npm start
+            - env MONGO_URL=mongodb://localhost:5501/meteor meteor npm start
         - app:
             - cd ../microservices/app
-            - env MONGO_URL=mongodb://localhost:3001/meteor meteor npm start
+            - env MONGO_URL=mongodb://localhost:5501/meteor meteor npm start
         - pro:
             - cd ../microservices/pro
-            - env MONGO_URL=mongodb://localhost:3001/meteor meteor npm start
-        - www:
-            - cd ../microservices/www
-            - meteor npm start
+            - env MONGO_URL=mongodb://localhost:5501/meteor meteor npm start
         - mongo:
-            - ./tcpWait.sh 3001
-            - cd ../microservices/www
+            - ./tcpWait.sh 5501
+            - cd ../microservices/backend
             - meteor mongo

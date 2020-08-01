@@ -37,6 +37,14 @@ function getEnvironments(name) {
 }
 
 function filterApps(apps, wantedApps, isDeploying) {
+  if (wantedApps) {
+    wantedApps.forEach(app => {
+      if (!apps.includes(app)) {
+        throw new Error(`Unknown wanted app: ${app}`)
+      } 
+    })
+  }
+
   return apps.filter(name => {
     if (isDeploying && name === 'api') {
       // api is handled by a hook in the backend
