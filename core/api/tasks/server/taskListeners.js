@@ -106,22 +106,20 @@ ServerEventService.addAfterMethodListener(
     const { loanId } = params;
     const {
       hasPromotion,
-      promotions = [],
       user: { name: userName } = {},
+      mainAssigneeLink,
     } = LoanService.get(loanId, {
       hasPromotion: 1,
-      promotions: { assignedEmployee: { email: 1 } },
       user: { name: 1 },
+      mainAssigneeLink: 1,
     });
 
     if (hasPromotion && !isRecalculate) {
-      const [{ assignedEmployee }] = promotions;
-
       TaskService.insert({
         object: {
           collection: LOANS_COLLECTION,
           docId: loanId,
-          assigneeLink: assignedEmployee,
+          assigneeLink: { _id: mainAssigneeLink._id },
           title: `Le client ${userName} a effectué un calcul de solvabilité`,
           description:
             "Identifier s'il est nécessaire de le contacter pour valider son attestation préliminaire de financement et s'assurer qu'il ait établi une demande de réservation",
