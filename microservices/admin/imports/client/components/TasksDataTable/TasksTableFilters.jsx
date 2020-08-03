@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { withSmartQuery } from 'core/api/containerToolkit';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
-import { ROLES, USERS_COLLECTION } from 'core/api/users/userConstants';
 import Select from 'core/components/Select';
+import MongoSelect from 'core/components/Select/MongoSelect';
 import T from 'core/components/Translation';
+
+import { useAdmins } from '../AdminsContext/AdminsContext';
 
 const uptoDateOptions = [
   { id: 'TODAY', label: "-> Aujourd'hui" },
@@ -13,7 +14,6 @@ const uptoDateOptions = [
 ];
 
 const TasksTableFilters = ({
-  admins = [],
   assignee,
   status,
   setStatus,
@@ -22,23 +22,23 @@ const TasksTableFilters = ({
   setUptoDate,
   additionalFilters,
 }) => {
+  const { advisors } = useAdmins();
   const assigneeOptions = [
-    ...admins.map(({ _id, firstName, office }) => ({
+    ...advisors.map(({ _id, firstName, office }) => ({
       id: _id,
       label: firstName,
       office,
     })),
-    { _id: undefined, label: 'Personne' },
+    { id: undefined, label: 'Personne' },
   ];
   return (
     <div className="flex">
       {setAssignee && (
-        <Select
-          value={assignee.$in}
-          multiple
+        <MongoSelect
+          value={assignee}
           label="Assigné"
           options={assigneeOptions}
-          onChange={selected => setAssignee({ $in: selected })}
+          onChange={setAssignee}
           className="mr-8"
           grouping={{
             groupBy: 'office',
@@ -48,15 +48,12 @@ const TasksTableFilters = ({
       )}
 
       {setStatus && (
-        <Select
-          value={status.$in}
-          multiple
+        <MongoSelect
+          value={status}
+          onChange={setStatus}
           label="Statut"
-          options={Object.values(TASK_STATUS).map(t => ({
-            id: t,
-            label: <T id={`Forms.status.${t}`} />,
-          }))}
-          onChange={selected => setStatus({ $in: selected })}
+          id="status"
+          options={TASK_STATUS}
           className="mr-8"
         />
       )}
@@ -75,16 +72,4 @@ const TasksTableFilters = ({
   );
 };
 
-export default withSmartQuery({
-  query: USERS_COLLECTION,
-  params: {
-    $filters: { 'roles._id': ROLES.ADVISOR },
-    firstName: 1,
-    office: 1,
-    $options: { sort: { firstName: 1 } },
-  },
-  dataName: 'admins',
-  queryOptions: { shouldRefetch: () => false },
-  refetchOnMethodCall: false,
-  skip: ({ setAssignee }) => !setAssignee,
-})(TasksTableFilters);
+export default TasksTableFilters;

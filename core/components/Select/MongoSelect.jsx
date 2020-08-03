@@ -8,19 +8,10 @@ const makeOnChange = onChange => (prev, next) => {
     // If previously a specific id was checked, and now you check "all" (i.e. null)
     // unselect all
     onChange(undefined);
-    // dispatch({
-    //   type: ACTIONS.SET_FILTER,
-    //   payload: { name: filterName, value: undefined },
-    // });
   } else if (prev.includes(null) && next.length > 1) {
     // If you previously had "all" checked, and check a specific checkbox,
     // uncheck "all" (i.e. null)
     onChange({ $in: next.filter(x => x) });
-
-    // dispatch({
-    //   type: ACTIONS.SET_FILTER,
-    //   payload: { name: filterName, value: { $in: next.filter(x => x) } },
-    // });
   } else {
     // Simple check
     onChange({ $in: next });

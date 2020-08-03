@@ -1,16 +1,15 @@
 import React from 'react';
 import cx from 'classnames';
-import PropTypes from 'prop-types';
 
 import Chip from '../Material/Chip';
 import MenuItem from '../Material/MenuItem';
 import TextField from '../Material/TextField';
-import SelectContainer from './SelectContainer';
+import { mapSelectOptions } from './selectHelpers';
 
-const makeRenderValue = ({ multiple, rawOptions }) => {
+const makeRenderValue = ({ multiple, options }) => {
   if (!multiple) {
     return value => {
-      const option = rawOptions.find(({ id }) => id === value);
+      const option = options.find(({ id }) => id === value);
       return option && option.label;
     };
   }
@@ -18,7 +17,7 @@ const makeRenderValue = ({ multiple, rawOptions }) => {
   return values => (
     <div className="flex wrap">
       {values.map(value => {
-        const option = rawOptions.find(({ id }) => id === value);
+        const option = options.find(({ id }) => id === value);
         return (
           option && (
             <Chip key={option.id} label={option.label} className="m-2" />
@@ -40,56 +39,45 @@ const Select = ({
   error,
   placeholder,
   multiple,
-  rawOptions,
   fullWidth,
   className,
   displayEmpty,
   SelectProps,
-  renderValue = makeRenderValue({ multiple, rawOptions }),
+  renderValue = makeRenderValue({ multiple, options }),
+  grouping,
   ...otherProps
-}) => (
-  <TextField
-    fullWidth={fullWidth}
-    style={style}
-    className={cx('mui-select', className)}
-    select
-    SelectProps={{
-      multiple,
-      renderValue,
-      displayEmpty:
-        typeof displayEmpty === 'boolean' ? displayEmpty : !!placeholder,
-      ...SelectProps,
-    }}
-    value={value}
-    onChange={onChange}
-    label={label}
-    id={id}
-    helperText={error}
-    error={!!error}
-    required={required}
-    {...otherProps}
-  >
-    {[
-      placeholder && <MenuItem value="">{placeholder}</MenuItem>,
-      ...options,
-    ].filter(x => x)}
-  </TextField>
-);
+}) => {
+  const handleChange = e => onChange(e.target.value, id);
+  const formattedOptions = mapSelectOptions(options, grouping);
 
-Select.propTypes = {
-  id: PropTypes.string,
-  label: PropTypes.node,
-  onChange: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
-  style: PropTypes.object,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  return (
+    <TextField
+      fullWidth={fullWidth}
+      style={style}
+      className={cx('mui-select', className)}
+      select
+      SelectProps={{
+        multiple,
+        renderValue,
+        displayEmpty:
+          typeof displayEmpty === 'boolean' ? displayEmpty : !!placeholder,
+        ...SelectProps,
+      }}
+      value={value}
+      onChange={handleChange}
+      label={label}
+      id={id}
+      helperText={error}
+      error={!!error}
+      required={required}
+      {...otherProps}
+    >
+      {[
+        placeholder && <MenuItem value="">{placeholder}</MenuItem>,
+        ...formattedOptions,
+      ].filter(x => x)}
+    </TextField>
+  );
 };
 
-Select.defaultProps = {
-  value: '',
-  label: undefined,
-  style: {},
-  id: '',
-};
-
-export default SelectContainer(Select);
+export default Select;

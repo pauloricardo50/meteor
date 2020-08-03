@@ -12,11 +12,11 @@ import T from '../Translation';
 const groupOptions = (options, { groupBy, format = x => x }) => {
   let { undefined: undefinedGroup, ...grouped } = group(options, groupBy);
   const groups = Object.keys(grouped);
-  let falsyOption;
+  let falsyOptions;
 
   if (undefinedGroup?.length) {
-    // Make sure to put a falsy id option at the top of the select
-    falsyOption = undefinedGroup.find(({ id }) => !id);
+    // Make sure to put falsy id options at the top of the select
+    falsyOptions = undefinedGroup.filter(({ id }) => !id);
     undefinedGroup = undefinedGroup.filter(({ id }) => !!id);
   }
 
@@ -31,14 +31,14 @@ const groupOptions = (options, { groupBy, format = x => x }) => {
 
   if (undefinedGroup?.length) {
     return [
-      falsyOption,
+      ...falsyOptions,
       ...groupedOptions,
       { id: 'SELECT_GROUP', label: <T id="general.other" /> },
       ...undefinedGroup,
     ].filter(x => x);
   }
 
-  return [falsyOption, ...groupedOptions].filter(x => x);
+  return [...falsyOptions, ...groupedOptions].filter(x => x);
 };
 
 export const mapSelectOptions = (options, grouping) => {

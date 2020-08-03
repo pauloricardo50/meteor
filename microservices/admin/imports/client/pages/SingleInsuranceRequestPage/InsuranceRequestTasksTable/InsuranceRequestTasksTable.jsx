@@ -59,6 +59,7 @@ const InsuranceRequestTasksTable = ({ insuranceRequest, ...rest }) => {
           onChange={setDocId}
         />
       }
+      noInitialFilter
       {...rest}
     />
   );

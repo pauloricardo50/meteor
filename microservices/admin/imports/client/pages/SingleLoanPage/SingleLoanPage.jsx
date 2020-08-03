@@ -22,6 +22,7 @@ const SingleLoanPage = props => {
           docId={loan._id}
           collection={loan._collection}
           className="single-loan-page-tasks card1 card-top"
+          noInitialFilter
         />
         <SingleLoanPageContacts loanId={loan._id} />
       </div>
