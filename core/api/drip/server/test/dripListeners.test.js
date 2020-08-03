@@ -50,10 +50,7 @@ describe('dripListeners', function () {
     generator({
       organisations: { _id: 'org', name: 'Organisation' },
       users: [
-        {
-          _id: 'dev',
-          _factory: 'dev',
-        },
+        { _id: 'dev', _factory: 'dev' },
         {
           _id: 'admin',
           _factory: 'advisor',
@@ -92,6 +89,8 @@ describe('dripListeners', function () {
         assigneePhone: '+41 22 566 82 92',
         referringOrganisationName: 'Organisation',
         promotionName: undefined,
+        referringUserEmail: 'pro@e-potek.ch',
+        referringUserName: 'Pro User',
       },
     };
 
@@ -109,6 +108,9 @@ describe('dripListeners', function () {
           _id: 'pro1',
           _factory: 'pro',
           assignedEmployee: { _id: 'admin' },
+          emails: [{ address: 'pro@e-potek.ch', verified: true }],
+          firstName: 'Pro',
+          lastName: 'User',
           organisations: {
             _id: 'org',
             name: 'Organisation',
@@ -257,6 +259,8 @@ describe('dripListeners', function () {
         assigneePhone: '+41 22 566 82 92',
         referringOrganisationName: undefined,
         promotionName: undefined,
+        referringUserEmail: undefined,
+        referringUserName: undefined,
       },
     };
 
@@ -350,6 +354,8 @@ describe('dripListeners', function () {
         assigneePhone: '+41 22 566 82 92',
         referringOrganisationName: undefined,
         promotionName: undefined,
+        referringUserEmail: undefined,
+        referringUserName: undefined,
       },
     };
 
@@ -630,7 +636,11 @@ describe('dripListeners', function () {
         metadata: { dripStatus: 'bounced' },
       });
 
-      UserService.setStatus({ userId, status: USER_STATUS.LOST });
+      UserService.setStatus({
+        userId,
+        status: USER_STATUS.LOST,
+        source: 'drip',
+      });
 
       await ddpWithUserId('dev', () =>
         changeEmail.run({
@@ -757,7 +767,12 @@ describe('dripListeners', function () {
 
     it('records the event when status is QUALIFIED', async () => {
       await ddpWithUserId('admin', () =>
-        setUserStatus.run({ userId, status: USER_STATUS.QUALIFIED }),
+        setUserStatus.run({
+          userId,
+          status: USER_STATUS.QUALIFIED,
+          source: 'admin',
+          reason: 'Manual change',
+        }),
       );
 
       const [[method, params]] = await waitForStub(callDripAPIStub);
@@ -772,7 +787,12 @@ describe('dripListeners', function () {
 
     it('tracks the events in analytics when status is QUALIFIED', async () => {
       await ddpWithUserId('admin', () =>
-        setUserStatus.run({ userId, status: USER_STATUS.QUALIFIED }),
+        setUserStatus.run({
+          userId,
+          status: USER_STATUS.QUALIFIED,
+          source: 'admin',
+          reason: 'Manual change',
+        }),
       );
 
       await waitForStub(callDripAPIStub);
@@ -797,7 +817,12 @@ describe('dripListeners', function () {
 
     it('tags the subscriber to LOST when status is LOST', async () => {
       await ddpWithUserId('admin', () =>
-        setUserStatus.run({ userId, status: USER_STATUS.LOST }),
+        setUserStatus.run({
+          userId,
+          status: USER_STATUS.LOST,
+          source: 'admin',
+          reason: 'Manual change',
+        }),
       );
 
       const [[method, params]] = await waitForStub(callDripAPIStub);
@@ -811,7 +836,12 @@ describe('dripListeners', function () {
 
     it('tracks the events in analytics when status is LOST', async () => {
       await ddpWithUserId('admin', () =>
-        setUserStatus.run({ userId, status: USER_STATUS.QUALIFIED }),
+        setUserStatus.run({
+          userId,
+          status: USER_STATUS.QUALIFIED,
+          source: 'admin',
+          reason: 'Manual change',
+        }),
       );
 
       await waitForStub(callDripAPIStub);

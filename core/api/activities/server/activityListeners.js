@@ -33,6 +33,7 @@ import {
   proInviteUser,
   setUserReferredBy,
   setUserReferredByOrganisation,
+  setUserStatus,
   toggleAccount,
   userPasswordReset,
   userVerifyEmail,
@@ -579,5 +580,34 @@ ServerEventService.addAfterMethodListener(
       createdBy: userId,
       ...data,
     });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  setUserStatus,
+  ({
+    context,
+    params: { userId, source, reason },
+    result: { prevStatus, nextStatus },
+  }) => {
+    context.unblock();
+
+    if (prevStatus !== nextStatus) {
+      ActivityService.addServerActivity({
+        userLink: { _id: userId },
+        title: 'Changement de statut',
+        description: `${prevStatus} -> ${nextStatus}`,
+        type: ACTIVITY_TYPES.EVENT,
+        metadata: {
+          event: ACTIVITY_EVENT_METADATA.USER_CHANGED_STATUS,
+          details: {
+            prevStatus,
+            nextStatus,
+            source,
+            statusChangeReason: reason,
+          },
+        },
+      });
+    }
   },
 );

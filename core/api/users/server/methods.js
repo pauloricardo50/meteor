@@ -43,7 +43,7 @@ doesUserExist.setHandler((context, { email }) =>
 
 sendVerificationLink.setHandler((context, { userId } = {}) => {
   if (userId) {
-    SecurityService.checkCurrentUserIsAdmin();
+    SecurityService.checkUserIsAdmin(context.userId);
   } else {
     SecurityService.checkLoggedIn();
   }
@@ -60,13 +60,12 @@ sendVerificationLink.setHandler((context, { userId } = {}) => {
 });
 
 assignAdminToUser.setHandler((context, { userId, adminId }) => {
-  SecurityService.checkCurrentUserIsAdmin();
-
+  SecurityService.checkUserIsAdmin(context.userId);
   return AssigneeService.assignAdminToUser({ userId, adminId });
 });
 
 setRole.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return UserService.setRole(params);
 });
 
@@ -102,7 +101,7 @@ removeUser.setHandler((context, params) => {
 });
 
 sendEnrollmentEmail.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return UserService.sendEnrollmentEmail(params);
 });
 
@@ -114,7 +113,7 @@ changeEmail.setHandler((context, params) => {
 });
 
 userUpdateOrganisations.setHandler((context, { userId, newOrganisations }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return UserService.updateOrganisations({ userId, newOrganisations });
 });
 
@@ -196,12 +195,12 @@ getProByEmail.setHandler(({ userId }, { email }) => {
 });
 
 setUserReferredBy.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return UserService.setReferredBy(params);
 });
 
 setUserReferredByOrganisation.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return UserService.setReferredByOrganisation(params);
 });
 
@@ -239,7 +238,7 @@ anonymousCreateUser.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 
 
 // Method to toggle provided user account only if the current user is admin
 toggleAccount.setHandler((context, { userId }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return UserService.toggleAccount({ userId });
 });
 
@@ -258,12 +257,12 @@ getEnrollUrl.setHandler((context, { userId }) => {
 });
 
 setUserStatus.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
-  return UserService.setStatus({
-    ...params,
-    analyticsProperties: { statusChangeReason: 'Manual change' },
-    methodRun: true,
-  });
+  try {
+    SecurityService.checkIsInternalCall(context);
+  } catch (error) {
+    SecurityService.checkUserIsAdmin(context.userId);
+  }
+  return UserService.setStatus(params);
 });
 
 export const notifyDigitalWithUsersProspectForTooLong = new Method({

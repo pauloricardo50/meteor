@@ -11,6 +11,7 @@ import ActivityService from '../../activities/server/ActivityService';
 import EVENTS from '../../analytics/events';
 import Analytics from '../../analytics/server/Analytics';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
+import { setUserStatus } from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
 import { ACQUISITION_CHANNELS, USER_STATUS } from '../../users/userConstants';
 import { DRIP_ACTIONS, DRIP_TAGS } from '../dripConstants';
@@ -373,12 +374,11 @@ export class DripService {
         additionalProperties = { lostReason: 'Webhook: Drip applied LOST tag' };
 
         if (user?._id) {
-          UserService.setStatus({
+          setUserStatus.serverRun({
             userId: user?._id,
             status: USER_STATUS.LOST,
-            analyticsProperties: {
-              statusChangeReason: 'Webhook: Drip applied LOST tag',
-            },
+            source: 'drip',
+            reason: 'Webhook: Drip applied LOST tag',
           });
         }
         break;
@@ -390,12 +390,11 @@ export class DripService {
         };
 
         if (user?._id) {
-          UserService.setStatus({
+          setUserStatus.serverRun({
             userId: user?._id,
             status: USER_STATUS.QUALIFIED,
-            analyticsProperties: {
-              statusChangeReason: 'Webhook: Drip applied QUALIFIED tag',
-            },
+            source: 'drip',
+            reason: 'Webhook: Drip applied QUALIFIED tag',
           });
         }
         break;
@@ -408,12 +407,11 @@ export class DripService {
         };
 
         if (user?._id) {
-          UserService.setStatus({
+          setUserStatus.serverRun({
             userId: user?._id,
             status: USER_STATUS.QUALIFIED,
-            analyticsProperties: {
-              statusChangeReason: 'Subscriber booked an event on Calendly',
-            },
+            source: 'drip',
+            reason: 'Subscriber booked an event on Calendly',
           });
 
           ActivityService.addServerActivity({
@@ -454,10 +452,11 @@ export class DripService {
     });
 
     if (user?._id) {
-      UserService.setStatus({
+      setUserStatus.serverRun({
         userId: user?._id,
         status: USER_STATUS.LOST,
-        analyticsProperties: { statusChangeReason: 'Subscriber deleted' },
+        source: 'drip',
+        reason: 'Subscriber deleted',
       });
     }
 
@@ -481,10 +480,11 @@ export class DripService {
     });
 
     if (user?._id) {
-      UserService.setStatus({
+      setUserStatus.serverRun({
         userId: user?._id,
         status: USER_STATUS.LOST,
-        analyticsProperties: { statusChangeReason: 'Subscriber unsubscribed' },
+        source: 'drip',
+        reason: 'Subscriber unsubscribed',
       });
     }
 
@@ -566,11 +566,13 @@ export class DripService {
     });
 
     if (user?._id) {
-      UserService.setStatus({
+      setUserStatus.serverRun({
         userId: user?._id,
         status: USER_STATUS.LOST,
-        analyticsProperties: { statusChangeReason: 'Subscriber bounced' },
+        source: 'drip',
+        reason: 'Subscriber bounced',
       });
+
       ActivityService.addServerActivity({
         title: 'Email Drip - Rejet',
         type: ACTIVITY_TYPES.DRIP,
@@ -606,10 +608,11 @@ export class DripService {
     });
 
     if (user?._id) {
-      UserService.setStatus({
+      setUserStatus.serverRun({
         userId: user?._id,
         status: USER_STATUS.LOST,
-        analyticsProperties: { statusChangeReason: 'Subscriber complained' },
+        source: 'drip',
+        reason: 'Subscriber complained',
       });
     }
 

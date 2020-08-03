@@ -1,3 +1,4 @@
+import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
 import SecurityService from '../../security';
 import {
   getIntercomContact,
@@ -18,5 +19,9 @@ getIntercomContact.setHandler(({ userId }, params) => {
 
 updateIntercomVisitorTrackingId.setHandler((context, params) => {
   context.unblock();
-  IntercomService.updateVisitorTrackingId({ context, ...params });
+  return IntercomService.updateVisitorTrackingId({
+    context,
+    trackingId: getClientTrackingId(),
+    ...params,
+  });
 });

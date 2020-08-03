@@ -70,13 +70,13 @@ describe('ChecklistService', () => {
       const { additionalDocuments } = LoanService.get('loanId', {
         additionalDocuments: 1,
       });
-      expect(additionalDocuments.length).to.equal(1);
-      expect(additionalDocuments[0].checklistItemId).to.equal(
+      expect(additionalDocuments.length).to.equal(2);
+      expect(additionalDocuments[1].checklistItemId).to.equal(
         checklist.items[1].id,
       );
-      expect(additionalDocuments[0].label).to.equal('do stuff');
-      expect(additionalDocuments[0].tooltip).to.equal('yo');
-      expect(additionalDocuments[0].category).to.equal('CLOSING');
+      expect(additionalDocuments[1].label).to.equal('do stuff');
+      expect(additionalDocuments[1].tooltip).to.equal('yo');
+      expect(additionalDocuments[1].category).to.equal('CLOSING');
     });
   });
 
@@ -141,7 +141,7 @@ describe('ChecklistService', () => {
       const { additionalDocuments } = LoanService.get('loanId', {
         additionalDocuments: 1,
       });
-      expect(additionalDocuments.length).to.equal(2);
+      expect(additionalDocuments.length).to.equal(3);
 
       ChecklistService.updateItem({
         checklistId: 'c2',
@@ -152,8 +152,8 @@ describe('ChecklistService', () => {
       const {
         additionalDocuments: additionalDocuments2,
       } = LoanService.get('loanId', { additionalDocuments: 1 });
-      expect(additionalDocuments2[1].label).to.equal('B2');
-      expect(additionalDocuments2[1].requiredByAdmin).to.equal(false);
+      expect(additionalDocuments2[2].label).to.equal('B2');
+      expect(additionalDocuments2[2].requiredByAdmin).to.equal(false);
     });
 
     it('adds an additionalDocument if requiresDocument is changed to true', () => {
@@ -172,7 +172,7 @@ describe('ChecklistService', () => {
       const { additionalDocuments } = LoanService.get('loanId', {
         additionalDocuments: 1,
       });
-      expect(additionalDocuments.length).to.equal(0);
+      expect(additionalDocuments.length).to.equal(1);
 
       ChecklistService.updateItem({
         checklistId: 'c2',
@@ -183,7 +183,7 @@ describe('ChecklistService', () => {
       const {
         additionalDocuments: additionalDocuments2,
       } = LoanService.get('loanId', { additionalDocuments: 1 });
-      expect(additionalDocuments2[0].label).to.equal('yo');
+      expect(additionalDocuments2[1].label).to.equal('yo');
     });
 
     it('removes the additionalDocument if requiresDocument is changed to false', () => {
@@ -204,16 +204,22 @@ describe('ChecklistService', () => {
         itemId: 'a',
         requiresDocument: true,
       });
+
+      const { additionalDocuments: aD1 } = LoanService.get('loanId', {
+        additionalDocuments: 1,
+      });
+      expect(aD1.length).to.equal(2);
+
       ChecklistService.updateItem({
         checklistId: 'c2',
         itemId: 'a',
         requiresDocument: false,
       });
 
-      const { additionalDocuments } = LoanService.get('loanId', {
+      const { additionalDocuments: aD2 } = LoanService.get('loanId', {
         additionalDocuments: 1,
       });
-      expect(additionalDocuments.length).to.equal(0);
+      expect(aD2.length).to.equal(1);
     });
   });
 
@@ -335,15 +341,21 @@ describe('ChecklistService', () => {
         itemId: 'a',
         requiresDocument: true,
       });
+
+      const { additionalDocuments: aD1 } = LoanService.get('loanId', {
+        additionalDocuments: 1,
+      });
+      expect(aD1.length).to.equal(2);
+
       ChecklistService.removeItem({
         checklistId: 'c2',
         itemId: 'a',
       });
 
-      const { additionalDocuments } = LoanService.get('loanId', {
+      const { additionalDocuments: aD2 } = LoanService.get('loanId', {
         additionalDocuments: 1,
       });
-      expect(additionalDocuments.length).to.equal(0);
+      expect(aD2.length).to.equal(1);
     });
   });
 
@@ -405,7 +417,7 @@ describe('ChecklistService', () => {
       const { additionalDocuments } = LoanService.get('loanId', {
         additionalDocuments: 1,
       });
-      expect(additionalDocuments.length).to.equal(1);
+      expect(additionalDocuments.length).to.equal(2);
     });
   });
 });

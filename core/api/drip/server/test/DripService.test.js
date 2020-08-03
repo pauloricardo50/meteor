@@ -42,6 +42,9 @@ describe('DripService', function () {
       users: [
         {
           _id: 'pro',
+          emails: [{ address: 'pro@e-potek.ch', verified: true }],
+          firstName: 'Pro',
+          lastName: 'User',
           organisations: {
             _id: 'org',
             $metadata: { isMain: true },
@@ -115,6 +118,8 @@ describe('DripService', function () {
           phone: SUBSCRIBER_PHONE,
           referringOrganisationName: 'Organisation',
           promotionName: 'Promotion',
+          referringUserName: 'Pro User',
+          referringUserEmail: 'pro@e-potek.ch',
         },
       });
     });
@@ -416,18 +421,33 @@ describe('DripService', function () {
 
       const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
 
-      expect(analyticsSpy.args[0][0]).to.deep.include({
-        userId: SUBSCRIBER_ID,
-        event: 'User Changed Status',
-      });
-      expect(analyticsSpy.args[1][0]).to.deep.include({
-        userId: SUBSCRIBER_ID,
-        event: 'Drip Subscriber Booked an Event',
-      });
-      expect(analyticsSpy.args[2][0]).to.deep.include({
-        userId: SUBSCRIBER_ID,
-        event: 'Drip Subscriber Qualified',
-      });
+      expect(analyticsSpy.callCount).to.equal(4);
+      expect(
+        analyticsSpy.args.some(
+          ([{ userId, event }]) =>
+            userId === SUBSCRIBER_ID && event === 'User Changed Status',
+        ),
+      ).to.equal(true, 'change status');
+      expect(
+        analyticsSpy.args.some(
+          ([{ userId, event }]) =>
+            userId === SUBSCRIBER_ID &&
+            event === 'Drip Subscriber Event Recorded',
+        ),
+      ).to.equal(true, 'event recorded');
+      expect(
+        analyticsSpy.args.some(
+          ([{ userId, event }]) =>
+            userId === SUBSCRIBER_ID &&
+            event === 'Drip Subscriber Booked an Event',
+        ),
+      ).to.equal(true, 'booked an event');
+      expect(
+        analyticsSpy.args.some(
+          ([{ userId, event }]) =>
+            userId === SUBSCRIBER_ID && event === 'Drip Subscriber Qualified',
+        ),
+      ).to.equal(true, 'qualified');
       expect(status).to.equal(USER_STATUS.QUALIFIED);
     });
   });
