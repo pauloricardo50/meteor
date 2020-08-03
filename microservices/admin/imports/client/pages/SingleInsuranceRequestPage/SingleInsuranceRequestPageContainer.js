@@ -19,7 +19,7 @@ const fullInsuranceRequestFragment = merge(
     documents: 1,
     name: 1,
     customName: 1,
-    user: { name: 1, referredByOrganisation: { _id: 1 } },
+    user: { name: 1, referredByOrganisation: { _id: 1 }, status: 1 },
     status: 1,
     assigneeLinks: 1,
     assignees: { name: 1, phoneNumber: 1, email: 1, isMain: 1 },
@@ -75,7 +75,7 @@ const fullInsuranceRequestFragment = merge(
         revaluationFactor: 1,
       },
     },
-    loan: { name: 1 },
+    loan: { name: 1, status: 1 },
     unsuccessfulReason: 1,
   },
 );

@@ -31,17 +31,9 @@ const getMonths = ({ startDate, endDate }) => {
 
   while (clonedStartDate.isBefore(clonedEndDate)) {
     if (i === 0) {
-      result.push(
-        moment(clonedStartDate)
-          .startOf('month')
-          .toDate(),
-      );
+      result.push(moment(clonedStartDate).startOf('month').toDate());
     } else {
-      result.push(
-        moment(clonedStartDate)
-          .endOf('month')
-          .toDate(),
-      );
+      result.push(moment(clonedStartDate).endOf('month').toDate());
     }
     clonedStartDate.add(1, 'month');
     i += 1;
@@ -71,14 +63,8 @@ const RevenuesPageCalendar = props => {
   const [referrer, setReferrer] = useState();
   const [sourceOrganisationId, setSourceOrganisationId] = useState();
   const [revenueDateRange, setRevenueDateRange] = useState({
-    startDate: moment()
-      .subtract(1, 'M')
-      .startOf('month')
-      .toDate(),
-    endDate: moment()
-      .endOf('month')
-      .add(3, 'M')
-      .toDate(),
+    startDate: moment().subtract(1, 'M').startOf('month').toDate(),
+    endDate: moment().endOf('month').add(3, 'M').toDate(),
   });
   const [openModifier, setOpenModifier] = useState(false);
   const [revenueToModify, setRevenueToModify] = useState(null);
@@ -90,9 +76,7 @@ const RevenuesPageCalendar = props => {
     $gte: months[0],
     $lte:
       months.length === 1
-        ? moment(months[0])
-            .endOf('month')
-            .toDate()
+        ? moment(months[0]).endOf('month').toDate()
         : months[months.length - 1],
   };
   const $or = [
@@ -114,7 +98,7 @@ const RevenuesPageCalendar = props => {
         assigneeLink: 1,
         description: 1,
         expectedAt: 1,
-        loan: { name: 1, borrowers: { name: 1 }, userCache: 1 },
+        loan: { name: 1, borrowers: { name: 1 }, userCache: 1, status: 1 },
         organisationLinks: { _id: 1, commissionRate: 1 },
         paidAt: 1,
         sourceOrganisationLink: 1,
@@ -124,9 +108,10 @@ const RevenuesPageCalendar = props => {
         insurance: {
           name: 1,
           borrower: { name: 1 },
-          insuranceRequest: { user: { name: 1 } },
+          insuranceRequest: { user: { name: 1, status: 1 }, status: 1 },
+          status: 1,
         },
-        insuranceRequest: { name: 1 },
+        insuranceRequest: { name: 1, status: 1 },
       },
     },
     [

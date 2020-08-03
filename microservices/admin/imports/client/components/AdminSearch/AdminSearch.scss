@@ -33,11 +33,13 @@
 .search-results-collection {
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 400px;
 
   .icon-link {
     max-width: unset;
     margin-bottom: 8px;
+    height: unset;
+    line-height: unset;
 
     > div {
       flex-grow: 1;

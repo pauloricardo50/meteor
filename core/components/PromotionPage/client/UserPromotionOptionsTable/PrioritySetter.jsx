@@ -16,7 +16,7 @@ const PrioritySetter = ({
   allowChange,
 }) => (
   <div className="priority-setter" onClick={e => e.stopPropagation()}>
-    {priorityOrder + 1}
+    <span>{priorityOrder + 1}</span>
     {allowChange && (
       <>
         <IconButton
@@ -24,6 +24,8 @@ const PrioritySetter = ({
           onClick={onIncrease}
           disabled={isLoading || priorityOrder === 0}
           tooltip="Augmenter priorité"
+          className="ml-8"
+          size="small"
         />
 
         <IconButton
@@ -31,6 +33,8 @@ const PrioritySetter = ({
           onClick={onReduce}
           disabled={isLoading || priorityOrder === length - 1}
           tooltip="Réduire priorité"
+          size="small"
+          className="ml-8"
         />
       </>
     )}

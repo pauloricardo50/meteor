@@ -15,6 +15,9 @@ const defaultTheme = fontSize => ({
     MuiTextField: {
       variant: 'outlined',
     },
+    MuiTooltip: {
+      arrow: true,
+    },
   },
   overrides: {
     MuiToolbar: {

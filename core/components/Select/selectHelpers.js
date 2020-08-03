@@ -12,7 +12,7 @@ import T from '../Translation';
 const groupOptions = (options, { groupBy, format = x => x }) => {
   let { undefined: undefinedGroup, ...grouped } = group(options, groupBy);
   const groups = Object.keys(grouped);
-  let falsyOptions;
+  let falsyOptions = [];
 
   if (undefinedGroup?.length) {
     // Make sure to put falsy id options at the top of the select

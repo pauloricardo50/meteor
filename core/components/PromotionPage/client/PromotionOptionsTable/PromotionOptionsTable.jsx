@@ -118,7 +118,7 @@ const PromotionOptionsTable = ({ promotion }) => {
               fullVerification: 1,
               loanCache: 1,
               loan: {
-                user: { name: 1, phoneNumbers: 1, email: 1 },
+                user: { name: 1, phoneNumbers: 1, email: 1, status: 1 },
                 promotions: { _id: 1 },
                 proNote: 1,
               },
