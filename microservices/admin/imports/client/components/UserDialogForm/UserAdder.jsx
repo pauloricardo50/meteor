@@ -170,6 +170,7 @@ const UserAdder = ({ buttonProps }) => {
   return (
     <AutoFormDialog
       title={<T id="UserAdder.buttonLabel" />}
+      description="Si tu veux créer un PRO ou un ADMIN, le faire depuis la page de sa future organisation! Ce formulaire est uniquement pour les clients."
       schema={schema}
       model={{ ...searchParams }}
       openOnMount={
