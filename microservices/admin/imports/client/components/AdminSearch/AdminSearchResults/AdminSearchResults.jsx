@@ -40,7 +40,7 @@ const AdminSearchResults = ({ isLoading, error, results, closeSearch }) => {
   }
 
   return (
-    <List className="search-results">
+    <div className="search-results">
       {Object.keys(results).map(collectionName => {
         const resultsFromThisCollection = results[collectionName];
 
@@ -49,17 +49,16 @@ const AdminSearchResults = ({ isLoading, error, results, closeSearch }) => {
         }
 
         return (
-          <ListItem
+          <div
             onClick={closeSearch}
             key={collectionName}
             className="search-results-collection"
-            jooe
           >
             <h3>
               <LinkToCollection collection={collectionName} />
             </h3>
 
-            <div className="flex-col">
+            <div className="flex-col" style={{ alignItems: 'stretch' }}>
               {resultsFromThisCollection.map(result => (
                 <CollectionIconLink
                   relatedDoc={{ ...result, _collection: collectionName }}
@@ -70,10 +69,10 @@ const AdminSearchResults = ({ isLoading, error, results, closeSearch }) => {
                 </CollectionIconLink>
               ))}
             </div>
-          </ListItem>
+          </div>
         );
       })}
-    </List>
+    </div>
   );
 };
 

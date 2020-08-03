@@ -33,12 +33,18 @@
 .search-results-collection {
   display: flex;
   flex-direction: column;
+  width: 300px;
 
   .icon-link {
     max-width: unset;
+    margin-bottom: 8px;
+
+    > div {
+      flex-grow: 1;
+    } 
   }
 }
 
-.link {
+.link { 
   text-decoration: none;
 }
