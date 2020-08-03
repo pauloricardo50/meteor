@@ -28,7 +28,6 @@ const UserModifier = ({ user, editUser }) => (
     title={<T id="UserModifier.dialogTitle" />}
   />
 );
-
 const updateOrganisations = ({ userId, organisations = [] }) =>
   userUpdateOrganisations.run({
     userId,
@@ -39,14 +38,12 @@ const updateOrganisations = ({ userId, organisations = [] }) =>
   });
 
 export default withProps(({ user }) => ({
-  editUser: data => {
-    const { organisations = [], ...object } = data;
-    return updateUser
+  editUser: ({ organisations = [], ...object }) =>
+    updateUser
       .run({ userId: user._id, object })
       .then(
         () =>
           !Roles.userIsInRole(user, ROLES.USER) &&
           updateOrganisations({ userId: user._id, organisations }),
-      );
-  },
+      ),
 }))(UserModifier);
