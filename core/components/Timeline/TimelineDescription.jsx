@@ -17,7 +17,8 @@ const TimelineDescription = ({
   return (
     <div className={className}>
       <Linkify>
-        {part1} {part2 ? '...' : null}
+        {part1}
+        {part2 ? '...' : null}
       </Linkify>
       {part2 && (
         <DialogSimple
