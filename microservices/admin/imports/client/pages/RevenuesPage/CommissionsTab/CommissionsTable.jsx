@@ -27,7 +27,7 @@ const CommissionsTable = () => {
     PRO_COMMISSION_STATUS.COMMISSION_TO_PAY,
   ]);
   const [orgId, setOrgId] = useState();
-  const { orgs, revenues, loading } = useCommissionsTableData(
+  const { orgs, revenues } = useCommissionsTableData(
     proCommissionStatus,
     orgId,
   );

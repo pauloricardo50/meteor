@@ -241,7 +241,12 @@ export class IntercomService {
     return data[0];
   }
 
-  async updateVisitorTrackingId({ context, visitorId, intercomId }) {
+  async updateVisitorTrackingId({
+    context,
+    visitorId,
+    intercomId,
+    trackingId,
+  }) {
     const isImpersonating = SessionService.isImpersonatedSession(
       context?.connection?.id,
     );
@@ -263,20 +268,24 @@ export class IntercomService {
     const visitorType = visitor?.type;
     const visitorIsFound = !!visitor;
 
-    if (!visitorIsFound || visitor?.custom_attributes?.epotek_trackingid) {
+    if (
+      !visitorIsFound ||
+      !trackingId ||
+      !!visitor?.custom_attributes?.epotek_trackingid
+    ) {
       return;
     }
 
     if (visitorType === 'visitor') {
       return this.updateVisitor({
         visitorId: userId,
-        custom_attributes: { epotek_trackingid: getClientTrackingId() },
+        custom_attributes: { epotek_trackingid: trackingId },
       });
     }
     if (visitorType === 'contact') {
       return this.updateContact({
         contactId: visitor.id,
-        custom_attributes: { epotek_trackingid: getClientTrackingId() },
+        custom_attributes: { epotek_trackingid: trackingId },
       });
     }
   }

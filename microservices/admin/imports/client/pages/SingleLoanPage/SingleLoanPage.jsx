@@ -2,15 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
+import { USER_STATUS } from 'core/api/users/userConstants';
+
 import CollectionTasksDataTable from '../../components/TasksDataTable/CollectionTasksDataTable';
 import UnsuccessfulReasonModal from '../../components/UnsuccessfulReasonModal/UnsuccessfulReasonModal';
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContacts from './SingleLoanPageContacts';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
 import SingleLoanPageHeader from './SingleLoanPageHeader';
+import SingleLoanPageProspect from './SingleLoanPageProspect';
 
 const SingleLoanPage = props => {
   const { loan } = props;
+
+  if (loan?.userCache?.status === USER_STATUS.PROSPECT) {
+    return <SingleLoanPageProspect {...props} />;
+  }
+
   return (
     <section className="single-loan-page">
       <Helmet>

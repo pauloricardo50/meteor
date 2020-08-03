@@ -7,9 +7,10 @@ OfferService.cache(
     collection: Lenders,
     fields: {
       loanLink: 1,
+      organisationLink: 1,
     },
     type: 'one',
     referenceField: 'lenderLink._id',
   },
-  // { lenderCache: { $exists: false } },
+  { 'lenderCache.organisationLink': { $exists: false } },
 );

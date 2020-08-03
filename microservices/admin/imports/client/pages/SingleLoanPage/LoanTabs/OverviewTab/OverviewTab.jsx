@@ -31,10 +31,7 @@ const allowClosingChecklists = status =>
   ].indexOf(status) >= 0;
 
 const OverviewTab = props => {
-  const {
-    loan,
-    currentUser: { roles },
-  } = props;
+  const { loan } = props;
   const { borrowers, _id: loanId, frontTagId, status } = loan;
   const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
     loan,

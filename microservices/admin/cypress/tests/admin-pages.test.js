@@ -1,4 +1,4 @@
-import { ROLES } from '../../imports/core/api/users/userConstants';
+import { ROLES, USER_STATUS } from '../../imports/core/api/users/userConstants';
 import {
   ADMIN_EMAIL,
   DEV_EMAIL,
@@ -133,7 +133,7 @@ describe('Admin Pages', () => {
         ],
         loans: {
           _id: 'loanId',
-          user: { _id: 'userId' },
+          user: { _id: 'userId', status: USER_STATUS.QUALIFIED },
           borrowers: { _id: 'borrowerId' },
           properties: {
             _id: 'propertyId',

@@ -270,8 +270,12 @@ loanSetCreatedAtActivityDescription.setHandler(({ userId }, params) => {
   return LoanService.setCreatedAtActivityDescription(params);
 });
 
-loanSetStatus.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsAdmin(userId);
+loanSetStatus.setHandler((context, params) => {
+  try {
+    SecurityService.checkIsInternalCall(context);
+  } catch (error) {
+    SecurityService.checkUserIsAdmin(context.userId);
+  }
   return LoanService.setStatus(params);
 });
 

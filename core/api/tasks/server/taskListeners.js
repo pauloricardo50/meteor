@@ -17,6 +17,9 @@ import {
 import { submitPromotionInterestForm } from '../../promotions/methodDefinitions';
 import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
 import PromotionService from '../../promotions/server/PromotionService';
+import { adminCreateUser } from '../../users/methodDefinitions';
+import UserService from '../../users/server/UserService';
+import { USERS_COLLECTION, USER_STATUS } from '../../users/userConstants';
 import { TASK_TYPES } from '../taskConstants';
 import TaskService from './TaskService';
 
@@ -183,5 +186,30 @@ ServerEventService.addAfterMethodListener(
         title: 'Valider le potentiel prévoyance identifié sur ce dossier',
       },
     });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  adminCreateUser,
+  ({ context, result: userId }) => {
+    context.unblock();
+    const { userId: adminId } = context;
+    const user = UserService.get(userId, {
+      assignedEmployee: { _id: 1 },
+      status: 1,
+    });
+    const admin = UserService.get(adminId, { firstName: 1 });
+
+    if (user.status === USER_STATUS.QUALIFIED) {
+      TaskService.insert({
+        object: {
+          collection: USERS_COLLECTION,
+          docId: userId,
+          assigneeLink: user?.assignedEmployee,
+          title: 'Nouveau client, prendre contact',
+          description: `Client créé par ${admin.firstName}`,
+        },
+      });
+    }
   },
 );

@@ -10,6 +10,7 @@ import DripService from '../../drip/server/DripService';
 import { ERROR_CODES } from '../../errors';
 import LoanService from '../../loans/server/LoanService';
 import { ddpWithUserId } from '../../methods/methodHelpers';
+import { setUserStatus } from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
 import { ROLES, USER_STATUS } from '../../users/userConstants';
 
@@ -592,10 +593,11 @@ export class FrontService {
       return;
     }
 
-    UserService.setStatus({
+    setUserStatus.serverRun({
       userId: recipientUser._id,
       status: USER_STATUS.QUALIFIED,
-      analyticsProperties: { statusChangeReason: 'Sent an email' },
+      source: 'drip',
+      reason: 'Sent an email',
     });
 
     return DripService.trackEvent({

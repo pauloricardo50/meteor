@@ -451,6 +451,7 @@ const analysisConfig = {
     name: {
       label: 'Nom',
     },
+    status: { id: 'Forms.status', formsFormat: true },
     emails: {
       label: 'Email vérifié',
       format: ({ emails = [] }) =>

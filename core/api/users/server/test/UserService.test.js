@@ -16,7 +16,8 @@ import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import PropertyService from '../../../properties/server/PropertyService';
-import { proInviteUser } from '../../methodDefinitions';
+import TaskService from '../../../tasks/server/TaskService';
+import { adminCreateUser, proInviteUser } from '../../methodDefinitions';
 import { ACQUISITION_CHANNELS, ROLES, USER_STATUS } from '../../userConstants';
 import { notifyDigitalWithUsersProspectForTooLong } from '../methods';
 import UserService from '../UserService';
@@ -105,10 +106,7 @@ describe('UserService', function () {
 
     it('does not send enrollment email by default', () => {
       const options = { email: 'test@test.com' };
-      UserService.adminCreateUser({
-        ...options,
-        role: ROLES.USER,
-      });
+      UserService.adminCreateUser({ ...options, role: ROLES.USER });
 
       expect(UserService.sendEnrollmentEmail.getCall(0)).to.equal(null);
     });
@@ -177,12 +175,36 @@ describe('UserService', function () {
         referredByOrganisation: 'testOrgId',
       };
 
-      const userId = UserService.adminCreateUser({
-        ...options,
-      });
+      const userId = UserService.adminCreateUser({ ...options });
 
       user = UserService.get(userId, { assignedEmployeeId: 1 });
       expect(user.assignedEmployeeId).to.equal('testAdminId');
+    });
+
+    it('adds a task on the user if it is set to qualified', async () => {
+      generator({
+        users: {
+          _factory: ROLES.ADVISOR,
+          _id: 'advisorId',
+          firstName: 'Bob',
+          lastName: 'Dylan',
+        },
+      });
+
+      const userId = await ddpWithUserId('advisorId', () =>
+        adminCreateUser.run({
+          user: {
+            email: 'test@e-potek.ch',
+            status: USER_STATUS.QUALIFIED,
+            role: ROLES.USER,
+          },
+        }),
+      );
+
+      const tasks = TaskService.find({}).fetch();
+      expect(tasks.length).to.equal(1);
+      expect(tasks[0].userLink._id).to.equal(userId);
+      expect(tasks[0].description).to.include('Bob');
     });
   });
 

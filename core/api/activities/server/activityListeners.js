@@ -33,6 +33,7 @@ import {
   proInviteUser,
   setUserReferredBy,
   setUserReferredByOrganisation,
+  setUserStatus,
   toggleAccount,
   userPasswordReset,
   userVerifyEmail,
@@ -393,7 +394,11 @@ ServerEventService.addAfterMethodListener(userVerifyEmail, ({ context }) => {
 
 ServerEventService.addAfterMethodListener(
   loanSetStatus,
-  ({ context, params: { loanId }, result: { prevStatus, nextStatus } }) => {
+  ({
+    context,
+    params: { loanId, activitySource },
+    result: { prevStatus, nextStatus },
+  }) => {
     context.unblock();
     const { userId } = context;
     const formattedPrevStatus = formatMessage({
@@ -402,7 +407,9 @@ ServerEventService.addAfterMethodListener(
     const formattedNextStatus = formatMessage({
       id: `Forms.status.${nextStatus}`,
     });
-    const { name: adminName } = UserService.get(userId, { name: 1 });
+    const { name: adminName } = UserService.get(userId, { name: 1 }) || {
+      adminName: 'server',
+    };
 
     ActivityService.addEventActivity({
       event: ACTIVITY_EVENT_METADATA.LOAN_CHANGE_STATUS,
@@ -410,7 +417,9 @@ ServerEventService.addAfterMethodListener(
       isServerGenerated: true,
       loanLink: { _id: loanId },
       title: 'Statut modifié',
-      description: `${formattedPrevStatus} -> ${formattedNextStatus}, par ${adminName}`,
+      description: `${formattedPrevStatus} -> ${formattedNextStatus}, par ${
+        activitySource || adminName
+      }`,
       createdBy: userId,
     });
   },
@@ -579,5 +588,34 @@ ServerEventService.addAfterMethodListener(
       createdBy: userId,
       ...data,
     });
+  },
+);
+
+ServerEventService.addAfterMethodListener(
+  setUserStatus,
+  ({
+    context,
+    params: { userId, source, reason },
+    result: { prevStatus, nextStatus },
+  }) => {
+    context.unblock();
+
+    if (prevStatus !== nextStatus) {
+      ActivityService.addServerActivity({
+        userLink: { _id: userId },
+        title: 'Changement de statut',
+        description: `${prevStatus} -> ${nextStatus}`,
+        type: ACTIVITY_TYPES.EVENT,
+        metadata: {
+          event: ACTIVITY_EVENT_METADATA.USER_CHANGED_STATUS,
+          details: {
+            prevStatus,
+            nextStatus,
+            source,
+            statusChangeReason: reason,
+          },
+        },
+      });
+    }
   },
 );

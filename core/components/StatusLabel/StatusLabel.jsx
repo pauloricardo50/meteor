@@ -161,6 +161,7 @@ const getLabel = ({
   variant,
   className,
   small,
+  tooltipProps,
 }) => {
   switch (variant) {
     case 'full':
@@ -179,7 +180,10 @@ const getLabel = ({
     case 'dot':
       return ({ showTooltip, ...props }) =>
         showTooltip ? (
-          <Tooltip title={label || <T id={`Forms.status.${status}`} />}>
+          <Tooltip
+            title={label || <T id={`Forms.status.${status}`} />}
+            {...tooltipProps}
+          >
             <span
               className={cx('status-label-dot', { allowModify }, className)}
               {...props}
@@ -215,6 +219,7 @@ const StatusLabel = ({
   method,
   className,
   small,
+  tooltipProps,
 }) => {
   const statuses = getStatuses(collection);
   const statusLabel = getLabel({
@@ -228,6 +233,7 @@ const StatusLabel = ({
     variant,
     className,
     small,
+    tooltipProps,
   });
 
   if (allowModify) {

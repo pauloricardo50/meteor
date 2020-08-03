@@ -125,16 +125,18 @@ export const useCommissionsTableData = (proCommissionStatus, orgId) => {
         loan: {
           name: 1,
           borrowers: { name: 1 },
-          user: { name: 1, referredByUser: { name: 1 } },
+          user: { name: 1, referredByUser: { name: 1 }, status: 1 },
           userCache: 1,
           assigneeLinks: 1,
+          status: 1,
         },
         insuranceRequest: {
           name: 1,
           borrowers: { name: 1 },
-          user: { name: 1, referredByUser: { name: 1 } },
+          user: { name: 1, referredByUser: { name: 1 }, status: 1 },
           userCache: 1,
           assigneeLinks: 1,
+          status: 1,
         },
         insurance: {
           name: 1,
@@ -142,8 +144,9 @@ export const useCommissionsTableData = (proCommissionStatus, orgId) => {
           insuranceRequest: {
             name: 1,
             assigneeLinks: 1,
-            user: { name: 1, referredByUser: { name: 1 } },
+            user: { name: 1, referredByUser: { name: 1 }, status: 1 },
           },
+          status: 1,
         },
         paidAt: 1,
         status: 1,

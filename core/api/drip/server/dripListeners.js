@@ -137,12 +137,11 @@ ServerEventService.addAfterMethodListener(
       if (bounced?.length) {
         await DripService.removeSubscriber({ email: oldEmail });
         await DripService.createSubscriber({ email: newEmail });
-        UserService.setStatus({
+        setUserStatus.serverRun({
           userId,
           status: USER_STATUS.PROSPECT,
-          analyticsProperties: {
-            statusChangeReason: 'Email address updated after bounce',
-          },
+          source: 'drip',
+          reason: 'Email address updated after bounce',
         });
       } else {
         const { subscribers = [] } = await DripService.fetchSubscriber({

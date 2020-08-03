@@ -56,7 +56,6 @@ import {
   LOAN_STATUS_ORDER,
   ORGANISATION_NAME_SEPARATOR,
   PURCHASE_TYPE,
-  STEPS,
 } from '../loanConstants';
 import Loans from '../loans';
 

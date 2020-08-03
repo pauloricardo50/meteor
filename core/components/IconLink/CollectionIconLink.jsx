@@ -17,6 +17,7 @@ import { PROPERTIES_COLLECTION } from '../../api/properties/propertyConstants';
 import { ROLES, USERS_COLLECTION } from '../../api/users/userConstants';
 import collectionIcons from '../../arrays/collectionIcons';
 import { employeesById } from '../../arrays/epotekEmployees';
+import StatusLabel from '../StatusLabel';
 import {
   getInsuranceLinkTitle,
   getInsuranceRequestLinkTitle,
@@ -163,7 +164,7 @@ const CollectionIconLink = ({
   stopPropagation,
   className,
 }) => {
-  const { _collection, _id: docId } = relatedDoc;
+  const { _collection, _id: docId, status } = relatedDoc;
 
   if (!docId) {
     return null;
@@ -175,6 +176,25 @@ const CollectionIconLink = ({
     text,
     hasPopup,
   } = getIconConfig(relatedDoc);
+
+  const statusLabel = status ? (
+    <StatusLabel
+      status={status}
+      collection={_collection}
+      variant="dot"
+      tooltipProps={{
+        placement: 'top',
+        PopperProps: { style: { zIndex: 10000 } },
+      }}
+    />
+  ) : null;
+
+  const childContent = children && (
+    <>
+      {children}
+      {statusLabel}
+    </>
+  );
 
   if ((showPopups && hasPopup) || replacementPopup) {
     return (
@@ -189,7 +209,12 @@ const CollectionIconLink = ({
         <IconLink
           link={link}
           icon={icon}
-          text={text}
+          text={
+            <>
+              <span className="collection-icon-link-content">{text}</span>
+              {statusLabel}
+            </>
+          }
           className={cx(
             'collection-icon',
             { 'font-awesome': typeof icon !== 'string' },
@@ -202,7 +227,7 @@ const CollectionIconLink = ({
           noRoute={noRoute}
           onClick={onClick}
         >
-          {children}
+          {childContent}
         </IconLink>
       </CollectionIconLinkPopup>
     );
@@ -224,7 +249,7 @@ const CollectionIconLink = ({
       noRoute={noRoute}
       onClick={onClick}
     >
-      {children}
+      {childContent}
     </IconLink>
   );
 };

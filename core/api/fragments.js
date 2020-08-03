@@ -397,6 +397,7 @@ export const proLoans = () => ({
     referredByUser: { name: 1, organisations: { name: 1 } },
     referredByOrganisation: { name: 1 },
     assignedEmployee: { name: 1, phoneNumbers: 1, email: 1 },
+    status: 1,
   },
 });
 
@@ -622,7 +623,7 @@ export const proPromotionOption = () => ({
     proNote: 1,
     solvency: 1,
     status: 1,
-    user: { phoneNumbers: 1, name: 1, email: 1 },
+    user: { phoneNumbers: 1, name: 1, email: 1, status: 1 },
   },
   name: 1,
   promotion: { users: { _id: 1 }, agreementDuration: 1 },

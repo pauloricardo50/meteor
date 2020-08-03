@@ -24,10 +24,7 @@ const IconLink = React.forwardRef(
     ref,
   ) => {
     let Component = Link;
-    let props = {
-      to: link,
-      innerRef: ref,
-    };
+    let props = { to: link, innerRef: ref };
 
     if (noRoute) {
       Component = 'div';

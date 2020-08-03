@@ -19,6 +19,7 @@ import {
   anonymousCreateUser,
   proInviteUser,
   proInviteUserToOrganisation,
+  setUserStatus,
 } from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
 import EVENTS from '../events';
@@ -115,7 +116,9 @@ addAnalyticsListener({
       step: 1,
       mainAssignee: 1,
     });
-    const { name: adminName } = UserService.get(adminId, { name: 1 });
+    const { name: adminName } = UserService.get(adminId, { name: 1 }) || {
+      name: 'server',
+    };
 
     let properties = {
       adminId,
@@ -815,5 +818,43 @@ addAnalyticsListener({
       userEmail: email,
       promotionName,
     });
+  },
+});
+
+addAnalyticsListener({
+  method: setUserStatus,
+  analyticsProps: ({ context, params: { userId } }) => ({
+    ...context,
+    userId,
+  }),
+  func: ({
+    analytics,
+    params: { userId, reason },
+    result: { prevStatus, nextStatus },
+  }) => {
+    if (prevStatus !== nextStatus) {
+      const user = UserService.get(userId, {
+        name: 1,
+        email: 1,
+        assignedEmployee: { name: 1 },
+        referredByOrganisation: { name: 1 },
+        referredByUser: { name: 1 },
+      });
+
+      analytics.track(EVENTS.USER_CHANGED_STATUS, {
+        prevStatus,
+        nextStatus,
+        userId: user?._id,
+        userName: user?.name,
+        userEmail: user?.email,
+        referringUserId: user?.referredByUser?._id,
+        referringUserName: user?.referredByUser?.name,
+        referringOrganisationId: user?.referredByOrganisation?._id,
+        referringOrganisationName: user?.referredByOrganisation?.name,
+        assigneeId: user?.assignedEmployee?._id,
+        assigneeName: user?.assignedEmployee?.name,
+        statusChangeReason: reason,
+      });
+    }
   },
 });

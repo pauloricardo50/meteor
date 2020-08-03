@@ -145,9 +145,10 @@ export default compose(
         loan: {
           name: 1,
           borrowers: { name: 1 },
-          user: { name: 1 },
+          user: { name: 1, status: 1 },
           userCache: 1,
           assigneeLinks: 1,
+          status: 1,
         },
         paidAt: 1,
         sourceOrganisationLink: 1,
@@ -160,8 +161,9 @@ export default compose(
           name: 1,
           insuranceRequest: { _id: 1 },
           borrower: { name: 1 },
+          status: 1,
         },
-        insuranceRequest: { name: 1 },
+        insuranceRequest: { name: 1, status: 1 },
       };
     },
     deps: ({ deps = [] }) => deps,
