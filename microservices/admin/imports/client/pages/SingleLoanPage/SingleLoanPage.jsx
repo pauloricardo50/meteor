@@ -14,9 +14,8 @@ import SingleLoanPageProspect from './SingleLoanPageProspect';
 
 const SingleLoanPage = props => {
   const { loan } = props;
-  const { status } = loan.userCache;
 
-  if (status === USER_STATUS.PROSPECT) {
+  if (loan?.userCache?.status === USER_STATUS.PROSPECT) {
     return <SingleLoanPageProspect {...props} />;
   }
 
