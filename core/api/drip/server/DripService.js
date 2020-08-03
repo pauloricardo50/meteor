@@ -207,7 +207,7 @@ export class DripService {
       email: 1,
       assignedEmployee: { name: 1, email: 1 },
       referredByOrganisation: { name: 1 },
-      referredByUser: { name: 1, organisations: { name: 1 } },
+      referredByUser: { name: 1, email: 1, organisations: { name: 1 } },
       loans: { promotions: { name: 1 } },
       acquisitionChannel: 1,
       phoneNumbers: 1,
@@ -266,6 +266,8 @@ export class DripService {
       assigneePhone:
         employeesByEmail[user?.assignedEmployee?.email]?.phoneNumber,
       referringOrganisationName,
+      referringUserEmail: user?.referredByUser?.email,
+      referringUserName: user?.referredByUser?.name,
       promotionName: hasOnePromotion
         ? user?.loans?.find(({ promotions = [] }) => promotions.length)
             ?.promotions?.[0]?.name
