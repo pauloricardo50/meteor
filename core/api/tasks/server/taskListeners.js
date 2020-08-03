@@ -206,7 +206,7 @@ ServerEventService.addAfterMethodListener(
           collection: USERS_COLLECTION,
           docId: userId,
           assigneeLink: user?.assignedEmployee,
-          title: 'Nouveau client, prendre contact',
+          title: 'Nouveau client créé en Qualifié, prendre contact',
           description: `Client créé par ${admin.firstName}`,
         },
       });

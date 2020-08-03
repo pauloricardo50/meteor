@@ -11,23 +11,23 @@ import {
 import OrganisationService from './OrganisationService';
 
 organisationInsert.setHandler((context, { organisation }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return OrganisationService.insert(organisation);
 });
 
 organisationUpdate.setHandler((context, { organisationId, object }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return OrganisationService._update({ id: organisationId, object });
 });
 
 organisationRemove.setHandler((context, { organisationId }) => {
-  SecurityService.checkCurrentUserIsDev();
+  SecurityService.checkUserIsDev(context.userId);
   return OrganisationService.remove(organisationId);
 });
 
 addContactToOrgnaisation.setHandler(
   (context, { organisationId, contactId, metadata }) => {
-    SecurityService.checkCurrentUserIsAdmin();
+    SecurityService.checkUserIsAdmin(context.userId);
     return OrganisationService.addLink({
       id: organisationId,
       linkName: 'contacts',
@@ -39,7 +39,7 @@ addContactToOrgnaisation.setHandler(
 
 addUserToOrganisation.setHandler(
   (context, { organisationId, userId, metadata }) => {
-    SecurityService.checkCurrentUserIsAdmin();
+    SecurityService.checkUserIsAdmin(context.userId);
     return OrganisationService.addLink({
       id: organisationId,
       linkName: 'users',
@@ -50,7 +50,7 @@ addUserToOrganisation.setHandler(
 );
 
 removeUserFromOrganisation.setHandler((context, { organisationId, userId }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return OrganisationService.removeLink({
     id: organisationId,
     linkName: 'users',
@@ -59,6 +59,6 @@ removeUserFromOrganisation.setHandler((context, { organisationId, userId }) => {
 });
 
 setCommissionRates.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return OrganisationService.setCommissionRates(params);
 });

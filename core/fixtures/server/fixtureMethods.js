@@ -184,7 +184,7 @@ Meteor.methods({
 
   async purgeDatabase(currentUserId) {
     check(currentUserId, String);
-    if (SecurityService.checkCurrentUserIsDev() && isAuthorizedToRun()) {
+    if (SecurityService.checkUserIsDev(this.userId) && isAuthorizedToRun()) {
       await Promise.all([
         Borrowers.rawCollection().remove({}),
         Contacts.rawCollection().remove({}),
@@ -204,7 +204,7 @@ Meteor.methods({
 
   purgeFakeData(currentUserId) {
     check(currentUserId, String);
-    if (SecurityService.checkCurrentUserIsDev() && isAuthorizedToRun()) {
+    if (SecurityService.checkUserIsDev(this.userId) && isAuthorizedToRun()) {
       let fakeUsersIds = getFakeUsersIds();
       deleteUsersRelatedData(fakeUsersIds);
 
@@ -214,12 +214,12 @@ Meteor.methods({
   },
 
   purgePersonalData(currentUserId) {
-    SecurityService.checkCurrentUserIsDev();
+    SecurityService.checkUserIsDev(this.userId);
     return deleteUsersRelatedData([currentUserId]);
   },
 
   insertLoanRelatedTask() {
-    SecurityService.checkCurrentUserIsDev();
+    SecurityService.checkUserIsDev(this.userId);
     const loanId = LoanService.find({}).fetch()[0]._id;
     if (loanId) {
       return TaskService.insert({
@@ -229,19 +229,19 @@ Meteor.methods({
   },
 
   createFakeOffer({ loanId }) {
-    SecurityService.checkCurrentUserIsDev();
+    SecurityService.checkUserIsDev(this.userId);
 
     return createFakeOffer(loanId);
   },
 
   createFakeInterestRates({ number }) {
-    SecurityService.checkCurrentUserIsDev();
+    SecurityService.checkUserIsDev(this.userId);
 
     return createFakeInterestRates({ number });
   },
 
   addEmptyLoan({ userId, twoBorrowers, addOffers, isRefinancing }) {
-    SecurityService.checkCurrentUserIsDev();
+    SecurityService.checkUserIsDev(this.userId);
 
     return addLoanWithData({
       borrowers: twoBorrowers
@@ -260,8 +260,7 @@ Meteor.methods({
   },
 
   addLoanWithSomeData({ userId, twoBorrowers, addOffers, isRefinancing }) {
-    SecurityService.checkCurrentUserIsDev();
-
+    SecurityService.checkUserIsDev(this.userId);
     return addLoanWithData({
       borrowers: twoBorrowers
         ? [completeFakeBorrower, completeFakeBorrower]
@@ -279,8 +278,7 @@ Meteor.methods({
   },
 
   addCompleteLoan({ userId, twoBorrowers, isRefinancing }) {
-    SecurityService.checkCurrentUserIsDev();
-
+    SecurityService.checkUserIsDev(this.userId);
     return addLoanWithData({
       borrowers: twoBorrowers
         ? [completeFakeBorrower, completeFakeBorrower]
@@ -300,8 +298,7 @@ Meteor.methods({
   },
 
   addAnonymousLoan({ twoBorrowers, isRefinancing }) {
-    SecurityService.checkCurrentUserIsDev();
-
+    SecurityService.checkUserIsDev(this.userId);
     return addLoanWithData({
       borrowers: twoBorrowers
         ? [emptyFakeBorrower, emptyFakeBorrower]
@@ -318,8 +315,7 @@ Meteor.methods({
   },
 
   addUserToOrg() {
-    SecurityService.checkCurrentUserIsDev();
-
+    SecurityService.checkUserIsDev(this.userId);
     let orgId;
     const org = OrganisationService.get({ name: 'Dev Org' }, { _id: 1 });
 
@@ -343,7 +339,7 @@ Meteor.methods({
   },
 
   createTestPromotion(...params) {
-    SecurityService.checkCurrentUserIsDev();
+    SecurityService.checkUserIsDev(this.userId);
     return createTestPromotion(...params);
   },
 });

@@ -8,8 +8,8 @@ import { organisationSearch, proOrganisation } from '../queries';
 exposeQuery({
   query: organisationSearch,
   overrides: {
-    firewall: () => {
-      SecurityService.checkCurrentUserIsAdmin();
+    firewall: userId => {
+      SecurityService.checkUserIsAdmin(userId);
     },
     embody: body => {
       body.$filter = ({ filters, params: { searchQuery } }) => {

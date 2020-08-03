@@ -360,6 +360,6 @@ notifyInsuranceTeamForPotential.setHandler(({ userId }, { loanId }) => {
 });
 
 updateInsurancePotential.setHandler(({ userId }, params) => {
-  SecurityService.checkCurrentUserIsAdmin(userId);
+  SecurityService.checkUserIsAdmin(userId);
   return LoanService.updateInsurancePotential(params);
 });

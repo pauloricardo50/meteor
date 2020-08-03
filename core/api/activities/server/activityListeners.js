@@ -408,7 +408,7 @@ ServerEventService.addAfterMethodListener(
       id: `Forms.status.${nextStatus}`,
     });
     const { name: adminName } = UserService.get(userId, { name: 1 }) || {
-      adminName: 'server',
+      name: 'server',
     };
 
     ActivityService.addEventActivity({

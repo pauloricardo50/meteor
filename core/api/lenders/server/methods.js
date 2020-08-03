@@ -8,21 +8,21 @@ import {
 import LenderService from './LenderService';
 
 lenderInsert.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return LenderService.insert(params);
 });
 
 lenderRemove.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return LenderService.remove(params);
 });
 
 lenderUpdate.setHandler((context, { lenderId, object }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return LenderService._update({ id: lenderId, object });
 });
 
 lenderLinkOrganisationAndContact.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return LenderService.linkOrganisationAndContact(params);
 });

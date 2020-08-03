@@ -7,16 +7,16 @@ import {
 import InterestRatesService from './InterestRatesService';
 
 interestRatesInsert.setHandler((context, { interestRates }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return InterestRatesService.insert(interestRates);
 });
 
 interestRatesRemove.setHandler((context, { interestRatesId }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return InterestRatesService.remove(interestRatesId);
 });
 
 interestRatesUpdate.setHandler((context, { interestRatesId, object }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return InterestRatesService._update({ id: interestRatesId, object });
 });

@@ -96,7 +96,7 @@ testCreateUser.setHandler((context, params) => {
 });
 
 removeUser.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsDev();
+  SecurityService.checkUserIsDev(context.userId);
   UserService.remove(params);
 });
 

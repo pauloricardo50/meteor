@@ -26,7 +26,7 @@ borrowerUpdate.setHandler((context, params) => {
 
 borrowerDelete.setHandler((context, params) => {
   if (!params.loanId) {
-    SecurityService.checkCurrentUserIsAdmin();
+    SecurityService.checkUserIsAdmin(context.userId);
   } else {
     SecurityService.borrowers.isAllowedToDelete(params.borrowerId);
   }
