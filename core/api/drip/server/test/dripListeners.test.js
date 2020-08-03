@@ -12,6 +12,11 @@ import { ACTIVITY_TYPES } from '../../../activities/activityConstants';
 import ActivityService from '../../../activities/server/ActivityService';
 import NoOpAnalytics from '../../../analytics/server/NoOpAnalytics';
 import generator from '../../../factories/server';
+import {
+  LOAN_STATUS,
+  UNSUCCESSFUL_LOAN_REASONS,
+} from '../../../loans/loanConstants';
+import LoanService from '../../../loans/server/LoanService';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
@@ -862,6 +867,59 @@ describe('dripListeners', function () {
         userId,
         event: 'Drip Subscriber Event Recorded',
       });
+    });
+
+    it('sets loans to UNSUCCESSFUL with a proper unsuccessfulReason', () => {
+      generator({
+        loans: [
+          {
+            userId,
+            status: LOAN_STATUS.UNSUCCESSFUL,
+            unsuccessfulReason: UNSUCCESSFUL_LOAN_REASONS.BAD_CLIENT_BAD_FAITH,
+          },
+          { userId },
+        ],
+      });
+
+      setUserStatus.serverRun({
+        userId,
+        status: USER_STATUS.LOST,
+        source: 'drip',
+        reason: 'Webhook: Drip applied LOST tag',
+        unsuccessfulReason: UNSUCCESSFUL_LOAN_REASONS.DRIP_UNSUBSCRIBED,
+      });
+
+      const loans = LoanService.fetch({ status: 1, unsuccessfulReason: 1 });
+      expect(
+        loans.every(({ status }) => status === LOAN_STATUS.UNSUCCESSFUL),
+      ).to.equal(true);
+      expect(loans[0].unsuccessfulReason).to.equal(
+        UNSUCCESSFUL_LOAN_REASONS.BAD_CLIENT_BAD_FAITH,
+      );
+      expect(loans[1].unsuccessfulReason).to.equal(
+        UNSUCCESSFUL_LOAN_REASONS.DRIP_UNSUBSCRIBED,
+      );
+    });
+
+    it('does not set loans to UNSUCCESSFUL if the user was QUALIFIED before', () => {
+      generator({
+        users: {
+          _id: 'user2',
+          loans: {},
+          status: USER_STATUS.QUALIFIED,
+        },
+      });
+
+      setUserStatus.serverRun({
+        userId: 'user2',
+        status: USER_STATUS.LOST,
+        source: 'drip',
+        reason: 'Webhook: Drip applied LOST tag',
+        unsuccessfulReason: UNSUCCESSFUL_LOAN_REASONS.DRIP_UNSUBSCRIBED,
+      });
+
+      const loans = LoanService.fetch({ status: 1, unsuccessfulReason: 1 });
+      expect(loans[0].status).to.equal(LOAN_STATUS.LEAD);
     });
   });
 });

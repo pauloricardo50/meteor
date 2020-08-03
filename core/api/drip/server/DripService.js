@@ -11,6 +11,7 @@ import ActivityService from '../../activities/server/ActivityService';
 import EVENTS from '../../analytics/events';
 import Analytics from '../../analytics/server/Analytics';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
+import { UNSUCCESSFUL_LOAN_REASONS } from '../../loans/loanConstants';
 import { setUserStatus } from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
 import { ACQUISITION_CHANNELS, USER_STATUS } from '../../users/userConstants';
@@ -379,6 +380,8 @@ export class DripService {
             status: USER_STATUS.LOST,
             source: 'drip',
             reason: 'Webhook: Drip applied LOST tag',
+            unsuccessfulReason:
+              UNSUCCESSFUL_LOAN_REASONS.CONTACT_LOSS_NO_ANSWER,
           });
         }
         break;
@@ -485,6 +488,7 @@ export class DripService {
         status: USER_STATUS.LOST,
         source: 'drip',
         reason: 'Subscriber unsubscribed',
+        unsuccessfulReason: UNSUCCESSFUL_LOAN_REASONS.DRIP_UNSUBSCRIBED,
       });
     }
 
@@ -571,6 +575,7 @@ export class DripService {
         status: USER_STATUS.LOST,
         source: 'drip',
         reason: 'Subscriber bounced',
+        unsuccessfulReason: UNSUCCESSFUL_LOAN_REASONS.CONTACT_LOSS_UNREACHABLE,
       });
 
       ActivityService.addServerActivity({
@@ -613,6 +618,7 @@ export class DripService {
         status: USER_STATUS.LOST,
         source: 'drip',
         reason: 'Subscriber complained',
+        unsuccessfulReason: UNSUCCESSFUL_LOAN_REASONS.DRIP_COMPLAINED,
       });
     }
 

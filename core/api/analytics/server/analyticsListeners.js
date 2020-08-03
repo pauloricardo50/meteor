@@ -116,7 +116,9 @@ addAnalyticsListener({
       step: 1,
       mainAssignee: 1,
     });
-    const { name: adminName } = UserService.get(adminId, { name: 1 });
+    const { name: adminName } = UserService.get(adminId, { name: 1 }) || {
+      name: 'server',
+    };
 
     let properties = {
       adminId,

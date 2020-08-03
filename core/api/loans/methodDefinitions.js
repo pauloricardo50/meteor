@@ -187,7 +187,11 @@ export const loanSetCreatedAtActivityDescription = new Method({
 
 export const loanSetStatus = new Method({
   name: 'loanSetStatus',
-  params: { loanId: String, status: String },
+  params: {
+    loanId: String,
+    status: String,
+    activitySource: Match.Maybe(String),
+  },
 });
 
 export const sendLoanChecklist = new Method({
