@@ -13,6 +13,7 @@ import {
   updatedAt,
 } from '../../helpers/sharedSchemas';
 import { RESIDENCE_TYPE } from '../../properties/propertyConstants';
+import { initialDocuments } from '../loanAdditionalDocuments';
 import {
   APPLICATION_TYPES,
   CANTONS,
@@ -95,7 +96,7 @@ const LoanSchema = new SimpleSchema({
   previousLoanAmortization: moneyField,
   ...contactsSchema,
   ...previousLoanTranchesSchema,
-  ...additionalDocuments([]),
+  ...additionalDocuments(initialDocuments),
   step: {
     type: String,
     defaultValue: STEPS.SOLVENCY,
