@@ -402,13 +402,6 @@ jobs:
           keys:
             - 'node_modules_master_16_{{ checksum "./package-lock.json" }}'
       - restore_cache:
-          name: Restore meteor system
-          keys:
-            - >-
-              meteor_system_master_16_undefined_2_{{ checksum
-              "./microservices/undefined/.meteor/release" }}_{{ checksum
-              "./microservices/undefined/.meteor/versions" }}
-      - restore_cache:
           name: Restore gatsby website
           keys:
             - 'source_master_16-{{ .Branch }}-{{ .Revision }}'
@@ -435,23 +428,23 @@ jobs:
           name: Install node_modules
           command: |2-
 
-                  function installBackend {
+                  function installMicroservice {
                     meteor npm --prefix microservices/www2 ci
-                    touch $HOME/.npm-backend-done
+                    touch $HOME/.npm-microservice-done
                   }
 
-                  installBackend &
+                  installMicroservice &
 
                   meteor npm --prefix microservices/backend ci
 
-                  until [ -f $HOME/.npm-backend-done ]; do
-                    echo "$HOME/.npm-backend-done does not exist. Waiting 1s"
+                  until [ -f $HOME/.npm-microservice-done ]; do
+                    echo "$HOME/.npm-microservice-done does not exist. Waiting 1s"
                     sleep 1
                   done
                   
       - run:
           name: Run E2E tests
-          command: cd ./microservices/www2 && meteor npm run test-e2e
+          command: cd ./microservices/www2 && meteor npm run test-e2e-ci
           no_output_timeout: 30m
       - save_cache:
           name: Cache gatsby website

@@ -248,7 +248,6 @@ const testGatsbyJobE2E = () => {
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore global cache', cacheKeys.global()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
-    restoreCache('Restore meteor system', cacheKeys.meteorSystem()),
     restoreCache('Restore gatsby website', cacheKeys.gatsby()),
     restoreCache(
       'Restore meteor backend',
@@ -263,19 +262,17 @@ const testGatsbyJobE2E = () => {
     runCommand(
       'Install node_modules',
       `
-      function installBackend {
+      function installMicroservice {
         meteor npm --prefix microservices/${name} ci
-        touch $HOME/.npm-backend-done
+        touch $HOME/.npm-microservice-done
       }
 
-      installBackend &
+      installMicroservice &
 
-      ${
-        name !== 'backend' ? 'meteor npm --prefix microservices/backend ci' : ''
-      }
+      meteor npm --prefix microservices/backend ci
 
-      until [ -f $HOME/.npm-backend-done ]; do
-        echo "$HOME/.npm-backend-done does not exist. Waiting 1s"
+      until [ -f $HOME/.npm-microservice-done ]; do
+        echo "$HOME/.npm-microservice-done does not exist. Waiting 1s"
         sleep 1
       done
       `,
@@ -283,7 +280,7 @@ const testGatsbyJobE2E = () => {
 
     runCommand(
       'Run E2E tests',
-      `cd ./microservices/${name} && meteor npm run test-e2e`,
+      `cd ./microservices/${name} && meteor npm run test-e2e-ci`,
       '30m',
     ),
 
