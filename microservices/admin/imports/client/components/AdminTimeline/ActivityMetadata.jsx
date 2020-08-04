@@ -26,7 +26,12 @@ const ActivityMetadata = ({ activityId }) => (
   <DialogSimple
     closeOnly
     title="Metadata"
-    buttonProps={{ primary: true, label: 'Metadata', raised: false }}
+    buttonProps={{
+      primary: true,
+      label: 'Metadata',
+      raised: false,
+      size: 'small',
+    }}
     fullWidth
     renderProps
   >

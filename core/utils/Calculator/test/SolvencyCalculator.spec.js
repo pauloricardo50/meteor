@@ -209,7 +209,6 @@ describe('SolvencyCalculator', () => {
             {
               salary: 120700,
               bankFortune: [{ value: 122000 }],
-              // insurance3A: [{ value: 61220 }],
               insurance2: [{ value: 155200 }],
             },
           ],
@@ -467,14 +466,17 @@ describe('SolvencyCalculator', () => {
       });
 
       const calc = new CalculatorClass({ lenderRules, loan: loanObject });
-      const results = calc.getMaxPropertyValueWithoutBorrowRatio({
+      const {
+        borrowRatio,
+        propertyValue,
+      } = calc.getMaxPropertyValueWithoutBorrowRatio({
         borrowers,
         canton: 'GE',
         residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
       });
 
-      expect(results.borrowRatio).to.equal(0.5);
-      expect(results.propertyValue).to.equal(232000);
+      expect(borrowRatio).to.equal(0.5);
+      expect(propertyValue).to.equal(232000);
     });
 
     it('recommends a good value for a special case', () => {

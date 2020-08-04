@@ -43,7 +43,7 @@ const OfferPickerListItemInterests = ({
 
   return (
     <OfferPickerListItemValue
-      label={<T id="FinancingOffers.averagedInterestRate" />}
+      label={<T id="FinancingOffers.averagedRate" />}
       value={<Percent value={offer.averagedRate} />}
     />
   );

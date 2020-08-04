@@ -38,7 +38,7 @@ const makeArrayOfObjectsInput = (id, required = false) => ({
         <Money value={currentValue.reduce((t, { value: v }) => t + v, 0)} />
       </b>
       &nbsp;-&nbsp;
-      <span className="secondary">{currentValue.length + 1} éléments</span>
+      <span className="secondary">{currentValue.length} éléments</span>
     </span>
   ),
 });
