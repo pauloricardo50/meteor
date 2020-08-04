@@ -791,6 +791,7 @@
   "Forms.bonusAlgorithm": "Calcul des bonus",
   "Forms.bonusAlgorithm.AVERAGE": "Moyenne des bonus (y compris 0)",
   "Forms.bonusAlgorithm.WEAK_AVERAGE": "Moyenne des bonus existants",
+  "Forms.bonusAlgorithm.ZERO_IF_UNDEFINED": "0 si un des bonus n'existe pas",
   "Forms.realEstateIncomeConsideration": "Considération des revenus immobiliers",
   "PasswordResetPage.disclaimer": "J'ai lu et accepté la {link}.",
   "PasswordResetPage.disclaimer.privacyPolicy": "Politique de confidentialité",

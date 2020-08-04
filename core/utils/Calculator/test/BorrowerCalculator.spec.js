@@ -70,7 +70,7 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe('getBonusIncome', () => {
+  describe.only('getBonusIncome', () => {
     it('returns half of 1 bonus', () => {
       expect(
         Calculator.getBonusIncome({
@@ -204,6 +204,26 @@ describe('BorrowerCalculator', () => {
           },
         }),
       ).to.equal(200);
+    });
+
+    it('returns zero if one of the bonuses is undefined with ZERO_IF_UNDEFINED', () => {
+      const calc = new CalculatorClass({
+        bonusConsideration: 1,
+        bonusHistoryToConsider: 3,
+        bonusAlgorithm: BONUS_ALGORITHMS.ZERO_IF_UNDEFINED,
+      });
+
+      expect(
+        calc.getBonusIncome({
+          borrowers: {
+            bonusExists: true,
+            bonus2019: 200,
+            bonus2018: 200,
+            bonus2017: 0,
+            bonus2016: 200,
+          },
+        }),
+      ).to.equal(0);
     });
   });
 

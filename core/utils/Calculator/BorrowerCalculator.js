@@ -138,6 +138,13 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       const valuesToConsider = values.slice(
         Math.max(0, values.length - history),
       );
+
+      if (this.bonusAlgorithm === BONUS_ALGORITHMS.ZERO_IF_UNDEFINED) {
+        if (valuesToConsider.filter(x => x).length < history) {
+          return 0;
+        }
+      }
+
       const sum = valuesToConsider.reduce((tot, val = 0) => tot + val, 0);
       return (weighting * sum) / valuesToConsider.length || 0;
     }
