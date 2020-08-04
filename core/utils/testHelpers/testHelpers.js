@@ -4,6 +4,7 @@ import { Random } from 'meteor/random';
 
 import { expect } from 'chai';
 import faker from 'faker';
+import sinon from 'sinon';
 
 import { testUserAccount } from '../../api/users/methodDefinitions';
 import { ROLES } from '../../api/users/userConstants';
@@ -121,3 +122,13 @@ export const callMethod = (name, ...args) =>
   new Promise(resolve =>
     Meteor.call(name, ...args, (err, res) => resolve(res)),
   );
+
+export const createClock = time =>
+  sinon.useFakeTimers({
+    now: time,
+    shouldAdvanceTime: true,
+    // DDP is broken if we fake some of the other timers,
+    // even if we always restore the clock after the tests
+    // TODO: find the specific timers that cause this
+    toFake: ['Date'],
+  });

@@ -1,9 +1,6 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
-
 import { expect } from 'chai';
 import moment from 'moment';
-import sinon from 'sinon';
 
 import { BORROWERS_COLLECTION } from '../../../borrowers/borrowerConstants';
 import generator from '../../../factories/server';
@@ -12,6 +9,7 @@ import { BORROWER_DOCUMENTS, FILE_STATUS } from '../../fileConstants';
 import FileService from '../FileService';
 import S3Service from '../S3Service';
 import { clearBucket } from './S3Service.test';
+import { createClock } from '../../../../utils/testHelpers';
 
 const docId = 'someDocId';
 const json = { hello: 'world' };
@@ -136,7 +134,7 @@ describe('FileService', function () {
 
   describe('flushTempFiles', () => {
     it('deletes 15 minutes old temp files', async () => {
-      const clock = sinon.useFakeTimers(Date.now());
+      const clock = createClock(Date.now());
       clock.tick(16 * 60 * 1000);
 
       const tempFiles = [...Array(5)].map((_, i) => ({

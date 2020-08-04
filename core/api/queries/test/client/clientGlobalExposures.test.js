@@ -11,6 +11,8 @@ import { ROLES } from '../../../users/userConstants';
 import { createQuery } from '../..';
 
 describe('Global Exposures', function () {
+  this.timeout(1000 * 3);
+
   beforeEach(() => resetDatabase());
 
   afterEach(done =>
