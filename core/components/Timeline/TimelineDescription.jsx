@@ -11,8 +11,10 @@ const TimelineDescription = ({
     return null;
   }
 
-  const part1 = description.slice(0, 120);
-  const part2 = description.slice(120);
+  // When you pass a component, such as front conversation links
+  const canSlice = typeof description?.slice === 'function';
+  const part1 = canSlice ? description.slice(0, 120) : description;
+  const part2 = canSlice ? description.slice(120) : null;
 
   return (
     <div className={className}>
