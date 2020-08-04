@@ -30,7 +30,6 @@ import {
   removeBorrower,
   revertLastMigration,
   setAdditionalDoc,
-  submitContactForm,
   throwDevError,
   unlockMigrationControl,
   updateDocument,
@@ -45,7 +44,7 @@ getMixpanelAuthorization.setHandler(context => {
 });
 
 addBorrower.setHandler((context, { loanId, borrower }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId);
+  SecurityService.loans.isAllowedToUpdate(loanId, context.userId);
   const loan = LoanService.get(loanId, { userId: 1, borrowerIds: 1 });
 
   // A loan can't have more than 2 borrowers at the moment
@@ -76,9 +75,6 @@ removeBorrower.setHandler((context, { loanId, borrowerId }) => {
   return LoanService.pullValue({ loanId, object: { borrowerIds: borrowerId } });
 });
 
-// This method needs to exist as its being listened to in EmailListeners
-submitContactForm.setHandler(() => null);
-
 throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
   console.log('Throwing dev error..');
 
@@ -108,7 +104,7 @@ removeAdditionalDoc.setHandler((context, { collection, ...rest }) => {
   return Services[collection].removeAdditionalDoc(rest);
 });
 
-migrateToLatest.setHandler(({ userId }) => {
+migrateToLatest.setHandler(context => {
   SecurityService.checkUserIsDev(context.userId);
   migrate();
 });

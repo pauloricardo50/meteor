@@ -1,8 +1,5 @@
 import { matchPath } from 'react-router-dom';
 
-import { parseCookies } from '../../utils/cookiesHelpers';
-import { analyticsCTA } from './methodDefinitions';
-
 export const getMatchingPath = ({
   pathname,
   routes = {},
@@ -41,16 +38,4 @@ export const getMatchingPath = ({
       queryString,
     }
   );
-};
-
-export const ctaClicked = ({ name, history, routes = {}, toPath }) => {
-  const { path, route } = getMatchingPath({
-    pathname: history.location.pathname,
-    routes,
-    history,
-  });
-
-  const cookies = parseCookies();
-
-  return analyticsCTA.run({ name, cookies, path, route, toPath });
 };

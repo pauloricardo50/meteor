@@ -4,7 +4,6 @@ import reactStringReplace from 'react-string-replace';
 
 import { TOOLTIP_LISTS, tooltips } from '../../arrays/tooltips';
 import TextWithTooltip from './TextWithTooltip';
-import { TooltipContainer } from './TooltipContext';
 
 export const createRegexThatFindsAnyWordFromList = list => {
   if (list) {
@@ -26,11 +25,6 @@ const parseTextForTooltips = props =>
       </TextWithTooltip>
     ),
   );
-
-export const autoTooltipParser = (
-  string,
-  tooltipList = TOOLTIP_LISTS.GENERAL,
-) => parseTextForTooltips({ children: string, tooltipList });
 
 export const AutoTooltip = props => {
   const { children, tooltipId } = props;
@@ -64,4 +58,4 @@ AutoTooltip.defaultProps = {
   tooltipList: TOOLTIP_LISTS.GENERAL,
 };
 
-export default TooltipContainer(AutoTooltip);
+export default AutoTooltip;

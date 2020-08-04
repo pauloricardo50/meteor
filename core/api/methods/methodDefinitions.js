@@ -23,17 +23,6 @@ export const removeBorrower = new Method({
   },
 });
 
-export const submitContactForm = new Method({
-  name: 'submitContactForm',
-  params: {
-    name: String,
-    email: String,
-    phoneNumber: String,
-    details: Match.Optional(String),
-  },
-  rateLimit: { global: { limit: 1, timeRange: 5000 } },
-});
-
 export const throwDevError = new Method({
   name: 'throwDevError',
   params: {
