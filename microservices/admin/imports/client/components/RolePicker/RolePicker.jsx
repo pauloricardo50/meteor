@@ -1,25 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
+import SecurityService from 'core/api/security/Security';
+import { setRole } from 'core/api/users/methodDefinitions';
+import { ASSIGNABLE_ROLES, ROLES } from 'core/api/users/roles/roleConstants';
 import DropdownMenu from 'core/components/DropdownMenu';
 import T from 'core/components/Translation';
 
-import RolePickerContainer from './RolePickerContainer';
+const RolePicker = ({ userId }) => {
+  const roles = SecurityService.currentUserHasRole(ROLES.DEV)
+    ? Object.values(ASSIGNABLE_ROLES)
+    : Object.values(ASSIGNABLE_ROLES).filter(role => role !== ROLES.DEV);
+  const onChooseRole = newRole => setRole.run({ userId, role: newRole });
 
-const RolePicker = ({ onChooseRole, roles }) => (
-  <DropdownMenu
-    iconType="edit"
-    options={roles.map(role => ({
-      id: role,
-      label: <T id={`roles.${role}`} />,
-      onClick: () => onChooseRole(role),
-    }))}
-  />
-);
-
-RolePicker.propTypes = {
-  onChooseRole: PropTypes.func.isRequired,
-  roles: PropTypes.array.isRequired,
+  return (
+    <DropdownMenu
+      iconType="edit"
+      options={roles.map(role => ({
+        id: role,
+        label: <T id={`roles.${role}`} />,
+        onClick: () => onChooseRole(role),
+      }))}
+    />
+  );
 };
 
-export default RolePickerContainer(RolePicker);
+export default RolePicker;
