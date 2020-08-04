@@ -1,9 +1,7 @@
 import { createCollection } from '../helpers/collectionHelpers';
-import * as propertyConstants from './propertyConstants';
+import { PROPERTIES_COLLECTION } from './propertyConstants';
 import PropertySchema from './schemas/PropertySchema';
 
-const Properties = createCollection(propertyConstants.PROPERTIES_COLLECTION);
+const Properties = createCollection(PROPERTIES_COLLECTION, PropertySchema);
 
-// Attach schema
-Properties.attachSchema(PropertySchema);
 export default Properties;

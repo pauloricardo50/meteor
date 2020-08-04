@@ -4,8 +4,6 @@ import { createCollection } from '../../helpers/collectionHelpers';
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import { UPDATE_WATCHERS_COLLECTION } from '../updateWatcherConstants';
 
-const UpdateWatchers = createCollection(UPDATE_WATCHERS_COLLECTION);
-
 const UpdateWatcherSchema = new SimpleSchema({
   createdAt,
   updatedAt,
@@ -16,6 +14,9 @@ const UpdateWatcherSchema = new SimpleSchema({
   'updatedFields.$': { type: Object, blackbox: true },
 });
 
-UpdateWatchers.attachSchema(UpdateWatcherSchema);
+const UpdateWatchers = createCollection(
+  UPDATE_WATCHERS_COLLECTION,
+  UpdateWatcherSchema,
+);
 
 export default UpdateWatchers;
