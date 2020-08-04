@@ -1,8 +1,0 @@
-cypress/*/*/**
-!/cypress/server/wwwCypressMethods.app-tests.js
-
-imports/core/**/*.spec.js
-imports/core/**/*.spec.jsx
-imports/core/**/*.test.js
-imports/core/**/*.test.jsx
-!/imports/core/lib/client/clientTestSetup.test.js

@@ -156,7 +156,7 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     testsType === 'e2e' &&
       restoreCache('Restore global cache', cacheKeys.global()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
-    restoreCache('Restore meteor system', cacheKeys.meteorSystem()),
+    restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
     restoreCache(
       'Restore meteor microservice',
       cacheKeys.meteorMicroservice(name),

@@ -4,10 +4,6 @@ export const FROM_NAME = 'e-Potek';
 export const FROM_EMAIL = 'team@e-potek.ch';
 export const FROM_DEFAULT = `${FROM_NAME} <${FROM_EMAIL}>`;
 export const CTA_URL_DEFAULT = Meteor.settings.public.subdomains.app;
-export const INTERNAL_EMAIL =
-  Meteor.settings.public.environment === 'production'
-    ? FROM_EMAIL
-    : 'dev@e-potek.ch';
 export const EPOTEK_PHONE = '+41 22 566 01 10';
 
 export const EMAIL_I18N_NAMESPACE = 'emails';
@@ -79,8 +75,6 @@ export const EMAIL_IDS = {
     'CANCEL_PROMOTION_LOT_RESERVATION_PROCESS',
   CONFIRM_PROMOTION_USER_INVITATION: 'CONFIRM_PROMOTION_USER_INVITATION',
   CONFIRM_USER_INVITATION: 'CONFIRM_USER_INVITATION',
-  CONTACT_US_ADMIN: 'CONTACT_US_ADMIN',
-  CONTACT_US: 'CONTACT_US',
   ENROLL_ACCOUNT: 'ENROLL_ACCOUNT',
   EXPIRE_PROMOTION_RESERVATION_AGREEMENT:
     'EXPIRE_PROMOTION_RESERVATION_AGREEMENT',
