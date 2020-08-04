@@ -1,14 +1,12 @@
 import React from 'react';
 import Badge from '@material-ui/core/Badge';
 import Tooltip from '@material-ui/core/Tooltip';
-import AccessibleForward from '@material-ui/icons/AccessibleForward';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Add from '@material-ui/icons/Add';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
 import Airplay from '@material-ui/icons/Airplay';
 import Apps from '@material-ui/icons/Apps';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import DropDownCircle from '@material-ui/icons/ArrowDropDownCircle';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import AttachFile from '@material-ui/icons/AttachFile';
@@ -25,19 +23,15 @@ import Delete from '@material-ui/icons/Delete';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import DeleteSweep from '@material-ui/icons/DeleteSweep';
 import DeveloperMode from '@material-ui/icons/DeveloperMode';
-import Domain from '@material-ui/icons/Domain';
 import DragHandle from '@material-ui/icons/DragHandle';
 import Edit from '@material-ui/icons/Edit';
 import ErrorIcon from '@material-ui/icons/Error';
 import Event from '@material-ui/icons/Event';
-import EventAvailable from '@material-ui/icons/EventAvailable';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FaceIcon from '@material-ui/icons/Face';
 import FilterList from '@material-ui/icons/FilterList';
 import FlashOn from '@material-ui/icons/FlashOn';
-import FolderIcon from '@material-ui/icons/FolderOpen';
-import ForumIcon from '@material-ui/icons/Forum';
 import Group from '@material-ui/icons/Group';
 import GroupAdd from '@material-ui/icons/GroupAdd';
 import Help from '@material-ui/icons/Help';
@@ -51,7 +45,6 @@ import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import ArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import ArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import ArrowUp from '@material-ui/icons/KeyboardArrowUp';
-import LocalHospital from '@material-ui/icons/LocalHospital';
 import Lock from '@material-ui/icons/Lock';
 import LockOpen from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
@@ -62,19 +55,16 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MonetizationOn from '@material-ui/icons/MonetizationOn';
 import MoreIcon from '@material-ui/icons/MoreHoriz';
 import Notifications from '@material-ui/icons/Notifications';
-import OfflinePin from '@material-ui/icons/OfflinePin';
 import Opacity from '@material-ui/icons/Opacity';
 import OpenInNew from '@material-ui/icons/OpenInNew';
 import People from '@material-ui/icons/People';
 import Person from '@material-ui/icons/Person';
 import PersonAdd from '@material-ui/icons/PersonAdd';
-import Phonelink from '@material-ui/icons/Phonelink';
 import PowerOffIcon from '@material-ui/icons/PowerSettingsNew';
 import PriorityHigh from '@material-ui/icons/PriorityHigh';
 import RadioButtonChecked from '@material-ui/icons/RadioButtonChecked';
 import RemoveIcon from '@material-ui/icons/RemoveCircleOutline';
 import Report from '@material-ui/icons/Report';
-import Save from '@material-ui/icons/Save';
 import Schedule from '@material-ui/icons/Schedule';
 import SearchIcon from '@material-ui/icons/Search';
 import Security from '@material-ui/icons/Security';
@@ -84,8 +74,6 @@ import SettingsBackupRestore from '@material-ui/icons/SettingsBackupRestore';
 import Snooze from '@material-ui/icons/Snooze';
 import SortIcon from '@material-ui/icons/Sort';
 import Star from '@material-ui/icons/Star';
-import StarEmpty from '@material-ui/icons/StarBorder';
-import StarHalf from '@material-ui/icons/StarHalf';
 import SupervisorAccount from '@material-ui/icons/SupervisedUserCircle';
 import TrendingDown from '@material-ui/icons/TrendingDown';
 import TrendingFlat from '@material-ui/icons/TrendingFlat';
@@ -106,7 +94,6 @@ export const iconMap = {
   remove: RemoveIcon,
   warning: WarningIcon,
   menu: MenuIcon,
-  forum: ForumIcon,
   mail: MailIcon,
   phone: PhoneIcon,
   waiting: WaitingIcon,
@@ -114,7 +101,6 @@ export const iconMap = {
   down: ArrowDown,
   right: ArrowRight,
   left: ArrowLeft,
-  dropdown: DropDownCircle,
   search: SearchIcon,
   powerOff: PowerOffIcon,
   lock: Lock,
@@ -122,7 +108,6 @@ export const iconMap = {
   home: HomeIcon,
   building: BuildingIcon,
   dashboard: AssessmentIcon,
-  folder: FolderIcon,
   loop: LoopIcon,
   'loop-spin': { component: LoopIcon, props: { className: 'fa-spin' } },
   person: Person,
@@ -132,17 +117,13 @@ export const iconMap = {
   sort: SortIcon,
   more: MoreIcon,
   star: Star,
-  starHalf: StarHalf,
-  starEmpty: StarEmpty,
   accountCircle: AccountCircle,
   app: Apps,
   personAdd: PersonAdd,
-  offlinePin: OfflinePin,
   dollarSign: DollarSign,
   contactMail: ContactMail,
   people: People,
   developerMode: DeveloperMode,
-  save: Save,
   supervisorAccount: SupervisorAccount,
   error: ErrorIcon,
   checkCircle: CheckCircle,
@@ -163,17 +144,14 @@ export const iconMap = {
   filter: FilterList,
   arrowUp: ArrowUpward,
   arrowDown: ArrowDownward,
-  domain: Domain,
   info: Info,
   attachFile: AttachFile,
   download: CloudDownload,
-  health: LocalHospital,
   help: Help,
   monetizationOn: MonetizationOn,
   chart: InsertChart,
   image: Image,
   delete: Delete,
-  phoneLink: Phonelink,
   openInNew: OpenInNew,
   settings: Settings,
   event: Event,
@@ -188,10 +166,8 @@ export const iconMap = {
   send: Send,
   airplay: Airplay,
   howToReg: HowToReg,
-  accessibleForward: AccessibleForward,
   meetingRoom: MeetingRoom,
   security: Security,
-  eventAvailable: EventAvailable,
   opacity: Opacity,
 };
 

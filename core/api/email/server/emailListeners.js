@@ -13,7 +13,6 @@ import {
   setLoanStep,
 } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
-import { submitContactForm } from '../../methods/methodDefinitions';
 import { offerSendFeedback } from '../../offers/methodDefinitions';
 import OfferService from '../../offers/server/OfferService';
 import {
@@ -26,32 +25,10 @@ import PropertyService from '../../properties/server/PropertyService';
 import { proInviteUser } from '../../users/methodDefinitions';
 import { notifyDigitalWithUsersProspectForTooLong } from '../../users/server/methods';
 import UserService from '../../users/server/UserService';
-import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
+import { EMAIL_IDS } from '../emailConstants';
 import { addEmailListener } from './emailHelpers';
 import { sendEmail, sendEmailToAddress } from './methods';
 import { PROMOTION_EMAILS, mapConfigToListener } from './promotionEmailHelpers';
-
-addEmailListener({
-  description: 'Formulaire de contact -> Client',
-  method: submitContactForm,
-  func: ({ params }) =>
-    sendEmailToAddress.serverRun({
-      emailId: EMAIL_IDS.CONTACT_US,
-      address: params.email,
-      params,
-    }),
-});
-
-addEmailListener({
-  description: 'Formulaire de contact -> team@e-potek.ch',
-  method: submitContactForm,
-  func: ({ params }) =>
-    sendEmailToAddress.serverRun({
-      emailId: EMAIL_IDS.CONTACT_US_ADMIN,
-      address: INTERNAL_EMAIL,
-      params,
-    }),
-});
 
 addEmailListener({
   description: "Confirmation d'invitation d'un client par un Pro -> Pro",

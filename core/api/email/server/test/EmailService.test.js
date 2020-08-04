@@ -10,7 +10,7 @@ import { setupMandrill } from '../mandrill';
 
 setupMandrill();
 
-describe('EmailService', function() {
+describe('EmailService', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -35,30 +35,6 @@ describe('EmailService', function() {
       expect(() =>
         EmailService.renderTemplate(template, emailId),
       ).to.not.throw();
-    });
-  });
-
-  describe('sendEmail', () => {
-    it('should add emails in the test database and send them with the test key', () => {
-      const address = 'florian@e-potek.ch';
-
-      return EmailService.sendEmail({
-        emailId: EMAIL_IDS.CONTACT_US,
-        address,
-        params: { name: 'Florian Bienefelt' },
-      }).then(() =>
-        checkEmails(1).then(emails => {
-          expect(emails.length).to.equal(1);
-          expect(emails[0]).to.deep.include({
-            emailId: EMAIL_IDS.CONTACT_US,
-            address,
-          });
-          expect(emails[0].template.template_name).to.equal(
-            EMAIL_TEMPLATES.NOTIFICATION.mandrillId,
-          );
-          expect(emails[0].response.status).to.equal('sent');
-        }),
-      );
     });
   });
 });

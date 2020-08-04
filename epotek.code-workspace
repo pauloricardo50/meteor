@@ -28,10 +28,6 @@
       "name": "pro",
       "path": "microservices/pro"
     },
-    {
-      "name": "www",
-      "path": "microservices/www"
-    }
   ],
   "settings": {
     "editor.snippetSuggestions": "top",
