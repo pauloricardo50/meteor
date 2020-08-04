@@ -17,6 +17,7 @@ import RevenuesWithoutAssignees from './RevenuesWithoutAssignees';
 import RevenuesWithoutCommissions from './RevenuesWithoutCommissions';
 import RevenuesWithUnnecessaryCommissions from './RevenuesWithUnnecessaryCommissions';
 import UnpaidCommissions from './UnpaidCommissions';
+import WrongCommissions from './WrongCommissions';
 
 const AdminDashboardStats = () => {
   const [showAll, setShowAll] = useState(false);
@@ -63,6 +64,7 @@ const AdminDashboardStats = () => {
           <LoansWithoutAssignees showAll={showAll} />
           <LoansThatShouldBeFinalized showAll={showAll} />
           <RevenuesWithUnnecessaryCommissions showAll={showAll} />
+          <WrongCommissions showAll={showAll} />
         </div>
       </div>
     </div>
