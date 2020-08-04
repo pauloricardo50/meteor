@@ -43,7 +43,7 @@ export default withProps(({ user }) => ({
       .run({ userId: user._id, object })
       .then(
         () =>
-          !Roles.userIsInRole(user, ROLES.USER) &&
+          Roles.userIsInRole(user, ROLES.PRO) &&
           updateOrganisations({ userId: user._id, organisations }),
       ),
 }))(UserModifier);
