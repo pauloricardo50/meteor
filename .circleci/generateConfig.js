@@ -5,6 +5,7 @@ import writeYAML from '../scripts/writeYAML';
 const WORKING_DIRECTORY = '/home/circleci/app';
 const CACHE_VERSION = 'master_16'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 const STAGING_BRANCH = 'staging';
+const MASTER_BRANCH = 'master';
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -344,6 +345,8 @@ const makeDeployJob = ({ name, job }) => ({
 
         if [ "$CIRCLE_BRANCH" = "${STAGING_BRANCH}" ]; then
           ENVIRONMENT="staging"
+        elif [ "$CIRCLE_BRANCH" = "${MASTER_BRANCH}" ]; then
+          ENVIRONMENT="prod"
         else
           echo "Deployments not configured for this branch"
           exit 1
@@ -375,7 +378,7 @@ const testJobs = [
 
 const deployBranchFilter = {
   branches: {
-    only: [STAGING_BRANCH],
+    only: [STAGING_BRANCH, MASTER_BRANCH],
   },
 };
 
