@@ -5,7 +5,6 @@ import {
   ACTIVITIES_COLLECTION,
   ACTIVITY_TYPES,
 } from 'core/api/activities/activityConstants';
-import { activity as activityFragment } from 'core/api/fragments';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import {
@@ -41,7 +40,23 @@ const getActivities = ({ activityFilters, queryFilters, type }) =>
           ...(activityFilters || queryFilters),
           type: formatType(type),
         },
-        ...activityFragment(),
+        createdAt: 1,
+        createdBy: 1,
+        date: 1,
+        description: 1,
+        loan: { name: 1 },
+        shouldNotify: 1,
+        title: 1,
+        type: 1,
+        updatedAt: 1,
+        user: { name: 1, email: 1 },
+        metadata: 1,
+        isServerGenerated: 1,
+        isImportant: 1,
+        loanLink: 1,
+        userLink: 1,
+        insuranceRequestLink: 1,
+        insuranceLink: 1,
       },
     },
     [activityFilters],
