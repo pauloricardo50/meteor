@@ -36,7 +36,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   status: undefined,
   insuranceRequestId: '',
   additionalFields: [],
-  userStatus: { $in: [USER_STATUS.QUALIFIED] },
+  userStatus: { $in: [USER_STATUS.QUALIFIED, USER_STATUS.LOST] },
 });
 
 const getMissingColumns = (groupBy, groups) => {
