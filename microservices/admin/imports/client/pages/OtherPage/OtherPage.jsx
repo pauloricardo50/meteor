@@ -1,4 +1,6 @@
 import React from 'react';
+import { faQuestionCircle } from '@fortawesome/pro-light-svg-icons/faQuestionCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import { CONTACTS_COLLECTION } from 'core/api/contacts/contactsConstants';
@@ -15,6 +17,7 @@ import BorrowersPage from '../BorrowersPage/loadable';
 import ContactsPage from '../ContactsPage/loadable';
 import InterestRatesPage from '../InterestRatesPage/loadable';
 import PropertiesPage from '../PropertiesPage/loadable';
+import WikiPage from '../WikiPage/loadable';
 
 const tabs = [
   {
@@ -33,12 +36,20 @@ const tabs = [
     id: CONTACTS_COLLECTION,
     content: <ContactsPage />,
   },
-].map(obj => ({
+  {
+    id: 'wiki',
+    content: <WikiPage />,
+    icon: (
+      <FontAwesomeIcon icon={faQuestionCircle} className="collection-icon" />
+    ),
+    label: 'Wik-e-Potek',
+  },
+].map(({ icon, label, ...obj }) => ({
   ...obj,
   label: (
     <span className="other-page-label">
-      <Icon type={collectionIcons[obj.id]} />{' '}
-      {<T id={`collections.${obj.id}`} />}
+      <Icon type={icon || collectionIcons[obj.id]} />{' '}
+      {label || <T id={`collections.${obj.id}`} />}
     </span>
   ),
   to: createRoute(ADMIN_ROUTES.OTHER_PAGE.path, { tabId: obj.id }),
