@@ -34,8 +34,6 @@ export const FIELDS = {
 };
 
 const getInitialState = ({ structure, borrowers, ownFundsIndex }) => {
-  // On load, the redux store has not loaded yet, causing this to crash
-  // if we don't add this simple check
   if (!structure) {
     return {};
   }
