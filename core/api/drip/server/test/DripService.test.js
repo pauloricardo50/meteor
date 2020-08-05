@@ -3,7 +3,7 @@ import { Random } from 'meteor/random';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { resetDatabase } from '../../../../utils/testHelpers';
+import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import { ACTIVITY_TYPES } from '../../../activities/activityConstants';
 import ActivityService from '../../../activities/server/ActivityService';
 import NoOpAnalytics from '../../../analytics/server/NoOpAnalytics';
@@ -65,9 +65,7 @@ describe('DripService', function () {
           phoneNumbers: [SUBSCRIBER_PHONE],
           assignedEmployee: { _id: 'admin' },
           referredByOrganisation: { _id: 'org' },
-          referredByUser: {
-            _id: 'pro',
-          },
+          referredByUser: { _id: 'pro' },
           loans: {
             promotions: { name: 'Promotion', $metadata: { invitedBy: 'pro' } },
           },
@@ -386,6 +384,8 @@ describe('DripService', function () {
         event: 'Drip Subscriber Lost',
       });
       expect(status).to.equal(USER_STATUS.LOST);
+
+      await checkEmails(1);
     });
 
     it('sets the user status to QUALIFIED if tag is QUALIFIED and tracks the event in analytics', async () => {
@@ -521,6 +521,8 @@ describe('DripService', function () {
       const [{ tags }] = subscribers;
 
       expect(tags).to.include(DRIP_TAGS.LOST);
+
+      await checkEmails(1);
     });
   });
 
@@ -680,6 +682,8 @@ describe('DripService', function () {
           dripStatus: 'bounced',
         },
       });
+
+      await checkEmails(1);
     });
   });
 
@@ -720,6 +724,8 @@ describe('DripService', function () {
       const [{ tags }] = subscribers;
 
       expect(tags).to.include(DRIP_TAGS.LOST);
+
+      await checkEmails(1);
     });
   });
 });

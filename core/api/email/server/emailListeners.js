@@ -22,9 +22,10 @@ import {
 import PromotionService from '../../promotions/server/PromotionService';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
-import { proInviteUser } from '../../users/methodDefinitions';
+import { proInviteUser, setUserStatus } from '../../users/methodDefinitions';
 import { notifyDigitalWithUsersProspectForTooLong } from '../../users/server/methods';
 import UserService from '../../users/server/UserService';
+import { USER_STATUS } from '../../users/userConstants';
 import { EMAIL_IDS } from '../emailConstants';
 import { addEmailListener } from './emailHelpers';
 import { sendEmail, sendEmailToAddress } from './methods';
@@ -486,5 +487,41 @@ addEmailListener({
       address: 'digital@e-potek.ch',
       params: { details: JSON.stringify(users, null, 2) },
     });
+  },
+});
+
+addEmailListener({
+  description: 'Notification au Pro si un de ses clients est mis en "Lost"',
+  method: setUserStatus,
+  func: ({
+    params: { userId, source, unsuccessfulReason },
+    result: { prevStatus, nextStatus },
+  }) => {
+    if (
+      source === 'drip' &&
+      nextStatus !== prevStatus &&
+      nextStatus === USER_STATUS.LOST &&
+      unsuccessfulReason
+    ) {
+      const user = UserService.get(userId, {
+        name: 1,
+        assignedEmployee: { name: 1 },
+        referredByUser: { _id: 1 },
+      });
+
+      if (!user?.referredByUser?._id) {
+        return;
+      }
+
+      sendEmail.serverRun({
+        emailId: EMAIL_IDS.NOTIFY_PRO_OF_LOST_REFERRAL,
+        userId: user.referredByUser._id,
+        params: {
+          userName: user.name,
+          assigneeName: user.assignedEmployee.name,
+          unsuccessfulReason,
+        },
+      });
+    }
   },
 });

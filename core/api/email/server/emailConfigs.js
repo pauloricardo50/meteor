@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import LoanChecklistEmail from '../../../components/LoanChecklist/LoanChecklistEmail';
 import styles from '../../../components/LoanChecklist/LoanChecklistEmail/styles';
+import intl from '../../../utils/intl';
 import { setupMoment } from '../../../utils/localization';
 import {
   CTA_URL_DEFAULT,
@@ -533,6 +534,16 @@ addEmailConfig(EMAIL_IDS.PROSPECT_FOR_TOO_LONG_NOTIFICATION, {
   createIntlValues: params => ({
     ...params,
     details: params.details || '',
+  }),
+});
+
+addEmailConfig(EMAIL_IDS.NOTIFY_PRO_OF_LOST_REFERRAL, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  createIntlValues: ({ unsuccessfulReason, ...params }) => ({
+    ...params,
+    reason: `<b>${intl.formatMessage({
+      id: `Forms.unsuccessfulReason.${unsuccessfulReason}`,
+    })}</b>`,
   }),
 });
 
