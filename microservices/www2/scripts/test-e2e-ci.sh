@@ -5,6 +5,8 @@ SCRIPTS_DIR="../../../scripts/circleci"
 BACKEND_PORT="5505"
 GATSBY_E2E_PORT="3015"
 
+export GATSBY_E2E_TEST="true"
+
 GATSBY_E2E_CMD="npm run develop -- -p $GATSBY_E2E_PORT"
 TEST_E2E_CMD="../../node_modules/cypress/bin/cypress run --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json"
 
