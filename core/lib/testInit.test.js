@@ -6,7 +6,6 @@ const IntlMessageFormat = require('intl-messageformat').default;
 const uniforms = require('uniforms-material');
 const intl = require('../utils/intl').default;
 const messagesFR = require('../lang/fr.json');
-require('./test/server/accounts.test');
 
 SimpleSchema.extendOptions([
   'condition',
