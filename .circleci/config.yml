@@ -788,6 +788,8 @@ jobs:
 
                     if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
+                    elif [ "$CIRCLE_BRANCH" = "master" ]; then
+                      ENVIRONMENT="prod"
                     else
                       echo "Deployments not configured for this branch"
                       exit 1
@@ -865,6 +867,8 @@ jobs:
 
                     if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
+                    elif [ "$CIRCLE_BRANCH" = "master" ]; then
+                      ENVIRONMENT="prod"
                     else
                       echo "Deployments not configured for this branch"
                       exit 1
@@ -944,6 +948,8 @@ jobs:
 
                     if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
+                    elif [ "$CIRCLE_BRANCH" = "master" ]; then
+                      ENVIRONMENT="prod"
                     else
                       echo "Deployments not configured for this branch"
                       exit 1
@@ -1021,6 +1027,8 @@ jobs:
 
                     if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
+                    elif [ "$CIRCLE_BRANCH" = "master" ]; then
+                      ENVIRONMENT="prod"
                     else
                       echo "Deployments not configured for this branch"
                       exit 1
@@ -1100,6 +1108,8 @@ jobs:
 
                     if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
+                    elif [ "$CIRCLE_BRANCH" = "master" ]; then
+                      ENVIRONMENT="prod"
                     else
                       echo "Deployments not configured for this branch"
                       exit 1
@@ -1157,6 +1167,7 @@ workflows:
             branches:
               only:
                 - staging
+                - master
       - Admin - deploy:
           requires: *ref_1
           filters: *ref_2
