@@ -1,4 +1,11 @@
 {
+  "ContactAssigneeModal.or": "— ou —",
+  "ContactAssigneeModal.title": "Prenez rendez-vous",
+  "ContactAssigneeModal.description": "Contactez votre conseiller {assigneeName} pour avancer dans les prochaines étapes.",
+  "ContactAssigneeModal.bookMeeting": "Prenez rendez-vous en ligne",
+  "ContactAssigneeModal.bookMeetingDescription": "Dans nos bureaux, ou par visio conférence",
+  "ContactAssigneeModal.byEmail": "Par email",
+  "ContactAssigneeModal.byPhone": "Par téléphone",
   "Forms.type.DRIP": "Drip",
   "Forms.status.PROSPECT": "Prospect (Drip en cours)",
   "Forms.status.QUALIFIED": "Qualifié",

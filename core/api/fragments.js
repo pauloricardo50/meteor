@@ -897,6 +897,7 @@ export const appUser = () => ({
     step: 1,
   },
   properties: { _id: 1 },
+  status: 1,
 });
 
 export const proUser = () => ({
