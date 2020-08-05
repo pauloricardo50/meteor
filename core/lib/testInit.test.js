@@ -4,15 +4,9 @@ require('uniforms-bridge-simple-schema-2');
 const SimpleSchema = require('simpl-schema').default;
 const IntlMessageFormat = require('intl-messageformat').default;
 const uniforms = require('uniforms-material');
-const { Accounts } = require('meteor/accounts-base');
 const intl = require('../utils/intl').default;
 const messagesFR = require('../lang/fr.json');
-
-Accounts.config({
-  // Higher rounds are better for security, but much slower
-  // Since security isn't important for tests we can use fewer rounds
-  bcryptRounds: 1,
-});
+require('./test/server/accounts.test');
 
 SimpleSchema.extendOptions([
   'condition',

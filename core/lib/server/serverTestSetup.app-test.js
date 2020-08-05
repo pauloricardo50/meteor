@@ -1,5 +1,6 @@
 // Load these in the right order
 import '../testInit.test';
+import '../test/server/accounts.test';
 import '../../api/server';
 import '../../api/api';
 import '../../api/email/server/test/setupEmailTests';
