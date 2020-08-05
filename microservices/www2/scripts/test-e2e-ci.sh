@@ -13,4 +13,4 @@ TEST_E2E_CMD="../../node_modules/cypress/bin/cypress run --reporter mocha-multi-
 
 ${SCRIPTPATH}/$SCRIPTS_DIR/run-backend-ci.sh --test & \
   ${SCRIPTPATH}/$SCRIPTS_DIR/wait-port.sh "$BACKEND_PORT" "$GATSBY_E2E_CMD" & \
-  ${SCRIPTPATH}/$SCRIPTS_DIR/wait-port.sh "$SERVER_PORT" "$TEST_E2E_CMD"
+  ${SCRIPTPATH}/$SCRIPTS_DIR/wait-port.sh "$GATSBY_E2E_PORT" "$TEST_E2E_CMD"
