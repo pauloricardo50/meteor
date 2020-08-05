@@ -1,5 +1,5 @@
 import '../testInit.test';
-import './test/server/accounts.test';
+import '../test/server/accounts.test';
 
 // this imports everything needed on the server
 import '../../api/server';
