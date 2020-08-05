@@ -39,7 +39,7 @@ const languageData = {
       suffix: ' ans',
     },
     'cityMarker.title': 'Région de {city}',
-    'cityMarker.count': '{count} dossiers en cours ou terminés',
+    'cityMarker.count': '{count} clients accompagnés',
     'WwwCalculatorPurchaseType.ACQUISITION': 'Acquisition',
     'WwwCalculatorPurchaseType.REFINANCING': 'Renouvellement',
     'WwwCalculatorFormField.salary': 'Revenus annuels bruts',
@@ -134,7 +134,8 @@ const languageData = {
     '404.description':
       'Il semblerait que nous vous ayions perdu sur notre site.',
     '404.backToHome': 'Retourner au début',
-    'MortgageRates.lastUpdate': 'Dernière mise à jour ',
+    'MortgageRates.lastUpdate':
+      "Dernière mise à jour {days, plural, =0 {aujourd'hui.} =1 {il y a un jour.} other {il y a # jours.}}",
   },
 };
 

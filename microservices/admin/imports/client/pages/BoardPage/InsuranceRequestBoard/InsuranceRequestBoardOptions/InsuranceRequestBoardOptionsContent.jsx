@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { INSURANCE_REQUEST_STATUS_ORDER } from 'core/api/insuranceRequests/insuranceRequestConstants';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USER_STATUS } from 'core/api/users/userConstants';
 import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
 import T from 'core/components/Translation';
@@ -40,12 +40,20 @@ const insuranceRequestBoardContent = ({
   refetchInsuranceRequests,
   organisations,
 }) => {
-  const { assignedEmployeeId, groupBy, status, organisationId } = options;
+  const {
+    assignedEmployeeId,
+    groupBy,
+    status,
+    organisationId,
+    userStatus,
+  } = options;
   const assignedEmployeeValue = assignedEmployeeId
     ? assignedEmployeeId.$in
     : [null];
   const statusValue = status ? status.$in : [null];
   const organisationIdValue = organisationId ? organisationId.$in : [null];
+  const userStatusValue = userStatus ? userStatus.$in : [null];
+
   const groupByOptions = [
     { id: GROUP_BY.STATUS, label: 'Par statut' },
     { id: GROUP_BY.ADMIN, label: 'Par conseiller' },
@@ -72,6 +80,14 @@ const insuranceRequestBoardContent = ({
     ...organisations.map(({ _id, name }) => ({ id: _id, label: name })),
   ];
 
+  const userStatusOptions = [
+    { id: null, label: 'Tous' },
+    ...Object.values(USER_STATUS).map(s => ({
+      id: s,
+      label: <T id={`Forms.status.${s}`} />,
+    })),
+  ];
+
   return (
     <>
       <div className="left">
@@ -88,10 +104,19 @@ const insuranceRequestBoardContent = ({
         />
 
         <LoanBoardOptionsSelect
-          label="Statut"
+          label="Statut du dossier"
           value={statusValue}
           options={statusOptions}
           onChange={next => makeOnChange('status', dispatch)(statusValue, next)}
+        />
+
+        <LoanBoardOptionsSelect
+          label="Statut du compte"
+          value={userStatusValue}
+          options={userStatusOptions}
+          onChange={next =>
+            makeOnChange('userStatus', dispatch)(userStatusValue, next)
+          }
         />
 
         <LoanBoardOptionsSelect

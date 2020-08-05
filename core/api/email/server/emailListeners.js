@@ -13,7 +13,6 @@ import {
   setLoanStep,
 } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
-import { submitContactForm } from '../../methods/methodDefinitions';
 import { offerSendFeedback } from '../../offers/methodDefinitions';
 import OfferService from '../../offers/server/OfferService';
 import {
@@ -21,35 +20,16 @@ import {
   submitPromotionInterestForm,
 } from '../../promotions/methodDefinitions';
 import PromotionService from '../../promotions/server/PromotionService';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PropertyService from '../../properties/server/PropertyService';
-import { proInviteUser } from '../../users/methodDefinitions';
+import { proInviteUser, setUserStatus } from '../../users/methodDefinitions';
+import { notifyDigitalWithUsersProspectForTooLong } from '../../users/server/methods';
 import UserService from '../../users/server/UserService';
-import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
+import { USER_STATUS } from '../../users/userConstants';
+import { EMAIL_IDS } from '../emailConstants';
 import { addEmailListener } from './emailHelpers';
 import { sendEmail, sendEmailToAddress } from './methods';
 import { PROMOTION_EMAILS, mapConfigToListener } from './promotionEmailHelpers';
-
-addEmailListener({
-  description: 'Formulaire de contact -> Client',
-  method: submitContactForm,
-  func: ({ params }) =>
-    sendEmailToAddress.serverRun({
-      emailId: EMAIL_IDS.CONTACT_US,
-      address: params.email,
-      params,
-    }),
-});
-
-addEmailListener({
-  description: 'Formulaire de contact -> team@e-potek.ch',
-  method: submitContactForm,
-  func: ({ params }) =>
-    sendEmailToAddress.serverRun({
-      emailId: EMAIL_IDS.CONTACT_US_ADMIN,
-      address: INTERNAL_EMAIL,
-      params,
-    }),
-});
 
 addEmailListener({
   description: "Confirmation d'invitation d'un client par un Pro -> Pro",
@@ -326,31 +306,61 @@ addEmailListener({
     let customerName;
     let adminName;
     let adminAddress;
+    let customerFirstName;
+    let customerLastName;
+    let proPropertyAddress;
+    let hasProProperty;
 
     if (loanId) {
       const loan = LoanService.get(loanId, {
         name: 1,
-        user: { name: 1 },
+        user: { name: 1, firstName: 1, lastName: 1 },
         mainAssignee: 1,
+        hasProProperty: 1,
+        properties: { category: 1, address1: 1, city: 1, zipCode: 1 },
       });
       loanName = loan?.name;
       customerName = loan?.user?.name;
       adminName = loan?.mainAssignee?.name;
       adminAddress = loan?.mainAssignee?.email;
+      customerFirstName = loan?.user?.firstName;
+      customerLastName = loan?.user?.lastName;
+      hasProProperty = loan?.hasProProperty;
+      const proProperty =
+        hasProProperty &&
+        loan?.properties?.find?.(
+          ({ category }) => category === PROPERTY_CATEGORY.PRO,
+        );
+      proPropertyAddress =
+        (proProperty &&
+          [
+            proProperty?.address1,
+            [proProperty?.zipCode, proProperty?.city].filter(x => x).join(' '),
+          ]
+            .filter(x => x)
+            .join(', ')) ||
+        'N/A';
     } else if (insuranceRequestId) {
       const insuranceRequest = InsuranceRequestService.get(insuranceRequestId, {
         name: 1,
-        user: { name: 1 },
+        user: { name: 1, firstName: 1, lastName: 1 },
         mainAssignee: 1,
       });
       loanName = insuranceRequest?.name;
       customerName = insuranceRequest?.user?.name;
       adminName = insuranceRequest?.mainAssignee?.name;
       adminAddress = insuranceRequest?.mainAssignee?.email;
+      customerFirstName = insuranceRequest?.user?.firstName;
+      customerLastName = insuranceRequest?.user?.lastName;
     }
 
     const notifyWithCta = notifyPros.filter(({ withCta }) => withCta);
     const notifyWithoutCta = notifyPros.filter(({ withCta }) => !withCta);
+
+    const customerFullName =
+      !!customerFirstName && !!customerLastName
+        ? `${customerFirstName} ${customerLastName}`
+        : 'N/A';
 
     if (notifyWithCta.length) {
       sendEmailToAddress.serverRun({
@@ -358,8 +368,11 @@ addEmailListener({
         address: notifyWithCta[0].email,
         params: {
           customerName,
+          customerFullName,
           loanName,
           note,
+          hasProProperty,
+          proPropertyAddress,
           adminName: adminName || 'e-Potek',
           adminAddress,
           bccAddresses: notifyWithCta.slice(1),
@@ -374,8 +387,11 @@ addEmailListener({
         address: notifyWithoutCta[0].email,
         params: {
           customerName,
+          customerFullName,
           loanName,
           note,
+          hasProProperty,
+          proPropertyAddress,
           adminName: adminName || 'e-Potek',
           adminAddress,
           bccAddresses: notifyWithoutCta.slice(1),
@@ -454,5 +470,58 @@ addEmailListener({
         },
       }),
     ]);
+  },
+});
+
+addEmailListener({
+  description:
+    'Notification à digital@e-potek.ch concernant les utilisateurs en prospect depuis plus de 21 jours',
+  method: notifyDigitalWithUsersProspectForTooLong,
+  func: ({ result: users = [] }) => {
+    if (!users?.length) {
+      return;
+    }
+
+    return sendEmailToAddress.serverRun({
+      emailId: EMAIL_IDS.PROSPECT_FOR_TOO_LONG_NOTIFICATION,
+      address: 'digital@e-potek.ch',
+      params: { details: JSON.stringify(users, null, 2) },
+    });
+  },
+});
+
+addEmailListener({
+  description: 'Notification au Pro si un de ses clients est mis en "Lost"',
+  method: setUserStatus,
+  func: ({
+    params: { userId, source, unsuccessfulReason },
+    result: { prevStatus, nextStatus },
+  }) => {
+    if (
+      source === 'drip' &&
+      nextStatus !== prevStatus &&
+      nextStatus === USER_STATUS.LOST &&
+      unsuccessfulReason
+    ) {
+      const user = UserService.get(userId, {
+        name: 1,
+        assignedEmployee: { name: 1 },
+        referredByUser: { _id: 1 },
+      });
+
+      if (!user?.referredByUser?._id) {
+        return;
+      }
+
+      sendEmail.serverRun({
+        emailId: EMAIL_IDS.NOTIFY_PRO_OF_LOST_REFERRAL,
+        userId: user.referredByUser._id,
+        params: {
+          userName: user.name,
+          assigneeName: user.assignedEmployee.name,
+          unsuccessfulReason,
+        },
+      });
+    }
   },
 });

@@ -2,7 +2,10 @@
 import { Factory } from 'meteor/dburles:factory';
 
 import { expect } from 'chai';
+import moment from 'moment';
 import sinon from 'sinon';
+
+import pollUntilReady from 'core/utils/pollUntilReady';
 
 import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
@@ -13,8 +16,10 @@ import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import PropertyService from '../../../properties/server/PropertyService';
-import { proInviteUser } from '../../methodDefinitions';
-import { ACQUISITION_CHANNELS, ROLES } from '../../userConstants';
+import TaskService from '../../../tasks/server/TaskService';
+import { adminCreateUser, proInviteUser } from '../../methodDefinitions';
+import { ACQUISITION_CHANNELS, ROLES, USER_STATUS } from '../../userConstants';
+import { notifyDigitalWithUsersProspectForTooLong } from '../methods';
 import UserService from '../UserService';
 
 describe('UserService', function () {
@@ -101,10 +106,7 @@ describe('UserService', function () {
 
     it('does not send enrollment email by default', () => {
       const options = { email: 'test@test.com' };
-      UserService.adminCreateUser({
-        ...options,
-        role: ROLES.USER,
-      });
+      UserService.adminCreateUser({ ...options, role: ROLES.USER });
 
       expect(UserService.sendEnrollmentEmail.getCall(0)).to.equal(null);
     });
@@ -173,12 +175,36 @@ describe('UserService', function () {
         referredByOrganisation: 'testOrgId',
       };
 
-      const userId = UserService.adminCreateUser({
-        ...options,
-      });
+      const userId = UserService.adminCreateUser({ ...options });
 
       user = UserService.get(userId, { assignedEmployeeId: 1 });
       expect(user.assignedEmployeeId).to.equal('testAdminId');
+    });
+
+    it('adds a task on the user if it is set to qualified', async () => {
+      generator({
+        users: {
+          _factory: ROLES.ADVISOR,
+          _id: 'advisorId',
+          firstName: 'Bob',
+          lastName: 'Dylan',
+        },
+      });
+
+      const userId = await ddpWithUserId('advisorId', () =>
+        adminCreateUser.run({
+          user: {
+            email: 'test@e-potek.ch',
+            status: USER_STATUS.QUALIFIED,
+            role: ROLES.USER,
+          },
+        }),
+      );
+
+      const tasks = TaskService.find({}).fetch();
+      expect(tasks.length).to.equal(1);
+      expect(tasks[0].userLink._id).to.equal(userId);
+      expect(tasks[0].description).to.include('Bob');
     });
   });
 
@@ -1344,20 +1370,41 @@ describe('UserService', function () {
         }),
       );
 
-      const { tasks = [] } = UserService.getByEmail(userToInvite.email, {
-        tasks: { description: 1, assigneeLink: 1 },
+      const invitedUser = UserService.getByEmail(userToInvite.email, {
+        activities: { title: 1, description: 1 },
+        loans: { activities: { title: 1, description: 1 } },
       });
 
-      expect(tasks.length).to.equal(1);
-      const [
-        {
-          description,
-          assigneeLink: { _id: assigneeId },
-        },
-      ] = tasks;
+      const { activities: customerActivities = [] } = invitedUser;
+      const { activities: loanActivities = [] } = invitedUser.loans?.[0] || {};
 
-      expect(description).to.include('Ma man');
-      expect(assigneeId).to.equal('adminId');
+      let activities = [...customerActivities, ...loanActivities];
+
+      activities = await pollUntilReady(() => {
+        if (activities.length > 0) {
+          return activities;
+        }
+
+        const { loans, activities: userActs = [] } = UserService.getByEmail(
+          invitedUser.email,
+          {
+            loans: { shareSolvency: 1, activities: { description: 1 } },
+            activities: { description: 1 },
+          },
+        );
+
+        const { activities: loanActs = [] } = loans?.[0] || {};
+
+        activities = [...userActs, ...loanActs];
+
+        return !!activities.length && activities;
+      });
+
+      expect(activities.length).to.equal(3);
+      expect(activities[0].description).to.contain('John Doe');
+      expect(activities[0].description).to.contain('Ma man');
+      expect(activities[1].title).to.contain('Dossier créé');
+      expect(activities[2].description).to.contain('Ma man');
 
       await checkEmails(2);
     });
@@ -1377,6 +1424,145 @@ describe('UserService', function () {
       expect(
         UserService.findOne({ 'emails.address': 'test@e-potek.ch' }),
       ).to.equal(undefined);
+    });
+
+    it('should assign the same assignee to the loan with a property', async () => {
+      generator({
+        properties: {
+          _id: 'propertyId',
+          category: PROPERTY_CATEGORY.PRO,
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+        },
+      });
+
+      await ddpWithUserId('proId', () =>
+        proInviteUser.run({ user: userToInvite, propertyIds: ['propertyId'] }),
+      );
+
+      const { loans = [] } = UserService.getByEmail(userToInvite.email, {
+        loans: { assigneeLinks: 1 },
+      });
+
+      expect(loans?.[0]?.assigneeLinks?.[0]).to.deep.equal({
+        _id: 'adminId',
+        isMain: true,
+        percent: 100,
+      });
+
+      await checkEmails(2);
+    });
+
+    it('should assign the same assignee to the loan with a promotion', async () => {
+      generator({
+        properties: { _id: 'prop' },
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'adminId',
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+          promotionLots: { _id: 'pLotId', propertyLinks: [{ _id: 'prop' }] },
+        },
+      });
+
+      await ddpWithUserId('proId', () =>
+        proInviteUser.run({
+          user: {
+            ...userToInvite,
+            showAllLots: false,
+            promotionLotIds: ['pLotId'],
+          },
+          promotionIds: ['promotionId'],
+        }),
+      );
+
+      const { loans = [] } = UserService.getByEmail(userToInvite.email, {
+        loans: { assigneeLinks: 1 },
+      });
+
+      expect(loans?.[0]?.assigneeLinks?.[0]).to.deep.equal({
+        _id: 'adminId',
+        isMain: true,
+        percent: 100,
+      });
+
+      await checkEmails(2);
+    });
+  });
+
+  describe('getUsersProspectForTooLong', () => {
+    it('returns users with PROSPECT status for more than 21 days', async () => {
+      await UserService.rawCollection.insert({
+        _id: 'u1',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+      });
+      await UserService.rawCollection.insert({
+        _id: 'u2',
+        createdAt: moment().subtract(20, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+      });
+      await UserService.rawCollection.insert({
+        _id: 'u3',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.QUALIFIED,
+      });
+
+      const users = UserService.getUsersProspectForTooLong();
+
+      expect(users.length).to.equal(1);
+      expect(users[0]._id).to.equal('u1');
+    });
+
+    it('sends the email to digital@e-potek.ch', async () => {
+      await UserService.rawCollection.insert({
+        _id: 'u1',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+        firstName: 'Bob',
+        lastName: 'Dylan',
+      });
+      await UserService.rawCollection.insert({
+        _id: 'u2',
+        createdAt: moment().subtract(20, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+      });
+      await UserService.rawCollection.insert({
+        _id: 'u3',
+        createdAt: moment().subtract(22, 'days').toDate(),
+        status: USER_STATUS.QUALIFIED,
+      });
+      await UserService.rawCollection.insert({
+        _id: 'u4',
+        createdAt: moment().subtract(23, 'days').toDate(),
+        status: USER_STATUS.PROSPECT,
+        firstName: 'Mickey',
+        lastName: 'Mouse',
+      });
+
+      await notifyDigitalWithUsersProspectForTooLong.serverRun({});
+
+      const [
+        {
+          address,
+          emailId,
+          template: {
+            message: { global_merge_vars },
+          },
+        },
+      ] = await checkEmails(1);
+
+      expect(address).to.equal('digital@e-potek.ch');
+      expect(emailId).to.equal(EMAIL_IDS.PROSPECT_FOR_TOO_LONG_NOTIFICATION);
+      const [_, body] = global_merge_vars;
+
+      expect(body.content).include('Bob Dylan');
+      expect(body.content).include('Mickey Mouse');
     });
   });
 });

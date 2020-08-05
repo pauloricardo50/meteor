@@ -11,6 +11,7 @@ import pollUntilReady from 'core/utils/pollUntilReady';
 import { createRoute } from 'core/utils/routerUtils';
 
 import APP_ROUTES from '../../../startup/client/appRoutes';
+import ContactAssigneeModal from '../../components/ContactAssigneeModal';
 import UserCreator from '../../components/UserCreator/UserCreator';
 
 // On some slow connections/devices, the new UI is not reloaded properly, this forces
@@ -58,6 +59,7 @@ const SimpleDashboardPageCTAs = ({
     label: <T id="BorrowersProgress.fullApplication" />,
     icon: <Icon type="right" />,
     iconAfter: true,
+    className: 'simple-dashboard-page-cta',
   };
 
   return (
@@ -72,6 +74,8 @@ const SimpleDashboardPageCTAs = ({
           primary
           link
           to={createRoute(APP_ROUTES.DASHBOARD_PAGE.path, { loanId })}
+          icon={<Icon type="left" />}
+          className="simple-dashboard-page-cta"
         >
           Tableau de bord
         </Button>
@@ -82,33 +86,53 @@ const SimpleDashboardPageCTAs = ({
       )}
 
       {currentUser && (
-        <ConfirmMethod
-          type="modal"
-          buttonProps={buttonProps}
-          method={() => fullApplication(loanId)}
-          title={<T id="BorrowersProgress.fullApplication" />}
-          description={
-            <div className="full-application-description">
-              <img src="/img/homepage-application.svg" alt="Demande de prêt" />
-              <T id="BorrowersProgress.fullApplicationDescription" />
-              <ul>
-                <li>
-                  <T id="BorrowersProgress.fullApplicationDescription1" />
-                </li>
-                <li>
-                  <T id="BorrowersProgress.fullApplicationDescription2" />
-                </li>
-                <li>
-                  <T id="BorrowersProgress.fullApplicationDescription3" />
-                </li>
-              </ul>
+        <div className="flex ml-8">
+          {!withReturnToDashboard && (
+            <ContactAssigneeModal
+              renderTrigger={({ handleOpen }) => (
+                <Button
+                  raised
+                  className="mr-8 simple-dashboard-page-cta animated fadeIn"
+                  onClick={handleOpen}
+                  icon={<Icon type="event" />}
+                >
+                  <T id="ContactAssigneeModal.title" />
+                </Button>
+              )}
+            />
+          )}
 
-              <small>
-                <T id="BorrowersProgress.fullApplicationDescription4" />
-              </small>
-            </div>
-          }
-        />
+          <ConfirmMethod
+            type="modal"
+            buttonProps={buttonProps}
+            method={() => fullApplication(loanId)}
+            title={<T id="BorrowersProgress.fullApplication" />}
+            description={
+              <div className="full-application-description">
+                <img
+                  src="/img/homepage-application.svg"
+                  alt="Demande de prêt"
+                />
+                <T id="BorrowersProgress.fullApplicationDescription" />
+                <ul>
+                  <li>
+                    <T id="BorrowersProgress.fullApplicationDescription1" />
+                  </li>
+                  <li>
+                    <T id="BorrowersProgress.fullApplicationDescription2" />
+                  </li>
+                  <li>
+                    <T id="BorrowersProgress.fullApplicationDescription3" />
+                  </li>
+                </ul>
+
+                <small>
+                  <T id="BorrowersProgress.fullApplicationDescription4" />
+                </small>
+              </div>
+            }
+          />
+        </div>
       )}
     </div>
   );

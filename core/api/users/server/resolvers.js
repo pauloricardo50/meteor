@@ -1,7 +1,14 @@
+import { ROLES } from '../roles/roleConstants';
 import UserService from './UserService';
 
 export const incoherentAssigneesResolver = () =>
   UserService.aggregate([
+    {
+      $match: {
+        roles: { $elemMatch: { _id: ROLES.USER, assigned: true } },
+        isDisabled: false,
+      },
+    },
     { $project: { assignedEmployeeId: 1, firstName: 1, lastName: 1 } },
     {
       $lookup: {

@@ -68,7 +68,7 @@ const getSchema = ({
     },
     firstName: String,
     lastName: String,
-    phoneNumber: String,
+    phoneNumber: { type: String, optional: true },
     divider: {
       optional: true,
       type: String,

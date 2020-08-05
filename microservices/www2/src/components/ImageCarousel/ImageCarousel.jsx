@@ -12,7 +12,7 @@ const ImageCarousel = ({ primary, fields }) => {
 
   return (
     <section id={primary.section_id} className="image-carousel container">
-      <div className="content container">
+      <div className="content">
         <RichText render={primary.section_heading} />
 
         <ol className="captions">

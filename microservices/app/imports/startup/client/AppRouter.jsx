@@ -35,6 +35,7 @@ const AppRouter = () => (
           organisations: { name: 1 },
           phoneNumbers: 1,
           roles: 1,
+          status: 1,
         },
       },
     }}

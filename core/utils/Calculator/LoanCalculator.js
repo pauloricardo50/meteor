@@ -361,11 +361,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const income = this.getMonthlyProjectIncome({ loan, structureId });
       const ratio = cost / income;
 
-      if (ratio > 1 || ratio < 0) {
+      if (!Number.isFinite(ratio) || ratio < 0) {
         return 1;
       }
 
-      return ratio;
+      // Don't let it display more than 4 digits, i.e. 999%
+      return Math.min(ratio, 9.99);
     }
 
     getBorrowRatio({ loan, structureId }) {

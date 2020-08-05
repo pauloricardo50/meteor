@@ -4,29 +4,6 @@ import { OWN_FUNDS_TYPES } from './borrowers/borrowerConstants';
 import { INTEREST_RATES } from './interestRates/interestRatesConstants';
 
 // //
-// // activity fragments
-// //
-export const activity = () => ({
-  createdAt: 1,
-  createdBy: 1,
-  date: 1,
-  description: 1,
-  loan: { name: 1 },
-  shouldNotify: 1,
-  title: 1,
-  type: 1,
-  updatedAt: 1,
-  user: { name: 1, email: 1 },
-  metadata: 1,
-  isServerGenerated: 1,
-  isImportant: 1,
-  loanLink: 1,
-  userLink: 1,
-  insuranceRequestLink: 1,
-  insuranceLink: 1,
-});
-
-// //
 // // borrower fragments
 // //
 export const baseBorrower = () => ({
@@ -149,14 +126,6 @@ export const interestRates = () => ({
 export const currentInterestRates = () => ({
   ...rates,
   date: 1,
-});
-
-// //
-// // Irs10Y fragments
-// //
-export const irs10y = () => ({
-  date: 1,
-  rate: 1,
 });
 
 // //
@@ -397,6 +366,7 @@ export const proLoans = () => ({
     referredByUser: { name: 1, organisations: { name: 1 } },
     referredByOrganisation: { name: 1 },
     assignedEmployee: { name: 1, phoneNumbers: 1, email: 1 },
+    status: 1,
   },
 });
 
@@ -622,7 +592,7 @@ export const proPromotionOption = () => ({
     proNote: 1,
     solvency: 1,
     status: 1,
-    user: { phoneNumbers: 1, name: 1, email: 1 },
+    user: { phoneNumbers: 1, name: 1, email: 1, status: 1 },
   },
   name: 1,
   promotion: { users: { _id: 1 }, agreementDuration: 1 },
@@ -927,6 +897,7 @@ export const appUser = () => ({
     step: 1,
   },
   properties: { _id: 1 },
+  status: 1,
 });
 
 export const proUser = () => ({

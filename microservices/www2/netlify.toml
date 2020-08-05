@@ -1,6 +1,53 @@
-[Settings]
+[settings]
   ID = "27af9c2d-46dc-42c1-bed4-6d0feca2dd34"
 
-[Build]
-  Publish = ""
-  Functions = ""
+[build]
+
+# All these redirects need to be forced, because it appears that gatsby
+# puts content on each route
+[[redirects]]
+  from = "/about"
+  to = "/fr/a-propos"
+  force = true
+
+[[redirects]]
+  from = "/contact"
+  to = "/fr/accueil"
+  force = true
+
+[[redirects]]
+  from = "/interests"
+  to = "/fr/taux-hypothecaires"
+  force = true
+
+[[redirects]]
+  from = "/careers"
+  to = "/fr/accueil"
+  force = true
+
+[[redirects]]
+  from = "/faq"
+  to = "/fr/faq"
+  force = true
+
+[[redirects]]
+  from = "/blog"
+  to = "/fr/blog"
+  force = true
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/fr/blog"
+  force = true
+
+[[redirects]]
+  from = "/start/1"
+  to = "/fr/calculateur"
+  force = true
+
+# Use conditional language redirect here once we have the site in multiple
+# languages
+[[redirects]]
+  from = "/"
+  to = "/fr/accueil"
+  force = true

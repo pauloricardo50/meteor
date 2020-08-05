@@ -1,8 +1,4 @@
 const sh = require('shelljs');
-const {
-  removePrepareBundleLock,
-  getPrepareBundleLock,
-} = require('./prepare-bundle-lock');
 const { retrieveSecret } = require('./secrets');
 
 const { generateConfig } = require('./nginx.js');
@@ -25,7 +21,6 @@ module.exports = function createConfig({
   baseDomain,
   servers,
   globalApiConfig,
-  parallelPrepareBundle,
   appName: _appName,
   hooks = {},
   envVars = {},
@@ -47,7 +42,7 @@ module.exports = function createConfig({
 
   const domains = subDomains.map(subdomain => `${subdomain}.${baseDomain}`);
 
-  let lockRemoved = false;
+  const lockRemoved = false;
 
   return {
     servers: {
@@ -79,6 +74,7 @@ module.exports = function createConfig({
       docker: {
         image: 'zodern/meteor',
         prepareBundle: true,
+        prepareBundleLocally: microservice !== 'backend',
         useBuildKit: true,
         stopAppDuringPrepareBundle: false,
 
@@ -112,7 +108,7 @@ module.exports = function createConfig({
       },
     },
 
-    plugins: ['mup-netdata'],
+    plugins: ['mup-netdata', 'mup-deploy-notifications'],
 
     netdata: {
       servers: {
@@ -129,15 +125,21 @@ module.exports = function createConfig({
       apiKey: '3e8f196e-38ad-4879-89e3-e5243bb07cb1',
     },
 
+    deployNotifications: {
+      slackWebhookUrl:
+        'https://hooks.slack.com/services/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',
+      slackChannel: '#team-engineering',
+    },
+
     hooks: {
       // "reconfig" is the command that updates the
       // env vars (including METEOR_SETTINGS) and other app configuration
       // It is also run during deploys.
-      'pre.reconfig': function(api) {
+      'pre.reconfig': function (api) {
         // eslint-disable-next-line no-param-reassign
         api.settings = retrieveSecret(`${environment}-meteor-settings`);
       },
-      'pre.setup': async function(api) {
+      'pre.setup': async function (api) {
         sh.set('-e');
 
         // Update atlas whitelist
@@ -172,38 +174,6 @@ module.exports = function createConfig({
           );
 
         await Promise.all(promises);
-      },
-
-      'post.meteor.build': async function(api) {
-        if (parallelPrepareBundle || !enableLock) {
-          return false;
-        }
-
-        const history = api.commandHistory;
-
-        // Check for `mup meteor push`, which calls `mup meteor build` as part of a deploy
-        if (!history.find(entry => entry.name === 'meteor.push')) {
-          return;
-        }
-
-        console.log('Waiting for lock');
-        await getPrepareBundleLock();
-        console.log('Has lock');
-
-        process.on('exit', () => {
-          if (!lockRemoved) {
-            console.log('lock removed on exit');
-            removePrepareBundleLock();
-          }
-        });
-      },
-      'post.meteor.push': function() {
-        if (parallelPrepareBundle || !enableLock) {
-          return false;
-        }
-
-        removePrepareBundleLock();
-        lockRemoved = true;
       },
       ...hooks,
     },

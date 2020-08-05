@@ -67,10 +67,6 @@ const LoanSummary = ({ loan }) => {
                 relatedDoc={promotions[0]}
                 iconClassName="mr-4"
               />
-              <StatusLabel
-                status={promotions[0].status}
-                collection={PROMOTIONS_COLLECTION}
-              />
             </div>
           </div>
         )}

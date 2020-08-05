@@ -1,4 +1,4 @@
-import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
+import { CANTONS, PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import { NOTARY_FEES } from '../../config/financeConstants';
 import Calculator from '../Calculator';
 import * as cantonConfigs from './cantonConfigs';
@@ -286,8 +286,11 @@ class NotaryFeesCalculator {
   }
 
   getDefaultFees({ propertyValue }) {
+    const defaultRates = { VS: 0.03 };
+    const rate = defaultRates[this.canton] || NOTARY_FEES;
+
     return {
-      total: propertyValue * NOTARY_FEES,
+      total: propertyValue * rate,
       canton: this.canton,
       estimate: true,
     };

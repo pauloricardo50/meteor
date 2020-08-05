@@ -27,10 +27,11 @@ InsuranceRequestService.cache(
       referredByUserLink: 1,
       assignedEmployeeCache: 1,
       acquisitionChannel: 1,
+      status: 1,
     },
     referenceField: 'userLink._id',
   },
-  // { 'userCache.acquisitionChannel': { $exists: false } },
+  // { 'userCache.status': { $exists: false } },
 );
 
 InsuranceRequestService.cache(

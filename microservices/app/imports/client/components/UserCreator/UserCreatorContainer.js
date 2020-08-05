@@ -2,14 +2,12 @@ import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
-import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
 import {
   anonymousCreateUser,
   getEnrollUrl,
 } from 'core/api/users/methodDefinitions';
 import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
-import { getCookie } from 'core/utils/cookiesHelpers';
 import { createRoute } from 'core/utils/routerUtils';
 
 import APP_ROUTES from '../../../startup/client/appRoutes';
@@ -18,7 +16,7 @@ export const userSchema = new SimpleSchema({
   firstName: String,
   lastName: String,
   email: { type: String, regEx: SimpleSchema.RegEx.Email },
-  phoneNumber: String,
+  phoneNumber: { type: String, optional: true },
 });
 
 export default compose(
@@ -33,7 +31,6 @@ export default compose(
       return anonymousCreateUser
         .run({
           user: values,
-          trackingId: getCookie(TRACKING_COOKIE),
           referralId,
 
           // Remove null values

@@ -17,4 +17,5 @@ const GPSStats = ({ primary, fields }) => (
     <LoansMap />
   </section>
 );
+
 export default GPSStats;

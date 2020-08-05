@@ -9,7 +9,7 @@ import {
   STEP_ORDER,
 } from 'core/api/loans/loanConstants';
 import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES, USER_STATUS } from 'core/api/users/userConstants';
 import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
 import T from 'core/components/Translation';
@@ -64,6 +64,7 @@ const LoanBoardOptionsContent = ({
     promotionStatus,
     additionalFields,
     purchaseType,
+    userStatus,
   } = options;
   const assignedEmployeeValue = assignedEmployeeId
     ? assignedEmployeeId.$in
@@ -75,6 +76,7 @@ const LoanBoardOptionsContent = ({
   const promotionIdValue = promotionId ? promotionId.$in : [null];
   const lenderIdValue = lenderId ? lenderId.$in : [null];
   const purchaseTypeValue = purchaseType ? purchaseType.$in : [null];
+  const userStatusValue = userStatus ? userStatus.$in : [null];
 
   const groupByOptions = [
     { id: GROUP_BY.STATUS, label: 'Par statut' },
@@ -139,6 +141,14 @@ const LoanBoardOptionsContent = ({
     })),
   ];
 
+  const userStatusOptions = [
+    { id: null, label: 'Tous' },
+    ...Object.values(USER_STATUS).map(s => ({
+      id: s,
+      label: <T id={`Forms.status.${s}`} />,
+    })),
+  ];
+
   return (
     <>
       <div className="left">
@@ -155,10 +165,19 @@ const LoanBoardOptionsContent = ({
         />
 
         <LoanBoardOptionsSelect
-          label="Statut"
+          label="Statut du dossier"
           value={statusValue}
           options={statusOptions}
           onChange={next => makeOnChange('status', dispatch)(statusValue, next)}
+        />
+
+        <LoanBoardOptionsSelect
+          label="Statut du compte"
+          value={userStatusValue}
+          options={userStatusOptions}
+          onChange={next =>
+            makeOnChange('userStatus', dispatch)(userStatusValue, next)
+          }
         />
 
         <LoanBoardOptionsSelect

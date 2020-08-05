@@ -17,11 +17,24 @@ import RevenuesWithoutAssignees from './RevenuesWithoutAssignees';
 import RevenuesWithoutCommissions from './RevenuesWithoutCommissions';
 import RevenuesWithUnnecessaryCommissions from './RevenuesWithUnnecessaryCommissions';
 import UnpaidCommissions from './UnpaidCommissions';
+import WrongCommissions from './WrongCommissions';
 
 const AdminDashboardStats = () => {
   const [showAll, setShowAll] = useState(false);
+  const [showStats, setShowStats] = useState(false);
+
+  if (!showStats) {
+    return (
+      <div className="mt-16 mb-16 text-center">
+        <Button raised primary size="large" onClick={() => setShowStats(true)}>
+          Afficher les stats
+        </Button>
+      </div>
+    );
+  }
+
   return (
-    <div className="admin-stats">
+    <div className="admin-stats animated fadeIn">
       <div>
         <h2>Stats</h2>
         <div className="flex wrap sa">
@@ -51,6 +64,7 @@ const AdminDashboardStats = () => {
           <LoansWithoutAssignees showAll={showAll} />
           <LoansThatShouldBeFinalized showAll={showAll} />
           <RevenuesWithUnnecessaryCommissions showAll={showAll} />
+          <WrongCommissions showAll={showAll} />
         </div>
       </div>
     </div>

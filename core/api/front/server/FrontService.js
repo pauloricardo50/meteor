@@ -5,11 +5,14 @@ import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
 import queryString from 'query-string';
 
+import { DRIP_ACTIONS } from '../../drip/dripConstants';
+import DripService from '../../drip/server/DripService';
 import { ERROR_CODES } from '../../errors';
 import LoanService from '../../loans/server/LoanService';
 import { ddpWithUserId } from '../../methods/methodHelpers';
+import { setUserStatus } from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
-import { ROLES } from '../../users/userConstants';
+import { ROLES, USER_STATUS } from '../../users/userConstants';
 
 const EPOTEK_IPS = ['213.3.47.70'];
 const FRONT_AUTH_SECRET = Meteor.settings.front?.authSecret;
@@ -75,6 +78,7 @@ const frontEndpoints = {
 const WEBHOOKS = {
   AUTO_TAG: 'auto-tag',
   AUTO_ASSIGN: 'auto-assign',
+  DRIP_QUALIFY: 'drip-qualify',
   TEST: 'test',
 };
 
@@ -206,6 +210,10 @@ export class FrontService {
 
     if (webhookName === WEBHOOKS.AUTO_ASSIGN) {
       return this.handleAutoAssign(body);
+    }
+
+    if (webhookName === WEBHOOKS.DRIP_QUALIFY) {
+      return this.handleDripQualify(body);
     }
 
     if (webhookName === WEBHOOKS.TEST) {
@@ -357,7 +365,7 @@ export class FrontService {
     });
   }
 
-  getRecipientUser({ conversation, role }) {
+  getRecipientUser({ conversation, role, fragment }) {
     const { last_message: { recipients = [] } = {} } = conversation;
     const recipient = recipients.find(
       ({ role: recipientRole, handle }) => recipientRole === role && !!handle,
@@ -367,9 +375,12 @@ export class FrontService {
       email &&
       UserService.getByEmail(
         email,
-        {
+        fragment || {
           assignedEmployee: { email: 1 },
           loans: { name: 1, mainAssignee: { email: 1 }, frontTagId: 1 },
+          status: 1,
+          assignedRoles: 1,
+          email: 1,
         },
         { 'roles._id': { $in: [ROLES.USER, ROLES.PRO] } },
       );
@@ -393,7 +404,11 @@ export class FrontService {
       return;
     }
 
-    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
+    const recipientUser = this.getRecipientUser({
+      conversation,
+      role: 'from',
+      fragment: { loans: { name: 1, frontTagId: 1 } },
+    });
 
     if (!recipientUser) {
       // If the user is not found in our DB
@@ -492,7 +507,14 @@ export class FrontService {
       return;
     }
 
-    const recipientUser = this.getRecipientUser({ conversation, role: 'from' });
+    const recipientUser = this.getRecipientUser({
+      conversation,
+      role: 'from',
+      fragment: {
+        loans: { mainAssignee: { email: 1 } },
+        assignedEmployee: { email: 1 },
+      },
+    });
 
     if (!recipientUser) {
       // User not found
@@ -542,6 +564,46 @@ export class FrontService {
     }
 
     return { ...tag, parentTag };
+  }
+
+  async handleDripQualify({ conversation }) {
+    if (!conversation) {
+      return;
+    }
+
+    const recipientUser = this.getRecipientUser({
+      conversation,
+      role: 'from',
+      fragment: { email: 1, assignedRoles: 1, status: 1 },
+    });
+
+    if (!recipientUser) {
+      // If the user is not found in our DB
+      return;
+    }
+
+    if (recipientUser.assignedRoles?.[0] !== ROLES.USER) {
+      // Only USERs are in the drip
+      return;
+    }
+
+    if (recipientUser.status !== USER_STATUS.PROSPECT) {
+      // We want to qualify PROSPECT
+      // LOST and QUALIFIED subscribers are already out of the drip
+      return;
+    }
+
+    setUserStatus.serverRun({
+      userId: recipientUser._id,
+      status: USER_STATUS.QUALIFIED,
+      source: 'drip',
+      reason: 'Sent an email',
+    });
+
+    return DripService.trackEvent({
+      event: { action: DRIP_ACTIONS.USER_QUALIFIED },
+      email: recipientUser.email,
+    });
   }
 }
 

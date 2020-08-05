@@ -1,16 +1,5 @@
-const SimpleDDP = require('simpleddp');
-const ws = require('isomorphic-ws');
-
-const isDevelopment = process.env.NODE_ENV === 'development';
-
-const opts = {
-  endpoint: isDevelopment
-    ? 'ws://localhost:5500/websocket' // wss protocol doesn't seem to work in local
-    : 'wss://backend.e-potek.ch/websocket',
-  SocketConstructor: ws,
-};
-
-const meteorClient = new SimpleDDP(opts);
+const { meteorClient } = require('./src/utils/meteorClient/meteorClient');
+const { createTestNodes } = require('./src/utils/test/gatsbyTestHelpers');
 
 exports.sourceNodes = async ({
   actions,
@@ -18,6 +7,19 @@ exports.sourceNodes = async ({
   createNodeId,
   reporter,
 }) => {
+  reporter.info('Creating e-Potek nodes');
+  if (process.env.GATSBY_E2E_TEST) {
+    createTestNodes({
+      actions,
+      createContentDigest,
+      createNodeId,
+      reporter,
+    });
+    reporter.success('Created E2E test nodes :)');
+
+    return;
+  }
+
   // create graphql nodes for gps stats data
   let gpsStats;
 
@@ -40,43 +42,6 @@ exports.sourceNodes = async ({
           type: 'gpsStat',
           contentDigest: createContentDigest(gpsStat),
           description: 'e-Potek GPS Stat',
-        },
-      };
-      actions.createNode(node);
-    });
-  }
-
-  // create graphql nodes for promotions
-  let promotions;
-
-  try {
-    promotions = await meteorClient.call('named_query_PROMOTIONS_LIST');
-  } catch (error) {
-    reporter.error('Failed to get promotions data:', error);
-  }
-
-  if (promotions) {
-    reporter.success('e-Potek: retrieve promotions data');
-
-    promotions.forEach(promotion => {
-      const {
-        _id: id,
-        documents,
-        description = '',
-        externalUrl = '',
-        ...rest
-      } = promotion;
-
-      const node = {
-        id,
-        images: documents.promotionImage,
-        description,
-        externalUrl,
-        ...rest,
-        internal: {
-          type: 'promotion',
-          contentDigest: createContentDigest(promotion),
-          description: 'e-Potek Promotion',
         },
       };
       actions.createNode(node);

@@ -28,12 +28,7 @@ export const createFakeInterestRates = ({ number }) => {
   let dates = [];
 
   for (let i = 0; i < number; i += 1) {
-    dates = [
-      ...dates,
-      moment()
-        .subtract(i, 'd')
-        .toDate(),
-    ];
+    dates = [...dates, moment().subtract(i, 'd').toDate()];
   }
 
   const fakeRates = dates.map(date => ({

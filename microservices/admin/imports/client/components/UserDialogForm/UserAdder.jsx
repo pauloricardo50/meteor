@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import ListItemText from '@material-ui/core/ListItemText';
 import { useHistory } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
@@ -9,6 +10,7 @@ import {
   ASSIGNEE,
   ROLES,
   USERS_COLLECTION,
+  USER_STATUS,
 } from 'core/api/users/userConstants';
 import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import Box from 'core/components/Box';
@@ -37,7 +39,7 @@ export const userFormLayout = [
   {
     Component: Box,
     title: <h5>Options</h5>,
-    fields: ['assignedEmployeeId', 'sendEnrollmentEmail'],
+    fields: ['assignedEmployeeId', 'status', 'sendEnrollmentEmail'],
   },
 ];
 
@@ -125,6 +127,26 @@ const getSchema = (organisations, advisors) =>
           },
         },
       },
+      status: {
+        type: String,
+        allowedValues: Object.values(USER_STATUS).filter(
+          status => status !== USER_STATUS.LOST,
+        ),
+        uniforms: {
+          transform: status => (
+            <ListItemText
+              primary={
+                status === USER_STATUS.PROSPECT ? 'Prospect' : 'Qualifié'
+              }
+              secondary={
+                status === USER_STATUS.PROSPECT
+                  ? "L'utilisateur sera drippé"
+                  : "L'utilisateur ne sera pas drippé"
+              }
+            />
+          ),
+        },
+      },
     }),
   );
 
@@ -148,6 +170,7 @@ const UserAdder = ({ buttonProps }) => {
   return (
     <AutoFormDialog
       title={<T id="UserAdder.buttonLabel" />}
+      description="Si tu veux créer un PRO ou un ADMIN, le faire depuis la page de sa future organisation! Ce formulaire est uniquement pour les clients."
       schema={schema}
       model={{ ...searchParams }}
       openOnMount={

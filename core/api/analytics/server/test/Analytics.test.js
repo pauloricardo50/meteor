@@ -80,9 +80,9 @@ describe('Analytics', () => {
 
         const analytics = new Analytics({ connection: { id: connectionId } });
         const data = {
-          url: 'url',
-          route: 'route',
           path: 'path',
+          route: 'route',
+          url: 'url',
         };
 
         analytics.track(EVENTS.CTA_CLICKED, data);
@@ -95,9 +95,9 @@ describe('Analytics', () => {
           data,
           pickedProperties: {
             name: undefined,
-            ...data,
-            toPath: undefined,
             referrer: undefined,
+            toPath: undefined,
+            ...data,
           },
         });
         expect(analyticsSpy.callCount).to.equal(1);

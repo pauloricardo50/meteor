@@ -85,7 +85,7 @@ const inputSwitch = (childProps, index, parentProps) => {
     case 'arrayInput':
       return <ArrayInput {...childProps} />;
     case 'custom':
-      return component;
+      return React.cloneElement(component, childProps);
     case 'percent':
       return <AutoFormPercentInput {...childProps} />;
     default:

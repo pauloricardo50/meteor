@@ -7,16 +7,22 @@ import { useCookies } from 'react-cookie';
 import LanguageContext from '../../contexts/LanguageContext';
 import useContentBlock from '../../hooks/useContentBlock';
 import { getLanguageData } from '../../utils/languages.js';
-import { linkResolver } from '../../utils/linkResolver';
 import Button from '../Button';
 import { RichText } from '../prismic';
 
 const acceptCookie = 'epotek_acceptCookie';
 
+const useSnackbarStyles = makeStyles(() => ({
+  root: {
+    zIndex: 2147483004,
+  },
+}));
+
 const useSnackbarContentStyles = makeStyles(theme => ({
   root: {
     backgroundColor: 'white',
     padding: 8,
+    zIndex: 2147483004, // Be above intercom
   },
   message: {
     fontSize: 12,
@@ -47,6 +53,7 @@ const CookiesNotification = () => {
     process.env.NODE_ENV === 'production' && !hasSetCookie,
   );
   const contentClasses = useSnackbarContentStyles();
+  const snackbarClasses = useSnackbarStyles();
 
   const cookieNotification = useContentBlock({
     uid: 'cookies-notification',
@@ -54,10 +61,6 @@ const CookiesNotification = () => {
   });
 
   if (!cookieNotification) return null;
-
-  const message = (
-    <RichText render={cookieNotification} linkResolver={linkResolver} />
-  );
 
   const handleAccept = () => {
     setCookie(acceptCookie, 'all', cookieOptions);
@@ -70,10 +73,10 @@ const CookiesNotification = () => {
   };
 
   return (
-    <Snackbar open={visible}>
+    <Snackbar open={visible} classes={snackbarClasses}>
       <SnackbarContent
         classes={contentClasses}
-        message={message}
+        message={<RichText render={cookieNotification} />}
         elevation={1}
         action={[
           <Button

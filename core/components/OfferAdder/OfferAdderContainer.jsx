@@ -1,9 +1,10 @@
+import { useMemo } from 'react';
 import { compose, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { withSmartQuery } from '../../api/containerToolkit';
 import { INTEREST_RATES } from '../../api/interestRates/interestRatesConstants';
-import { loanLenders } from '../../api/lenders/queries';
+import { LENDERS_COLLECTION } from '../../api/lenders/lenderConstants';
 import { offerInsert } from '../../api/offers/methodDefinitions';
 import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/autoFormConstants';
 
@@ -29,7 +30,7 @@ const interestRatesSchema = ({ isDiscount }) =>
     {},
   );
 
-const schema = lenders =>
+const getSchema = lenders =>
   new SimpleSchema({
     withCounterparts: {
       type: Boolean,
@@ -249,11 +250,18 @@ const insertOffer = values => {
 
 export default compose(
   withSmartQuery({
-    query: loanLenders,
-    params: ({ loanId }) => ({ loanId }),
+    query: LENDERS_COLLECTION,
+    params: ({ loanId }) => ({
+      $filters: { 'loanLink._id': loanId },
+      organisation: { name: 1 },
+      contact: { name: 1 },
+    }),
     queryOptions: { reactive: false },
     dataName: 'lenders',
     smallLoader: true,
   }),
-  withProps(({ lenders }) => ({ schema: schema(lenders), insertOffer })),
+  withProps(({ lenders }) => {
+    const schema = useMemo(() => getSchema(lenders), []);
+    return { schema, insertOffer };
+  }),
 );

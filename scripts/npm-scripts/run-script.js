@@ -3,10 +3,7 @@ import { MICROSERVICES, SCRIPTS } from './constants';
 const { spawn } = require('child_process');
 
 const [script, ...args] = process.argv.slice(2);
-const microservice = process
-  .cwd()
-  .split('/')
-  .slice(-1)[0];
+const microservice = process.cwd().split('/').slice(-1)[0];
 
 if (!Object.values(MICROSERVICES).includes(microservice)) {
   throw new Error(

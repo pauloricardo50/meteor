@@ -10,8 +10,6 @@ import {
   TASK_TYPES,
 } from './taskConstants';
 
-const Tasks = createCollection(TASKS_COLLECTION);
-
 export const TasksSchema = new SimpleSchema({
   createdAt,
   updatedAt,
@@ -38,14 +36,6 @@ export const TasksSchema = new SimpleSchema({
       this.unset();
     },
   },
-  assigneeLink: {
-    type: Object,
-    optional: true,
-  },
-  'assigneeLink._id': {
-    type: String,
-    optional: true,
-  },
   title: {
     type: String,
     optional: true,
@@ -55,6 +45,35 @@ export const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
     autoValue: autoValueSentenceCase,
+  },
+  isPrivate: {
+    type: Boolean,
+    defaultValue: false,
+  },
+  priority: {
+    type: String,
+    defaultValue: TASK_PRIORITIES.DEFAULT,
+    allowedValues: Object.values(TASK_PRIORITIES),
+  },
+  type: {
+    type: String,
+    allowedValues: Object.values(TASK_TYPES),
+    optional: true,
+  },
+  metadata: {
+    type: Object,
+    blackbox: true,
+    optional: true,
+  },
+
+  // Links
+  assigneeLink: {
+    type: Object,
+    optional: true,
+  },
+  'assigneeLink._id': {
+    type: String,
+    optional: true,
   },
   loanLink: {
     type: Object,
@@ -108,26 +127,8 @@ export const TasksSchema = new SimpleSchema({
   'insuranceRequestLink._id': { type: String, optional: true },
   insuranceLink: { type: Object, optional: true },
   'insuranceLink._id': { type: String, optional: true },
-  isPrivate: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  priority: {
-    type: String,
-    defaultValue: TASK_PRIORITIES.DEFAULT,
-    allowedValues: Object.values(TASK_PRIORITIES),
-  },
-  type: {
-    type: String,
-    allowedValues: Object.values(TASK_TYPES),
-    optional: true,
-  },
-  metadata: {
-    type: Object,
-    blackbox: true,
-    optional: true,
-  },
 });
 
-Tasks.attachSchema(TasksSchema);
+const Tasks = createCollection(TASKS_COLLECTION, TasksSchema);
+
 export default Tasks;

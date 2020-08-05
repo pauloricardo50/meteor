@@ -6,6 +6,8 @@ import T from 'core/components/Translation/FormattedMessage';
 
 import { useWwwCalculator } from './WwwCalculatorState';
 
+const capPercent = value => Math.min(Math.max(value, 0), 9.99);
+
 const WwwCalculatorFinma = () => {
   const [state] = useWwwCalculator();
   const {
@@ -25,11 +27,21 @@ const WwwCalculatorFinma = () => {
     { label: <T id="WwwCalculatorFinma.title" />, title: true },
     {
       label: <T id="WwwCalculatorRecap.borrowRule" values={{ purchaseType }} />,
-      value: <PercentWithStatus value={borrowRatio} status={borrowStatus} />,
+      value: (
+        <PercentWithStatus
+          value={capPercent(borrowRatio)}
+          status={borrowStatus}
+        />
+      ),
     },
     {
       label: <T id="WwwCalculatorRecap.incomeRule" />,
-      value: <PercentWithStatus value={incomeRatio} status={incomeStatus} />,
+      value: (
+        <PercentWithStatus
+          value={capPercent(incomeRatio)}
+          status={incomeStatus}
+        />
+      ),
     },
   ];
 

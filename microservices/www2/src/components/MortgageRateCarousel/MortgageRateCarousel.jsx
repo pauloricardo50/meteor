@@ -10,7 +10,7 @@ import T from 'core/components/Translation/FormattedMessage';
 import { linkResolver } from '../../utils/linkResolver';
 import { useMortgageRates } from '../MortgageRates/MortgageRates';
 
-const MortgageRateCarousel = props => {
+const MortgageRateCarousel = () => {
   // This is the id of the mortgage rates page
   // will need to be adjusted when we have a 2nd language
   const data = useStaticQuery(graphql`
@@ -44,10 +44,6 @@ const MortgageRateCarousel = props => {
     }
   }, 5000);
 
-  if (!hasRates) {
-    return null;
-  }
-
   return (
     <Link
       className="mortgage-rate-carousel"
@@ -55,19 +51,23 @@ const MortgageRateCarousel = props => {
     >
       <div className="mortgage-rate-carousel-wrapper">
         <hr />
-        <div className="content animated fadeIn" key={index}>
-          <div className="secondary animated fadeIn">
-            <T id={`WwwCalculatorChartForm.${rates[index].type}`} />
+        {hasRates ? (
+          <div className="content animated fadeIn" key={index}>
+            <div className="secondary animated fadeIn">
+              <T id={`WwwCalculatorChartForm.${rates[index].type}`} />
+            </div>
+            <ReactCountUp
+              start={rates[index].rateHigh * 100}
+              end={rates[index].rateLow * 100}
+              suffix="%"
+              decimals={2}
+              className="percent animated fadeIn"
+              delay={1}
+            />
           </div>
-          <ReactCountUp
-            start={rates[index].rateHigh * 100}
-            end={rates[index].rateLow * 100}
-            suffix="%"
-            decimals={2}
-            className="percent animated fadeIn"
-            delay={1}
-          />
-        </div>
+        ) : (
+          <div className="content" />
+        )}
         {/* Add this invisible div above ReactCountUp, as it breaks the link in Safari */}
         <div className="link-wrapper" />
         <hr />

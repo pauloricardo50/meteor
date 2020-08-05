@@ -92,7 +92,7 @@ setProPropertyPermissions.setHandler(({ userId }, params) => {
 });
 
 removeProFromProperty.setHandler(({ userId }, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(userId);
   PropertyService.removeProFromProperty(params);
 });
 

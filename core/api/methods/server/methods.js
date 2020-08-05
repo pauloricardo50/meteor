@@ -30,14 +30,13 @@ import {
   removeBorrower,
   revertLastMigration,
   setAdditionalDoc,
-  submitContactForm,
   throwDevError,
   unlockMigrationControl,
   updateDocument,
 } from '../methodDefinitions';
 
-getMixpanelAuthorization.setHandler(() => {
-  SecurityService.checkCurrentUserIsAdmin();
+getMixpanelAuthorization.setHandler(context => {
+  SecurityService.checkUserIsAdmin(context.userId);
   const btoa = require('btoa');
   const { API_KEY, API_SECRET } = Meteor.settings.mixpanel;
 
@@ -45,7 +44,7 @@ getMixpanelAuthorization.setHandler(() => {
 });
 
 addBorrower.setHandler((context, { loanId, borrower }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId);
+  SecurityService.loans.isAllowedToUpdate(loanId, context.userId);
   const loan = LoanService.get(loanId, { userId: 1, borrowerIds: 1 });
 
   // A loan can't have more than 2 borrowers at the moment
@@ -76,9 +75,6 @@ removeBorrower.setHandler((context, { loanId, borrowerId }) => {
   return LoanService.pullValue({ loanId, object: { borrowerIds: borrowerId } });
 });
 
-// This method needs to exist as its being listened to in EmailListeners
-submitContactForm.setHandler(() => null);
-
 throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
   console.log('Throwing dev error..');
 
@@ -99,17 +95,17 @@ throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
 });
 
 setAdditionalDoc.setHandler((context, { collection, ...rest }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return Services[collection].setAdditionalDoc(rest);
 });
 
 removeAdditionalDoc.setHandler((context, { collection, ...rest }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return Services[collection].removeAdditionalDoc(rest);
 });
 
-migrateToLatest.setHandler(({ userId }) => {
-  SecurityService.checkCurrentUserIsDev();
+migrateToLatest.setHandler(context => {
+  SecurityService.checkUserIsDev(context.userId);
   migrate();
 });
 
@@ -153,22 +149,22 @@ cleanDatabase.setHandler(({ userId }) => {
   return cleanAllData();
 });
 
-revertLastMigration.setHandler(() => {
-  SecurityService.checkCurrentUserIsDev();
+revertLastMigration.setHandler(context => {
+  SecurityService.checkUserIsDev(context.userId);
   migrateBack();
 });
 
-getMigrationControl.setHandler(() => {
-  SecurityService.checkCurrentUserIsDev();
+getMigrationControl.setHandler(context => {
+  SecurityService.checkUserIsDev(context.userId);
   return getControl();
 });
 
 migrateTo.setHandler((context, { version }) => {
-  SecurityService.checkCurrentUserIsDev();
+  SecurityService.checkUserIsDev(context.userId);
   migrateToVersion(version);
 });
 
-unlockMigrationControl.setHandler(() => {
-  SecurityService.checkCurrentUserIsDev();
+unlockMigrationControl.setHandler(context => {
+  SecurityService.checkUserIsDev(context.userId);
   unlockControl();
 });

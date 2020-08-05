@@ -40,6 +40,7 @@ export const userSearch = Users.createQuery(USER_QUERIES.USER_SEARCH, {
   name: 1,
   organisations: { name: 1 },
   roles: 1,
+  status: 1,
   $options: { limit: 5 },
 });
 

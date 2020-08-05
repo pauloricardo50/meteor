@@ -45,6 +45,7 @@ export const adminCreateUser = new Method({
       referredByUserId: Match.Maybe(String),
       role: Match.Maybe(String),
       sendEnrollmentEmail: Match.Maybe(Boolean),
+      status: Match.Maybe(String),
     },
   },
 });
@@ -169,7 +170,6 @@ export const anonymousCreateUser = new Method({
       lastName: Match.Maybe(String),
       phoneNumber: Match.Maybe(String),
     },
-    trackingId: Match.Maybe(Match.OneOf(String, null)),
     referralId: Match.Maybe(String),
     ctaId: Match.Maybe(String),
   },
@@ -188,7 +188,7 @@ export const userPasswordReset = new Method({
   name: 'userPasswordReset',
 });
 
-// Used only to trigger activity listener
+// Used only to trigger activity and drip listener
 export const userVerifyEmail = new Method({
   name: 'userVerifyEmail',
 });
@@ -196,4 +196,15 @@ export const userVerifyEmail = new Method({
 export const getEnrollUrl = new Method({
   name: 'getEnrollUrl',
   params: { userId: String },
+});
+
+export const setUserStatus = new Method({
+  name: 'setUserStatus',
+  params: {
+    userId: String,
+    status: String,
+    source: String,
+    reason: String,
+    unsuccessfulReason: Match.Maybe(String),
+  },
 });

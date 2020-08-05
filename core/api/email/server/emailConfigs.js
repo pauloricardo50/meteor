@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import LoanChecklistEmail from '../../../components/LoanChecklist/LoanChecklistEmail';
 import styles from '../../../components/LoanChecklist/LoanChecklistEmail/styles';
+import intl from '../../../utils/intl';
 import { setupMoment } from '../../../utils/localization';
 import {
   CTA_URL_DEFAULT,
@@ -121,30 +122,6 @@ addEmailConfig(EMAIL_IDS.ENROLL_ACCOUNT, {
       ],
     };
   },
-});
-
-const getFirstName = string => string.trim().split(' ')[0];
-
-addEmailConfig(EMAIL_IDS.CONTACT_US, {
-  template: EMAIL_TEMPLATES.NOTIFICATION,
-  footerType: FOOTER_TYPES.VISITOR,
-  createIntlValues: params => ({
-    ...params,
-    // Only show first names to clients
-    name: getFirstName(params.name),
-    // params.details check is required because details is optional
-    //  and it breaks react-intl if not provided
-    details: params.details || '',
-  }),
-});
-
-addEmailConfig(EMAIL_IDS.CONTACT_US_ADMIN, {
-  template: EMAIL_TEMPLATES.NOTIFICATION,
-  footerType: FOOTER_TYPES.VISITOR,
-  createIntlValues: params => ({
-    ...params,
-    details: params.details || 'Pas de message',
-  }),
 });
 
 addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
@@ -548,6 +525,25 @@ addEmailConfig(EMAIL_IDS.PROMOTION_INTEREST_FORM_ADMIN, {
   createIntlValues: params => ({
     ...params,
     details: params.details || 'Pas de message',
+  }),
+});
+
+addEmailConfig(EMAIL_IDS.PROSPECT_FOR_TOO_LONG_NOTIFICATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  footerType: FOOTER_TYPES.VISITOR,
+  createIntlValues: params => ({
+    ...params,
+    details: params.details || '',
+  }),
+});
+
+addEmailConfig(EMAIL_IDS.NOTIFY_PRO_OF_LOST_REFERRAL, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  createIntlValues: ({ unsuccessfulReason, ...params }) => ({
+    ...params,
+    reason: `<b>${intl.formatMessage({
+      id: `Forms.unsuccessfulReason.${unsuccessfulReason}`,
+    })}</b>`,
   }),
 });
 

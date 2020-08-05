@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import moment from 'moment';
 
 import {
@@ -23,6 +24,7 @@ import {
   LOAN_STATUS_ORDER,
   UNSUCCESSFUL_LOAN_REASONS,
 } from 'core/api/loans/loanConstants';
+import { OFFERS_COLLECTION } from 'core/api/offers/offerConstants';
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import {
   REVENUES_COLLECTION,
@@ -35,9 +37,13 @@ import intl from 'core/utils/intl';
 
 const { formatMessage } = intl;
 
-const makeFormatDate = key => ({ [key]: date }) =>
-  date && `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`;
-
+const makeFormatDate = path => object => {
+  const date = get(object, path);
+  return (
+    date &&
+    `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, 0)}`
+  );
+};
 const sevenDaysAgo = moment().day(-7).hour(0).minute(0);
 
 const fifteenDaysAgo = moment().day(-15).hour(0).minute(0);
@@ -445,6 +451,7 @@ const analysisConfig = {
     name: {
       label: 'Nom',
     },
+    status: { id: 'Forms.status', formsFormat: true },
     emails: {
       label: 'Email vérifié',
       format: ({ emails = [] }) =>
@@ -1073,6 +1080,52 @@ const analysisConfig = {
     nonGuaranteedCapital: { id: 'Forms.nonGuaranteedCapital' },
     deathCapital: { id: 'Forms.deathCapital' },
     disabilityPension: { id: 'Forms.disabilityPension' },
+  },
+  [OFFERS_COLLECTION]: {
+    createdAt: [
+      {
+        label: 'Création Mois-Année',
+        format: makeFormatDate('createdAt'),
+      },
+      {
+        label: 'Création Année',
+        format: ({ createdAt }) => createdAt && createdAt.getFullYear(),
+      },
+    ],
+    withCounterparts: {
+      id: 'Forms.withCounterparts',
+      format: ({ withCounterParts }) => (withCounterParts ? 'Oui' : 'Non'),
+    },
+    feedback: [
+      { label: 'Feedback envoyé', format: ({ feedback }) => !!feedback?.date },
+      { label: 'Date du feedback', format: makeFormatDate('feedback.date') },
+    ],
+    lender: [
+      {
+        label: 'Prêteur',
+        fragment: {
+          status: 1,
+          organisation: { name: 1 },
+          contact: { name: 1 },
+          loan: { structureCache: { offerId: 1 } },
+        },
+        format: ({ lender: { organisation } }) => organisation?.name,
+      },
+      {
+        label: 'Contact',
+        format: ({ lender: { contact } }) => contact?.name,
+      },
+      {
+        id: 'Forms.status',
+        format: ({ lender: { status } }) =>
+          formatMessage({ id: `Forms.status.${status}` }),
+      },
+      {
+        label: 'Choisi',
+        format: ({ _id: offerId, lender: { loan } }) =>
+          loan?.structureCache?.offerId === offerId ? 'Oui' : 'Non',
+      },
+    ],
   },
 };
 

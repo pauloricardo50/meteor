@@ -268,6 +268,18 @@ describe('NotaryFeesCalculator', () => {
     });
   });
 
+  describe('VS', () => {
+    before(() => {
+      calc = new NotaryFeesCalculator({ canton: 'VS' });
+    });
+
+    it('returns 3%', () => {
+      const fees = calc.getNotaryFeesForLoan({ loan });
+
+      expect(fees.total).to.equal(30000);
+    });
+  });
+
   describe('unknown cantons', () => {
     before(() => {
       calc = new NotaryFeesCalculator({ canton: 'XX' });

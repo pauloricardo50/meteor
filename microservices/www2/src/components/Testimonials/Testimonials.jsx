@@ -35,7 +35,7 @@ const Testimonials = ({ primary, fields: testimonials = [] }) => {
   } = testimonials[id];
 
   return (
-    <div className="testimonials">
+    <section className="testimonials container">
       <div className="testimonials-heading">
         <RichText render={primary.testimonials_heading} />
       </div>
@@ -65,7 +65,7 @@ const Testimonials = ({ primary, fields: testimonials = [] }) => {
           <Icon type="right" />
         </Fab>
       </div>
-    </div>
+    </section>
   );
 };
 

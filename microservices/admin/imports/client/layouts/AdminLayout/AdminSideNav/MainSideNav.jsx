@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { faProjectDiagram } from '@fortawesome/pro-light-svg-icons/faProjectDiagram';
-import { faQuestionCircle } from '@fortawesome/pro-light-svg-icons/faQuestionCircle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
@@ -63,14 +62,6 @@ const getItems = currentUser =>
         <FontAwesomeIcon icon={faProjectDiagram} className="collection-icon" />
       ),
       collection: 'other',
-    },
-    {
-      label: 'Wik-e-Potek',
-      to: '/wiki/emails',
-      icon: (
-        <FontAwesomeIcon icon={faQuestionCircle} className="collection-icon" />
-      ),
-      collection: 'wiki',
     },
     {
       label: 'Dev',

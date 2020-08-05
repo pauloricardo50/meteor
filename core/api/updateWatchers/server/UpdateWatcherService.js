@@ -172,6 +172,7 @@ class UpdateWatcherService extends CollectionService {
       assignedEmployee: { email: 1 },
       name: 1,
       roles: 1,
+      status: 1,
     });
 
     if (!user) {

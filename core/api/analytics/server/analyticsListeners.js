@@ -19,6 +19,7 @@ import {
   anonymousCreateUser,
   proInviteUser,
   proInviteUserToOrganisation,
+  setUserStatus,
 } from '../../users/methodDefinitions';
 import UserService from '../../users/server/UserService';
 import EVENTS from '../events';
@@ -115,7 +116,9 @@ addAnalyticsListener({
       step: 1,
       mainAssignee: 1,
     });
-    const { name: adminName } = UserService.get(adminId, { name: 1 });
+    const { name: adminName } = UserService.get(adminId, { name: 1 }) || {
+      name: 'server',
+    };
 
     let properties = {
       adminId,
@@ -169,7 +172,7 @@ addAnalyticsListener({
         _id: referringOrganisationId,
         name: referringOrganisationName,
       } = {},
-      assignedEmployee: { _id: assigneeId, name: assigneeName },
+      assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = UserService.get(userId, {
       name: 1,
       email: 1,
@@ -244,7 +247,7 @@ addAnalyticsListener({
 
 addAnalyticsListener({
   method: analyticsVerifyEmail,
-  func: ({ analytics, params: { trackingId }, context: { userId } }) => {
+  func: ({ analytics, context: { userId } }) => {
     const user = UserService.get(userId, {
       name: 1,
       email: 1,
@@ -262,7 +265,6 @@ addAnalyticsListener({
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
-    analytics.identify(trackingId);
     analytics.track(EVENTS.USER_VERIFIED_EMAIL, {
       userId,
       userName,
@@ -487,7 +489,7 @@ addAnalyticsListener({
   method: [anonymousLoanInsert, userLoanInsert, adminLoanInsert],
   func: ({
     analytics,
-    params: { proPropertyId, referralId, trackingId },
+    params: { proPropertyId, referralId },
     result: loanId,
   }) => {
     const {
@@ -521,40 +523,32 @@ addAnalyticsListener({
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
-    analytics.track(
-      EVENTS.LOAN_CREATED,
-      {
-        loanId,
-        propertyId: proPropertyId,
-        referralId,
-        anonymous: true,
-        loanName,
-        purchaseType,
-        userId,
-        userName,
-        userEmail,
-        referringUserId,
-        referringUserName,
-        referringOrganisationId,
-        referringOrganisationName,
-        assigneeId,
-        assigneeName,
-        promotionId: promotion?._id,
-        promotionName: promotion?.name,
-      },
-      trackingId,
-    );
+    analytics.track(EVENTS.LOAN_CREATED, {
+      loanId,
+      propertyId: proPropertyId,
+      referralId,
+      anonymous: true,
+      loanName,
+      purchaseType,
+      userId,
+      userName,
+      userEmail,
+      referringUserId,
+      referringUserName,
+      referringOrganisationId,
+      referringOrganisationName,
+      assigneeId,
+      assigneeName,
+      promotionId: promotion?._id,
+      promotionName: promotion?.name,
+    });
   },
 });
 
 addAnalyticsListener({
   method: anonymousCreateUser,
   analyticsProps: ({ context, result: userId }) => ({ ...context, userId }),
-  func: ({
-    analytics,
-    params: { trackingId, loanId, ctaId },
-    result: userId,
-  }) => {
+  func: ({ analytics, params: { loanId, ctaId }, result: userId }) => {
     const user = UserService.get(userId, {
       name: 1,
       email: 1,
@@ -574,24 +568,23 @@ addAnalyticsListener({
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
 
-    analytics.identify(trackingId);
-    analytics.track(
-      EVENTS.USER_CREATED,
-      {
-        userId,
-        userName,
-        userEmail,
-        referringUserId,
-        referringUserName,
-        referringOrganisationId,
-        referringOrganisationName,
-        assigneeId,
-        assigneeName,
-        origin: 'user',
-        ctaId,
-      },
-      trackingId,
-    );
+    // The user is creating himself, make sure all recent tracks are
+    // attributed to him
+    analytics.identify();
+
+    analytics.track(EVENTS.USER_CREATED, {
+      userId,
+      userName,
+      userEmail,
+      referringUserId,
+      referringUserName,
+      referringOrganisationId,
+      referringOrganisationName,
+      assigneeId,
+      assigneeName,
+      origin: 'user',
+      ctaId,
+    });
 
     if (loanId) {
       const { name: loanName } = LoanService.get(loanId, { name: 1 });
@@ -770,7 +763,7 @@ addAnalyticsListener({
   method: analyticsOpenedIntercom,
   func: ({
     analytics,
-    params: { trackingId, lastPageTitle, lastPagePath, lastPageMicroservice },
+    params: { lastPageTitle, lastPagePath, lastPageMicroservice },
     context,
   }) => {
     const { userId } = context;
@@ -802,10 +795,9 @@ addAnalyticsListener({
         assigneeId: user?.assignedEmployee?._id,
         assigneeName: user?.assignedEmployee?.name,
       };
-      analytics.identify(trackingId);
     }
 
-    analytics.track(EVENTS.INTERCOM_OPENED_MESSENGER, params, trackingId);
+    analytics.track(EVENTS.INTERCOM_OPENED_MESSENGER, params);
   },
 });
 
@@ -826,5 +818,43 @@ addAnalyticsListener({
       userEmail: email,
       promotionName,
     });
+  },
+});
+
+addAnalyticsListener({
+  method: setUserStatus,
+  analyticsProps: ({ context, params: { userId } }) => ({
+    ...context,
+    userId,
+  }),
+  func: ({
+    analytics,
+    params: { userId, reason },
+    result: { prevStatus, nextStatus },
+  }) => {
+    if (prevStatus !== nextStatus) {
+      const user = UserService.get(userId, {
+        name: 1,
+        email: 1,
+        assignedEmployee: { name: 1 },
+        referredByOrganisation: { name: 1 },
+        referredByUser: { name: 1 },
+      });
+
+      analytics.track(EVENTS.USER_CHANGED_STATUS, {
+        prevStatus,
+        nextStatus,
+        userId: user?._id,
+        userName: user?.name,
+        userEmail: user?.email,
+        referringUserId: user?.referredByUser?._id,
+        referringUserName: user?.referredByUser?.name,
+        referringOrganisationId: user?.referredByOrganisation?._id,
+        referringOrganisationName: user?.referredByOrganisation?.name,
+        assigneeId: user?.assignedEmployee?._id,
+        assigneeName: user?.assignedEmployee?.name,
+        statusChangeReason: reason,
+      });
+    }
   },
 });

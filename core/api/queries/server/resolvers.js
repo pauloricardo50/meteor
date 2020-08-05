@@ -11,7 +11,9 @@ import { userSearch } from '../../users/queries';
 
 const collectionSearches = {
   [COLLECTIONS.USERS_COLLECTION]: searchQuery =>
-    userSearch.clone({ searchQuery, $body: { name: 1, roles: 1 } }).fetch(),
+    userSearch
+      .clone({ searchQuery, $body: { name: 1, roles: 1, status: 1 } })
+      .fetch(),
   [COLLECTIONS.LOANS_COLLECTION]: searchQuery =>
     loanSearch
       .clone({ searchQuery, $body: { name: 1, status: 1, category: 1 } })

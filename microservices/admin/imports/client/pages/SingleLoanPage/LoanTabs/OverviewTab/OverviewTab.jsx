@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Loans from 'core/api/loans';
 import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import AdminNotes from 'core/components/AdminNotes';
 import Icon from 'core/components/Icon/Icon';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
@@ -10,13 +11,13 @@ import LoanChecklistEmailSender from 'core/components/LoanChecklist/LoanChecklis
 import AdminLoanClosingChecklist from 'core/components/LoanClosingChecklist/AdminLoanClosingChecklist';
 import MaxPropertyValue from 'core/components/MaxPropertyValue';
 import Recap from 'core/components/Recap';
+import Toggle from 'core/components/Toggle';
 import T from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
 import Calculator from 'core/utils/Calculator';
 
 import AdminTimeline from '../../../../components/AdminTimeline';
 import AssigneesManager from '../../../../components/AssigneesManager';
-import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import InsurancePotential from '../../../../components/InsurancePotential/InsurancePotential';
 import BorrowerAge from '../BorrowerAge';
 import LoanDisbursementDate from './LoanDisbursementDate';
@@ -31,11 +32,8 @@ const allowClosingChecklists = status =>
   ].indexOf(status) >= 0;
 
 const OverviewTab = props => {
-  const {
-    loan,
-    currentUser: { roles },
-  } = props;
-  const { borrowers, _id: loanId, frontTagId, status } = loan;
+  const { loan } = props;
+  const { borrowers, _id: loanId, frontTagId, status, userFormsEnabled } = loan;
   const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
     loan,
   });
@@ -53,7 +51,15 @@ const OverviewTab = props => {
               autosaveDelay={500}
             />
           )}
-          <DisableUserFormsToggle loan={loan} />
+          <Toggle
+            labelTop={<T id="Forms.userFormsEnabled" />}
+            labelLeft={<T id="general.no" />}
+            labelRight={<T id="general.yes" />}
+            toggled={userFormsEnabled}
+            onToggle={value =>
+              loanUpdate.run({ loanId, object: { userFormsEnabled: value } })
+            }
+          />
           <UpdateField doc={loan} fields={['category']} collection={Loans} />
           <UpdateField
             doc={loan}

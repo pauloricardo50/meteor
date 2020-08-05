@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import crypto from 'crypto';
 import nodeFetch from 'node-fetch';
 
+import { getClientTrackingId } from '../../../utils/server/getClientTrackingId';
 import EVENTS from '../../analytics/events';
 import Analytics from '../../analytics/server/Analytics';
 import ErrorLogger from '../../errorLogger/server/ErrorLogger';
@@ -227,9 +228,10 @@ export class IntercomService {
   }
 
   async getContactByEmail({ email }) {
-    const { data = [] } = await this.searchContacts({
-      filters: { email: { value: email } },
-    });
+    const { data = [] } =
+      (await this.searchContacts({
+        filters: { email: { value: email } },
+      })) || {};
     return data[0];
   }
 
@@ -243,8 +245,8 @@ export class IntercomService {
   async updateVisitorTrackingId({
     context,
     visitorId,
-    trackingId,
     intercomId,
+    trackingId,
   }) {
     const isImpersonating = SessionService.isImpersonatedSession(
       context?.connection?.id,
@@ -252,7 +254,7 @@ export class IntercomService {
 
     const userId = visitorId || intercomId;
 
-    if (isImpersonating || !userId || !trackingId) {
+    if (isImpersonating || !userId) {
       return;
     }
 
@@ -267,7 +269,11 @@ export class IntercomService {
     const visitorType = visitor?.type;
     const visitorIsFound = !!visitor;
 
-    if (!visitorIsFound || visitor?.custom_attributes?.epotek_trackingid) {
+    if (
+      !visitorIsFound ||
+      !trackingId ||
+      !!visitor?.custom_attributes?.epotek_trackingid
+    ) {
       return;
     }
 

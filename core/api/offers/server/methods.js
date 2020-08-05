@@ -8,7 +8,7 @@ import {
 import OfferService from './OfferService';
 
 offerInsert.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return OfferService.insert(params);
 });
 
@@ -23,6 +23,6 @@ offerDelete.setHandler((context, params) => {
 });
 
 offerSendFeedback.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return OfferService.sendFeedback(params);
 });

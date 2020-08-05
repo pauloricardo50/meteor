@@ -56,7 +56,6 @@ import {
   LOAN_STATUS_ORDER,
   ORGANISATION_NAME_SEPARATOR,
   PURCHASE_TYPE,
-  STEPS,
 } from '../loanConstants';
 import Loans from '../loans';
 
@@ -1052,7 +1051,16 @@ class LoanService extends CollectionService {
     return loanId;
   }
 
-  setAdminNote({ loanId, adminNoteId, note, userId }) {
+  setAdminNote({ loanId, adminNoteId, note, userId, notifyPros }) {
+    if (notifyPros) {
+      const { assigneeLinks = [] } = this.get(loanId, { assigneeLinks: 1 });
+
+      if (!assigneeLinks.length) {
+        throw new Meteor.Error(
+          'Il faut un conseiller principal sur le dossier',
+        );
+      }
+    }
     return setAdminNote.bind(this)({
       docId: loanId,
       adminNoteId,

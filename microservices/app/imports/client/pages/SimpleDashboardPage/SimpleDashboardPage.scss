@@ -285,11 +285,17 @@
           border-radius: $border-radius;
 
           h4 {
-            margin-top: 0;
+            margin: 0;
           }
 
           &:hover {
             background-color: $grey3;
+          }
+
+          .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
           }
         }
       }
@@ -330,18 +336,27 @@
     display: flex;
     align-self: center;
     justify-content: space-between;
+    align-items: flex-start;
 
     width: 100%;
     max-width: calc(#{$borrowers-item-width} * 2);
     margin-top: 16px;
     margin-bottom: 32px;
 
-    @include screen(custom, max, 370) {
-      align-items: stretch;
-      flex-direction: column-reverse;
 
-      > * {
-        margin-bottom: 16px;
+    @media screen and (max-width: $small) {
+      flex-direction: column;
+      align-items: stretch;
+
+      .simple-dashboard-page-cta {
+        margin: 0;
+        margin-bottom: 8px;
+      }
+      
+      > div {
+        margin: 0;
+        flex-direction: column;
+        align-items: stretch;
       }
     }
   }

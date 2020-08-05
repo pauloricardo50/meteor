@@ -11,6 +11,9 @@ export const prismicPageFields = graphql`
     }
     name
     tracking_id
+    seo_title
+    seo_description
+    seo_image
   }
 `;
 
@@ -25,5 +28,7 @@ export const prismicPostFields = graphql`
     }
     title
     tracking_id
+    seo_title
+    seo_description
   }
 `;

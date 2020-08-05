@@ -115,6 +115,7 @@ export default withProps(({ promotion }) => {
           phoneNumbers: 1,
           email: 1,
           assignedEmployee: { name: 1, phoneNumbers: 1, email: 1 },
+          status: 1,
         },
       },
     },

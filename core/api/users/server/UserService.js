@@ -5,6 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
 import omit from 'lodash/omit';
+import moment from 'moment';
 import NodeRSA from 'node-rsa';
 
 import CollectionService from '../../helpers/server/CollectionService';
@@ -16,7 +17,7 @@ import PromotionService from '../../promotions/server/PromotionService';
 import PropertyService from '../../properties/server/PropertyService';
 import { getAPIUser } from '../../RESTAPI/server/helpers';
 import SecurityService from '../../security';
-import { ACQUISITION_CHANNELS, ROLES } from '../userConstants';
+import { ACQUISITION_CHANNELS, ROLES, USER_STATUS } from '../userConstants';
 import Users from '../users';
 import AssigneeService from './AssigneeService';
 
@@ -203,6 +204,14 @@ export class UserServiceClass extends CollectionService {
       this.baseUpdate(userId, { $unset: { office: true } });
     }
 
+    if (role !== ROLES.USER) {
+      this.baseUpdate(userId, { $unset: { status: true } });
+    }
+
+    if (role === ROLES.USER) {
+      this.baseUpdate(userId, { $set: { status: USER_STATUS.PROSPECT } });
+    }
+
     return Roles.setUserRoles(userId, role);
   };
 
@@ -222,11 +231,7 @@ export class UserServiceClass extends CollectionService {
   getLoginToken = ({ userId }) => {
     const user = this.get(userId, { services: 1 });
 
-    return (
-      user.services.password &&
-      user.services.password.reset &&
-      user.services.password.reset.token
-    );
+    return user?.services?.password?.reset?.token;
   };
 
   testCreateUser = ({ user }) => Users.insert(user);
@@ -372,7 +377,13 @@ export class UserServiceClass extends CollectionService {
   };
 
   proCreateUser = ({
-    user: { email, firstName, lastName, phoneNumber },
+    user: {
+      email,
+      firstName,
+      lastName,
+      phoneNumber,
+      status = USER_STATUS.PROSPECT,
+    },
     proUserId,
     setAssignee,
   }) => {
@@ -382,10 +393,7 @@ export class UserServiceClass extends CollectionService {
     let userId;
 
     if (proUserId) {
-      pro = this.get(proUserId, {
-        name: 1,
-        organisations: { name: 1 },
-      });
+      pro = this.get(proUserId, { name: 1, organisations: { name: 1 } });
     }
 
     if (isNewUser) {
@@ -399,6 +407,7 @@ export class UserServiceClass extends CollectionService {
         phoneNumbers: [phoneNumber].filter(x => x),
         referredByUserId: proUserId,
         setAssignee,
+        status,
       });
     } else {
       const { _id: existingUserId } = this.getByEmail(email, { _id: 1 });
@@ -431,6 +440,8 @@ export class UserServiceClass extends CollectionService {
       });
     }
 
+    let loanIds = [];
+
     const { invitedBy } = user;
     const { userId, pro, isNewUser } = this.proCreateUser({
       user,
@@ -439,24 +450,30 @@ export class UserServiceClass extends CollectionService {
     });
 
     if (propertyIds && propertyIds.length) {
-      PropertyService.inviteUser({
-        propertyIds,
-        userId,
-        shareSolvency,
-      });
+      loanIds = [
+        ...loanIds,
+        PropertyService.inviteUser({
+          propertyIds,
+          userId,
+          shareSolvency,
+        }),
+      ];
     }
     if (promotionIds && promotionIds.length) {
-      promotionIds.map(promotionId =>
-        PromotionService.inviteUser({
-          promotionId,
-          userId,
-          pro,
-          promotionLotIds: user.promotionLotIds,
-          showAllLots: user.showAllLots,
-          shareSolvency,
-          skipCheckPromotionIsReady: true,
-        }),
-      );
+      loanIds = [
+        ...loanIds,
+        ...promotionIds.map(promotionId =>
+          PromotionService.inviteUser({
+            promotionId,
+            userId,
+            pro,
+            promotionLotIds: user.promotionLotIds,
+            showAllLots: user.showAllLots,
+            shareSolvency,
+            skipCheckPromotionIsReady: true,
+          }),
+        ),
+      ];
     }
     if (properties && properties.length) {
       const internalPropertyIds = properties.map(property => {
@@ -483,11 +500,14 @@ export class UserServiceClass extends CollectionService {
         return propertyId;
       });
 
-      PropertyService.inviteUser({
-        propertyIds: internalPropertyIds,
-        userId,
-        shareSolvency,
-      });
+      loanIds = [
+        ...loanIds,
+        ...PropertyService.inviteUser({
+          propertyIds: internalPropertyIds,
+          userId,
+          shareSolvency,
+        }),
+      ];
     }
 
     if (isNewUser) {
@@ -503,6 +523,7 @@ export class UserServiceClass extends CollectionService {
       proId: proUserId || invitedBy,
       admin,
       pro,
+      loanIds,
     };
   };
 
@@ -542,7 +563,7 @@ export class UserServiceClass extends CollectionService {
     }
     if (!organisationId) {
       const mainOrg = this.getUserMainOrganisation(proId);
-      organisationId = mainOrg && mainOrg._id;
+      organisationId = mainOrg?._id;
     }
 
     const newReferral = this.get(proId, {
@@ -754,6 +775,39 @@ export class UserServiceClass extends CollectionService {
         },
       });
     }
+  }
+
+  setStatus({ userId, status, source }) {
+    const { status: prevStatus } = this.get(userId, { status: 1 });
+
+    if (status === prevStatus) {
+      throw new Meteor.Error(
+        'Vous devez choisir un statut différent du précédent',
+      );
+    }
+
+    if (source !== 'drip' && status === USER_STATUS.PROSPECT) {
+      throw new Meteor.Error('Vous ne pouvez pas revenir au status Prospect');
+    }
+
+    this.update({ userId, object: { status } });
+
+    return { prevStatus, nextStatus: status };
+  }
+
+  getUsersProspectForTooLong() {
+    const twentyOneDaysAgo = moment().subtract(21, 'days').startOf('day');
+
+    const users = this.fetch({
+      $filters: {
+        createdAt: { $lt: twentyOneDaysAgo.toDate() },
+        status: USER_STATUS.PROSPECT,
+      },
+      name: 1,
+      email: 1,
+    });
+
+    return users;
   }
 }
 

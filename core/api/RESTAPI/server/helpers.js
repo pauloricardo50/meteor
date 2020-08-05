@@ -406,7 +406,13 @@ export const trackRequest = ({ req, result }) => {
     authenticationType,
     endpointName,
     analyticsParams = {},
+    skipTracking,
   } = req;
+
+  if (skipTracking) {
+    return;
+  }
+
   const { user = {} } = req;
 
   if (!user) {

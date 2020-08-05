@@ -31,13 +31,12 @@ export const IntercomAPI = (method, ...args) => {
 const getTrackingIds = () => {
   const visitorId = window?.Intercom?.('getVisitorId');
   const cookies = parseCookies();
-  const trackingId = cookies?.[TRACKING_COOKIE];
   const intercomId = Object.keys(cookies).reduce(
     (id, cookie) => (cookie.match(/intercom-id/g) ? cookies[cookie] : id),
     undefined,
   );
 
-  return { visitorId, trackingId, intercomId };
+  return { visitorId, intercomId };
 };
 
 const getIntercomUserSettings = async () => {
@@ -85,7 +84,6 @@ const initializeIntercom = async history => {
         window?.Intercom?.('onShow', function () {
           updateIntercomVisitorTrackingId.run(getTrackingIds());
           analyticsOpenedIntercom.run({
-            trackingId: getTrackingIds().trackingId,
             lastPageTitle: document?.title,
             lastPagePath: history?.location?.pathname,
             lastPageMicroservice: Meteor.microservice,

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { getCookie, parseCookies, setCookie } from 'core/utils/cookiesHelpers';
 
-import { callMethod } from './meteorClient';
+import callMethod from './meteorClient/callMethod';
 
 const getCurrentBrowserPosition = () => {
   const { sessionStorage } = window;
@@ -32,6 +32,7 @@ const trackPage = pageTrackingId => {
   callMethod('analyticsPage', {
     ...getCurrentBrowserPosition(),
     route: pageTrackingId,
+    microservice: 'www',
   });
 };
 
@@ -67,5 +68,3 @@ export const trackCTA = ({ buttonTrackingId, toPath, pageTrackingId }) => {
     toPath,
   });
 };
-
-export const getTrackingId = () => getCookie(TRACKING_COOKIE);

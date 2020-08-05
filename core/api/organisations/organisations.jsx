@@ -12,8 +12,6 @@ import {
   ORGANISATION_TYPES,
 } from './organisationConstants';
 
-const Organisations = createCollection(ORGANISATIONS_COLLECTION);
-
 const userLinkSchema = new SimpleSchema({
   _id: { type: String, optional: true },
   title: { type: String, optional: true },
@@ -96,5 +94,9 @@ export const OrganisationSchema = new SimpleSchema({
   },
 });
 
-Organisations.attachSchema(OrganisationSchema);
+const Organisations = createCollection(
+  ORGANISATIONS_COLLECTION,
+  OrganisationSchema,
+);
+
 export default Organisations;

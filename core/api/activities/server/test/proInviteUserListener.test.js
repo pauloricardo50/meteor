@@ -2,6 +2,7 @@ import { expect } from 'chai';
 
 import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
+import LoanService from '../../../loans/server/LoanService';
 import { ddpWithUserId } from '../../../methods/methodHelpers';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 import { setAPIUser } from '../../../RESTAPI/server/helpers';
@@ -16,7 +17,7 @@ import ActivityService from '../ActivityService';
 
 /* eslint-env mocha */
 
-describe('proInviteUserListener', function() {
+describe('proInviteUserListener', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -120,6 +121,59 @@ describe('proInviteUserListener', function() {
           referredBy: { _id: 'pro', name: 'Pro Account' },
           referredByOrg: { _id: 'org', name: 'Organisation' },
           referredByAPIOrg: { _id: 'api', name: 'OrganisationAPI' },
+        },
+      },
+    });
+  });
+
+  it('adds activity on loans', async () => {
+    generator({
+      properties: {
+        _id: 'prop',
+        category: PROPERTY_CATEGORY.PRO,
+        users: {
+          _id: 'pro',
+          $metadata: { permissions: { canInviteCustomers: true } },
+        },
+      },
+    });
+
+    let loanId;
+
+    await ddpWithUserId('pro', () =>
+      proInviteUser
+        .run({
+          user: {
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john.doe@test.com',
+            phoneNumber: '12345',
+          },
+          propertyIds: ['prop'],
+          invitationNote: 'This is my dude',
+        })
+        .then(({ loanIds = [] }) => {
+          loanId = loanIds?.[0];
+        }),
+    );
+
+    await checkEmails(2);
+
+    const { activities = [] } = LoanService.get(loanId, {
+      activities: { type: 1, description: 1, title: 1, metadata: 1 },
+    });
+
+    expect(activities.length).to.equal(2);
+    expect(activities[1]).to.deep.include({
+      type: ACTIVITY_TYPES.EVENT,
+      title: 'Note du pro',
+      description: 'This is my dude',
+      metadata: {
+        event: ACTIVITY_EVENT_METADATA.LOAN_INVITATION_NOTE,
+        details: {
+          referredBy: { _id: 'pro', name: 'Pro Account' },
+          referredByOrg: { _id: 'org', name: 'Organisation' },
+          referredByAPIOrg: {},
         },
       },
     });

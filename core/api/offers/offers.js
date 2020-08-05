@@ -12,8 +12,6 @@ import {
 import { INTEREST_RATES } from '../interestRates/interestRatesConstants';
 import { OFFERS_COLLECTION } from './offerConstants';
 
-const Offers = createCollection(OFFERS_COLLECTION);
-
 export const OfferSchema = new SimpleSchema({
   createdAt,
   updatedAt,
@@ -76,6 +74,6 @@ export const AdminOfferSchema = OfferSchema.pick(
   'enableOffer',
 );
 
-// Attach schema
-Offers.attachSchema(OfferSchema);
+const Offers = createCollection(OFFERS_COLLECTION, OfferSchema);
+
 export default Offers;

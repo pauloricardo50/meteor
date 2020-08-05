@@ -154,6 +154,15 @@ For it to be verified:
 0 issue "pki.goog"
 ```
 
+# Removing An App
+
+1. Run `node run-all -e <environment> --apps <app to remove> validate --show`, and save the value at `app.env.PORT`. We will need this later when updating the firewall.
+2. If the app is in the prod environment, go to [VPC network > Firewall > `prod-mup-internal`](https://console.cloud.google.com/networking/firewalls/list?project=e-potek-1499177443071), and remove the port from step 1.
+3. Run `node run-all -e <environment> --apps <app to remove> meteor destroy`, and follow the instructions. This will stop the app, and delete its folder and images on the server. There will be some left over files for the app in the proxy's folder, but those are fine to leave.
+4. Go to [Container Registry > images](https://console.cloud.google.com/gcr/images/e-potek-1499177443071?project=e-potek-1499177443071), select `mup-<app name>-<env>`, and delete all of the images.
+5. Go to [Network services > e-potek-public](https://console.cloud.google.com/net-services/loadbalancing/details/http/e-potek-public?project=e-potek-1499177443071&tab=details&duration=PT1H), and check if there are any host or path rules specific to the microservice. If there are, edit the load balancer to remove them. In the page to edit the rules, we have configuration tests to make sure the rules are correct. You might need to update them if they are testing for out dated routing.
+6. You can now delete the mup.js files for the app.
+
 # Scripts
 
 ## update-servers
@@ -233,7 +242,7 @@ node run-all -e <environment name> deploy
 
 To deploy specific apps, run
 ```
-node run-all -e <environment name> --apps www,prod deploy
+node run-all -e <environment name> --apps app,prod deploy
 ```
 
 ## Mongo Shell

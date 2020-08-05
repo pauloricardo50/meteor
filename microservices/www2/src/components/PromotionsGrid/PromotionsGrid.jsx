@@ -9,7 +9,7 @@ import FormattedMessage from 'core/components/Translation/FormattedMessage';
 import useMedia from 'core/hooks/useMedia';
 import useWindowSize from 'core/hooks/useWindowSize';
 
-import { callMethod } from '../../utils/meteorClient';
+import callMethod from '../../utils/meteorClient/callMethod';
 import CantonFilter from './CantonFilter';
 import PromotionsGridItem from './PromotionGridItem';
 

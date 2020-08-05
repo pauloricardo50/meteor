@@ -132,3 +132,21 @@ export const createClock = time =>
     // TODO: find the specific timers that cause this
     toFake: ['Date'],
   });
+
+// Method listeners are async
+// This function waits for a stub/spy to be called
+// If it waited more than 1s it fails
+export const waitForStub = (stub, callCount) =>
+  new Promise((resolve, reject) => {
+    const start = Date.now();
+    const check = () => {
+      if (stub.called && (callCount ? stub.args.length >= callCount : true)) {
+        resolve(stub.args);
+      } else if (Date.now() > start + 1000) {
+        reject(new Error('waitForStub timeout'));
+      } else {
+        setTimeout(check, 50);
+      }
+    };
+    check();
+  });

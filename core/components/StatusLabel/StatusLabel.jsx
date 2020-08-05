@@ -39,6 +39,7 @@ import {
   REVENUE_STATUS,
 } from '../../api/revenues/revenueConstants';
 import { TASKS_COLLECTION, TASK_STATUS } from '../../api/tasks/taskConstants';
+import { USERS_COLLECTION, USER_STATUS } from '../../api/users/userConstants';
 import colors from '../../config/colors';
 import DropdownMenu from '../DropdownMenu';
 import T from '../Translation';
@@ -138,6 +139,13 @@ export const getStatuses = collection => {
         [INSURANCE_STATUS.DECLINED]: colors.error,
       };
 
+    case USERS_COLLECTION:
+      return {
+        [USER_STATUS.PROSPECT]: colors.warning,
+        [USER_STATUS.QUALIFIED]: colors.success,
+        [USER_STATUS.LOST]: colors.error,
+      };
+
     default:
       throw new Error(`Unknown collection "${collection}" in StatusLabel`);
   }
@@ -153,6 +161,7 @@ const getLabel = ({
   variant,
   className,
   small,
+  tooltipProps,
 }) => {
   switch (variant) {
     case 'full':
@@ -171,7 +180,10 @@ const getLabel = ({
     case 'dot':
       return ({ showTooltip, ...props }) =>
         showTooltip ? (
-          <Tooltip title={label || <T id={`Forms.status.${status}`} />}>
+          <Tooltip
+            title={label || <T id={`Forms.status.${status}`} />}
+            {...tooltipProps}
+          >
             <span
               className={cx('status-label-dot', { allowModify }, className)}
               {...props}
@@ -207,6 +219,7 @@ const StatusLabel = ({
   method,
   className,
   small,
+  tooltipProps,
 }) => {
   const statuses = getStatuses(collection);
   const statusLabel = getLabel({
@@ -220,6 +233,7 @@ const StatusLabel = ({
     variant,
     className,
     small,
+    tooltipProps,
   });
 
   if (allowModify) {

@@ -12,6 +12,7 @@ import PromotionOptionService from 'core/api/promotionOptions/server/PromotionOp
 import SessionService from 'core/api/sessions/server/SessionService';
 import TaskService from 'core/api/tasks/server/TaskService';
 import UpdateWatcherService from 'core/api/updateWatchers/server/UpdateWatcherService';
+import { notifyDigitalWithUsersProspectForTooLong } from 'core/api/users/server/methods';
 
 CronService.init();
 
@@ -130,4 +131,17 @@ CronService.addCron(
     func: () => TaskService.generatePromotionStepReminders(),
   },
   { cronitorId: '1qi00X' },
+);
+
+CronService.addCron(
+  {
+    name:
+      'Notify digital@e-potek.ch with users prospects for more than 21 days',
+    frequency: 'every 1 day',
+    func: () =>
+      notifyDigitalWithUsersProspectForTooLong
+        .serverRun({})
+        .then(users => users.length),
+  },
+  { cronitorId: '3TGplg' },
 );

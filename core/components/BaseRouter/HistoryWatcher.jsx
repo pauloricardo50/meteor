@@ -61,6 +61,7 @@ export default class HistoryWatcher extends Component {
       route,
       queryParams: params,
       queryString,
+      microservice: Meteor.microservice,
     });
 
     if (window.gtag) {

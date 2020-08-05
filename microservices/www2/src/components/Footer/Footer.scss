@@ -1,9 +1,10 @@
 .footer {
-  width: calc(100% - 32px);
   display: flex;
   flex-direction: column;
   margin-top: 120px;
   color: #2c2c2ce0;
+  width: 100%;
+  box-sizing: border-box;
 
   hr {
     width: 100%;

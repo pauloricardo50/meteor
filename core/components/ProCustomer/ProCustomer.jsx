@@ -14,13 +14,19 @@ const ProCustomer = ({ user, invitedByUser, ...props }) => {
     lastName,
     name = [firstName, lastName].filter(x => x).join(' '),
     phoneNumbers = ['-'],
+    status,
   } = user;
   const isPro = Meteor.microservice === 'pro';
   const assigneePhoneNumber = assignedEmployee?.phoneNumbers?.[0];
 
   return (
     <CollectionIconLink
-      relatedDoc={{ name, _id, _collection: USERS_COLLECTION }}
+      relatedDoc={{
+        name,
+        _id,
+        status: isPro ? undefined : status,
+        _collection: USERS_COLLECTION,
+      }}
       noRoute={isPro}
       replacementPopup={
         isPro && (

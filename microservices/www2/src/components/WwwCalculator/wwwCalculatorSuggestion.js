@@ -50,8 +50,9 @@ const acquisitionSuggesters = {
 const refinancingSuggesters = {
   [SALARY]: {
     all: () => 0,
-    [WANTED_LOAN]: () => 0,
     [PROPERTY]: () => 0,
+    [CURRENT_LOAN]: () => 0,
+    [WANTED_LOAN]: () => 0,
   },
   [PROPERTY]: {
     default: () => 0,

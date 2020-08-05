@@ -33,8 +33,11 @@ const errors = [
     type: ERROR_TYPES.WARNING,
   },
   {
-    id: 'highIncomeRatio',
-    func: data => getIncomeRatio(data) > getMaxIncomeRatio(data),
+    id: 'missingCash',
+    func: data => {
+      const { loan, structureId } = data;
+      return !Calculator.hasEnoughCash({ loan, structureId });
+    },
     type: ERROR_TYPES.WARNING,
   },
   {
@@ -57,11 +60,8 @@ const errors = [
     type: ERROR_TYPES.BREAKING,
   },
   {
-    id: 'missingCash',
-    func: data => {
-      const { loan, structureId } = data;
-      return !Calculator.hasEnoughCash({ loan, structureId });
-    },
+    id: 'highIncomeRatio',
+    func: data => getIncomeRatio(data) > getMaxIncomeRatio(data),
     type: ERROR_TYPES.WARNING,
   },
 ];

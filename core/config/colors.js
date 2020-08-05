@@ -2,7 +2,7 @@ import { INTEREST_RATES } from '../api/interestRates/interestRatesConstants';
 
 const colors = {
   primary: '#2e7eff',
-  primaryArray: [0, 91, 234],
+  primaryArray: [46, 126, 255],
   primaryLight: '#5bb5ff',
   primaryGradient: 'linear-gradient(to left, #5bb5ff, #2e7eff)',
   primaryGradientDark: 'linear-gradient(to left, #5bb5ff, #0048bb)',
@@ -16,7 +16,7 @@ const colors = {
   mix: '#95299D', // Mix between error and primary
   borderGrey: '#cccccc',
   borderGreyLight: '#f2f2f2',
-  charts: ['#2C82BE', '#76DDFB', '#DBECF8', '#53A8E2', '#6AC6FF', '#005bea'],
+  charts: ['#2C82BE', '#76DDFB', '#DBECF8', '#53A8E2', '#6AC6FF', '#2e7eff'],
   iconColor: '#444',
   iconHoverColor: '#888',
   duotoneIconColor: '#bbb',
@@ -36,7 +36,7 @@ const colors = {
     [INTEREST_RATES.YEARS_1]: '#2C82BE',
     [INTEREST_RATES.YEARS_2]: '#A8B9C5',
     [INTEREST_RATES.YEARS_5]: '#43AAC8',
-    [INTEREST_RATES.YEARS_10]: '#005bea',
+    [INTEREST_RATES.YEARS_10]: '#2e7eff',
     [INTEREST_RATES.YEARS_15]: '#2075AF',
     [INTEREST_RATES.YEARS_20]: '#3793CC',
     [INTEREST_RATES.YEARS_25]: '#53A8E2',

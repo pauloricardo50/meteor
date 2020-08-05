@@ -9,7 +9,7 @@ import { getFormats, getUserLocale } from '../localization';
 import { mount } from './enzyme';
 
 // Mounts a component for testing, and wraps it around everything it needs
-const customMount = ({ Component, props = {}, withRouter, withStore }) => {
+const customMount = ({ Component, props = {}, withRouter }) => {
   const customMountData = {};
 
   const locale = getUserLocale();
@@ -36,16 +36,6 @@ const customMount = ({ Component, props = {}, withRouter, withStore }) => {
     );
   }
 
-  if (withStore) {
-    const configureStore = require('redux-mock-store').default;
-    const { Provider } = require('react-redux');
-    const mockStore = configureStore();
-    const initialState = withStore;
-    const store = mockStore(initialState);
-    testComponent = <Provider store={store}>{testComponent}</Provider>;
-    customMountData.store = store;
-  }
-
   return {
     mountedComponent: mount(testComponent),
     customMountData,
@@ -63,13 +53,12 @@ const customMount = ({ Component, props = {}, withRouter, withStore }) => {
  *
  * @return {object} A mounted component, ready for testing with Enzyme
  */
-const getMountedComponent = ({ Component, props, withRouter, withStore }) => {
+const getMountedComponent = ({ Component, props, withRouter }) => {
   if (!getMountedComponent.mountedComponent) {
     const { mountedComponent, customMountData } = customMount({
       Component,
       props,
       withRouter,
-      withStore,
     });
     getMountedComponent.getData = () => customMountData;
     getMountedComponent.mountedComponent = mountedComponent;

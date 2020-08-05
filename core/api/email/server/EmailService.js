@@ -17,6 +17,7 @@ export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
 export const skipEmails =
   (Meteor.isDevelopment || Meteor.isDevEnvironment || Meteor.isStaging) &&
   !isEmailTestEnv;
+// export const skipEmails = false;
 
 class EmailService {
   sendEmail = async ({ emailId, address, name, params }) => {
@@ -150,24 +151,43 @@ class EmailService {
     }
   };
 
-  addEmailActivity = ({ address, emailId, template = {}, response }) => {
+  addEmailActivity = ({ address, emailId, template = {}, response = {} }) => {
     const user = UserService.getByEmail(address);
 
     if (!user) {
       return;
     }
 
-    const { message: { subject, from_email: from } = {} } = template;
+    const { message = {} } = template;
+    const {
+      subject,
+      from_email: from,
+      global_merge_vars: content,
+      to,
+    } = message;
+    const { status, reject_reason } = response;
+
+    const title = `Email envoyé`;
+    const description = `${subject}, de ${from}`;
+
+    if (['rejected', 'invalid'].includes(status) && !isEmailTestEnv) {
+      throw new Meteor.Error(
+        reject_reason,
+        `Echec de l'envoi de l'email: ${reject_reason}`,
+        description,
+      );
+    }
 
     ActivityService.addEmailActivity({
       emailId,
-      to: address,
+      to: to?.length === 1 ? to[0].email : to,
       from,
       response,
+      content,
       isServerGenerated: true,
       userLink: { _id: user._id },
-      title: 'Email envoyé',
-      description: `${subject}, de ${from}`,
+      title,
+      description,
     });
   };
 }

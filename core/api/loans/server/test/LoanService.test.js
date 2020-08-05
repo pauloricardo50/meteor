@@ -2431,8 +2431,8 @@ describe('LoanService', function () {
       expect(closingChecklists[1].items.length).to.equal(
         CHECKLIST_TEMPLATES.ACQUISITION[1].items.length,
       );
-      expect(additionalDocuments.length).to.equal(3);
-      additionalDocuments.forEach(({ checklistItemId }) => {
+      expect(additionalDocuments.length).to.equal(4);
+      additionalDocuments.slice(1).forEach(({ checklistItemId }) => {
         expect(!!checklistItemId).to.equal(true);
       });
     });
@@ -2457,7 +2457,7 @@ describe('LoanService', function () {
       expect(closingChecklists[1].items.length).to.equal(
         CHECKLIST_TEMPLATES.PROMOTION_ACQUISITION[1].items.length,
       );
-      expect(additionalDocuments.length).to.equal(5);
+      expect(additionalDocuments.length).to.equal(6);
     });
 
     it('adds a refinancing specific checklist', () => {
@@ -2482,7 +2482,7 @@ describe('LoanService', function () {
       expect(closingChecklists[1].items.length).to.equal(
         CHECKLIST_TEMPLATES.REFINANCING[1].items.length,
       );
-      expect(additionalDocuments.length).to.equal(4);
+      expect(additionalDocuments.length).to.equal(5);
     });
 
     it('adds a cache on the checklist', () => {

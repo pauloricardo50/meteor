@@ -2,12 +2,10 @@ export const MICROSERVICES = {
   ADMIN: 'admin',
   APP: 'app',
   PRO: 'pro',
-  WWW: 'www',
   BACKEND: 'backend',
 };
 
 export const MICROSERVICE_PORTS = {
-  [MICROSERVICES.WWW]: 3000,
   [MICROSERVICES.APP]: 4000,
   [MICROSERVICES.PRO]: 4100,
   [MICROSERVICES.ADMIN]: 5000,

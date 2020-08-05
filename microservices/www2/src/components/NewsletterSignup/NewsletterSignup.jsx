@@ -11,7 +11,7 @@ import TextInput from 'core/components/TextInput/TextInput';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
-import { callMethod } from '../../utils/meteorClient';
+import callMethod from '../../utils/meteorClient/callMethod';
 import Button from '../Button';
 import { RichText } from '../prismic';
 import RecentNewsletters from './RecentNewsletters';
@@ -30,6 +30,9 @@ const SignupForm = ({ modal = false }) => {
   const [error, setError] = useState();
   const [language] = useContext(LanguageContext);
 
+  const handleClose = () => setOpenModal(false);
+  const handleOpen = () => setOpenModal(true);
+
   const handleSubmit = async e => {
     e.preventDefault();
     if (!email) return;
@@ -40,6 +43,7 @@ const SignupForm = ({ modal = false }) => {
       await callMethod('subscribeToNewsletter', { email });
       setLoading(false);
       setSuccess(true);
+      handleClose();
     } catch (err) {
       if (err.error === 500) {
         setError(getLanguageData(language).signupErrorText);
@@ -54,13 +58,10 @@ const SignupForm = ({ modal = false }) => {
   if (modal) {
     return (
       <div>
-        <a
-          onClick={() => setOpenModal(true)}
-          className="signup-form-modal-button"
-        >
+        <a onClick={handleOpen} className="signup-form-modal-button">
           <b>{getLanguageData(language).signupModal}</b>
         </a>
-        <Dialog open={openModal} onBackdropClick={() => setOpenModal(false)}>
+        <Dialog open={openModal} onClose={handleClose}>
           <DialogTitle>
             {getLanguageData(language)['signupModal.title']}
           </DialogTitle>
@@ -85,7 +86,7 @@ const SignupForm = ({ modal = false }) => {
               )}
             </DialogContent>
             <DialogActions>
-              <Button outlined primary onClick={() => setOpenModal(false)}>
+              <Button outlined primary onClick={handleClose}>
                 {getLanguageData(language).close}
               </Button>
               {!success && (
@@ -116,6 +117,7 @@ const SignupForm = ({ modal = false }) => {
         id="Email"
         label="Email"
         className="email"
+        type="email"
         value={email}
         onChange={e => {
           setEmail(e.target.value);

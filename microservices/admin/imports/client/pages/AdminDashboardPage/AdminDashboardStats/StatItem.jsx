@@ -12,7 +12,7 @@ const StatItem = ({
 }) => {
   if (children) {
     return (
-      <div className="stat-item card1 card-top">
+      <div className={cx('stat-item card1 card-top', { large })}>
         <div className="top">{top}</div>
         {children}
       </div>

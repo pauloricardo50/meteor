@@ -10,13 +10,15 @@ import T from 'core/components/Translation';
 export const userFormSchema = new SimpleSchema({
   firstName: { type: String, optional: true },
   lastName: { type: String, optional: true },
-  organisations: {
-    type: Array,
-    condition: user => !Roles.userIsInRole(user, ROLES.USER),
-  },
   phoneNumbers: { type: Array, optional: true },
   'phoneNumbers.$': String,
 
+  organisations: {
+    type: Array,
+    condition: user =>
+      // Admins and Pros all have PRO role
+      Roles.userIsInRole(user, ROLES.PRO),
+  },
   'organisations.$': Object,
   'organisations.$._id': {
     type: String,

@@ -7,6 +7,7 @@ import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { INSURANCES_COLLECTION } from 'core/api/insurances/insuranceConstants';
 import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
+import { OFFERS_COLLECTION } from 'core/api/offers/offerConstants';
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { REVENUES_COLLECTION } from 'core/api/revenues/revenueConstants';
 import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
@@ -127,8 +128,8 @@ export const analysisBodies = {
   [INSURANCES_COLLECTION]: createBodyFromMap(
     analysisConfig[INSURANCES_COLLECTION],
   ),
+  [OFFERS_COLLECTION]: createBodyFromMap(analysisConfig[OFFERS_COLLECTION]),
 };
-console.log('analysisBodies:', analysisBodies);
 
 // FIXME: Not working yet, bug in react-pivottable
 // If you assign this function's return value to the PivotTableUI component

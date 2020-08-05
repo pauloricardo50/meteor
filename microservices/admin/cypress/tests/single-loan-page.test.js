@@ -1,23 +1,39 @@
 import {
+  ORGANISATION_FEATURES,
+  ORGANISATION_TAGS,
+} from '../../imports/core/api/organisations/organisationConstants';
+import { ROLES } from '../../imports/core/api/users/userConstants';
+import {
   ADMIN_EMAIL,
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
 describe('Single Loan Page', () => {
   before(() => {
-    cy.initiateTest();
-
+    cy.startTest({ url: '/login' });
+    cy.meteorLogout();
+    cy.contains('Accédez à votre compte');
     cy.callMethod('resetDatabase');
-    cy.callMethod('generateTestData', {
-      generateAdmins: true,
-      generateOrganisations: true,
+    cy.callMethod('generateScenario', {
+      scenario: {
+        users: [
+          {
+            _id: 'advisor1',
+            _factory: ROLES.ADVISOR,
+            emails: [{ address: ADMIN_EMAIL, verified: true }],
+          },
+          { _factory: ROLES.ADVISOR },
+        ],
+      },
     });
+    cy.callMethod('setPassword', {
+      userId: 'advisor1',
+      password: USER_PASSWORD,
+    });
+    cy.meteorLogin(ADMIN_EMAIL, USER_PASSWORD);
   });
 
   beforeEach(() => {
-    cy.routeTo('/login');
-    cy.get('.login-page');
-    cy.meteorLogin(ADMIN_EMAIL, USER_PASSWORD);
     cy.routeTo('/');
   });
 
@@ -64,6 +80,22 @@ describe('Single Loan Page', () => {
   });
 
   it('should add lenders', () => {
+    cy.callMethod('generateScenario', {
+      scenario: {
+        organisations: [
+          {
+            features: [ORGANISATION_FEATURES.LENDER],
+            tags: [ORGANISATION_TAGS.CH_RETAIL],
+            lenderRules: {},
+          },
+          {
+            features: [ORGANISATION_FEATURES.LENDER],
+            tags: [ORGANISATION_TAGS.CH_RETAIL],
+            lenderRules: {},
+          },
+        ],
+      },
+    });
     cy.contains('button', 'Hypothèque').click();
     cy.contains('button', 'Acquisition').click();
 

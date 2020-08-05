@@ -53,11 +53,12 @@ const CollectionTasksDataTable = ({
   TaskInserter = TaskAdder,
   filters = {},
   additionalFilters,
+  noInitialFilter,
 }) => {
   const currentUser = useCurrentUser();
-  const [assignee, setAssignee] = useState({
-    $in: [currentUser._id, undefined],
-  });
+  const [assignee, setAssignee] = useState(
+    noInitialFilter ? undefined : { $in: [currentUser._id, undefined] },
+  );
   const [status, setStatus] = useState({ $in: [TASK_STATUS.ACTIVE] });
 
   return (

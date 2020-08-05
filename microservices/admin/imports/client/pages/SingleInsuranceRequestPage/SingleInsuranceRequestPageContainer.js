@@ -7,7 +7,10 @@ import { formBorrower } from 'core/api/fragments';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import { ORGANISATIONS_COLLECTION } from 'core/api/organisations/organisationConstants';
 import { REVENUE_TYPES } from 'core/api/revenues/revenueConstants';
+import Loading from 'core/components/Loading/Loading';
+import MissingDoc from 'core/components/MissingDoc/MissingDoc';
 import withMatchParam from 'core/containers/withMatchParam';
+import { useReactiveMeteorData } from 'core/hooks/useMeteorData';
 
 const fullInsuranceRequestFragment = merge(
   {},
@@ -16,7 +19,7 @@ const fullInsuranceRequestFragment = merge(
     documents: 1,
     name: 1,
     customName: 1,
-    user: { name: 1, referredByOrganisation: { _id: 1 } },
+    user: { name: 1, referredByOrganisation: { _id: 1 }, status: 1 },
     status: 1,
     assigneeLinks: 1,
     assignees: { name: 1, phoneNumber: 1, email: 1, isMain: 1 },
@@ -72,7 +75,7 @@ const fullInsuranceRequestFragment = merge(
         revaluationFactor: 1,
       },
     },
-    loan: { name: 1 },
+    loan: { name: 1, status: 1 },
     unsuccessfulReason: 1,
   },
 );
@@ -80,15 +83,33 @@ const fullInsuranceRequestFragment = merge(
 export default compose(
   withMatchParam('insuranceRequestId'),
   Component => props => <Component {...props} key={props.insuranceRequestId} />,
-  withSmartQuery({
-    query: INSURANCE_REQUESTS_COLLECTION,
-    params: ({ insuranceRequestId }) => ({
-      $filters: { _id: insuranceRequestId },
-      ...fullInsuranceRequestFragment,
-    }),
-    dataName: 'insuranceRequest',
-    queryOptions: { reactive: true, single: true },
-  }),
+  Component => props => {
+    const { insuranceRequestId, match } = props;
+    const _id = insuranceRequestId || match?.params?.insuranceRequestId;
+
+    const { data, loading } = useReactiveMeteorData(
+      {
+        query: _id && INSURANCE_REQUESTS_COLLECTION,
+        params: { $filters: { _id }, ...fullInsuranceRequestFragment },
+        type: 'single',
+      },
+      [_id],
+    );
+
+    if (!_id) {
+      return null;
+    }
+
+    if (loading) {
+      return <Loading />;
+    }
+
+    if (!data) {
+      return <MissingDoc />;
+    }
+
+    return <Component {...props} insuranceRequest={data} />;
+  },
   withSmartQuery({
     query: ORGANISATIONS_COLLECTION,
     params: ({ insuranceRequest: { user } = {} }) => ({

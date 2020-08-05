@@ -33,14 +33,14 @@ deleteFile.setHandler((context, { collection, docId, fileKey }) => {
 
 setFileStatus.setHandler((context, { fileKey, newStatus }) => {
   context.unblock();
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   // Should update documents cache when we start using this
   return FileService.setFileStatus(fileKey, newStatus);
 });
 
 setFileError.setHandler((context, { fileKey, error }) => {
   context.unblock();
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   // Should update documents cache when we start using this
   return FileService.setFileError(fileKey, error);
 });
@@ -54,7 +54,7 @@ downloadFile.setHandler((context, { key }) => {
 
 getSignedUrl.setHandler((context, { key }) => {
   context.unblock();
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return S3Service.makeSignedUrl(key);
 });
 
@@ -65,13 +65,13 @@ updateDocumentsCache.setHandler((context, params) => {
 });
 
 getZipLoanUrl.setHandler(({ userId }, { loanId, documents, options }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return FileService.getZipLoanUrl({ userId, loanId, documents, options });
 });
 
 setFileAdminName.setHandler((context, params) => {
   context.unblock();
-  SecurityService.checkCurrentUserIsAdmin();
+  SecurityService.checkUserIsAdmin(context.userId);
   return FileService.setAdminName(params);
 });
 

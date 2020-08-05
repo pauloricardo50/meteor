@@ -41,7 +41,7 @@ const LoanBoardCardBottom = ({
   return (
     <div className="card-bottom">
       {renderComplex ? (
-        <Tooltip title={isRefinancing ? 'Refinancement' : 'Acquisition'}>
+        <Tooltip title={isRefinancing ? 'Renouvellement' : 'Acquisition'}>
           <span className="flex center">
             <PurchaseTypeIcon isRefinancing={isRefinancing} />
           </span>

@@ -13,7 +13,7 @@ import { AutoField, AutoForm } from 'uniforms-material';
 import FormattedMessage from 'core/components/Translation/FormattedMessage';
 import useMedia from 'core/hooks/useMedia';
 
-import { callMethod } from '../../utils/meteorClient';
+import callMethod from '../../utils/meteorClient/callMethod';
 import Button from '../Button';
 
 const SubmitField = (
@@ -49,12 +49,14 @@ const schema = new SimpleSchema2Bridge(
       type: String,
       regEx: SimpleSchema.RegEx.email,
       label: <FormattedMessage id="promoInterest.form.email" />,
+      uniforms: { type: 'email' },
     },
     phoneNumber: {
       type: String,
       optional: true,
       uniforms: {
         label: <FormattedMessage id="promoInterest.form.phoneNumber" />,
+        type: 'tel',
       },
     },
     details: {

@@ -37,6 +37,7 @@ export const slackCurrentUserFragment = {
   name: 1,
   roles: 1,
   assignedEmployee: { name: 1, email: 1 },
+  status: 1,
 };
 
 ServerEventService.addAfterMethodListener(

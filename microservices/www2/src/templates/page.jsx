@@ -411,7 +411,7 @@ const Page = ({ data, lang, prismic }) => {
     <BlogPostsContext.Provider
       value={useBlogPosts({ prismic, data: data.prismic.allPosts })}
     >
-      <div className="page" data-wio-id={page._meta.id}>
+      <div className="page" id={page.tracking_id} data-wio-id={page._meta.id}>
         {page.body && <PageSections sections={page.body} />}
       </div>
     </BlogPostsContext.Provider>

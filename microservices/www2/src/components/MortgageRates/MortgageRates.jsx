@@ -3,11 +3,10 @@ import './MortgageRates.scss';
 import React, { useContext, useEffect, useState } from 'react';
 
 import T from 'core/components/Translation/FormattedMessage';
-import IntlDate from 'core/components/Translation/formattingComponents/IntlDate';
 
 import LanguageContext from '../../contexts/LanguageContext';
 import { getLanguageData } from '../../utils/languages';
-import { callMethod } from '../../utils/meteorClient';
+import callMethod from '../../utils/meteorClient/callMethod';
 import TrendIcon from './TrendIcon';
 
 const makePercent = num =>
@@ -39,16 +38,19 @@ export const useMortgageRates = () => {
   return currentRates;
 };
 
+const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+
 const MortgageRates = () => {
   const currentRates = useMortgageRates();
   const [language] = useContext(LanguageContext);
+  const now = new Date();
+  const days = Math.round(Math.abs((currentRates.date - now) / oneDay));
 
   return (
     <section className="mortgage-rates container">
       {currentRates?.date && (
         <p className="last-update secondary text-center">
-          <T id="MortgageRates.lastUpdate" />
-          <IntlDate value={currentRates.date} type="relative" style="long" />
+          <T id="MortgageRates.lastUpdate" values={{ days }} />
         </p>
       )}
 
