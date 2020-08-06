@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.0",
+    "@formatjs/intl-utils": "^3.8.2",
     "analytics-node": "^3.4.0-beta.2",
     "bcrypt": "^5.0.0",
     "btoa": "^1.2.1",
@@ -57,7 +58,7 @@
     "highcharts-export-data": "^0.1.7",
     "i18n-iso-countries": "^6.0.0",
     "indexof": "0.0.1",
-    "intl-messageformat": "^9.2.0",
+    "intl-messageformat": "7.8.4",
     "jsdom": "15.2.1",
     "json-logic-js": "^1.2.2",
     "libphonenumber-js": "^1.7.56",

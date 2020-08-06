@@ -9,8 +9,8 @@ import sinon from 'sinon';
 
 import {
   checkEmails,
-  resetDatabase,
   createClock,
+  resetDatabase,
 } from '../../../../utils/testHelpers';
 import Analytics from '../../../analytics/server/Analytics';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
@@ -972,7 +972,7 @@ describe('LoanService', function () {
             assignedEmployee: { _id: 'adminId' },
             loans: {
               _id: loanId,
-              borrowers: {},
+              borrowers: { firstName: 'Joe', lastName: 'Jackson' },
               properties: {
                 _id: 'propertyId',
                 address1: 'rue du lac 31',

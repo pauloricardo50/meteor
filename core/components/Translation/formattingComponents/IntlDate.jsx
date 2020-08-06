@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { selectUnit } from '@formatjs/intl-utils';
+import { selectUnit } from '@formatjs/intl-utils/lib/src/diff';
 import PropTypes from 'prop-types';
 import {
   FormattedDate,
