@@ -2,6 +2,8 @@
 import '/imports/core/lib/test/server/lib.test.js';
 import '/imports/core/lib/server/serverTestSetup.test.js';
 import '/imports/core/lib/testInit.test.js';
+import '/imports/core/api/email/server/test/emailSetup.test.js';
+
 // Server only tests
 import '/imports/core/api/RESTAPI/server/endpoints/zipLoan/test/FilesBinPacker.test.js';
 import '/imports/core/api/RESTAPI/server/endpoints/zipLoan/test/zipLoan.test.js';
@@ -46,7 +48,6 @@ import '/imports/core/api/email/server/test/EmailService.test.js';
 import '/imports/core/api/email/server/test/MailchimpService.test.js';
 import '/imports/core/api/email/server/test/accountsEmails.test.js';
 import '/imports/core/api/email/server/test/emailConfigs.test.js';
-import '/imports/core/api/email/server/test/emailSetup.test.js';
 import '/imports/core/api/events/server/test/EventService.test.js';
 import '/imports/core/api/factories/test/server/factoriesHelpers.test.js';
 import '/imports/core/api/files/server/test/FileService.test.js';

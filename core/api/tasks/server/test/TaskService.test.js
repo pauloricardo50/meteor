@@ -3,9 +3,8 @@ import { Factory } from 'meteor/dburles:factory';
 /* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
-import sinon from 'sinon';
 
-import { resetDatabase } from '../../../../utils/testHelpers';
+import { resetDatabase, createClock } from '../../../../utils/testHelpers';
 import generator from '../../../factories/server';
 import { PROMOTION_OPTION_STATUS } from '../../../promotionOptions/promotionOptionConstants';
 import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
@@ -102,7 +101,7 @@ describe('TaskService', () => {
 
     beforeEach(() => {
       const someMonday = moment('2020-06-29');
-      clock = sinon.useFakeTimers(someMonday.toDate().getTime());
+      clock = createClock(someMonday.toDate().getTime());
     });
 
     afterEach(() => {
@@ -123,7 +122,7 @@ describe('TaskService', () => {
     it('sets the date to monday if done on a saturday', () => {
       clock.restore();
       const someSaturday = moment('2020-06-27');
-      clock = sinon.useFakeTimers(someSaturday.toDate().getTime());
+      clock = createClock(someSaturday.toDate().getTime());
 
       generator({ tasks: { _id: 'taskId' } });
       TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
@@ -136,7 +135,7 @@ describe('TaskService', () => {
     it('sets the date to monday if done on a friday', () => {
       clock.restore();
       const someFriday = moment('2020-06-26');
-      clock = sinon.useFakeTimers(someFriday.toDate().getTime());
+      clock = createClock(someFriday.toDate().getTime());
 
       generator({ tasks: { _id: 'taskId' } });
       TaskService.snooze({ taskId: 'taskId', workingDays: 1 });
@@ -182,7 +181,21 @@ describe('TaskService', () => {
   });
 
   describe('generatePromotionStepReminders', () => {
-    it('generates the tasks', async () => {
+    let clock;
+
+    beforeEach(() => {
+      const someMonday = moment('2020-06-29');
+      clock = createClock(someMonday.toDate().getTime());
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
+    it('generates the tasks', async function () {
+      this.timeout(4000);
+      clock.restore();
+
       const in10Days = moment().add(10, 'days').startOf('day').toDate();
 
       generator({
@@ -335,7 +348,8 @@ describe('TaskService', () => {
       let numberOfTasks = await TaskService.generatePromotionStepReminders();
       expect(numberOfTasks).to.equal(1);
 
-      const clock = sinon.useFakeTimers(Date.now());
+      clock.restore();
+      clock = createClock(Date.now());
       clock.tick(3 * 24 * 60 * 60 * 1000);
 
       numberOfTasks = await TaskService.generatePromotionStepReminders();

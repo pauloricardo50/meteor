@@ -18,7 +18,7 @@ const Percent = ({ value, rounded, showPlus }) => (
 );
 
 Percent.propTypes = {
-  showPlus: PropTypes.boolean,
+  showPlus: PropTypes.bool,
   value: PropTypes.number,
 };
 

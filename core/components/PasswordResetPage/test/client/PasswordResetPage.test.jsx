@@ -15,7 +15,7 @@ import PasswordResetPage, {
   PasswordResetPage as PasswordResetPageDumb,
 } from '../../PasswordResetPage';
 
-describe.skip('PasswordResetPage', () => {
+describe('PasswordResetPage', () => {
   let props;
   const component = () =>
     getMountedComponent({
@@ -170,35 +170,22 @@ describe.skip('PasswordResetPage', () => {
       handleSubmit: () => Promise.resolve(),
     };
 
-    const input1 = dumbComponent()
-      .find('input[name="newPassword"]')
-      .at(0);
-    const input2 = dumbComponent()
-      .find('input[name="newPassword2"]')
-      .at(0);
+    const input1 = dumbComponent().find('input[name="newPassword"]').at(0);
+    const input2 = dumbComponent().find('input[name="newPassword2"]').at(0);
 
     input1.instance().value = '12345678';
     input1.simulate('change');
     input2.instance().value = '123456789';
     input2.simulate('change');
 
-    dumbComponent()
-      .find('form')
-      .first()
-      .simulate('submit');
+    dumbComponent().find('form').first().simulate('submit');
+
+    expect(dumbComponent().find('button').last().prop('disabled')).to.equal(
+      true,
+    );
 
     expect(
-      dumbComponent()
-        .find('button')
-        .last()
-        .prop('disabled'),
-    ).to.equal(true);
-
-    expect(
-      dumbComponent()
-        .find('[name="newPassword2"]')
-        .first()
-        .text(),
+      dumbComponent().find('[name="newPassword2"]').first().text(),
     ).to.include('newPassword2 is invalid');
   });
 });

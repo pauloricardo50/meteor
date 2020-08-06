@@ -63,7 +63,7 @@ const TestComponent = ({
   );
 };
 
-describe.skip('usePaginatedMeteorData', function () {
+describe('usePaginatedMeteorData', function () {
   this.retries(2);
 
   beforeEach(async () => {
@@ -185,14 +185,14 @@ describe.skip('usePaginatedMeteorData', function () {
     });
   });
 
-  describe.skip('global queries', () => {
+  describe('global queries', () => {
     beforeEach(async () => {
-      await new Promise((res) => Meteor.logout(res));
+      await new Promise(res => Meteor.logout(res));
       await userLogin({ role: ROLES.ADMIN });
     });
 
     afterEach(async () => {
-      await new Promise((res) => Meteor.logout(res));
+      await new Promise(res => Meteor.logout(res));
     });
 
     it('loads', async () => {
