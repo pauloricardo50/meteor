@@ -1,15 +1,10 @@
 /* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
 
 import { OWN_FUNDS_TYPES } from '../../../../../api/borrowers/borrowerConstants';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/loans/loanConstants';
 import Calculator from '../../../../../utils/Calculator';
-import getMountedComponent from '../../../../../utils/testHelpers/getMountedComponent';
-import T from '../../../../Translation';
-import { Provider } from '../../containers/loan-context';
-import FinancingResultSuccess from '../FinancingResultSuccess';
-import { FinancingResultSummary } from '../FinancingResultSummary';
+import { getFinancingError } from '../FinancingResultErrors';
 
 describe('FinancingResultErrors', () => {
   let props;
@@ -20,20 +15,8 @@ describe('FinancingResultErrors', () => {
   let offerId;
   let structure;
   let borrower;
-  const component = () =>
-    getMountedComponent({
-      Component: p => (
-        <Provider value={{ loan: p.loan, Calculator }}>
-          <FinancingResultSummary {...p} />{' '}
-        </Provider>
-      ),
-      props,
-    });
 
   beforeEach(() => {
-    getMountedComponent.reset();
-    getMountedComponent.reset();
-
     propertyId = 'propertyId';
     structureId = 'structureId';
     offerId = 'offerId';
@@ -61,54 +44,65 @@ describe('FinancingResultErrors', () => {
 
   it('warns if no mortgage loan exists', () => {
     structure.wantedLoan = 0;
-    expect(
-      component()
-        .find(T)
-        .props().id,
-    ).to.contain('noMortgageLoan');
+    expect(getFinancingError(props).id).to.equal('noMortgageLoan');
 
     structure.wantedLoan = undefined;
-    expect(
-      component()
-        .find(T)
-        .props().id,
-    ).to.contain('noMortgageLoan');
+    expect(getFinancingError(props).id).to.equal('noMortgageLoan');
   });
 
   it('warns of missing own funds', () => {
-    expect(
-      component()
-        .find(T)
-        .props().id,
-    ).to.contain('missingOwnFunds');
+    expect(getFinancingError(props).id).to.equal('missingOwnFunds');
   });
 
   it('warns of missing own funds if the value is NaN', () => {
-    expect(
-      component()
-        .find(T)
-        .props().id,
-    ).to.contain('missingOwnFunds');
+    expect(getFinancingError(props).id).to.equal('missingOwnFunds');
   });
 
   it('warns of too much own funds', () => {
     structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 50000 }];
 
-    expect(
-      component()
-        .find(T)
-        .props().id,
-    ).to.contain('tooMuchOwnFunds');
+    expect(getFinancingError(props).id).to.equal('tooMuchOwnFunds');
   });
 
   it('warns of a high income ratio', () => {
     structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }];
 
-    expect(
-      component()
-        .find(T)
-        .props().id,
-    ).to.contain('highIncomeRatio');
+    expect(getFinancingError(props).id).to.equal('highIncomeRatio');
+  });
+
+  it('warns of a tight income ratio only when necessary', () => {
+    structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }];
+    borrower.salary = 17000; // ~35% incomeRatio
+
+    expect(getFinancingError(props).id).to.equal('tightIncomeRatio');
+
+    borrower.salary = 12000; // >40% incomeRatio
+    expect(getFinancingError(props).id).to.equal('highIncomeRatio');
+  });
+
+  it('does not warn of tight income ratio when an offer is selected, but only highIncomeRatioWithOffer', () => {
+    structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }];
+    borrower.salary = 17000; // ~35% incomeRatio
+    structure.offerId = offerId;
+
+    expect(getFinancingError(props).id).to.equal('highIncomeRatioWithOffer');
+  });
+
+  it('warns of a high borrowRatio', () => {
+    structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 24000 }];
+    borrower.salary = 20000;
+    structure.wantedLoan = 81000;
+
+    expect(getFinancingError(props).id).to.equal('highBorrowRatio');
+  });
+
+  it('warns of highBorrowRatioWithLender when an offer is chosen', () => {
+    structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 24000 }];
+    borrower.salary = 20000;
+    structure.wantedLoan = 81000;
+
+    structure.offerId = offerId;
+    expect(getFinancingError(props).id).to.equal('highBorrowRatioWithLender');
   });
 
   it('warns of missing cash', () => {
@@ -122,11 +116,7 @@ describe('FinancingResultErrors', () => {
     ];
     borrower.salary = 100000;
 
-    expect(
-      component()
-        .find(T)
-        .props().id,
-    ).to.contain('missingCash');
+    expect(getFinancingError(props).id).to.equal('missingCash');
   });
 
   it('warns of invalid interest rates', () => {
@@ -135,20 +125,12 @@ describe('FinancingResultErrors', () => {
     structure.loanTranches = [{ type: 'interest5', value: 1 }];
     borrower.salary = 100000;
 
-    expect(
-      component()
-        .find(T)
-        .props().id,
-    ).to.contain('invalidInterestRates');
+    expect(getFinancingError(props).id).to.equal('invalidInterestRates');
   });
 
   it('returns null if no error exists in the structure', () => {
     structure.ownFunds = [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }];
     borrower.salary = 100000;
-    expect(
-      component()
-        .find(FinancingResultSuccess)
-        .exists(),
-    ).to.equal(true);
+    expect(getFinancingError(props).id).to.equal(undefined);
   });
 });

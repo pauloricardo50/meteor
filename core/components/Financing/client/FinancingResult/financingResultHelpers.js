@@ -33,12 +33,8 @@ const initCalc = ({
     lenderRules: InitializedCalculator.lenderRules,
   });
 };
-export const getInterests = params => {
-  const {
-    structure: { wantedLoan },
-  } = params;
-  return FinanceCalculator.getInterestsWithTranches(params) / 12;
-};
+export const getInterests = params =>
+  FinanceCalculator.getInterestsWithTranches(params) / 12;
 
 export const getAmortization = params => {
   const calc = initCalc(params);
@@ -124,6 +120,11 @@ export const getBorrowRatio = params => {
   return calc.getBorrowRatio({ loan, structureId });
 };
 
+export const getMaxBorrowRatio = params => {
+  const calc = initCalc(params);
+  return calc.maxBorrowRatio;
+};
+
 export const getIncomeRatio = params => {
   const calc = initCalc(params);
   const { loan, structureId } = params;
@@ -133,6 +134,11 @@ export const getIncomeRatio = params => {
 export const getMaxIncomeRatio = params => {
   const calc = initCalc(params);
   return calc.maxIncomeRatio;
+};
+
+export const getMaxIncomeRatioTight = params => {
+  const calc = initCalc(params);
+  return calc.maxIncomeRatioTight;
 };
 
 export const getBorrowRatioStatus = params => {
