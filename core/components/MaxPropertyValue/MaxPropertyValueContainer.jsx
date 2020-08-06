@@ -158,9 +158,7 @@ export default compose(
           }
           return setMaxPropertyValueOrBorrowRatio
             .run({ canton, loanId })
-            .finally(() => {
-              setLoading(false);
-            });
+            .finally(() => setLoading(false));
         },
         onChangeCanton: newCanton => {
           setCanton(newCanton);

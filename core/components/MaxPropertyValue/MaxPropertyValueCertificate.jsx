@@ -51,10 +51,12 @@ const getSchema = has2Borrowers =>
     },
   });
 
-const makeHandleSubmit = (
-  { _id: loanId, name, borrowers },
+const makeHandleSubmit = ({
+  loan: { _id: loanId, name, borrowers },
   formatMessage,
-) => async ({
+  recalculate,
+  shouldRecalculate,
+}) => async ({
   firstName1,
   lastName1,
   firstName2,
@@ -73,6 +75,9 @@ const makeHandleSubmit = (
         object: { firstName: firstName2, lastName: lastName2 },
       }),
   ]);
+  if (shouldRecalculate) {
+    await recalculate();
+  }
 
   const string = await getSimpleFinancingCertificate.run({ loanId });
   fileSaver.saveAs(
@@ -86,7 +91,11 @@ const makeHandleSubmit = (
   return result;
 };
 
-const MaxPropertyValueCertificate = ({ loan }) => {
+const MaxPropertyValueCertificate = ({
+  loan,
+  shouldRecalculate,
+  recalculate,
+}) => {
   const { formatMessage } = useIntl();
   const currentUser = useCurrentUser();
   const { residenceType, borrowers, purchaseType } = loan;
@@ -111,7 +120,11 @@ const MaxPropertyValueCertificate = ({ loan }) => {
         schema={schema}
         buttonProps={{
           icon: <Icon type="download" />,
-          label: <T id="MaxPropertyValueCertificate.download" />,
+          label: shouldRecalculate ? (
+            <T id="MaxPropertyValueCertificate.recalculateDownload" />
+          ) : (
+            <T id="MaxPropertyValueCertificate.download" />
+          ),
           raised: true,
           disabled,
           tooltip: disabled ? (
@@ -119,7 +132,12 @@ const MaxPropertyValueCertificate = ({ loan }) => {
           ) : null,
           fullWidth: true,
         }}
-        onSubmit={makeHandleSubmit(loan, formatMessage)}
+        onSubmit={makeHandleSubmit({
+          loan,
+          formatMessage,
+          recalculate,
+          shouldRecalculate,
+        })}
         title={<T id="MaxPropertyValueCertificate.download" />}
         description={<T id="MaxPropertyValueCertificate.description" />}
         layout={[

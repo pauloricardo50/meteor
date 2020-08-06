@@ -40,6 +40,7 @@
   "Forms.address": "Adresse",
   "SimpleFinancingCertificate.pdfTitle": "e-Potek, Accord de principe – {name}",
   "MaxPropertyValueCertificate.disabledTooltip": "Accessible dès que vous aurez saisi vos coordonnées",
+  "MaxPropertyValueCertificate.recalculateDownload": "Recalculer et télécharger votre accord de principe",
   "MaxPropertyValueCertificate.download": "Téléchargez votre accord de principe",
   "MaxPropertyValueCertificate.description": "Personnalisez-le avec votre nom.",
   "SimpleFinancingCertificate.title": "Accord de principe",
