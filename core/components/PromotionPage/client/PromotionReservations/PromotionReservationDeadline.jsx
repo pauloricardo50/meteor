@@ -41,15 +41,17 @@ const PromotionReservationDeadline = ({
         <T id="Forms.expirationDate" />
         <Tooltip
           title={
-            <span>
-              {moment(startDate).format('D MMMM YYYY')}
-              &nbsp;-&nbsp;
-              {momentDate.format('D MMMM YYYY')}
-            </span>
+            expirationDate ? (
+              <span>
+                {moment(startDate).format('D MMMM YYYY')}
+                &nbsp;-&nbsp;
+                {momentDate.format('D MMMM YYYY')}
+              </span>
+            ) : null
           }
         >
           <h3 className={cx('font-size-2 mt-0', { 'error-box': isTight })}>
-            {momentDate.fromNow()}
+            {expirationDate ? momentDate.fromNow() : 'Pas de date'}
             {isAdmin && (
               <AutoFormDialog
                 schema={PromotionOptionSchema.getObjectSchema(
@@ -57,7 +59,11 @@ const PromotionReservationDeadline = ({
                 ).pick('startDate', 'expirationDate')}
                 model={{ startDate, expirationDate }}
                 triggerComponent={handleOpen => (
-                  <IconButton onClick={() => handleOpen(true)} type="edit" />
+                  <IconButton
+                    onClick={() => handleOpen(true)}
+                    type="edit"
+                    className="ml-8"
+                  />
                 )}
                 onSubmit={object =>
                   promotionOptionUpdate.run({
