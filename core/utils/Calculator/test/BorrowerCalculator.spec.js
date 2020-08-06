@@ -70,7 +70,7 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe.only('getBonusIncome', () => {
+  describe('getBonusIncome', () => {
     it('returns half of 1 bonus', () => {
       expect(
         Calculator.getBonusIncome({
