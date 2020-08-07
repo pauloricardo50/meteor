@@ -1,10 +1,5 @@
-import {
-  branch,
-  compose,
-  renderComponent,
-  withProps,
-  withState,
-} from 'recompose';
+import { useState } from 'react';
+import { branch, compose, renderComponent, withProps } from 'recompose';
 
 import { userLoanInsert } from 'core/api/loans/methodDefinitions';
 import { referralExists } from 'core/api/methods/methodDefinitions';
@@ -60,15 +55,18 @@ export default compose(
   }),
   branch(({ propertyId }) => !!propertyId, renderComponent(PropertyStartPage)),
   branch(({ currentUser }) => !currentUser, renderComponent(AnonymousAppPage)),
-  withState('loading', 'setLoading', false),
-  withProps(({ setLoading }) => ({
-    insertLoan: ({ test, purchaseType } = {}) => {
-      setLoading(true);
-      // Don't unset loading, as the page will refresh anyways to head to the new loan
-      // reactively
-      return userLoanInsert
-        .run({ test, purchaseType })
-        .catch(() => setLoading(false));
-    },
-  })),
+  withProps(() => {
+    const [loading, setLoading] = useState();
+    return {
+      loading,
+      insertLoan: ({ test, purchaseType } = {}) => {
+        setLoading(true);
+        // Don't unset loading, as the page will refresh anyways to head to the new loan
+        // reactively
+        return userLoanInsert
+          .run({ test, purchaseType })
+          .catch(() => setLoading(false));
+      },
+    };
+  }),
 );

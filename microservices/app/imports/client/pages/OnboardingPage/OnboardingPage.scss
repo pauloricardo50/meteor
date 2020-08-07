@@ -1,0 +1,22 @@
+.onboarding {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  @media screen and (max-width: $med) {
+    flex-direction: column-reverse;
+  }
+
+  &-main {
+    display: flex;
+
+    @media screen and (max-width: $med) {
+      flex-direction: column;
+    }
+  }
+
+  &-content {
+    flex-grow: 1;
+    padding: 16px;
+  }
+}
