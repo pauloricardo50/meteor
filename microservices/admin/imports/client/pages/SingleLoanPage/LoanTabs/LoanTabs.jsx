@@ -1,11 +1,10 @@
 import { Roles } from 'meteor/alanning:roles';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { faChartBar } from '@fortawesome/pro-light-svg-icons/faChartBar';
 import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
 import { faUniversity } from '@fortawesome/pro-light-svg-icons/faUniversity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { lifecycle } from 'recompose';
 
 import { BORROWERS_COLLECTION } from 'core/api/borrowers/borrowerConstants';
 import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
@@ -31,7 +30,7 @@ import DevTab from './DevTab/loadable';
 import FinancingTab from './FinancingTab/loadable';
 import InsuranceRequestsTab from './InsuranceRequestsTab/loadable';
 import LendersTab from './LendersTab/loadable';
-import OverviewTab from './OverviewTab/loadable';
+import OverviewTab from './OverviewTab';
 import PromotionsTab from './PromotionsTab/loadable';
 import PropertiesTab from './PropertiesTab/loadable';
 import RefinancingTab from './RefinancingTab/loadable';
@@ -152,6 +151,18 @@ const LoanTabs = ({ tabs, ...props }) => {
   const { enableTabRouting } = props;
   const formattedTabs = formatTabs(tabs || getTabs(props), props);
 
+  useEffect(() => {
+    FinancingTab.preload();
+    PromotionsTab.preload();
+    RefinancingTab.preload();
+    BorrowersTab.preload();
+    PropertiesTab.preload();
+    LendersTab.preload();
+    FileTabs.preload();
+    RevenuesTab.preload();
+    ActionsTab.preload();
+  }, []);
+
   return (
     <Tabs
       tabs={formattedTabs}
@@ -164,17 +175,4 @@ const LoanTabs = ({ tabs, ...props }) => {
   );
 };
 
-export default lifecycle({
-  componentDidMount() {
-    OverviewTab.preload();
-    FinancingTab.preload();
-    PromotionsTab.preload();
-    RefinancingTab.preload();
-    BorrowersTab.preload();
-    PropertiesTab.preload();
-    LendersTab.preload();
-    FileTabs.preload();
-    RevenuesTab.preload();
-    ActionsTab.preload();
-  },
-})(LoanTabs);
+export default LoanTabs;
