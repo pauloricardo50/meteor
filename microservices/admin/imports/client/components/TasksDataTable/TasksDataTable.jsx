@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import cx from 'classnames';
 
 import { TASKS_COLLECTION } from 'core/api/tasks/taskConstants';
 import DataTable from 'core/components/DataTable/DataTable';
@@ -6,10 +7,7 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import Linkify from 'core/components/Linkify';
 import T, { IntlDate } from 'core/components/Translation';
 
-import {
-  formatDateTime,
-  getTasksTableModalProps,
-} from './tasksDataTableHelpers';
+import { getTasksTableModalProps } from './tasksDataTableHelpers';
 import TasksTableActions from './TasksTableActions';
 
 export const taskTableFragment = {
@@ -84,13 +82,26 @@ const TasksDataTable = ({ showRelatedTo, filters, ...rest }) => {
             accessor: 'createdAt',
             Header: <T id="TasksDataTable.createdAt" />,
             style: { width: 100 },
-            Cell: ({ value }) => <IntlDate value={value} type="relative" />,
+            Cell: ({ value }) => (
+              <IntlDate value={value} type="relative" style="long" />
+            ),
           },
           {
             accessor: 'dueAt',
             Header: <T id="TasksDataTable.dueAt" />,
             style: { width: 100 },
-            Cell: ({ value }) => formatDateTime(value),
+            Cell: ({ value }) =>
+              value ? (
+                <span
+                  className={cx({
+                    'error-box': value.getTime() < new Date().getTime(),
+                  })}
+                >
+                  <IntlDate value={value} type="relative" style="long" />
+                </span>
+              ) : (
+                '-'
+              ),
           },
           {
             accessor: 'assigneeLink._id',

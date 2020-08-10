@@ -1,6 +1,3 @@
-import React from 'react';
-import moment from 'moment';
-
 import { taskRemove, taskUpdate } from 'core/api/tasks/methodDefinitions';
 
 import {
@@ -30,16 +27,4 @@ export const getTasksTableModalProps = task => {
     layout: taskFormLayout,
     onDelete: () => taskRemove.run({ taskId: task?._id }),
   };
-};
-
-const now = moment();
-export const formatDateTime = (date, toNow) => {
-  const momentDate = moment(date);
-  const text = date ? momentDate[toNow ? 'toNow' : 'fromNow']() : '-';
-
-  if (momentDate.isBefore(now)) {
-    return <span className="error-box">{text}</span>;
-  }
-
-  return text;
 };
