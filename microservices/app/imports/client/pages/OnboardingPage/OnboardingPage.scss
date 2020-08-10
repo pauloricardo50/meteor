@@ -19,4 +19,20 @@
     flex-grow: 1;
     padding: 16px;
   }
+
+  &-marketing {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-bottom: 32px;
+
+    h3, p {
+      margin: 0;
+    }
+
+    > * {
+      max-width: 200px;
+      padding: 8px;
+    }
+  }
 }
