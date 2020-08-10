@@ -474,6 +474,7 @@ export class DripService {
   }
 
   async handleUnsubscribe({ subscriber }) {
+    console.log('handleUnsubscribe:', { subscriber });
     const user = UserService.getByEmail(subscriber?.email, {
       name: 1,
       email: 1,
@@ -481,10 +482,11 @@ export class DripService {
       referredByOrganisation: { name: 1 },
       assignedEmployee: { name: 1 },
     });
+    console.log('user:', user);
 
     if (user?._id) {
       setUserStatus.serverRun({
-        userId: user?._id,
+        userId: user._id,
         status: USER_STATUS.LOST,
         source: 'drip',
         reason: 'Subscriber unsubscribed',
