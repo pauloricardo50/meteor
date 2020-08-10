@@ -1,4 +1,6 @@
 import React from 'react';
+import { Route as RRDRoute } from 'react-router-dom';
+import { QueryParamProvider } from 'use-query-params';
 
 import { appUser } from 'core/api/users/queries';
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
@@ -50,13 +52,15 @@ const AppRouter = () => (
       },
     }}
   >
-    <AppLayout>
-      <Switch>
-        {Object.keys(APP_ROUTES).map(route => (
-          <Route {...APP_ROUTES[route]} key={route} />
-        ))}
-      </Switch>
-    </AppLayout>
+    <QueryParamProvider ReactRouterRoute={RRDRoute}>
+      <AppLayout>
+        <Switch>
+          {Object.keys(APP_ROUTES).map(route => (
+            <Route {...APP_ROUTES[route]} key={route} />
+          ))}
+        </Switch>
+      </AppLayout>
+    </QueryParamProvider>
   </BaseRouter>
 );
 

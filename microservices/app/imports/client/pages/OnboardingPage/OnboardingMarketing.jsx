@@ -6,6 +6,7 @@ import { faUserChart } from '@fortawesome/pro-duotone-svg-icons/faUserChart';
 
 import FaIcon from 'core/components/Icon/FaIcon';
 import T from 'core/components/Translation';
+import colors from 'core/config/colors';
 
 const items = [
   { id: '1', icon: faAbacus },
@@ -14,16 +15,21 @@ const items = [
   { id: '4', icon: faHandsHelping },
 ];
 
-const OnboardingMarketing = props => (
+const OnboardingMarketing = () => (
   <div className="onboarding-marketing">
-    {items.map(({ id, icon }) => (
-      <div key={id} className="flex-col center-align">
-        <FaIcon icon={icon} size="4x" className="mb-16" />
-        <h3 className="font-size-5">
-          <T id="OnboardingMarketing.1.title" />
+    {items.map(({ id, icon }, index) => (
+      <div key={id} className="flex-col center-align text-center">
+        <FaIcon
+          icon={icon}
+          size="4x"
+          className="mb-16"
+          color={colors.duotoneIconColor}
+        />
+        <h3 className="font-size-5 mb-8 mt-0">
+          <T id={`OnboardingMarketing.${index + 1}.title`} />
         </h3>
-        <p className="secondary">
-          <T id="OnboardingMarketing.1.description" />
+        <p className="secondary m-0">
+          <T id={`OnboardingMarketing.${index + 1}.description`} />
         </p>
       </div>
     ))}

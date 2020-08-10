@@ -1,5 +1,13 @@
 import React from 'react';
 
-const OnboardingRecap = props => <div>Hello from OnboardingRecap</div>;
+import T from 'core/components/Translation';
+
+const OnboardingRecap = props => (
+  <div className="onboarding-translation">
+    <h4>
+      <T id="OnboardingRecap.title" />
+    </h4>
+  </div>
+);
 
 export default OnboardingRecap;

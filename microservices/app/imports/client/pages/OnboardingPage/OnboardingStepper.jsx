@@ -4,6 +4,8 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
 
+import T from 'core/components/Translation';
+
 import { useOnboarding } from './OnboardingContext';
 
 const OnboardingStepper = () => {
@@ -24,8 +26,10 @@ const OnboardingStepper = () => {
   return (
     <Stepper orientation="vertical" activeStep={activeStepIndex}>
       {stepIds.map(step => (
-        <Step key={step.id}>
-          <StepLabel>Hello dude</StepLabel>
+        <Step key={step}>
+          <StepLabel>
+            <T id={`OnboardingStepper.${step}`} />
+          </StepLabel>
         </Step>
       ))}
     </Stepper>

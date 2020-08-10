@@ -26,9 +26,6 @@ const defaultTheme = fontSize => ({
       },
     },
     MuiButton: {
-      root: {
-        borderRadius: 4,
-      },
       contained: {
         backgroundColor: 'white',
         color: colors.primary,
@@ -207,6 +204,11 @@ const defaultTheme = fontSize => ({
           // https://github.com/mui-org/material-ui/issues/21894
           paddingTop: 8,
         },
+      },
+    },
+    MuiButtonBase: {
+      root: {
+        borderRadius: 4,
       },
     },
   },

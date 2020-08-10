@@ -5,7 +5,7 @@ import T from 'core/components/Translation';
 
 import { useOnboarding } from '../OnboardingContext';
 
-const OnboardingStep = ({ title, description, children }) => {
+const OnboardingStep = ({ title, description, children, withCta }) => {
   const { activeStep } = useOnboarding();
   return (
     <div className="animated fadeIn">
@@ -14,11 +14,13 @@ const OnboardingStep = ({ title, description, children }) => {
 
       {children}
 
-      <div>
-        <Button raised secondary>
-          <T id={`OnboardingStep.cta.${activeStep}`} />
-        </Button>
-      </div>
+      {withCta && (
+        <div>
+          <Button raised secondary>
+            <T id={`OnboardingStep.cta.${activeStep}`} />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,24 +1,23 @@
 import React from 'react';
 
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
-
+import OnboardingChoice from './OnboardingComponents/OnboardingChoice';
+import OnboardingResult from './OnboardingComponents/OnboardingResult';
 import { useOnboarding } from './OnboardingContext';
-import { steps } from './onboardingHelpers';
+import { steps } from './onboardingSteps';
+
+const Components = {
+  OnboardingChoice,
+  OnboardingResult,
+};
 
 const OnboardingContent = () => {
   const { activeStep } = useOnboarding();
-  const { Component } = steps.find(({ id }) => id === activeStep);
+  const { component, id, props } = steps.find(({ id }) => id === activeStep);
+  const Component = Components[component];
 
   return (
     <div className="onboarding-content">
-      <Component />
-
-      <div className="next-step">
-        <Button raised secondary>
-          <T id={`OnboardingContent.${activeStep}.next`} />
-        </Button>
-      </div>
+      <Component id={id} key={id} {...props} />
     </div>
   );
 };

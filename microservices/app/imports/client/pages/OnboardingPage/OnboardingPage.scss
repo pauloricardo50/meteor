@@ -9,6 +9,7 @@
 
   &-main {
     display: flex;
+    align-items: flex-start;
 
     @media screen and (max-width: $med) {
       flex-direction: column;
@@ -26,13 +27,33 @@
     justify-content: space-around;
     margin-bottom: 32px;
 
-    h3, p {
-      margin: 0;
-    }
-
     > * {
-      max-width: 200px;
+      max-width: 240px;
       padding: 8px;
     }
+  }
+  
+  &-choices {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    > * {
+      border: 1px solid $border-grey;
+      padding: 32px;
+      margin: 8px;
+      transition: border 200ms $bezier;
+      width: 250px;
+
+      &:hover {
+        border: 1px solid $primary;
+      }
+    }
+  }
+
+  &-translation {
+    padding: 16px;
+    margin: 8px;
   }
 }
