@@ -84,6 +84,7 @@
     "identity-obj-proxy": "^3.0.0",
     "ignore-styles": "^5.0.1",
     "jest": "^26.2.2",
+    "mocha-junit-reporter": "^2.0.0",
     "mocha-multi-reporters": "^1.1.7",
     "start-server-and-test": "^1.11.2"
   }
