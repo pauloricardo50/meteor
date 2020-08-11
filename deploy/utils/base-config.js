@@ -74,7 +74,7 @@ module.exports = function createConfig({
       docker: {
         image: 'zodern/meteor',
         prepareBundle: true,
-        prepareBundleLocally: microservice !== 'backend',
+        prepareBundleLocally: true,
         useBuildKit: true,
         stopAppDuringPrepareBundle: false,
 
