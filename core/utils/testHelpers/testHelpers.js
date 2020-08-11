@@ -101,7 +101,14 @@ export const checkEmails = (expected, options = {}) =>
         // getAllTestEmails returns when at least `expected` emails are found
         // So it could be more. Make sure we always get exactly what we expect
         if (expected && !options.noExpect) {
-          expect(emails.length).to.equal(expected);
+          expect(emails.length).to.equal(
+            expected,
+            `Got: ${
+              emails?.length
+                ? emails.map(({ emailId }) => emailId).join(', ')
+                : 'no email sent'
+            }`,
+          );
         }
       } catch (error) {
         reject(error);
