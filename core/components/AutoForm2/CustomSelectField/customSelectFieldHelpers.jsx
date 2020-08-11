@@ -84,6 +84,7 @@ export const RenderSelect = ({
         inputProps: { name, ...inputProps },
         multiple: fieldType === Array || undefined,
         native,
+        MenuProps: { PaperProps: { style: { maxHeight: 400 } } },
         ...filterDOMProps(props),
       }}
       value={native && !value ? '' : value}
