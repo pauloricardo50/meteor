@@ -1,9 +1,5 @@
 export const LENDERS_COLLECTION = 'lenders';
 
-export const LENDERS_QUERIES = {
-  LOAN_LENDERS: 'LOAN_LENDERS',
-};
-
 export const LENDER_STATUS = {
   TO_BE_CONTACTED: 'TO_BE_CONTACTED',
   CONTACTED: 'CONTACTED',

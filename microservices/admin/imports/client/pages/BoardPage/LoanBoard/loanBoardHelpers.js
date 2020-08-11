@@ -188,7 +188,7 @@ export const getInitialOptions = ({ currentUser }) => ({
   promotionStatus: undefined,
   additionalFields: [],
   purchaseType: undefined,
-  userStatus: { $in: [USER_STATUS.QUALIFIED] },
+  userStatus: { $in: [USER_STATUS.QUALIFIED, USER_STATUS.LOST] },
 });
 
 export const filterReducer = (state, { type, payload }) => {

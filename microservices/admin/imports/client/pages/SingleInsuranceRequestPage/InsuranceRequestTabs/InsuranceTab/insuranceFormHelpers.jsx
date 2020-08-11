@@ -57,6 +57,7 @@ export const getSchema = ({ borrowers, organisations }) =>
       },
       condition: ({ organisationId }) => !!organisationId,
       uniforms: {
+        deps: ['organisationId'],
         transform: productId => {
           const allProducts = organisations.reduce(
             (products, { insuranceProducts = [] }) => [

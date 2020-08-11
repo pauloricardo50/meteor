@@ -1,9 +1,5 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
-
-import sinon from 'sinon';
-
-import { resetDatabase } from '../../../../../utils/testHelpers';
+import { resetDatabase, createClock } from '../../../../../utils/testHelpers';
 import generator from '../../../../factories/server';
 import { TRENDS } from '../../../../interestRates/interestRatesConstants';
 import { PURCHASE_TYPE } from '../../../../loans/loanConstants';
@@ -42,12 +38,12 @@ const getResult = ({ expectedResponse, query }) => {
   });
 };
 
-describe('REST: mortgageEstimate', function() {
+describe('REST: mortgageEstimate', function () {
   this.timeout(10000);
   let now;
   let clock;
 
-  before(function() {
+  before(function () {
     api.start();
   });
 
@@ -86,7 +82,7 @@ describe('REST: mortgageEstimate', function() {
       ],
     });
     now = new Date();
-    clock = sinon.useFakeTimers(now.getTime());
+    clock = createClock(now.getTime());
   });
 
   afterEach(() => {

@@ -51,7 +51,7 @@ const translateSimpleSchema = () => {
           switch (regExp) {
             case SimpleSchema.RegEx.Email:
             case SimpleSchema.RegEx.WeakEmail:
-              return 'Cette adresse e-mail est incorrecte';
+              return 'Cette adresse email est incorrecte';
             default:
               return "Le format n'est pas valide";
           }

@@ -67,9 +67,9 @@ const FooterContact = ({ language }) => (
     itemType="https://schema.org/LocalBusiness"
   >
     {/* keep here for web crawlers */}
-    <h1 itemProp="name" hidden>
+    <div itemProp="name" hidden>
       e-Potek SA
-    </h1>
+    </div>
 
     <div>
       <b>Contactez nos équipes</b>

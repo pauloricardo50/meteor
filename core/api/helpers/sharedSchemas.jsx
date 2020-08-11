@@ -75,6 +75,7 @@ export const address = {
         String(zipCode).length === 4
           ? getCitiesFromZipCode.run({ zipCode })
           : [null],
+      deps: ['zipCode'],
       withCustomOther: true,
       transform: city => {
         if (city === 'other') {

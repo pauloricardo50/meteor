@@ -5,6 +5,7 @@ import writeYAML from '../scripts/writeYAML';
 const WORKING_DIRECTORY = '/home/circleci/app';
 const CACHE_VERSION = 'master_16'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 const STAGING_BRANCH = 'staging';
+const MASTER_BRANCH = 'master';
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -43,8 +44,8 @@ const cacheKeys = {
     `global_${CACHE_VERSION}_2-{{ checksum "./package-lock.json" }}`,
   meteorSystem: name =>
     `meteor_system_${CACHE_VERSION}_${name}_2_{{ checksum "./microservices/${name}/.meteor/release" }}_{{ checksum "./microservices/${name}/.meteor/versions" }}`,
-  meteorMicroservice: name =>
-    `meteor_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
+  meteorMicroservice: (name, testsType) =>
+    `meteor_microservice_${CACHE_VERSION}_${name}_${testsType}-{{ .Branch }}-{{ .Revision }}`,
   minifierCache: name =>
     `minifier_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
   nodeModules: () =>
@@ -159,11 +160,11 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
     restoreCache(
       'Restore meteor microservice',
-      cacheKeys.meteorMicroservice(name),
+      cacheKeys.meteorMicroservice(name, testsType),
     ),
     restoreCache(
       'Restore meteor backend',
-      cacheKeys.meteorMicroservice('backend'),
+      cacheKeys.meteorMicroservice('backend', testsType),
     ),
     testsType === 'unit' &&
       runCommand(
@@ -217,12 +218,12 @@ const testMicroserviceJob = ({ name, testsType, job }) => ({
     ),
     saveCache(
       'Cache meteor microservice',
-      cacheKeys.meteorMicroservice(name),
+      cacheKeys.meteorMicroservice(name, testsType),
       cachePaths.meteorMicroservice(name),
     ),
     saveCache(
       'Cache meteor backend',
-      cacheKeys.meteorMicroservice('backend'),
+      cacheKeys.meteorMicroservice('backend', testsType),
       cachePaths.meteorMicroservice('backend'),
     ),
     storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
@@ -251,7 +252,7 @@ const testGatsbyJobE2E = () => {
     restoreCache('Restore gatsby website', cacheKeys.gatsby()),
     restoreCache(
       'Restore meteor backend',
-      cacheKeys.meteorMicroservice('backend'),
+      cacheKeys.meteorMicroservice('backend', 'e2e'),
     ),
     runCommand(
       'Install netcat',
@@ -292,7 +293,7 @@ const testGatsbyJobE2E = () => {
 
     saveCache(
       'Cache meteor backend',
-      cacheKeys.meteorMicroservice('backend'),
+      cacheKeys.meteorMicroservice('backend', 'e2e'),
       cachePaths.meteorMicroservice('backend'),
     ),
   ],
@@ -312,7 +313,7 @@ const makeDeployJob = ({ name, job }) => ({
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
     restoreCache(
       'Restore meteor microservice',
-      cacheKeys.meteorMicroservice(name),
+      cacheKeys.meteorMicroservice(name, 'e2e'),
     ),
     // The microservice cache only has files from building for development,
     // which doesn't minify
@@ -341,6 +342,8 @@ const makeDeployJob = ({ name, job }) => ({
 
         if [ "$CIRCLE_BRANCH" = "${STAGING_BRANCH}" ]; then
           ENVIRONMENT="staging"
+        elif [ "$CIRCLE_BRANCH" = "${MASTER_BRANCH}" ]; then
+          ENVIRONMENT="prod"
         else
           echo "Deployments not configured for this branch"
           exit 1
@@ -372,7 +375,7 @@ const testJobs = [
 
 const deployBranchFilter = {
   branches: {
-    only: [STAGING_BRANCH],
+    only: [STAGING_BRANCH, MASTER_BRANCH],
   },
 };
 

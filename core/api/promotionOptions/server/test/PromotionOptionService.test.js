@@ -1,12 +1,14 @@
-import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 
 /* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
-import sinon from 'sinon';
 
-import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
+import {
+  checkEmails,
+  resetDatabase,
+  createClock,
+} from '../../../../utils/testHelpers';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
 import FileService from '../../../files/server/FileService';
@@ -967,7 +969,7 @@ describe('PromotionOptionService', function () {
           ? moment().isoWeekday(5)
           : moment().add(1, 'weeks').isoWeekday(5);
 
-      const clock = sinon.useFakeTimers(nextFriday.unix() * 1000);
+      const clock = createClock(nextFriday.unix() * 1000);
 
       const today = moment().toDate();
       const tomorrow = moment().add(1, 'days').toDate();

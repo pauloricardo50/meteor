@@ -1,6 +1,12 @@
 import Calculator from '../../../../utils/Calculator';
 import FinanceCalculator from '../FinancingCalculator';
-import { getIncomeRatio, getMaxIncomeRatio } from './financingResultHelpers';
+import {
+  getBorrowRatio,
+  getIncomeRatio,
+  getMaxBorrowRatio,
+  getMaxIncomeRatio,
+  getMaxIncomeRatioTight,
+} from './financingResultHelpers';
 
 export const ERROR_TYPES = {
   BREAKING: 'BREAKING',
@@ -19,18 +25,21 @@ const errors = [
       return !wantedLoan || wantedLoan === 0;
     },
     type: ERROR_TYPES.BREAKING,
+    color: 'error',
   },
   {
     id: 'missingOwnFunds',
     func: ({ loan, structureId }) =>
       Calculator.isMissingOwnFunds({ loan, structureId }),
     type: ERROR_TYPES.WARNING,
+    color: 'error',
   },
   {
     id: 'tooMuchOwnFunds',
     func: ({ loan, structureId }) =>
       Calculator.hasTooMuchOwnFunds({ loan, structureId }),
     type: ERROR_TYPES.WARNING,
+    color: 'warning',
   },
   {
     id: 'missingCash',
@@ -39,6 +48,7 @@ const errors = [
       return !Calculator.hasEnoughCash({ loan, structureId });
     },
     type: ERROR_TYPES.WARNING,
+    color: 'error',
   },
   {
     id: 'invalidInterestRates',
@@ -58,17 +68,62 @@ const errors = [
           : loan.currentInterestRates,
       }),
     type: ERROR_TYPES.BREAKING,
+    color: 'error',
+  },
+  {
+    id: 'highBorrowRatio',
+    func: data =>
+      !Calculator.hasChosenOffer(data) &&
+      getBorrowRatio(data) > getMaxBorrowRatio(data),
+    type: ERROR_TYPES.WARNING,
+    color: 'warning',
+  },
+  {
+    id: 'highBorrowRatioWithLender',
+    func: data =>
+      Calculator.hasChosenOffer(data) &&
+      getBorrowRatio(data) > getMaxBorrowRatio(data),
+    type: ERROR_TYPES.WARNING,
+    color: 'warning',
+  },
+  {
+    id: 'tightIncomeRatio',
+    func: data => {
+      const maxIncomeRatioTight = getMaxIncomeRatioTight(data);
+      const maxIncomeRatio = getMaxIncomeRatio(data);
+      const hasOffer = Calculator.hasChosenOffer(data);
+
+      if (!maxIncomeRatioTight || hasOffer) {
+        return false;
+      }
+
+      const incomeRatio = getIncomeRatio(data);
+
+      return incomeRatio > maxIncomeRatio && incomeRatio <= maxIncomeRatioTight;
+    },
+    type: ERROR_TYPES.WARNING,
+    color: 'warning',
   },
   {
     id: 'highIncomeRatio',
-    func: data => getIncomeRatio(data) > getMaxIncomeRatio(data),
+    func: data =>
+      !Calculator.hasChosenOffer(data) &&
+      getIncomeRatio(data) > getMaxIncomeRatio(data),
     type: ERROR_TYPES.WARNING,
+    color: 'error',
+  },
+  {
+    id: 'highIncomeRatioWithOffer',
+    func: data =>
+      Calculator.hasChosenOffer(data) &&
+      getIncomeRatio(data) > getMaxIncomeRatio(data),
+    type: ERROR_TYPES.WARNING,
+    color: 'error',
   },
 ];
 
 export const getFinancingError = props =>
   errors.reduce(
-    (currentError, { id, type, func }) =>
-      currentError || (func(props) && { id, type }),
+    (currentError, { func, ...rest }) => currentError || (func(props) && rest),
     undefined,
   );

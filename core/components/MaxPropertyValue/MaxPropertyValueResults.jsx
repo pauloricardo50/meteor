@@ -90,7 +90,11 @@ const MaxPropertyValueResults = ({
           previousLoan={previousLoan}
         />
       </div>
-      <MaxPropertyValueCertificate loan={loan} />
+      <MaxPropertyValueCertificate
+        loan={loan}
+        shouldRecalculate={shouldRecalculate}
+        recalculate={recalculate}
+      />
       <Button
         raised
         disabled={Meteor.microservice === 'app' && !shouldRecalculate}

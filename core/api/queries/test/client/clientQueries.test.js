@@ -13,14 +13,12 @@ import {
 } from '../collection-app-test';
 
 const insertTestData = n => {
-  const promises = [...Array(n)].map((_, index) =>
-    testCollectionInsert.run({
-      _id: `test${index}`,
-      name: `test${index % 4}`,
-      value: index,
-    }),
-  );
-  return Promise.all(promises).then(() => ({}));
+  const documents = [...Array(n)].map((_, index) => ({
+    _id: `test${index}`,
+    name: `test${index % 4}`,
+    value: index,
+  }));
+  return testCollectionInsert.run(documents).then(() => ({}));
 };
 
 const fetchQueries = ({ queries = [], params, promise }) => {
@@ -53,6 +51,7 @@ const insertAndFetchTestData = (
   } = {},
 ) => {
   const promise = insertTestData(n);
+
   return fetchQueries({
     queries: [
       fetchQuery1 && query1,
@@ -65,10 +64,10 @@ const insertAndFetchTestData = (
   });
 };
 
-describe.skip('exposeQuery', function () {
-  this.retries(2);
-
-  beforeEach(() => resetDatabase());
+describe('exposeQuery', function () {
+  beforeEach(() => {
+    resetDatabase();
+  });
 
   it('returns expected data without using overrides', async () => {
     const items = await insertAndFetchTestData(100);

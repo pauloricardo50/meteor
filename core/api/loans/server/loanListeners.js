@@ -46,6 +46,12 @@ ServerEventService.addAfterMethodListener(
     params: { userId, unsuccessfulReason },
     result: { prevStatus, nextStatus },
   }) => {
+    console.log('setUserStatus listener:', {
+      userId,
+      unsuccessfulReason,
+      prevStatus,
+      nextStatus,
+    });
     if (
       prevStatus === USER_STATUS.PROSPECT &&
       nextStatus === USER_STATUS.LOST

@@ -10,7 +10,7 @@ const resetDatabase = () => {
     });
   }
 
-  return xolvioResetDatabase({ excludedCollections: ['roles'] });
+  xolvioResetDatabase({ excludedCollections: ['roles'] });
 };
 
 export default resetDatabase;

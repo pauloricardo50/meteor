@@ -20,7 +20,7 @@ const TopNavButtons = ({ children, history }) => {
       {currentUser ? (
         <>
           {!isMobile && (
-            <div className="flex-col mr-4">
+            <div className="flex-col mr-8">
               <span>{name}</span>
               <span className="secondary">{mainOrganisation?.name}</span>
             </div>

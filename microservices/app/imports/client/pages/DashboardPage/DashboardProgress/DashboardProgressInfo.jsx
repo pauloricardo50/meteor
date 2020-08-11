@@ -6,6 +6,7 @@ import Link from 'core/components/Link';
 import T from 'core/components/Translation';
 
 import AppLoanClosingChecklists from '../../../../core/components/LoanClosingChecklist/AppLoanClosingChecklists';
+import ContactAssigneeModal from '../../../components/ContactAssigneeModal/ContactAssigneeModal';
 import {
   defaultTodoList,
   getDashboardTodosArray,
@@ -33,7 +34,15 @@ const getTodos = loan => {
   return max4Todos;
 };
 
-const TodoItem = ({ label, loan, todo = {}, todos, onClick, className }) => {
+const TodoItem = ({
+  label,
+  loan,
+  todo = {},
+  todos,
+  onClick,
+  className,
+  icon,
+}) => {
   const { Component, id, link, isDone } = todo;
   const WrapperComponent = link && !isDone ? Link : 'div';
 
@@ -44,7 +53,10 @@ const TodoItem = ({ label, loan, todo = {}, todos, onClick, className }) => {
       key={id}
       onClick={onClick}
     >
-      <Icon className="icon" type={isDone ? 'check' : 'radioButtonChecked'} />
+      <Icon
+        className="icon"
+        type={icon || (isDone ? 'check' : 'radioButtonChecked')}
+      />
       <p>{label}</p>
       {link && !Component && !isDone && (
         <Icon type="right" className="icon-arrow" />
@@ -71,6 +83,17 @@ const DashboardProgressInfo = ({ loan }) => {
           todos={todos}
         />
       ))}
+
+      <ContactAssigneeModal
+        renderTrigger={({ handleOpen }) => (
+          <TodoItem
+            label={<T id="ContactAssigneeModal.title" />}
+            onClick={handleOpen}
+            className="animated fadeInUp pointer"
+            icon="event"
+          />
+        )}
+      />
 
       {showClosingChecklists && (
         <AppLoanClosingChecklists

@@ -65,7 +65,7 @@ updateDocumentsCache.setHandler((context, params) => {
 });
 
 getZipLoanUrl.setHandler(({ userId }, { loanId, documents, options }) => {
-  SecurityService.checkUserIsAdmin(context.userId);
+  SecurityService.checkUserIsAdmin(userId);
   return FileService.getZipLoanUrl({ userId, loanId, documents, options });
 });
 

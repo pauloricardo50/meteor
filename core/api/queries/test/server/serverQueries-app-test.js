@@ -12,9 +12,9 @@ import {
 
 const TestCollection = require('../collection-app-test').default;
 
-testCollectionInsert.setHandler((context, params) =>
-  TestCollection.insert(params),
-);
+testCollectionInsert.setHandler(async (context, params) => {
+  await TestCollection.rawCollection().insertMany(params);
+});
 
 exposeQuery({
   query: query1,

@@ -10,8 +10,6 @@ import {
   TASK_TYPES,
 } from './taskConstants';
 
-const Tasks = createCollection(TASKS_COLLECTION);
-
 export const TasksSchema = new SimpleSchema({
   createdAt,
   updatedAt,
@@ -131,5 +129,6 @@ export const TasksSchema = new SimpleSchema({
   'insuranceLink._id': { type: String, optional: true },
 });
 
-Tasks.attachSchema(TasksSchema);
+const Tasks = createCollection(TASKS_COLLECTION, TasksSchema);
+
 export default Tasks;

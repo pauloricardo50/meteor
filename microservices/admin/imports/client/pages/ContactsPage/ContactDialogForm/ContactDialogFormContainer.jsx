@@ -49,6 +49,7 @@ const schema = existingOrganisations =>
       customAllowedValues: ({ organisations = [] }) =>
         organisations.filter(({ _id }) => _id).map(({ _id }) => _id),
       uniforms: {
+        deps: ['organisations'],
         transform: organisationId => {
           const { name } =
             existingOrganisations.find(({ _id }) => organisationId === _id) ||
@@ -110,7 +111,7 @@ export default compose(
   withSmartQuery({
     query: ORGANISATIONS_COLLECTION,
     queryOptions: { reactive: false },
-    params: { _id: 1, $options: { sort: { name: 1 } } },
+    params: { _id: 1, name: 1, $options: { sort: { name: 1 } } },
     dataName: 'existingOrganisations',
     smallLoader: true,
   }),

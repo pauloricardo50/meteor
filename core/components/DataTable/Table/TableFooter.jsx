@@ -33,6 +33,7 @@ const TableFooter = ({
           page={pageIndex}
           rowsPerPage={pageSize}
           rowsPerPageOptions={paginationOptions}
+          backIconButtonProps={{ className: 'mr-8' }}
         />
       </TableRow>
     </MuiTableFooter>

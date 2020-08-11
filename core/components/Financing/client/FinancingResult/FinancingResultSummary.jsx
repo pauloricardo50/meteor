@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import { compose } from 'recompose';
 
 import T from '../../../Translation';
@@ -12,7 +13,12 @@ export const FinancingResultSummary = props => {
 
   if (error.type === ERROR_TYPES.BREAKING) {
     return (
-      <p className="error error-box result">
+      <p
+        className={cx('error result', {
+          'error-box': error.color === 'error',
+          'warning-box': error.color === 'warning',
+        })}
+      >
         <T id={`FinancingResultErrors.${error.id}`} />
       </p>
     );
@@ -23,7 +29,12 @@ export const FinancingResultSummary = props => {
       <div className="result">
         <FinancingResultSuccess {...props} className="" />
 
-        <p className="error error-box warning-error">
+        <p
+          className={cx('error warning-error', {
+            'error-box': error.color === 'error',
+            'warning-box': error.color === 'warning',
+          })}
+        >
           <T id={`FinancingResultErrors.${error.id}`} />
         </p>
       </div>

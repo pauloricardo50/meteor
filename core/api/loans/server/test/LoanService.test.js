@@ -7,7 +7,11 @@ import faker from 'faker/locale/fr';
 import moment from 'moment';
 import sinon from 'sinon';
 
-import { checkEmails, resetDatabase } from '../../../../utils/testHelpers';
+import {
+  checkEmails,
+  createClock,
+  resetDatabase,
+} from '../../../../utils/testHelpers';
 import Analytics from '../../../analytics/server/Analytics';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
@@ -968,7 +972,7 @@ describe('LoanService', function () {
             assignedEmployee: { _id: 'adminId' },
             loans: {
               _id: loanId,
-              borrowers: {},
+              borrowers: { firstName: 'Joe', lastName: 'Jackson' },
               properties: {
                 _id: 'propertyId',
                 address1: 'rue du lac 31',
@@ -2106,7 +2110,7 @@ describe('LoanService', function () {
         },
       });
 
-      const clock = sinon.useFakeTimers(Date.now());
+      const clock = createClock(Date.now());
       clock.tick(24 * 60 * 60 * 1000);
       await generateDisbursedSoonLoansTasks.serverRun({});
       clock.restore();

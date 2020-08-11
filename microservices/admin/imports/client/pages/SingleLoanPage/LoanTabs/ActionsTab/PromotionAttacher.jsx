@@ -42,6 +42,7 @@ const schema = new SimpleSchema({
         users: { name: 1, organisations: { name: 1 } },
       }),
       postProcess: promotions => promotions[0].users,
+      deps: ['promotionId'],
     },
     uniforms: {
       transform: user => getUserNameAndOrganisation({ user }),
@@ -59,6 +60,7 @@ const schema = new SimpleSchema({
         promotion: { promotionLotGroups: 1 },
         promotionLotGroupIds: 1,
       }),
+      deps: ['promotionId'],
     },
     uniforms: {
       transform: ({ name, promotion, promotionLotGroupIds = [] }) => (

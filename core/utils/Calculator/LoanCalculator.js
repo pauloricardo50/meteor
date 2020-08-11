@@ -1170,4 +1170,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
       return Math.floor(maxLoan / LOAN_ROUNDING) * LOAN_ROUNDING;
     }
+
+    hasChosenOffer({ loan, structureId }) {
+      return !!this.selectStructureKey({ loan, structureId, key: 'offerId' });
+    }
   };

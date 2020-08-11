@@ -228,9 +228,10 @@ export class IntercomService {
   }
 
   async getContactByEmail({ email }) {
-    const { data = [] } = await this.searchContacts({
-      filters: { email: { value: email } },
-    });
+    const { data = [] } =
+      (await this.searchContacts({
+        filters: { email: { value: email } },
+      })) || {};
     return data[0];
   }
 
