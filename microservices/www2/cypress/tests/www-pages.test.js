@@ -36,7 +36,7 @@ describe('www-pages', () => {
   });
 
   it('about page works', () => {
-    burgerNavigate('À Propos', '/a-propos');
+    burgerNavigate('À propos', '/a-propos');
     // Use image carousel
     cy.get('.image-carousel')
       .contains('e-Potek identifie en quelques')
@@ -51,7 +51,7 @@ describe('www-pages', () => {
 
   it('pages with subpages work properly', () => {
     // Go to about page
-    burgerNavigate('À Propos', '/a-propos');
+    burgerNavigate('À propos', '/a-propos');
 
     // Check scroll is 0
     cy.scrollTo(0, 0);
@@ -64,10 +64,6 @@ describe('www-pages', () => {
     cy.window().then($window => {
       expect($window.scrollY).to.not.equal(0);
     });
-
-    burgerNavigate('Professionnels', '/courtiers');
-    cy.get('.page-links').contains('Promoteurs').click();
-    cy.url().should('include', 'promoteurs');
   });
 
   describe('Calculator', () => {
@@ -141,7 +137,8 @@ describe('www-pages', () => {
           const monthly = Number.parseInt(item.text().replace(/\D/g, ''), 10);
 
           cy.get('@monthly').then(prevMonthly => {
-            expect(prevMonthly - 417).to.equal(monthly);
+            // Avoid rounding issues
+            expect(prevMonthly - 417).to.be.within(monthly - 1, monthly + 1);
           });
         });
     });
