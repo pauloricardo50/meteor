@@ -89,7 +89,13 @@ const initializeIntercom = async location => {
     } else if (w?.attachEvent) {
       w?.attachEvent('onload', l);
     } else {
-      w?.addEventListener('load', l, false);
+      w?.addEventListener(
+        'load',
+        () => {
+          setTimeout(l, 2000);
+        },
+        false,
+      );
     }
   }
 };
