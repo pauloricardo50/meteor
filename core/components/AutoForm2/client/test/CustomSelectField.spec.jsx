@@ -37,7 +37,9 @@ describe('CustomSelectField', () => {
       const { getByLabelText, getAllByRole } = render(<AutoForm {...props} />);
 
       fireEvent.mouseDown(getByLabelText('Select', { exact: false }));
+
       const options = getAllByRole('option');
+
       expect(options.length).to.equal(3);
       const [placeholder, option1, option2] = options;
 
@@ -82,10 +84,14 @@ describe('CustomSelectField', () => {
       };
 
       const { getByLabelText, getAllByRole } = render(<AutoForm {...props} />);
-      await waitFor(() => getByLabelText('Select', { exact: false }));
-      fireEvent.mouseDown(getByLabelText('Select', { exact: false }));
 
-      const [option1, option2] = getAllByRole('option');
+      await waitFor(() =>
+        expect(
+          getAllByRole('button')[0].getAttribute('aria-disabled'),
+        ).to.equal(null),
+      );
+      fireEvent.mouseDown(getByLabelText('Select', { exact: false }));
+      const [option1, option2] = await waitFor(() => getAllByRole('option'));
 
       expect(!!within(option1).getByText('yo')).to.equal(true);
       expect(!!within(option2).getByText('dude')).to.equal(true);
@@ -103,7 +109,12 @@ describe('CustomSelectField', () => {
       };
 
       const { getByLabelText, getAllByRole } = render(<AutoForm {...props} />);
-      await waitFor(() => getByLabelText('Select', { exact: false }));
+
+      await waitFor(() =>
+        expect(
+          getAllByRole('button')[0].getAttribute('aria-disabled'),
+        ).to.equal(null),
+      );
       fireEvent.mouseDown(getByLabelText('Select', { exact: false }));
 
       const [option1, option2] = getAllByRole('option');
@@ -152,7 +163,11 @@ describe('CustomSelectField', () => {
 
       const { getByLabelText, getAllByRole } = render(<AutoForm {...props} />);
 
-      await waitFor(() => getByLabelText('Select', { exact: false }));
+      await waitFor(() =>
+        expect(
+          getAllByRole('button')[0].getAttribute('aria-disabled'),
+        ).to.equal(null),
+      );
       fireEvent.mouseDown(getByLabelText('Select', { exact: false }));
 
       const options = getAllByRole('option');
@@ -170,6 +185,7 @@ describe('CustomSelectField', () => {
             uniforms: {
               recommendedValues: model =>
                 ['yo', 'dude', model?.bool && 'yeah'].filter(x => x),
+              deps: ['bool'],
               label: 'Select',
               placeholder: '',
               displayEmpty: false,
@@ -203,7 +219,7 @@ describe('CustomSelectField', () => {
             type: String,
             uniforms: {
               recommendedValues: () =>
-                new Promise((resolve, reject) => resolve(['yo', 'dude'])),
+                new Promise(resolve => resolve(['yo', 'dude'])),
               label: 'Select',
               placeholder: null,
             },
@@ -269,7 +285,7 @@ describe('CustomSelectField', () => {
 
       const { getByLabelText } = render(<AutoForm {...props} />);
 
-      expect(!!getByLabelText('Select')).to.equal(true);
+      expect(!!getByLabelText('Select', { exact: false })).to.equal(true);
       expect(!!getByLabelText('Préciser')).to.equal(true);
     });
   });
