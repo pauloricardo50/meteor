@@ -4,12 +4,23 @@ import { faCommentDollar } from '@fortawesome/pro-duotone-svg-icons/faCommentDol
 import { faHomeLg } from '@fortawesome/pro-duotone-svg-icons/faHomeLg';
 import { faHouseDay } from '@fortawesome/pro-duotone-svg-icons/faHouseDay';
 import { faSearchLocation } from '@fortawesome/pro-duotone-svg-icons/faSearchLocation';
+import SimpleSchema from 'simpl-schema';
 
-import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import {
+  ACQUISITION_STATUS,
+  PURCHASE_TYPE,
+} from 'core/api/loans/loanConstants';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import AcquisitionIcon from 'core/components/Icon/AcquisitionIcon';
 import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
+import { refinancingPropertySchema } from 'core/components/PropertyForm/PropertyAdderDialog';
+import { not, or } from 'core/utils/functional';
 
-import { RESIDENCE_TYPE } from '../../../core/api/properties/propertyConstants';
+const always = () => true;
+const isProFlow = loan => loan.hasPromotion || loan.hasProProperty;
+const isRefinancing = loan => loan.purchaseType === PURCHASE_TYPE.REFINANCING;
+const knowsProperty = loan =>
+  loan.projectStatus && loan.projectStatus !== ACQUISITION_STATUS.SEARCHING;
 
 export const steps = [
   {
@@ -27,16 +38,21 @@ export const steps = [
         },
       ],
     },
+    condition: not(isProFlow),
   },
   {
-    id: 'projectStatus',
+    id: 'acquisitionStatus',
     component: 'OnboardingChoice',
     props: {
       choices: [
-        { id: 'SEARCHING', icon: faSearchLocation },
-        { id: 'OFFER', icon: faCommentDollar },
+        { id: ACQUISITION_STATUS.SEARCHING, icon: faSearchLocation },
+        { id: ACQUISITION_STATUS.PROPERTY_IDENTIFIED, icon: faCommentDollar },
+        { id: ACQUISITION_STATUS.OFFER_MADE, icon: faCommentDollar },
+        { id: ACQUISITION_STATUS.PROMISE_INCOMING, icon: faCommentDollar },
+        { id: ACQUISITION_STATUS.PROMISE_SIGNED, icon: faCommentDollar },
       ],
     },
+    condition: not(or(isProFlow, isRefinancing)),
   },
   {
     id: 'residenceType',
@@ -48,7 +64,62 @@ export const steps = [
         { id: RESIDENCE_TYPE.INVESTMENT, icon: faBuilding },
       ],
     },
+    condition: always,
+  },
+  {
+    id: 'canton',
+    component: 'OnboardingChoice',
+    condition: not(isProFlow),
+    props: {
+      choices: [
+        { id: 'FR' },
+        { id: 'GE' },
+        { id: 'NE' },
+        { id: 'VS' },
+        { id: 'VD' },
+      ],
+    },
+  },
+  {
+    id: 'propertyValue',
+    component: 'OnboardingForm',
+    condition: or(isRefinancing, knowsProperty),
+    props: {
+      schema: new SimpleSchema({ value: Number }),
+    },
+  },
+  {
+    id: 'refinancing',
+    component: 'OnboardingForm',
+    condition: isRefinancing,
+    props: {
+      schema: refinancingPropertySchema.pick('previousLoanTranches'),
+    },
+  },
+  {
+    id: 'borrowerCount',
+    component: 'OnboardingChoice',
+    props: {
+      choices: [{ id: 1 }, { id: 2 }],
+    },
+    condition: always,
+  },
+  {
+    id: 'income',
+    component: 'OnboardingForm',
+    condition: always,
+    props: { schema: new SimpleSchema({}) },
+  },
+  {
+    id: 'ownFunds',
+    component: 'OnboardingForm',
+    condition: not(isRefinancing),
+    props: { schema: new SimpleSchema({}) },
   },
 
-  { id: 'result', component: 'OnboardingResult' },
+  {
+    id: 'result',
+    component: 'OnboardingResult',
+    condition: always,
+  },
 ];

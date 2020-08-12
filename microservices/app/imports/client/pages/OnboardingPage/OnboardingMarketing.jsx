@@ -8,6 +8,8 @@ import FaIcon from 'core/components/Icon/FaIcon';
 import T from 'core/components/Translation';
 import colors from 'core/config/colors';
 
+import { useOnboarding } from './OnboardingContext';
+
 const items = [
   { id: '1', icon: faAbacus },
   { id: '2', icon: faUserChart },
@@ -15,25 +17,33 @@ const items = [
   { id: '4', icon: faHandsHelping },
 ];
 
-const OnboardingMarketing = () => (
-  <div className="onboarding-marketing">
-    {items.map(({ id, icon }, index) => (
-      <div key={id} className="flex-col center-align text-center">
-        <FaIcon
-          icon={icon}
-          size="4x"
-          className="mb-16"
-          color={colors.duotoneIconColor}
-        />
-        <h3 className="font-size-5 mb-8 mt-0">
-          <T id={`OnboardingMarketing.${index + 1}.title`} />
-        </h3>
-        <p className="secondary m-0">
-          <T id={`OnboardingMarketing.${index + 1}.description`} />
-        </p>
-      </div>
-    ))}
-  </div>
-);
+const OnboardingMarketing = () => {
+  const { activeStep } = useOnboarding();
+
+  return (
+    <div className="onboarding-marketing">
+      {items.map(({ id, icon }, index) => (
+        <div key={id} className="flex-col center-align text-center">
+          <FaIcon
+            icon={icon}
+            size="4x"
+            className="mb-16"
+            color={
+              activeStep === 'result' && index === 0
+                ? colors.success
+                : colors.primaryLight
+            }
+          />
+          <h3 className="font-size-5 mb-8 mt-0">
+            <T id={`OnboardingMarketing.${index + 1}.title`} />
+          </h3>
+          <p className="secondary m-0">
+            <T id={`OnboardingMarketing.${index + 1}.description`} />
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default OnboardingMarketing;

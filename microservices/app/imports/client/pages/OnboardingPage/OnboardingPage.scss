@@ -37,22 +37,44 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
+    max-width: 1000px;
+    margin: 0 auto;
 
     > * {
-      border: 1px solid $border-grey;
+      border: 1px solid transparent;
       padding: 32px;
       margin: 8px;
-      transition: border 200ms $bezier;
+      transition: border 200ms $bezier, transform 200ms $bezier;
       width: 250px;
+      background-color: white;
+      transform: scale(1);
+
+      @media screen and (max-width: $med) {
+        width: 200px;
+      }
 
       &:hover {
         border: 1px solid $primary;
+        transform: scale(1.05);
       }
     }
   }
 
-  &-translation {
+  &-form {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 32px;
+    
+
+    button[type="submit"] {
+      margin: 0 auto;
+      margin-top: 40px;
+      display: flex;
+    }
+  }
+
+  &-recap {
     padding: 16px;
     margin: 8px;
   }

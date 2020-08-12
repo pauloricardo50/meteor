@@ -12,27 +12,24 @@ const OnboardingChoice = ({ id, choices }) => {
   const { handleNextStep } = useOnboarding();
 
   return (
-    <OnboardingStep
-      title={<T id={`OnboardingStep.${id}.title`} />}
-      description={<T id={`OnboardingStep.${id}.description`} />}
-    >
+    <OnboardingStep>
       <div className="onboarding-choices">
         {choices.map(({ id: choiceId, icon, iconComponent }) => (
           <ButtonBase
             key={choiceId}
-            onClick={() => {
-              handleNextStep();
-            }}
+            onClick={handleNextStep}
             className="flex-col center-align"
+            focusRipple
           >
-            {iconComponent || (
-              <FaIcon
-                icon={icon}
-                size="3x"
-                className="mb-16"
-                color={colors.duotoneIconColor}
-              />
-            )}
+            {iconComponent ||
+              (icon ? (
+                <FaIcon
+                  icon={icon}
+                  size="3x"
+                  className="mb-16"
+                  color={colors.duotoneIconColor}
+                />
+              ) : null)}
             <T id={`Forms.${id}.${choiceId}`} />
           </ButtonBase>
         ))}

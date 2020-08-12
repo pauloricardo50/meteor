@@ -6,14 +6,14 @@ import OnboardingMarketing from './OnboardingMarketing';
 import OnboardingRecap from './OnboardingRecap';
 import OnboardingStepper from './OnboardingStepper';
 
-const OnboardingPage = ({ loan }) => (
+const OnboardingPage = () => (
   <div className="onboarding">
     <OnboardingMarketing />
 
     <div className="onboarding-main">
       <OnboardingStepper />
       <OnboardingContent />
-      <OnboardingRecap />
+      {/* <OnboardingRecap /> */}
     </div>
   </div>
 );
