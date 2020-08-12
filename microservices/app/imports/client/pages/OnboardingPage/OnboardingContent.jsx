@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import OnboardingChoice from './OnboardingComponents/OnboardingChoice';
 import OnboardingForm from './OnboardingComponents/OnboardingForm';
-import OnboardingResult from './OnboardingComponents/OnboardingResult';
+import OnboardingResult from './OnboardingComponents/OnboardingResult/OnboardingResult';
 import { useOnboarding } from './OnboardingContext';
 import { steps } from './onboardingSteps';
 

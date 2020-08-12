@@ -74,8 +74,38 @@
     }
   }
 
-  &-recap {
-    padding: 16px;
-    margin: 8px;
+
+  &-result {
+    display: flex;
+    flex-direction: column;
+
+    &-value {
+      margin: 40px 0;
+      font-size: 5em;
+      align-self: center;
+
+      @include screen(med) {
+        font-size: 3em;
+      }
+    }
+
+    &-offers {
+      text-align: center;
+
+      .offers {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .offer {
+        width: 150px;
+        margin: 8px;
+        padding: 16px;
+        border: 1px solid $border-grey;
+        border-radius: 4px;
+        text-align: center;
+      }
+    }
   }
 }

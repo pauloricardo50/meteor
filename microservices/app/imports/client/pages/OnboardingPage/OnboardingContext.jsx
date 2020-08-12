@@ -11,14 +11,14 @@ export const useOnboarding = () => useContext(Context);
 
 const getInitialStep = () => 'purchaseType';
 
-const withOnboardingContext = Component => props => {
+const withOnboardingContext = Component => ({ loan }) => {
   const [activeStep = 'purchaseType', setActiveStep] = useQueryParam(
     'activeStep',
     StringParam,
   );
   const [latestStep, setLatestStep] = useState();
   const isMobile = useMedia({ maxWidth: 768 });
-  const stepIds = useMemo(() => getStepIds(props.loan), [props.loan._id]);
+  const stepIds = useMemo(() => getStepIds(loan), [loan._id]);
   const nextStepId = stepIds[stepIds.findIndex(id => id === activeStep) + 1];
   const handleNextStep = () => {
     if (activeStep !== 'result') {
@@ -41,9 +41,10 @@ const withOnboardingContext = Component => props => {
         resetPosition,
         setActiveStep,
         stepIds,
+        loan,
       }}
     >
-      <Component {...props} />
+      <Component />
     </Context.Provider>
   );
 };

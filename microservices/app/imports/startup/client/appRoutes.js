@@ -12,7 +12,7 @@ import BorrowersPage from '../../client/pages/BorrowersPage/loadable';
 import DashboardPage from '../../client/pages/DashboardPage/loadable';
 import FilesPage from '../../client/pages/FilesPage/loadable';
 import FinancingPage from '../../client/pages/FinancingPage/loadable';
-import OnboardingPage from '../../client/pages/OnboardingPage/OnboardingPage';
+import OnboardingPage from '../../client/pages/OnboardingPage';
 import PropertiesPage from '../../client/pages/PropertiesPage/loadable';
 import RefinancingPage from '../../client/pages/RefinancingPage/loadable';
 import SignupSuccessPage from '../../client/pages/SignupSuccessPage/loadable';
