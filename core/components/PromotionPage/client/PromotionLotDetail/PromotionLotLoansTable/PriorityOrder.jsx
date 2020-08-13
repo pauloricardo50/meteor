@@ -2,6 +2,8 @@ import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import Chip from '../../../../Material/Chip';
+import StickyPopover from '../../../../StickyPopover';
+import T from '../../../../Translation';
 
 const getChipColor = ({ currentPromotionLotId, promotionLots, loanId }) => {
   const attributedTo = promotionLots[0]?.attributedToLink?._id;
@@ -36,6 +38,32 @@ const getTooltip = color => {
   }
 };
 
+const makeMapChip = (currentPromotionLotId, loanId) => ({
+  _id,
+  name,
+  promotionLots,
+}) => {
+  const chipColor = getChipColor({
+    currentPromotionLotId,
+    promotionLots,
+    loanId,
+  });
+
+  return (
+    <Tooltip
+      key={_id}
+      placement="bottom"
+      title={getTooltip(chipColor)}
+      PopperProps={{
+        // Above the StickyPopover
+        style: { zIndex: 10000 },
+      }}
+    >
+      <Chip label={name} className={chipColor} />
+    </Tooltip>
+  );
+};
+
 const PriorityOrder = ({
   promotionOptions = [],
   currentPromotionLotId,
@@ -45,21 +73,29 @@ const PriorityOrder = ({
     ({ priorityOrder: A }, { priorityOrder: B }) => A - B,
   );
 
+  const firstThree = sortedPromotionOptions.slice(0, 2);
+  const rest = sortedPromotionOptions.slice(2);
+
   return (
     <div className="priority-order">
-      {sortedPromotionOptions.map(({ _id, name, promotionLots }) => {
-        const chipColor = getChipColor({
-          currentPromotionLotId,
-          promotionLots,
-          loanId,
-        });
+      {firstThree.map(makeMapChip(currentPromotionLotId, loanId))}
 
-        return (
-          <Tooltip key={_id} placement="bottom" title={getTooltip(chipColor)}>
-            <Chip label={name} className={chipColor} />
-          </Tooltip>
-        );
-      })}
+      {rest?.length ? (
+        <StickyPopover
+          component={
+            <div className="priority-order flex-col">
+              {rest.map(makeMapChip(currentPromotionLotId, loanId))}
+            </div>
+          }
+        >
+          <span style={{ alignSelf: 'center' }}>
+            <T
+              id="PromotionPriorityOrder.more"
+              values={{ count: rest.length }}
+            />
+          </span>
+        </StickyPopover>
+      ) : null}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 {
+  "PromotionPriorityOrder.more": "et {count} de plus",
   "ContactAssigneeModal.or": "— ou —",
   "ContactAssigneeModal.title": "Prenez rendez-vous",
   "ContactAssigneeModal.description": "Contactez votre conseiller {assigneeName} pour avancer dans les prochaines étapes.",
