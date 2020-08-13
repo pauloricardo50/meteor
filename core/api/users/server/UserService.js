@@ -28,16 +28,17 @@ export class UserServiceClass extends CollectionService {
 
   getByEmail(email, fragment = {}, additionalFilters = {}) {
     let user = null;
+    const cleanEmail = email.trim();
     const mergedFragment = { _id: 1, ...fragment };
     user = this.get(
-      { 'emails.address': email, ...additionalFilters },
+      { 'emails.address': cleanEmail, ...additionalFilters },
       mergedFragment,
     );
 
     if (!user) {
       const filters = selectorForFastCaseInsensitiveLookup(
         'emails.address',
-        email,
+        cleanEmail,
       );
       const candidateUsers = this.fetch({
         $filters: { ...filters, ...additionalFilters },
