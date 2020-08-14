@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
 import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
@@ -12,37 +12,38 @@ import useIntercom from 'core/hooks/useIntercom';
 import AnonymousLoanClaimer from './AnonymousLoanClaimer';
 import AnonymousLoanRemover from './AnonymousLoanRemover';
 import AppLayoutContainer from './AppLayoutContainer';
+import { useAppRedirect } from './appLayoutHelpers';
 import Navs from './Navs';
+import { useSideNavContext } from './SideNavContext';
 
 const exactMobilePaths = ['/account', '/'];
 const mobilePaths = ['/enroll-account', '/reset-password', '/signup'];
 
-const renderMobile = props => {
-  const {
-    history: {
-      location: { pathname },
-    },
-    loan,
-  } = props;
+const renderMobile = (loan, history) => {
   const isSimple = loan?.applicationType === APPLICATION_TYPES.SIMPLE;
 
   if (isSimple) {
     return true;
   }
-  if (exactMobilePaths.some(path => pathname === path)) {
+  if (exactMobilePaths.some(path => history.location.pathname === path)) {
     return true;
   }
-  if (mobilePaths.some(path => pathname.startsWith(path))) {
+  if (mobilePaths.some(path => history.location.pathname.startsWith(path))) {
     return true;
   }
 
   return false;
 };
 
-const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
+const AppLayout = ({ children, ...props }) => {
+  const shouldShowSideNav = useSideNavContext();
   const currentUser = useCurrentUser();
+  const redirect = useAppRedirect();
   const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
-  const rootClasses = classnames('app-root', { mobile: renderMobile(props) });
+  const history = useHistory();
+  const rootClasses = classnames('app-root', {
+    mobile: renderMobile(props.loan, history),
+  });
   useIntercom();
 
   if (redirect) {
@@ -70,8 +71,6 @@ const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
 AppLayout.propTypes = {
   children: PropTypes.node.isRequired,
   currentUser: PropTypes.objectOf(PropTypes.any),
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-  shouldShowSideNav: PropTypes.bool.isRequired,
 };
 
 AppLayout.defaultProps = {

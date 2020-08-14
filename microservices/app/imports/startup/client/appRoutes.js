@@ -6,18 +6,20 @@ import NotFound from 'core/components/NotFound/loadable';
 import PasswordResetPage from 'core/components/PasswordResetPage/loadable';
 
 import AppAccountPage from '../../client/pages/AppAccountPage/loadable';
-import AppPage from '../../client/pages/AppPage';
 import AppPromotionPage from '../../client/pages/AppPromotionPage/loadable';
+import AppRootPage from '../../client/pages/AppRootPage'; // No loadable here, this should load instantly
 import BorrowersPage from '../../client/pages/BorrowersPage/loadable';
 import DashboardPage from '../../client/pages/DashboardPage/loadable';
 import FilesPage from '../../client/pages/FilesPage/loadable';
 import FinancingPage from '../../client/pages/FinancingPage/loadable';
 import OnboardingPage from '../../client/pages/OnboardingPage';
+import ProPage from '../../client/pages/ProPage/loadable';
 import PropertiesPage from '../../client/pages/PropertiesPage/loadable';
 import RefinancingPage from '../../client/pages/RefinancingPage/loadable';
 import SignupSuccessPage from '../../client/pages/SignupSuccessPage/loadable';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
 import SolvencyPage from '../../client/pages/SolvencyPage/loadable';
+import UserLoansPage from '../../client/pages/UserLoansPage/loadable';
 import WelcomePage from '../../client/pages/WelcomePage/loadable';
 
 export default {
@@ -63,13 +65,26 @@ export default {
     path: '/loans/:loanId/solvency',
     component: SolvencyPage,
   },
-  ONBOARDING_PAGE: {
+  LOAN_ONBOARDING_PAGE: {
     path: '/loans/:loanId/onboarding',
+    component: OnboardingPage,
+  },
+  ONBOARDING_PAGE: {
+    path: '/onboarding',
     component: OnboardingPage,
   },
   DASHBOARD_PAGE: {
     path: '/loans/:loanId',
     component: DashboardPage,
+  },
+  USER_LOANS_PAGE: {
+    path: '/loans',
+    component: UserLoansPage,
+    exact: true,
+  },
+  PRO_PAGE: {
+    path: '/pro',
+    component: ProPage,
   },
   SIGNUP_SUCCESS_PAGE: {
     path: '/signup/:email',
@@ -89,7 +104,7 @@ export default {
   },
   APP_PAGE: {
     path: '/',
-    component: AppPage,
+    component: AppRootPage,
     exact: true,
   },
   IMPERSONATE: {

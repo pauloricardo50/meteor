@@ -1,20 +1,20 @@
-import { withRouter } from 'react-router-dom';
-import { compose, withProps, withState } from 'recompose';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { withProps } from 'recompose';
 
 import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import { createRoute } from 'core/utils/routerUtils';
 
 import APP_ROUTES from '../../../startup/client/appRoutes';
 
-export default compose(
-  withState(
-    'dontShowAgain',
-    'setDontShowAgain',
-    ({ loan: { displayWelcomeScreen } }) => !displayWelcomeScreen,
-  ),
-  withRouter,
-  withProps(
-    ({ dontShowAgain, rerender, loan: { _id: loanId }, page, history }) => ({
+export default withProps(
+  ({ rerender, loan: { _id: loanId, displayWelcomeScreen }, page }) => {
+    const [dontShowAgain, setDontShowAgain] = useState(!displayWelcomeScreen);
+    const history = useHistory();
+
+    return {
+      dontShowAgain,
+      setDontShowAgain,
       handleClick: () => {
         window.hideWelcomeScreen = true;
 
@@ -32,6 +32,6 @@ export default compose(
           loanUpdate.run({ loanId, object: { displayWelcomeScreen: false } });
         }
       },
-    }),
-  ),
+    };
+  },
 );

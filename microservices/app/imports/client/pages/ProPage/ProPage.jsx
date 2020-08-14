@@ -10,10 +10,10 @@ import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';
 
 import ROUTES from '../../../startup/client/appRoutes';
-import LoanCards from './SuperDashboard/LoanCards';
-import { useUserLoans } from './SuperDashboard/SuperDashboard';
+import LoanCards from '../UserLoansPage/LoanCards';
+import { useUserLoans } from '../UserLoansPage/UserLoansPage';
 
-const ProAppPage = ({ loans, insertLoan }) => {
+const ProPage = ({ insertLoan }) => {
   const history = useHistory();
   const { data, loading } = useUserLoans();
   const hasLoans = data?.loans?.length > 0;
@@ -83,4 +83,4 @@ const ProAppPage = ({ loans, insertLoan }) => {
     </div>
   );
 };
-export default ProAppPage;
+export default ProPage;

@@ -17,7 +17,7 @@ const AppRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     routes={APP_ROUTES}
-    currentUser={{
+    currentUserConfig={{
       query: appUser,
       params: {
         $body: {

@@ -1,24 +1,42 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
+import useCurrentUser from 'core/hooks/useCurrentUser';
+import { createRoute } from 'core/utils/routerUtils';
+
+import appRoutes from '../../../startup/client/appRoutes';
 import PageApp from '../../components/PageApp';
+import WelcomeScreen from '../../components/WelcomeScreen';
 import DashboardInfo from './DashboardInfo';
-import DashboardPageContainer from './DashboardPageContainer';
 import DashboardProgress from './DashboardProgress';
 import DashboardRecap from './DashboardRecap';
 
-const DashboardPage = props => (
-  <PageApp id="DashboardPage" fullWidth>
-    <DashboardProgress {...props} />
-    <DashboardRecap {...props} />
-    <DashboardInfo {...props} />
-  </PageApp>
-);
+const DashboardPage = props => {
+  const { loan } = props;
+  const [, rerender] = useState(); // Use this to rerender after changing the window object
+  const currentUser = useCurrentUser();
 
-DashboardPage.propTypes = {
-  loan: PropTypes.objectOf(PropTypes.any).isRequired,
+  if (loan.displayWelcomeScreen && !window.hideWelcomeScreen) {
+    return <WelcomeScreen rerender={rerender} />;
+  }
+
+  if (currentUser === null || !loan.maxPropertyValue?.date) {
+    return (
+      <Redirect
+        to={createRoute(appRoutes.LOAN_ONBOARDING_PAGE.path, {
+          loanId: loan._id,
+        })}
+      />
+    );
+  }
+
+  return (
+    <PageApp id="DashboardPage" fullWidth>
+      <DashboardProgress {...props} />
+      <DashboardRecap {...props} />
+      <DashboardInfo {...props} />
+    </PageApp>
+  );
 };
 
-DashboardPage.defaultProps = {};
-
-export default DashboardPageContainer(DashboardPage);
+export default DashboardPage;

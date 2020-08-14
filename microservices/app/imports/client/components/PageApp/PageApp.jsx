@@ -1,5 +1,11 @@
+import React from 'react';
+
 import Page from 'core/components/Page';
 
-import { withSideNavContext } from '../../layouts/AppLayout/SideNavContext';
+import { useSideNavContext } from '../../layouts/AppLayout/SideNavContext';
 
-export default withSideNavContext(Page);
+const PageApp = props => (
+  <Page {...props} shouldShowSideNav={useSideNavContext()} />
+);
+
+export default PageApp;

@@ -30,7 +30,7 @@ export const useUserLoans = () =>
     },
   });
 
-const SuperDashboard = () => {
+const UserLoansPage = () => {
   const { data, loading } = useUserLoans();
 
   if (loading) {
@@ -44,8 +44,8 @@ const SuperDashboard = () => {
   const { loans = [], name } = data;
 
   return (
-    <div className="super-dashboard">
-      <div className="super-dashboard-title">
+    <div className="user-loans">
+      <div className="user-loans-title">
         <h1>
           <T id="SuperDashboard.welcome" values={{ name }} />
         </h1>
@@ -58,4 +58,4 @@ const SuperDashboard = () => {
   );
 };
 
-export default SuperDashboard;
+export default UserLoansPage;
