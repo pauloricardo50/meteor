@@ -15,6 +15,7 @@ import {
 import { RESIDENCE_TYPE } from '../../properties/propertyConstants';
 import { initialDocuments } from '../loanAdditionalDocuments';
 import {
+  ACQUISITION_STATUS,
   APPLICATION_TYPES,
   CANTONS,
   INSURANCE_POTENTIAL,
@@ -127,6 +128,11 @@ const LoanSchema = new SimpleSchema({
   },
   disbursementDate: { type: Date, optional: true },
   frontTagId: { type: String, optional: true },
+  acquisitionStatus: {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(ACQUISITION_STATUS),
+  },
 
   // Link storage fields
   ...promotionSchema,

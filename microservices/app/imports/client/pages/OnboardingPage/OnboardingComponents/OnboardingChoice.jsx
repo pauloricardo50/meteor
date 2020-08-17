@@ -8,7 +8,7 @@ import colors from 'core/config/colors';
 import { useOnboarding } from '../OnboardingContext';
 import OnboardingStep from './OnboardingStep';
 
-const OnboardingChoice = ({ id, choices }) => {
+const OnboardingChoice = ({ id, choices, onSubmit }) => {
   const { handleNextStep } = useOnboarding();
 
   return (
@@ -17,7 +17,10 @@ const OnboardingChoice = ({ id, choices }) => {
         {choices.map(({ id: choiceId, icon, iconComponent }) => (
           <ButtonBase
             key={choiceId}
-            onClick={handleNextStep}
+            onClick={() => {
+              handleNextStep();
+              onSubmit(choiceId);
+            }}
             className="flex-col center-align"
             focusRipple
           >

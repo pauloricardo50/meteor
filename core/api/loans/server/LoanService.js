@@ -49,7 +49,6 @@ import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenues/revenueConstants';
 import { TASK_STATUS } from '../../tasks/taskConstants';
 import UserService from '../../users/server/UserService';
 import {
-  APPLICATION_TYPES,
   CANTONS,
   LOANS_COLLECTION,
   LOAN_STATUS,
@@ -1229,6 +1228,27 @@ class LoanService extends CollectionService {
 
   updateInsurancePotential({ loanId, insurancePotential }) {
     return this._update({ id: loanId, object: { insurancePotential } });
+  }
+
+  upsertUserProperty({ loanId, property }) {
+    const { properties = [] } = this.get(loanId, {
+      properties: { category: 1 },
+    });
+
+    if (
+      properties.length > 0 &&
+      properties[0].category === PROPERTY_CATEGORY.USER
+    ) {
+      return PropertyService.update({
+        propertyId: properties[0]._id,
+        object: property,
+      });
+    }
+
+    return PropertyService.insert({
+      property: { category: PROPERTY_CATEGORY.USER }, // Avoid extra fetch in PropertyService
+      loanId,
+    });
   }
 }
 

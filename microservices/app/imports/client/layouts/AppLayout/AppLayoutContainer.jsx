@@ -14,7 +14,7 @@ import useMeteorData from 'core/hooks/useMeteorData';
 import { withSideNavContextProvider } from './SideNavContext';
 
 const loanFragment = merge({}, calculatorLoan(), {
-  applicationType: 1,
+  acquisitionStatus: 1,
   borrowers: { age: 1, name: 1, $options: { sort: { createdAt: 1 } } },
   contacts: 1,
   customName: 1,
@@ -72,6 +72,7 @@ export default compose(
   withProps(({ loan }) => {
     const { data: currentInterestRates } = useMeteorData({
       query: loan && currentInterestRatesQuery,
+      refetchOnMethodCall: false,
     });
 
     if (!loan) {

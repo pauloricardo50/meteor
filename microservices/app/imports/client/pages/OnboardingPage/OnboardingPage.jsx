@@ -1,28 +1,15 @@
 import React from 'react';
 
-import OnboardingContent from './OnboardingContent';
-import withOnboardingContext from './OnboardingContext';
-import OnboardingMarketing from './OnboardingMarketing';
-import OnboardingRecap from './OnboardingRecap';
-import OnboardingStepper from './OnboardingStepper';
+import OnboardingWithLoan from './OnboardingWithLoan';
 import OnboardingWithoutLoan from './OnboardingWithoutLoan';
 
-const OnboardingPage = ({ hasLoan }) => {
-  if (!hasLoan) {
+const OnboardingPage = ({ loan }) => {
+  console.log('loan:', loan);
+  if (!loan) {
     return <OnboardingWithoutLoan />;
   }
 
-  return (
-    <div className="onboarding">
-      <OnboardingMarketing />
-
-      <div className="onboarding-main">
-        <OnboardingStepper />
-        <OnboardingContent />
-        {/* <OnboardingRecap /> */}
-      </div>
-    </div>
-  );
+  return <OnboardingWithLoan loan={loan} />;
 };
 
-export default withOnboardingContext(OnboardingPage);
+export default OnboardingPage;

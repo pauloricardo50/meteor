@@ -4,7 +4,8 @@ import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
 
 import { steps } from './onboardingSteps';
 
-export const getStepIds = () => steps.filter(x => x).map(({ id }) => id);
+export const getSteps = loan =>
+  steps.filter(({ condition }) => condition(loan));
 
 export const insertAnonymousLoan = purchaseType =>
   anonymousLoanInsert

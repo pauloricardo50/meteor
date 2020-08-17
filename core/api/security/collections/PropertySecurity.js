@@ -21,6 +21,7 @@ import {
   isAllowedToViewProProperty,
 } from '../clientSecurityHelpers';
 import Security from '../Security';
+import LoanSecurity from './LoanSecurity';
 import PromotionSecurity from './PromotionSecurity';
 
 class PropertySecurity {
@@ -145,8 +146,16 @@ class PropertySecurity {
       const property = PropertyService.get(propertyId, {
         userId: 1,
         userLinks: 1,
+        loans: { anonymous: 1 },
       });
-      Security.checkOwnership(property, userId);
+
+      if (property.userId || property.userLinks?.length) {
+        Security.checkOwnership(property);
+      } else if (property.loans?.length === 1 && property.loans[0].anonymous) {
+        LoanSecurity.checkAnonymousLoan(property.loans[0]._id);
+      } else {
+        Security.handleUnauthorized('property update not allowed');
+      }
     }
   }
 

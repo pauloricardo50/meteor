@@ -13,7 +13,7 @@ const Components = {
 };
 
 const OnboardingContent = () => {
-  const { activeStep, stepIds, resetPosition } = useOnboarding();
+  const { activeStep, stepIds, resetPosition, loan } = useOnboarding();
   const step = steps.find(({ id }) => id === activeStep);
   const isBadStep = !step || !stepIds.includes(activeStep);
 
@@ -27,12 +27,12 @@ const OnboardingContent = () => {
     return null;
   }
 
-  const { component, id, props } = step;
+  const { component, id, props, onSubmit } = step;
   const Component = Components[component];
 
   return (
     <div className="onboarding-content">
-      <Component id={id} key={id} {...props} />
+      <Component id={id} key={id} {...props} onSubmit={onSubmit(loan)} />
     </div>
   );
 };

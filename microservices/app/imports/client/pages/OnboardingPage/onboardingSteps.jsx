@@ -10,17 +10,48 @@ import {
   ACQUISITION_STATUS,
   PURCHASE_TYPE,
 } from 'core/api/loans/loanConstants';
+import {
+  loanUpdate,
+  upsertUserProperty,
+} from 'core/api/loans/methodDefinitions';
+import { propertyUpdate } from 'core/api/properties/methodDefinitions';
 import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import AcquisitionIcon from 'core/components/Icon/AcquisitionIcon';
 import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
 import { refinancingPropertySchema } from 'core/components/PropertyForm/PropertyAdderDialog';
 import { not, or } from 'core/utils/functional';
 
+import { borrowerUpdate } from '../../../core/api/borrowers/methodDefinitions';
+import { loanInsertBorrowers } from '../../../core/api/loans/methodDefinitions';
+
 const always = () => true;
 const isProFlow = loan => loan.hasPromotion || loan.hasProProperty;
 const isRefinancing = loan => loan.purchaseType === PURCHASE_TYPE.REFINANCING;
 const knowsProperty = loan =>
   loan.projectStatus && loan.projectStatus !== ACQUISITION_STATUS.SEARCHING;
+
+const updateBorrowers = (loan, borrower1, borrower2) => {
+  const promises = [];
+  if (borrower1) {
+    promises.push(
+      borrowerUpdate.run({
+        borrowerId: loan.borrowers[0]._id,
+        object: borrower1,
+      }),
+    );
+  }
+
+  if (borrower2) {
+    promises.push(
+      borrowerUpdate.run({
+        borrowerId: loan.borrowers[1]._id,
+        object: borrower2,
+      }),
+    );
+  }
+
+  return Promise.all(promises);
+};
 
 export const steps = [
   {
@@ -39,6 +70,9 @@ export const steps = [
       ],
     },
     condition: not(isProFlow),
+    isDone: loan => !!loan.purchaseType,
+    onSubmit: loan => purchaseType =>
+      loanUpdate.run({ loanId: loan._id, object: { purchaseType } }),
   },
   {
     id: 'acquisitionStatus',
@@ -53,6 +87,9 @@ export const steps = [
       ],
     },
     condition: not(or(isProFlow, isRefinancing)),
+    isDone: loan => !!loan.acquisitionStatus,
+    onSubmit: loan => acquisitionStatus =>
+      loanUpdate.run({ loanId: loan._id, object: { acquisitionStatus } }),
   },
   {
     id: 'residenceType',
@@ -65,6 +102,9 @@ export const steps = [
       ],
     },
     condition: always,
+    isDone: loan => !!loan.residenceType,
+    onSubmit: loan => residenceType =>
+      loanUpdate.run({ loanId: loan._id, object: { residenceType } }),
   },
   {
     id: 'canton',
@@ -79,6 +119,20 @@ export const steps = [
         { id: 'VD' },
       ],
     },
+    isDone: loan => !!loan.properties?.[0]?.canton,
+    onSubmit: loan => canton => {
+      if (loan.properties?.[0]?._id) {
+        return propertyUpdate.run({
+          propertyId: loan.properties[0]._id,
+          object: { canton },
+        });
+      }
+
+      return upsertUserProperty.run({
+        loanId: loan._id,
+        property: { canton },
+      });
+    },
   },
   {
     id: 'propertyValue',
@@ -87,6 +141,12 @@ export const steps = [
     props: {
       schema: new SimpleSchema({ value: Number }),
     },
+    isDone: loan => !!loan.properties?.[0]?.value,
+    onSubmit: loan => values =>
+      propertyUpdate.run({
+        propertyId: loan.properties[0]._id,
+        object: values,
+      }),
   },
   {
     id: 'refinancing',
@@ -95,6 +155,9 @@ export const steps = [
     props: {
       schema: refinancingPropertySchema.pick('previousLoanTranches'),
     },
+    isDone: loan => loan.previousLoanTranches?.length > 0,
+    onSubmit: loan => values =>
+      loanUpdate.run({ loanId: loan._id, object: values }),
   },
   {
     id: 'borrowerCount',
@@ -103,23 +166,37 @@ export const steps = [
       choices: [{ id: 1 }, { id: 2 }],
     },
     condition: always,
+    isDone: loan => loan.borrowers?.length > 0,
+    onSubmit: loan => amount =>
+      loanInsertBorrowers.run({ loanId: loan._id, amount }),
   },
   {
     id: 'income',
     component: 'OnboardingForm',
     condition: always,
     props: { schema: new SimpleSchema({}) },
+    isDone: loan => loan.borrowers?.some(({ salary }) => salary > 0),
+    onSubmit: loan => ({ borrower1, borrower2 }) =>
+      updateBorrowers(loan, borrower1, borrower2),
   },
   {
     id: 'ownFunds',
     component: 'OnboardingForm',
     condition: not(isRefinancing),
     props: { schema: new SimpleSchema({}) },
+    isDone: loan =>
+      loan.borrowers?.some(
+        ({ bankFortune = [] }) =>
+          bankFortune.reduce((t, { value }) => t + value, 0) > 0,
+      ),
+    onSubmit: loan => ({ borrower1, borrower2 }) =>
+      updateBorrowers(loan, borrower1, borrower2),
   },
 
   {
     id: 'result',
     component: 'OnboardingResult',
     condition: always,
+    isDone: loan => !!loan.maxPropertyValue?.date,
   },
 ];

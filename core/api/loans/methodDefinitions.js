@@ -266,3 +266,8 @@ export const updateInsurancePotential = new Method({
   name: 'updateInsurancePotential',
   params: { loanId: String, insurancePotential: String },
 });
+
+export const upsertUserProperty = new Method({
+  name: 'upsertUserProperty',
+  params: { loanId: String, property: Object },
+});
