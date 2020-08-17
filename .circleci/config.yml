@@ -1218,6 +1218,49 @@ workflows:
       - Www2 - unit tests:
           requires:
             - Prepare
+      - App - unit tests:
+          requires:
+            - Prepare
+      - Core - unit tests:
+          requires:
+            - Prepare
+      - Admin - unit tests:
+          requires:
+            - Prepare
+      - Pro - unit tests:
+          requires:
+            - Prepare
       - Www2 - e2e tests:
           requires:
             - Prepare
+      - App - e2e tests:
+          requires:
+            - Prepare
+      - Admin - e2e tests:
+          requires:
+            - Prepare
+      - Pro - e2e tests:
+          requires:
+            - Prepare
+      - App - deploy:
+          requires: &ref_1
+            - App - unit tests
+            - Admin - unit tests
+            - Core - unit tests
+            - App - e2e tests
+            - Admin - e2e tests
+            - Pro - e2e tests
+          filters: &ref_2
+            branches:
+              only:
+                - staging
+                - master
+      - Admin - deploy:
+          requires: *ref_1
+          filters: *ref_2
+      - Pro - deploy:
+          requires: *ref_1
+          filters: *ref_2
+      - Backend - deploy:
+          requires: *ref_1
+          filters: *ref_2
