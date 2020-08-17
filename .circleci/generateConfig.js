@@ -245,6 +245,8 @@ const testGatsbyJobE2E = () => {
   const name = 'www2'
   return ({
   ...defaultJobValues,
+  // TODO: we can probably use medium+ after updating to Meteor 1.10.3
+  resource_class: 'large',
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore global cache', cacheKeys.global()),
