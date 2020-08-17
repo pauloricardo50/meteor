@@ -18,7 +18,7 @@ const withOnboardingContext = Component => ({ loan }) => {
   );
   const [latestStep, setLatestStep] = useState();
   const isMobile = useMedia({ maxWidth: 768 });
-  const stepIds = useMemo(() => getStepIds(loan), [loan._id]);
+  const stepIds = useMemo(() => getStepIds(loan), [loan?._id]);
   const nextStepId = stepIds[stepIds.findIndex(id => id === activeStep) + 1];
   const handleNextStep = () => {
     if (activeStep !== 'result') {
@@ -44,7 +44,7 @@ const withOnboardingContext = Component => ({ loan }) => {
         loan,
       }}
     >
-      <Component />
+      <Component hasLoan={!!loan} />
     </Context.Provider>
   );
 };

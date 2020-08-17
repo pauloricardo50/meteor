@@ -71,8 +71,12 @@ export default compose(
   injectCalculator(),
   withProps(({ loan }) => {
     const { data: currentInterestRates } = useMeteorData({
-      query: currentInterestRatesQuery,
+      query: loan && currentInterestRatesQuery,
     });
+
+    if (!loan) {
+      return;
+    }
 
     return {
       loan: {

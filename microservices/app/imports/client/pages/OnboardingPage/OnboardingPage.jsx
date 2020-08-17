@@ -5,17 +5,24 @@ import withOnboardingContext from './OnboardingContext';
 import OnboardingMarketing from './OnboardingMarketing';
 import OnboardingRecap from './OnboardingRecap';
 import OnboardingStepper from './OnboardingStepper';
+import OnboardingWithoutLoan from './OnboardingWithoutLoan';
 
-const OnboardingPage = () => (
-  <div className="onboarding">
-    <OnboardingMarketing />
+const OnboardingPage = ({ hasLoan }) => {
+  if (!hasLoan) {
+    return <OnboardingWithoutLoan />;
+  }
 
-    <div className="onboarding-main">
-      <OnboardingStepper />
-      <OnboardingContent />
-      {/* <OnboardingRecap /> */}
+  return (
+    <div className="onboarding">
+      <OnboardingMarketing />
+
+      <div className="onboarding-main">
+        <OnboardingStepper />
+        <OnboardingContent />
+        {/* <OnboardingRecap /> */}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default withOnboardingContext(OnboardingPage);

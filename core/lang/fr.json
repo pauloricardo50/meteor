@@ -1,4 +1,8 @@
 {
+  "OnboardingWithoutLoan.title": "Bienvenue sur e-Potek",
+  "OnboardingWithoutLoan.ACQUISITION": "Acheter un nouveau bien",
+  "OnboardingWithoutLoan.REFINANCING": "Renouveler un prêt",
+  "OnboardingWithoutLoan.description": "e-Potek vous permet de rapidement déterminer votre capacité de financement quel que soit votre projet et d'obtenir la meilleure offre de prêt de tout le marché.",
   "Forms.borrowerCount.1": "Un emprunteur",
   "Forms.borrowerCount.2": "Deux emprunteurs",
   "Forms.acquisitionStatus": "Statut du projet",

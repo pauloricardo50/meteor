@@ -113,3 +113,42 @@
     }
   }
 }
+
+.onboarding-without-loan {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+  justify-content: center;
+
+  > * {
+    padding: 16px;
+  }
+
+
+  img {
+    width: 400px;
+    height: 400px;
+  }
+
+  p {
+    max-width: 500px;
+  }
+
+  &-ctas {
+    margin-top: 40px;
+  }
+
+
+  @include screen(med) {
+    flex-direction: column-reverse;
+    align-items: center;
+
+    img {
+      width: 300px;
+      height: 300px;
+    }
+  }
+}

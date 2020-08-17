@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { Redirect, useHistory } from 'react-router-dom';
 
-import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
 import ImpersonateNotification from 'core/components/ImpersonateNotification';
 import useCurrentUser from 'core/hooks/useCurrentUser';
@@ -17,18 +16,21 @@ import Navs from './Navs';
 import { useSideNavContext } from './SideNavContext';
 
 const exactMobilePaths = ['/account', '/'];
-const mobilePaths = ['/enroll-account', '/reset-password', '/signup'];
+const mobilePathsStart = ['/enroll-account', '/reset-password', '/signup'];
+const mobilePathsContains = ['/onboarding'];
 
-const renderMobile = (loan, history) => {
-  const isSimple = loan?.applicationType === APPLICATION_TYPES.SIMPLE;
-
-  if (isSimple) {
-    return true;
-  }
+const renderMobile = history => {
   if (exactMobilePaths.some(path => history.location.pathname === path)) {
     return true;
   }
-  if (mobilePaths.some(path => history.location.pathname.startsWith(path))) {
+  if (
+    mobilePathsStart.some(path => history.location.pathname.startsWith(path))
+  ) {
+    return true;
+  }
+  if (
+    mobilePathsContains.some(path => history.location.pathname.includes(path))
+  ) {
     return true;
   }
 
@@ -42,7 +44,7 @@ const AppLayout = ({ children, ...props }) => {
   const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
   const history = useHistory();
   const rootClasses = classnames('app-root', {
-    mobile: renderMobile(props.loan, history),
+    mobile: renderMobile(history),
   });
   useIntercom();
 

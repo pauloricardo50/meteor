@@ -105,7 +105,7 @@ const useIntercom = () => {
       delete window?.Intercom;
       delete window?.intercomSettings;
     };
-  });
+  }, []);
 
   useEffect(() => {
     IntercomAPI('shutdown');

@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
-
 export const SideNavContext = React.createContext();
 
 const exactRoutesWithoutSidenav = ['/'];
@@ -16,21 +14,16 @@ const routesWithoutSidenav = [
   { route: '/onboarding', func: 'endsWith' },
 ];
 
-const getShowSideNav = ({ location }, { applicationType }) =>
+const getShowSideNav = ({ location }) =>
   exactRoutesWithoutSidenav.indexOf(location.pathname) === -1 &&
   routesWithoutSidenav.every(
     ({ route, func }) => !location.pathname[func](route),
-  ) &&
-  applicationType !== APPLICATION_TYPES.SIMPLE;
-
-export const withSideNavContextProvider = Component => props => {
-  const history = useHistory();
-  const { loan } = props;
-  return (
-    <SideNavContext.Provider value={getShowSideNav(history, loan)}>
-      <Component {...props} />
-    </SideNavContext.Provider>
   );
-};
+
+export const withSideNavContextProvider = Component => props => (
+  <SideNavContext.Provider value={getShowSideNav(useHistory())}>
+    <Component {...props} />
+  </SideNavContext.Provider>
+);
 
 export const useSideNavContext = () => useContext(SideNavContext);
