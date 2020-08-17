@@ -32,7 +32,7 @@ meteorhacks:inject-initial
 edgee:slingshot
 dburles:google-maps
 tmeasday:acceptance-test-driver
-montiapm:agent@2.39.0-beta.5
+montiapm:agent@2.39.0-beta.8
 aldeed:schema-index
 aldeed:schema-deny
 dynamic-import

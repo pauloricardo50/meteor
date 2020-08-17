@@ -19,6 +19,7 @@ jobs:
           METEOR_ALLOW_SUPERUSER: true
           METEOR_DISABLE_OPTIMISTIC_CACHING: 1
           RTL_SKIP_AUTO_CLEANUP: 1
+          MUP_PROFILE_TASKS: 'true'
           HOME: /home/circleci
     resource_class: medium
     steps:

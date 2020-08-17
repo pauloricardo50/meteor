@@ -58,7 +58,7 @@ aldeed:schema-index
 aldeed:schema-deny
 service-configuration@1.0.11
 epotek:accounts-ui
-montiapm:agent@2.39.0-beta.5
+montiapm:agent@2.39.0-beta.8
 percolate:migrations
 cultofcoders:grapher-react
 zodern:standard-minifier-js@4.0.0-beta.5
