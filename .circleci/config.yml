@@ -1228,9 +1228,6 @@ workflows:
       - Admin - unit tests:
           requires:
             - Prepare
-      - Pro - unit tests:
-          requires:
-            - Prepare
       - Www2 - e2e tests:
           requires:
             - Prepare
