@@ -494,9 +494,17 @@ addEmailListener({
   description: 'Notification au Pro si un de ses clients est mis en "Lost"',
   method: setUserStatus,
   func: ({
-    params: { userId, source, unsuccessfulReason },
+    params: { userId, source, unsuccessfulReason, ...params },
     result: { prevStatus, nextStatus },
   }) => {
+    console.log('EMAIL setUserStatus Listener:', {
+      userId,
+      source,
+      prevStatus,
+      nextStatus,
+      ...params,
+    });
+
     if (
       source === 'drip' &&
       nextStatus !== prevStatus &&

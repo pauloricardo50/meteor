@@ -84,6 +84,7 @@ export class Method extends Mutation {
   }
 
   serverRun(...args) {
+    console.log('SERVER RUN METHOD:', this.config?.name, args);
     return internalMethod(() => this.run(...args));
   }
 
