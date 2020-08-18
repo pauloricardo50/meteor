@@ -69,6 +69,10 @@
     max-width: 400px;
     margin: 0 auto;
     margin-top: 32px;
+
+    &.wide-form {
+      max-width: 800px;
+    }
     
 
     button[type="submit"] {

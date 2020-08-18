@@ -13,10 +13,20 @@ const breakpoints = createBreakpoints({});
 const defaultTheme = fontSize => ({
   props: {
     MuiTextField: {
-      variant: 'outlined',
+      size: 'small',
     },
     MuiTooltip: {
       arrow: true,
+    },
+    MuiFormControl: {
+      size: 'small',
+      variant: 'outlined',
+    },
+    MuiFormHelperText: {
+      variant: 'outlined',
+    },
+    MuiSelect: {
+      variant: 'outlined',
     },
   },
   overrides: {

@@ -12,5 +12,5 @@
     "outDir": "dist"
   },
   "include": ["imports"],
-  "exclude": ["imports/core/assets", "imports/core/lang", "imports/core/api/analytics/analyticsConstants.js"]
+  "exclude": ["imports/core"]
 }

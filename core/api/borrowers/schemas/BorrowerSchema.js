@@ -15,7 +15,7 @@ import {
 } from './otherSchemas';
 
 // Documentation is in the google drive dev/MongoDB Schemas
-const BorrowerSchema = new SimpleSchema({
+export const borrowerSchemaObject = {
   userId: {
     type: String,
     optional: true,
@@ -33,7 +33,8 @@ const BorrowerSchema = new SimpleSchema({
   ...additionalDocuments(initialDocuments),
   ...mortgageNoteLinks,
   ...ownCompaniesSchema,
-});
+};
+const BorrowerSchema = new SimpleSchema(borrowerSchemaObject);
 
 const protectedKeys = [
   '_id',

@@ -6,11 +6,13 @@ import { faHouseDay } from '@fortawesome/pro-duotone-svg-icons/faHouseDay';
 import { faSearchLocation } from '@fortawesome/pro-duotone-svg-icons/faSearchLocation';
 import SimpleSchema from 'simpl-schema';
 
+import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
 import {
   ACQUISITION_STATUS,
   PURCHASE_TYPE,
 } from 'core/api/loans/loanConstants';
 import {
+  loanInsertBorrowers,
   loanUpdate,
   upsertUserProperty,
 } from 'core/api/loans/methodDefinitions';
@@ -19,10 +21,17 @@ import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import AcquisitionIcon from 'core/components/Icon/AcquisitionIcon';
 import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
 import { refinancingPropertySchema } from 'core/components/PropertyForm/PropertyAdderDialog';
+import T, { Money } from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
 import { not, or } from 'core/utils/functional';
 
-import { borrowerUpdate } from '../../../core/api/borrowers/methodDefinitions';
-import { loanInsertBorrowers } from '../../../core/api/loans/methodDefinitions';
+import {
+  birthDateSchema,
+  complexifyBorrowerOwnFunds,
+  incomeSchema,
+  ownFundsSchema,
+  simplifyBorrowerOwnFunds,
+} from './OnboardingComponents/onboardingFormSchemas';
 
 const always = () => true;
 const isProFlow = loan => loan.hasPromotion || loan.hasProProperty;
@@ -32,7 +41,7 @@ const knowsProperty = loan =>
 
 const updateBorrowers = (loan, borrower1, borrower2) => {
   const promises = [];
-  if (borrower1) {
+  if (loan.borrowers[0]?._id) {
     promises.push(
       borrowerUpdate.run({
         borrowerId: loan.borrowers[0]._id,
@@ -41,7 +50,7 @@ const updateBorrowers = (loan, borrower1, borrower2) => {
     );
   }
 
-  if (borrower2) {
+  if (loan.borrowers[1]?._id) {
     promises.push(
       borrowerUpdate.run({
         borrowerId: loan.borrowers[1]._id,
@@ -73,6 +82,7 @@ export const steps = [
     isDone: loan => !!loan.purchaseType,
     onSubmit: loan => purchaseType =>
       loanUpdate.run({ loanId: loan._id, object: { purchaseType } }),
+    renderValue: loan => <T id={`Forms.purchaseType.${loan.purchaseType}`} />,
   },
   {
     id: 'acquisitionStatus',
@@ -90,6 +100,9 @@ export const steps = [
     isDone: loan => !!loan.acquisitionStatus,
     onSubmit: loan => acquisitionStatus =>
       loanUpdate.run({ loanId: loan._id, object: { acquisitionStatus } }),
+    renderValue: loan => (
+      <T id={`Forms.acquisitionStatus.${loan.acquisitionStatus}`} />
+    ),
   },
   {
     id: 'residenceType',
@@ -105,6 +118,7 @@ export const steps = [
     isDone: loan => !!loan.residenceType,
     onSubmit: loan => residenceType =>
       loanUpdate.run({ loanId: loan._id, object: { residenceType } }),
+    renderValue: loan => <T id={`Forms.residenceType.${loan.residenceType}`} />,
   },
   {
     id: 'canton',
@@ -133,6 +147,7 @@ export const steps = [
         property: { canton },
       });
     },
+    renderValue: loan => <T id={`Forms.canton.${loan.properties[0].canton}`} />,
   },
   {
     id: 'propertyValue',
@@ -147,6 +162,7 @@ export const steps = [
         propertyId: loan.properties[0]._id,
         object: values,
       }),
+    renderValue: loan => <Money value={loan.properties[0].value} />,
   },
   {
     id: 'refinancing',
@@ -158,6 +174,11 @@ export const steps = [
     isDone: loan => loan.previousLoanTranches?.length > 0,
     onSubmit: loan => values =>
       loanUpdate.run({ loanId: loan._id, object: values }),
+    renderValue: loan => (
+      <Money
+        value={loan.previousLoanTranches.reduce((t, { value }) => t + value, 0)}
+      />
+    ),
   },
   {
     id: 'borrowerCount',
@@ -169,28 +190,58 @@ export const steps = [
     isDone: loan => loan.borrowers?.length > 0,
     onSubmit: loan => amount =>
       loanInsertBorrowers.run({ loanId: loan._id, amount }),
+    renderValue: loan => (
+      <T id={`Forms.borrowerCount.${loan.borrowers.length}`} />
+    ),
+  },
+  {
+    id: 'birthDate',
+    component: 'OnboardingBorrowersForm',
+    condition: always,
+    props: { borrowerSchema: birthDateSchema },
+    isDone: loan => loan.borrowers?.some(({ birthDate }) => !!birthDate),
+    onSubmit: loan => ({ borrower1, borrower2 }) =>
+      updateBorrowers(loan, borrower1, borrower2),
+    renderValue: loan => (
+      <T
+        id="OnboardingStep.birthDate.value"
+        values={{ value: loan.borrowers.map(({ age }) => age).join(', ') }}
+      />
+    ),
   },
   {
     id: 'income',
-    component: 'OnboardingForm',
+    component: 'OnboardingBorrowersForm',
     condition: always,
-    props: { schema: new SimpleSchema({}) },
+    props: { borrowerSchema: incomeSchema },
     isDone: loan => loan.borrowers?.some(({ salary }) => salary > 0),
     onSubmit: loan => ({ borrower1, borrower2 }) =>
       updateBorrowers(loan, borrower1, borrower2),
+    renderValue: loan => <Money value={Calculator.getTotalIncome({ loan })} />,
   },
   {
     id: 'ownFunds',
-    component: 'OnboardingForm',
+    component: 'OnboardingBorrowersForm',
     condition: not(isRefinancing),
-    props: { schema: new SimpleSchema({}) },
+    props: {
+      borrowerSchema: ownFundsSchema,
+      getModel: ({ borrowers }) => ({
+        borrower1: simplifyBorrowerOwnFunds(borrowers[0]),
+        borrower2: simplifyBorrowerOwnFunds(borrowers[1]),
+      }),
+    },
     isDone: loan =>
       loan.borrowers?.some(
         ({ bankFortune = [] }) =>
           bankFortune.reduce((t, { value }) => t + value, 0) > 0,
       ),
     onSubmit: loan => ({ borrower1, borrower2 }) =>
-      updateBorrowers(loan, borrower1, borrower2),
+      updateBorrowers(
+        loan,
+        complexifyBorrowerOwnFunds(borrower1),
+        complexifyBorrowerOwnFunds(borrower2),
+      ),
+    renderValue: loan => <Money value={Calculator.getTotalFunds({ loan })} />,
   },
 
   {
@@ -198,5 +249,6 @@ export const steps = [
     component: 'OnboardingResult',
     condition: always,
     isDone: loan => !!loan.maxPropertyValue?.date,
+    className: 'wide-form',
   },
 ];

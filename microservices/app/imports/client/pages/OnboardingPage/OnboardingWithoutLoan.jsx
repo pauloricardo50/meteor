@@ -45,7 +45,7 @@ const OnboardingWithoutLoan = () => {
   }
 
   return (
-    <>
+    <div className="animated fadeIn">
       <OnboardingMarketing />
 
       <div className="onboarding-without-loan">
@@ -102,7 +102,7 @@ const OnboardingWithoutLoan = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

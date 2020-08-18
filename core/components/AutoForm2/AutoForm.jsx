@@ -50,6 +50,7 @@ const CustomAutoForm = (
 
   const autoField = useMemo(() => {
     if (autoFieldProps) {
+      console.log('autoFieldProps:', autoFieldProps);
       return makeCustomAutoField(autoFieldProps);
     }
     return CustomAutoField;

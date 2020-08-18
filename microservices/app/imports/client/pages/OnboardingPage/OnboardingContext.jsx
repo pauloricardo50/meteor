@@ -26,12 +26,12 @@ const withOnboardingContext = Component => ({ loan }) => {
   const isMobile = useMedia({ maxWidth: 768 });
   const nextStepId = stepIds[stepIds.findIndex(id => id === activeStep) + 1];
 
-  const handleNextStep = () => {
+  const handleNextStep = (delay = 200) => {
     if (activeStep !== 'result') {
       setLatestStep(nextStepId);
       setTimeout(() => {
         setActiveStep(nextStepId);
-      }, 200); // Allow ripple to show fully
+      }, delay); // Make transitions smoother when possible with a little delay
     }
   };
 

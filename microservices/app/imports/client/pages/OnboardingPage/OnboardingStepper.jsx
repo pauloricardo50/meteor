@@ -2,6 +2,7 @@ import React from 'react';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
+import StepConnector from '@material-ui/core/StepConnector';
 import StepContent from '@material-ui/core/StepContent';
 import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
@@ -15,6 +16,9 @@ import { useOnboarding } from './OnboardingContext';
 const useStyles = makeStyles({
   root: { backgroundColor: 'unset' },
   completed: { color: `${colors.success} !important` },
+  labelContainer: { textAlign: 'left' },
+  stepRoot: { maxWidth: 200 },
+  connectorLineVertical: { minHeight: 8 },
 });
 
 const isStepDone = (done, steps, index) => {
@@ -39,6 +43,7 @@ const OnboardingStepper = () => {
     stepIds,
     setActiveStep,
     currentTodoStep,
+    loan,
   } = useOnboarding();
   const activeStepIndex = stepIds.findIndex(id => id === activeStep);
 
@@ -64,27 +69,42 @@ const OnboardingStepper = () => {
       activeStep={activeStepIndex}
       classes={{ root: classes.root }}
       nonLinear
+      connector={
+        <StepConnector
+          classes={{ lineVertical: classes.connectorLineVertical }}
+        />
+      }
     >
-      {steps.map(({ id, done }, index) => (
-        <Step
-          key={id}
-          completed={isStepDone(done, steps, index)}
-          disabled={isStepDisabled(done, currentTodoStep, id)}
-        >
-          <StepButton onClick={() => setActiveStep(id)}>
-            <StepLabel
-              StepIconProps={{ classes: { completed: classes.completed } }}
-            >
-              <T id={`OnboardingStepper.${id}`} />
-            </StepLabel>
-          </StepButton>
+      {steps.map(({ id, done, renderValue }, index) => {
+        const isCompleted = isStepDone(done, steps, index);
+        const isActive = isCompleted || activeStep === id;
 
-          {/* https://github.com/mui-org/material-ui/issues/22167 */}
-          <StepContent>
-            <div className="secondary">Hello world</div>
-          </StepContent>
-        </Step>
-      ))}
+        return (
+          <Step
+            key={id}
+            completed={isCompleted}
+            active={isActive}
+            disabled={isStepDisabled(done, currentTodoStep, id)}
+            classes={{ root: classes.stepRoot }}
+          >
+            <StepButton onClick={() => setActiveStep(id)}>
+              <StepLabel
+                StepIconProps={{ classes: { completed: classes.completed } }}
+                classes={{ labelContainer: classes.labelContainer }}
+              >
+                <T id={`OnboardingStepper.${id}`} />
+              </StepLabel>
+            </StepButton>
+
+            {/* https://github.com/mui-org/material-ui/issues/22167 */}
+            <StepContent>
+              {isCompleted ? (
+                <div className="secondary">{renderValue(loan)}</div>
+              ) : null}
+            </StepContent>
+          </Step>
+        );
+      })}
     </Stepper>
   );
 };

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import cx from 'classnames';
 
 import AutoForm from 'core/components/AutoForm2';
 
@@ -6,25 +7,31 @@ import { useOnboarding } from '../OnboardingContext';
 import OnboardingStep from './OnboardingStep';
 
 const OnboardingForm = ({
-  loan,
   schema,
-  onSubmit = () => Promise.resolve(),
+  onSubmit,
   submitLabel,
+  className,
+  layout,
+  model,
+  autoFormProps,
 }) => {
-  const { handleNextStep } = useOnboarding();
+  const { handleNextStep, loan } = useOnboarding();
+  const finalSchema = useMemo(
+    () => (typeof schema === 'function' ? schema(loan) : schema),
+    [],
+  );
 
   return (
     <OnboardingStep>
-      <div className="onboarding-form">
+      <div className={cx('onboarding-form', className)}>
         <AutoForm
-          schema={schema}
-          model={loan}
+          schema={finalSchema}
+          model={model || loan}
           onSubmit={onSubmit}
-          onSubmitSuccess={handleNextStep}
-          submitFieldProps={{
-            label: submitLabel,
-            size: 'large',
-          }}
+          onSubmitSuccess={() => handleNextStep(0)}
+          submitFieldProps={{ label: submitLabel, size: 'large' }}
+          layout={layout}
+          {...autoFormProps}
         />
       </div>
     </OnboardingStep>

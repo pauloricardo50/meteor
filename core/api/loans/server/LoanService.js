@@ -1246,7 +1246,7 @@ class LoanService extends CollectionService {
     }
 
     return PropertyService.insert({
-      property: { category: PROPERTY_CATEGORY.USER }, // Avoid extra fetch in PropertyService
+      property: { ...property, category: PROPERTY_CATEGORY.USER }, // Avoid extra fetch in PropertyService
       loanId,
     });
   }

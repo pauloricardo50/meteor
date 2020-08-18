@@ -18,7 +18,12 @@ const items = [
 const OnboardingMarketing = () => (
   <div className="onboarding-marketing">
     {items.map(({ id, icon }, index) => (
-      <div key={id} className="flex-col center-align text-center">
+      <div
+        key={id}
+        className={`flex-col center-align text-center animated fadeInUp delay-${
+          100 * (index + 1)
+        }`}
+      >
         <FaIcon
           icon={icon}
           size="4x"

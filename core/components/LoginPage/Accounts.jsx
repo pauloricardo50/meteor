@@ -128,7 +128,6 @@ class Field extends Accounts.ui.Field {
     return mount ? (
       <span className="login-field">
         <TextField
-          variant="outlined"
           label={label}
           placeholder={hint}
           onChange={onChange}

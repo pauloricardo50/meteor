@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import OnboardingBorrowersForm from './OnboardingComponents/OnboardingBorrowersForm';
 import OnboardingChoice from './OnboardingComponents/OnboardingChoice';
 import OnboardingForm from './OnboardingComponents/OnboardingForm';
 import OnboardingResult from './OnboardingComponents/OnboardingResult/OnboardingResult';
@@ -10,6 +11,7 @@ const Components = {
   OnboardingChoice,
   OnboardingResult,
   OnboardingForm,
+  OnboardingBorrowersForm,
 };
 
 const OnboardingContent = () => {
@@ -32,7 +34,7 @@ const OnboardingContent = () => {
 
   return (
     <div className="onboarding-content">
-      <Component id={id} key={id} {...props} onSubmit={onSubmit(loan)} />
+      <Component id={id} key={id} {...props} onSubmit={onSubmit?.(loan)} />
     </div>
   );
 };

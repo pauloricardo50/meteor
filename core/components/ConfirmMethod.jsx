@@ -161,15 +161,16 @@ export default class ConfirmMethod extends Component {
 ConfirmMethod.propTypes = {
   disabled: PropTypes.bool,
   keyword: PropTypes.string,
-  label: PropTypes.node.isRequired,
+  label: PropTypes.node,
   method: PropTypes.func.isRequired,
   style: PropTypes.object,
   title: PropTypes.node,
 };
 
 ConfirmMethod.defaultProps = {
-  title: <T id="ConfirmMethod.dialogTitle" />,
   disabled: false,
   keyword: undefined,
+  label: 'Click me',
   style: {},
+  title: <T id="ConfirmMethod.dialogTitle" />,
 };

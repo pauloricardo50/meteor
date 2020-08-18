@@ -233,4 +233,4 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
   )(CustomAutoField, { includeInChain: false, includeParent: true });
 };
 
-export const CustomAutoField = makeCustomAutoField({});
+export const CustomAutoField = makeCustomAutoField();
