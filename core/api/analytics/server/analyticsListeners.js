@@ -829,9 +829,17 @@ addAnalyticsListener({
   }),
   func: ({
     analytics,
-    params: { userId, reason },
+    params: { userId, reason, ...params },
     result: { prevStatus, nextStatus },
   }) => {
+    console.log('ANALYTICS setUserStatus Listener:', {
+      userId,
+      reason,
+      prevStatus,
+      nextStatus,
+      ...params,
+    });
+
     if (prevStatus !== nextStatus) {
       const user = UserService.get(userId, {
         name: 1,

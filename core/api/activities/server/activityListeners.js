@@ -595,10 +595,19 @@ ServerEventService.addAfterMethodListener(
   setUserStatus,
   ({
     context,
-    params: { userId, source, reason },
+    params: { userId, source, reason, ...params },
     result: { prevStatus, nextStatus },
   }) => {
     context.unblock();
+
+    console.log('ACTIVITY setUserStatus Listener:', {
+      userId,
+      source,
+      reason,
+      prevStatus,
+      nextStatus,
+      ...params,
+    });
 
     if (prevStatus !== nextStatus) {
       ActivityService.addServerActivity({
