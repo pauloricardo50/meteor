@@ -85,7 +85,13 @@ const getSolvencyLabel = solvent => {
     <span className="customers-table-solvency">
       <Icon {...props} />
       &nbsp;
-      {title}
+      <div className="flex-col">
+        {title}
+
+        <small className="secondary m-0">
+          <T id={`Forms.solvency.${solvent}.tooltip`} />
+        </small>
+      </div>
     </span>
   );
 };
