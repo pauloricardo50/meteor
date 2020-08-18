@@ -782,7 +782,9 @@ export const formProperty = () => ({
 export const fullProperty = ({ withSort } = {}) => ({
   ...formProperty(),
   address: 1,
+  externalUrl: 1,
   createdAt: 1,
+  imageUrls: 1,
   latitude: 1,
   loans: loan(),
   longitude: 1,
