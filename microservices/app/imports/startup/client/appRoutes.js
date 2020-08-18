@@ -13,8 +13,10 @@ import DashboardPage from '../../client/pages/DashboardPage/loadable';
 import FilesPage from '../../client/pages/FilesPage/loadable';
 import FinancingPage from '../../client/pages/FinancingPage/loadable';
 import OnboardingPage from '../../client/pages/OnboardingPage';
+import PromotionPage from '../../client/pages/PromotionPage/loadable';
 import ProPage from '../../client/pages/ProPage/loadable';
 import PropertiesPage from '../../client/pages/PropertiesPage/loadable';
+import ProPropertyPage from '../../client/pages/ProPropertyPage/loadable';
 import RefinancingPage from '../../client/pages/RefinancingPage/loadable';
 import SignupSuccessPage from '../../client/pages/SignupSuccessPage/loadable';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
@@ -85,6 +87,14 @@ export default {
   PRO_PAGE: {
     path: '/pro',
     component: ProPage,
+  },
+  PRO_PROPERTY_PAGE: {
+    path: '/properties/:propertyId',
+    component: ProPropertyPage,
+  },
+  PROMOTION_PAGE: {
+    path: '/promotions/:promotionId',
+    component: PromotionPage,
   },
   SIGNUP_SUCCESS_PAGE: {
     path: '/signup/:email',

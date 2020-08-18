@@ -14,6 +14,7 @@ const defaultTheme = fontSize => ({
   props: {
     MuiTextField: {
       size: 'small',
+      variant: 'outlined',
     },
     MuiTooltip: {
       arrow: true,
@@ -22,12 +23,12 @@ const defaultTheme = fontSize => ({
       size: 'small',
       variant: 'outlined',
     },
-    MuiFormHelperText: {
-      variant: 'outlined',
-    },
-    MuiSelect: {
-      variant: 'outlined',
-    },
+    // MuiFormHelperText: {
+    //   variant: 'outlined',
+    // },
+    // MuiSelect: {
+    //   variant: 'outlined',
+    // },
   },
   overrides: {
     MuiToolbar: {
@@ -219,6 +220,16 @@ const defaultTheme = fontSize => ({
     MuiButtonBase: {
       root: {
         borderRadius: 4,
+      },
+    },
+    MuiStepIcon: {
+      root: {
+        transition: 'color 200ms ease',
+      },
+    },
+    MuiMobileStepper: {
+      dot: {
+        transition: 'background-color 200ms ease',
       },
     },
   },

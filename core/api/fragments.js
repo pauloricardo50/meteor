@@ -892,6 +892,7 @@ export const appUser = () => ({
     hasProProperty: 1,
     name: 1,
     promotions: { address: 1, name: 1, documents: 1 },
+    promotionLinks: 1,
     properties: { address: 1, documents: 1 },
     propertyIds: 1, // Keep this one after properties
     purchaseType: 1,

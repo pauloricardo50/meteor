@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StringParam, useQueryParam } from 'use-query-params';
 
 import useMedia from 'core/hooks/useMedia';
@@ -25,6 +25,7 @@ const withOnboardingContext = Component => ({ loan }) => {
   const [latestStep, setLatestStep] = useState();
   const isMobile = useMedia({ maxWidth: 768 });
   const nextStepId = stepIds[stepIds.findIndex(id => id === activeStep) + 1];
+  const [showDrawer, setShowDrawer] = useState(false);
 
   const handleNextStep = (delay = 200) => {
     if (activeStep !== 'result') {
@@ -39,6 +40,11 @@ const withOnboardingContext = Component => ({ loan }) => {
     setActiveStep(latestStep);
   };
 
+  useEffect(() => {
+    // Reset drawer state when changing window width
+    setShowDrawer(false);
+  }, [isMobile]);
+
   return (
     <Context.Provider
       value={{
@@ -51,6 +57,8 @@ const withOnboardingContext = Component => ({ loan }) => {
         stepIds,
         loan,
         currentTodoStep,
+        showDrawer,
+        setShowDrawer,
       }}
     >
       <Component />

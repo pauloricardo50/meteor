@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
-import { anonymousLoan as anonymousLoanQuery } from 'core/api/loans/queries';
 import { referralExists } from 'core/api/methods/methodDefinitions';
 import {
   LOCAL_STORAGE_OLD_REFERRAL,
   LOCAL_STORAGE_REFERRAL,
 } from 'core/api/users/userConstants';
 import Loading from 'core/components/Loading';
-import useMeteorData from 'core/hooks/useMeteorData';
 import useSearchParams from 'core/hooks/useSearchParams';
 
 import appRoutes from '../../../startup/client/appRoutes';
+import useAnonymousLoan from '../../hooks/useAnonymousLoan';
 
 const setReferralId = referralId => {
   const oldReferralId =
@@ -43,41 +41,14 @@ const setReferralId = referralId => {
   }
 };
 
-const useAnonymousLoan = () => {
-  const [anonymousLoanId, setAnonymousLoanId] = useState(() =>
-    localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
-  );
-  const { data: anonymousLoan, loading } = useMeteorData(
-    {
-      query: anonymousLoanId && anonymousLoanQuery,
-      params: {
-        _id: anonymousLoanId,
-        $body: {
-          updatedAt: 1,
-          name: 1,
-          borrowers: { updatedAt: 1 },
-          properties: { name: 1, address1: 1, totalValue: 1 },
-          simpleBorrowersForm: 1,
-        },
-      },
-      type: 'single',
-    },
-    [anonymousLoanId],
-  );
-
-  useEffect(() => {
-    if (anonymousLoanId && !loading && !anonymousLoan) {
-      localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-      setAnonymousLoanId(undefined);
-    }
-  }, [anonymousLoanId, anonymousLoan, loading]);
-
-  return { anonymousLoan, loading };
-};
-
 const AppPageLoggedOut = () => {
   const searchParams = useSearchParams();
-  const { anonymousLoan, loading } = useAnonymousLoan();
+  const { anonymousLoan, loading } = useAnonymousLoan({
+    updatedAt: 1,
+    name: 1,
+    borrowers: { updatedAt: 1 },
+    properties: { name: 1, address1: 1, totalValue: 1 },
+  });
 
   useEffect(() => {
     if (searchParams.ref) {
@@ -106,7 +77,7 @@ const AppPageLoggedOut = () => {
   if (searchParams.purchaseType) {
     const search = new URLSearchParams();
     search.append('purchaseType', searchParams.purchaseType);
-    query = search.toString;
+    query = search.toString();
   }
 
   return (

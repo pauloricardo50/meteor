@@ -201,6 +201,10 @@ p.description,
     justify-content: flex-start;
   }
 
+  &.fe {
+    justify-content: flex-end;
+  }
+
   &.end-align {
     align-items: flex-end;
   }

@@ -1,5 +1,4 @@
-import React from 'react';
-import MobileStepper from '@material-ui/core/MobileStepper';
+import React, { useEffect } from 'react';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import StepConnector from '@material-ui/core/StepConnector';
@@ -37,7 +36,6 @@ const isStepDisabled = (done, currentTodoStep, stepId) =>
 const OnboardingStepper = () => {
   const classes = useStyles();
   const {
-    isMobile,
     activeStep,
     steps,
     stepIds,
@@ -46,22 +44,6 @@ const OnboardingStepper = () => {
     loan,
   } = useOnboarding();
   const activeStepIndex = stepIds.findIndex(id => id === activeStep);
-
-  if (isMobile) {
-    return (
-      <div style={{ margin: '0 auto', minWidth: 250 }}>
-        <MobileStepper
-          classes={{ root: classes.root }}
-          variant="dots"
-          steps={stepIds.length}
-          position="static"
-          activeStep={activeStepIndex}
-          nextButton={<div />}
-          backButton={<div />}
-        />
-      </div>
-    );
-  }
 
   return (
     <Stepper
@@ -99,7 +81,7 @@ const OnboardingStepper = () => {
             {/* https://github.com/mui-org/material-ui/issues/22167 */}
             <StepContent>
               {isCompleted ? (
-                <div className="secondary">{renderValue(loan)}</div>
+                <small className="secondary">{renderValue(loan)}</small>
               ) : null}
             </StepContent>
           </Step>

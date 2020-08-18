@@ -10,10 +10,10 @@ const OnboardingStep = ({ children, withCta }) => {
 
   return (
     <div className="animated fadeIn">
-      <h2 className="text-center">
+      <h2>
         <T id={`OnboardingStep.${activeStep}.title`} />
       </h2>
-      <p className="secondary text-center">
+      <p className="secondary">
         <T id={`OnboardingStep.${activeStep}.description`} />
       </p>
 

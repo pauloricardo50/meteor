@@ -225,11 +225,11 @@ anonymousLoanInsert.setHandler((context, params) => {
     if (proPropertyId) {
       const existingLoan = LoanService.get(existingAnonymousLoanId, {
         propertyIds: 1,
+        promotionLinks: 1,
       });
 
       if (
-        existingLoan &&
-        existingLoan.propertyIds &&
+        existingLoan?.propertyIds &&
         !existingLoan.propertyIds.includes(proPropertyId)
       ) {
         // TODO: Quentin, track this
@@ -243,9 +243,7 @@ anonymousLoanInsert.setHandler((context, params) => {
     return existingAnonymousLoanId;
   }
 
-  const loanId = LoanService.insertAnonymousLoan(params);
-
-  return loanId;
+  return LoanService.insertAnonymousLoan(params);
 });
 anonymousLoanInsert.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 

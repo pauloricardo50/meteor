@@ -82,7 +82,9 @@ export const steps = [
     isDone: loan => !!loan.purchaseType,
     onSubmit: loan => purchaseType =>
       loanUpdate.run({ loanId: loan._id, object: { purchaseType } }),
-    renderValue: loan => <T id={`Forms.purchaseType.${loan.purchaseType}`} />,
+    renderValue: loan => (
+      <T id={`OnboardingWithoutLoan.${loan.purchaseType}`} />
+    ),
   },
   {
     id: 'acquisitionStatus',

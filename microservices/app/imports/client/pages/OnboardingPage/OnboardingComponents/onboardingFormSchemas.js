@@ -54,7 +54,7 @@ export const ownFundsSchema = Object.values(OWN_FUNDS_TYPES).reduce(
 );
 
 export const simplifyField = field =>
-  field.reduce((t, { value }) => t + value, 0);
+  field.reduce((t, { value }) => (t ? t + value : value), undefined);
 
 export const simplifyBorrowerOwnFunds = borrower => {
   if (!borrower) {
