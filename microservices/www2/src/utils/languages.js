@@ -56,6 +56,8 @@ const languageData = {
     'WwwCalculatorChart.title': 'CHF {total} /mois',
     'WwwCalculatorChartForm.interests': "Taux d'intérêt indicatif",
     'WwwCalculatorChartForm.interestLibor': 'Taux Libor',
+    'WwwCalculatorChartForm.interest1': 'Taux 1 ans',
+    'WwwCalculatorChartForm.interest2': 'Taux 2 ans',
     'WwwCalculatorChartForm.interest5': 'Taux 5 ans',
     'WwwCalculatorChartForm.interest10': 'Taux 10 ans',
     'WwwCalculatorChartForm.interest15': 'Taux 15 ans',

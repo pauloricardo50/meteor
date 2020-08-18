@@ -246,15 +246,16 @@ const testGatsbyJobE2E = () => {
   const name = 'www2'
   return ({
   ...defaultJobValues,
+  // TODO: we can probably use medium+ after updating to Meteor 1.10.3
+  resource_class: 'large',
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore global cache', cacheKeys.global()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
-    restoreCache('Restore meteor system', cacheKeys.meteorSystem()),
     restoreCache('Restore gatsby website', cacheKeys.gatsby()),
     restoreCache(
       'Restore meteor backend',
-      cacheKeys.meteorMicroservice('backend', testType),
+      cacheKeys.meteorMicroservice('backend', 'e2e'),
     ),
     runCommand(
       'Install netcat',
@@ -265,19 +266,17 @@ const testGatsbyJobE2E = () => {
     runCommand(
       'Install node_modules',
       `
-      function installBackend {
+      function installMicroservice {
         meteor npm --prefix microservices/${name} ci
-        touch $HOME/.npm-backend-done
+        touch $HOME/.npm-microservice-done
       }
 
-      installBackend &
+      installMicroservice &
 
-      ${
-        name !== 'backend' ? 'meteor npm --prefix microservices/backend ci' : ''
-      }
+      meteor npm --prefix microservices/backend ci
 
-      until [ -f $HOME/.npm-backend-done ]; do
-        echo "$HOME/.npm-backend-done does not exist. Waiting 1s"
+      until [ -f $HOME/.npm-microservice-done ]; do
+        echo "$HOME/.npm-microservice-done does not exist. Waiting 1s"
         sleep 1
       done
       `,
@@ -285,7 +284,7 @@ const testGatsbyJobE2E = () => {
 
     runCommand(
       'Run E2E tests',
-      `cd ./microservices/${name} && meteor npm run test-e2e`,
+      `cd ./microservices/${name} && meteor npm run test-e2e-ci`,
       '30m',
     ),
 
@@ -297,7 +296,7 @@ const testGatsbyJobE2E = () => {
 
     saveCache(
       'Cache meteor backend',
-      cacheKeys.meteorMicroservice('backend', testsType),
+      cacheKeys.meteorMicroservice('backend', 'e2e'),
       cachePaths.meteorMicroservice('backend'),
     ),
   ],
@@ -396,7 +395,7 @@ const makeConfig = () => ({
       testsType: 'unit',
     }),
     // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
-    // 'Www2 - e2e tests': testGatsbyJobE2E(),
+    'Www2 - e2e tests': testGatsbyJobE2E(),
     'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
     'Admin - e2e tests': testMicroserviceJob({
       name: 'admin',
@@ -412,15 +411,14 @@ const makeConfig = () => ({
   workflows: {
     version: 2,
     'Test and deploy': {
-      // jobs: ['Www2 - unit tests'],
       jobs: [
         'Prepare',
         { 'Www2 - unit tests': { requires: ['Prepare'] } },
         { 'App - unit tests': { requires: ['Prepare'] } },
         { 'Core - unit tests': { requires: ['Prepare'] } },
         { 'Admin - unit tests': { requires: ['Prepare'] } },
-        // { 'Pro - unit tests': { requires: ['Prepare'] } },
-        // { 'Www2 - e2e tests': { requires: ['Prepare'] } }, FIXME: Not working yet
+        { 'Pro - unit tests': { requires: ['Prepare'] } },
+        { 'Www2 - e2e tests': { requires: ['Prepare'] } },
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
         { 'Pro - e2e tests': { requires: ['Prepare'] } },
