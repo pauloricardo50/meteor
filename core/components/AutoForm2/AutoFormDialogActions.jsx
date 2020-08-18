@@ -61,6 +61,7 @@ const AutoFormDialogActions = (
       <CustomSubmitField
         setDisableActions={setDisableActions}
         disableActions={disableActions}
+        keepLoading
       />
     </DialogActions>
   );

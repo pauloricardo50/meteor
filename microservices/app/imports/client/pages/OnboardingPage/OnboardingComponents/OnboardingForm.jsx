@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import cx from 'classnames';
 
 import AutoForm from 'core/components/AutoForm2';
@@ -22,19 +23,34 @@ const OnboardingForm = ({
   );
 
   return (
-    <OnboardingStep>
-      <div className={cx('onboarding-form', className)}>
-        <AutoForm
-          schema={finalSchema}
-          model={model || loan}
-          onSubmit={onSubmit}
-          onSubmitSuccess={() => handleNextStep(0)}
-          submitFieldProps={{ label: submitLabel, size: 'large' }}
-          layout={layout}
-          {...autoFormProps}
-        />
-      </div>
-    </OnboardingStep>
+    <MuiThemeProvider
+      theme={{
+        props: {
+          // Make inputs a bit larger for comfort during onboarding
+          MuiFormControl: { size: 'medium', variant: 'outlined' },
+          MuiTextField: { size: 'medium', variant: 'outlined' },
+        },
+      }}
+    >
+      <OnboardingStep>
+        <div className={cx('onboarding-form', className)}>
+          <AutoForm
+            schema={finalSchema}
+            model={model || loan}
+            onSubmit={onSubmit}
+            onSubmitSuccess={() => handleNextStep(0)}
+            submitFieldProps={{
+              label: submitLabel,
+              size: 'large',
+              secondary: true,
+              keepLoading: true,
+            }}
+            layout={layout}
+            {...autoFormProps}
+          />
+        </div>
+      </OnboardingStep>
+    </MuiThemeProvider>
   );
 };
 

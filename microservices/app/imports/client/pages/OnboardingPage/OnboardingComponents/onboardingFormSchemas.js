@@ -78,7 +78,9 @@ export const complexifyBorrowerOwnFunds = borrower => {
   return Object.values(OWN_FUNDS_TYPES).reduce(
     (obj, field) => ({
       ...obj,
-      [field]: [{ value: borrower[field], description: '' }],
+      [field]: borrower[field]
+        ? [{ value: borrower[field], description: '' }]
+        : undefined,
     }),
     {},
   );

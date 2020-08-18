@@ -183,6 +183,7 @@ export const PasswordResetPage = ({
             // Let the form handle loading of the button, but override it
             // if the loading state is true
             loading: loading || undefined,
+            keepLoading: true,
           }}
         />
       </div>
