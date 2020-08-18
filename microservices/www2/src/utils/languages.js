@@ -33,9 +33,10 @@ const languageData = {
     recentNewslettersToggle: `Voir les newsletters précédentes`,
     recommendedArticleHeader: `Nos articles récents`,
     rateTable: {
-      header: ['Durée', 'Tendance', 'Taux'],
+      header: ['Type', 'Tendance', 'Taux'],
     },
     rateType: {
+      prefix: 'Taux fixe ',
       suffix: ' ans',
     },
     'cityMarker.title': 'Région de {city}',
