@@ -436,20 +436,14 @@ describe('DripService', function () {
 
       const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
 
-      expect(analyticsSpy.callCount).to.equal(4);
+      console.log('analyticsSpy:', analyticsSpy.args);
+      expect(analyticsSpy.callCount).to.equal(3);
       expect(
         analyticsSpy.args.some(
           ([{ userId, event }]) =>
             userId === SUBSCRIBER_ID && event === 'User Changed Status',
         ),
       ).to.equal(true, 'change status');
-      expect(
-        analyticsSpy.args.some(
-          ([{ userId, event }]) =>
-            userId === SUBSCRIBER_ID &&
-            event === 'Drip Subscriber Event Recorded',
-        ),
-      ).to.equal(true, 'event recorded');
       expect(
         analyticsSpy.args.some(
           ([{ userId, event }]) =>
