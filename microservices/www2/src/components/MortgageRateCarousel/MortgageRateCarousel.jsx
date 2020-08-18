@@ -45,34 +45,39 @@ const MortgageRateCarousel = () => {
   }, 5000);
 
   return (
-    <Link
-      className="mortgage-rate-carousel"
-      to={linkResolver(data?.prismic?.allPages?.edges?.[0]?.node?._meta)}
-    >
-      <div className="mortgage-rate-carousel-wrapper">
-        <hr />
-        {hasRates ? (
-          <div className="content animated fadeIn" key={index}>
-            <div className="secondary animated fadeIn">
-              <T id={`WwwCalculatorChartForm.${rates[index].type}`} />
+    <div className="container">
+      <h2>
+        <T id="MortageRateCarousel.title" />
+      </h2>
+      <Link
+        className="mortgage-rate-carousel"
+        to={linkResolver(data?.prismic?.allPages?.edges?.[0]?.node?._meta)}
+      >
+        <div className="mortgage-rate-carousel-wrapper">
+          <hr />
+          {hasRates ? (
+            <div className="content animated fadeIn" key={index}>
+              <div className="secondary animated fadeIn">
+                <T id={`WwwCalculatorChartForm.${rates[index].type}`} />
+              </div>
+              <ReactCountUp
+                start={rates[index].rateHigh * 100}
+                end={rates[index].rateLow * 100}
+                suffix="%"
+                decimals={2}
+                className="percent animated fadeIn"
+                delay={1}
+              />
             </div>
-            <ReactCountUp
-              start={rates[index].rateHigh * 100}
-              end={rates[index].rateLow * 100}
-              suffix="%"
-              decimals={2}
-              className="percent animated fadeIn"
-              delay={1}
-            />
-          </div>
-        ) : (
-          <div className="content" />
-        )}
-        {/* Add this invisible div above ReactCountUp, as it breaks the link in Safari */}
-        <div className="link-wrapper" />
-        <hr />
-      </div>
-    </Link>
+          ) : (
+            <div className="content" />
+          )}
+          {/* Add this invisible div above ReactCountUp, as it breaks the link in Safari */}
+          <div className="link-wrapper" />
+          <hr />
+        </div>
+      </Link>
+    </div>
   );
 };
 

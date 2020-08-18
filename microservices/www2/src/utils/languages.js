@@ -140,6 +140,8 @@ const languageData = {
     '404.backToHome': 'Retourner au début',
     'MortgageRates.lastUpdate':
       "Dernière mise à jour {days, plural, =0 {aujourd'hui.} =1 {il y a un jour.} other {il y a # jours.}}",
+    'MortageRateCarousel.title':
+      "Les meilleurs taux d'intérêt hypothécaires actuels",
   },
 };
 
