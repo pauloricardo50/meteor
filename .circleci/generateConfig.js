@@ -417,7 +417,7 @@ const makeConfig = () => ({
         { 'App - unit tests': { requires: ['Prepare'] } },
         { 'Core - unit tests': { requires: ['Prepare'] } },
         { 'Admin - unit tests': { requires: ['Prepare'] } },
-        { 'Pro - unit tests': { requires: ['Prepare'] } },
+        // { 'Pro - unit tests': { requires: ['Prepare'] } },
         { 'Www2 - e2e tests': { requires: ['Prepare'] } },
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
