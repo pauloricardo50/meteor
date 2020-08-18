@@ -116,11 +116,11 @@ const languageData = {
       "Prêt / {purchaseType, select, ACQUISITION {Prix d'achat} other {Valeur du bien}}",
     'WwwCalculatorRecap.incomeRule': 'Charges / Revenus',
     'WwwCalculatorStatus.borrowError.ACQUISITION':
-      'Les fonds propres ne suffisent pas pour votre projet. Continuez et parlons-en',
+      'Les fonds propres ne suffisent pas pour votre projet. Continuez et parlons-en.',
     'WwwCalculatorStatus.borrowWarning.ACQUISITION':
       'Les fonds propres ne sont pas dans les normes attendues, mais il existe des solutions. Continuez et parlons-en.',
     'WwwCalculatorStatus.borrowError.REFINANCING':
-      'Ce renouvellement est trop élevé. Continuez et parlons-en',
+      'Ce renouvellement est trop élevé. Continuez et parlons-en.',
     'WwwCalculatorStatus.borrowWarning.REFINANCING':
       'Ce renouvellement est élevé, mais il existe des solutions. Continuez et parlons-en.',
     'WwwCalculatorStatus.empty':
@@ -132,6 +132,7 @@ const languageData = {
     'WwwCalculatorStatus.success': 'Tout est bon !',
     'WwwCalculatorStatus.tutorial':
       'Complétez les champs que vous voulez, nous faisons le reste.',
+    'WwwCalculatorStatus.continueProject': 'Continuer mon projet',
     '404.title': 'Erreur quatre-cent-quatre',
     '404.description':
       'Il semblerait que nous vous ayions perdu sur notre site.',
