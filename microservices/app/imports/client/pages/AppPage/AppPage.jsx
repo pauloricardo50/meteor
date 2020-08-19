@@ -14,7 +14,6 @@ import ProAppPage from './ProAppPage';
 import SuperDashboard from './SuperDashboard/loadable';
 
 export const AppPage = ({ currentUser, insertLoan, loading }) => {
-  console.log('currentUser:', currentUser);
   const { emails, loans } = currentUser;
   const userIsPro = Roles.userIsInRole(currentUser, ROLES.PRO);
 

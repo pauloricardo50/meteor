@@ -16,7 +16,7 @@ const OnboardingWithoutLoan = () => {
   const shouldInsertLoan = Object.values(PURCHASE_TYPE).includes(purchaseType);
   const [loading, setLoading] = useState(shouldInsertLoan);
   const [redirect, setRedirect] = useState();
-  const hasPropertyOrPromotion = false;
+  const hasPropertyOrPromotion = false; // TODO:
 
   const handleInsert = pType => {
     if (!loading) {
@@ -68,30 +68,20 @@ const OnboardingWithoutLoan = () => {
               </Button>
             )}
 
-            {!hasPropertyOrPromotion && (
-              <>
+            {!hasPropertyOrPromotion &&
+              Object.values(PURCHASE_TYPE).map(type => (
                 <Button
+                  key={type}
                   size="large"
                   className="m-4"
                   raised
                   primary
                   loading={loading}
-                  onClick={() => handleInsert(PURCHASE_TYPE.ACQUISITION)}
+                  onClick={() => handleInsert(PURCHASE_TYPE[type])}
                 >
-                  <T id="OnboardingWithoutLoan.ACQUISITION" />
+                  <T id={`OnboardingWithoutLoan.${type}`} />
                 </Button>
-                <Button
-                  size="large"
-                  className="m-4"
-                  raised
-                  secondary
-                  loading={loading}
-                  onClick={() => handleInsert(PURCHASE_TYPE.REFINANCING)}
-                >
-                  <T id="OnboardingWithoutLoan.REFINANCING" />
-                </Button>
-              </>
-            )}
+              ))}
           </div>
         </div>
 

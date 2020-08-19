@@ -201,7 +201,7 @@ export const steps = [
     component: 'OnboardingBorrowersForm',
     condition: always,
     props: { borrowerSchema: birthDateSchema },
-    isDone: loan => loan.borrowers?.some(({ birthDate }) => !!birthDate),
+    isDone: loan => loan.borrowers?.every(({ birthDate }) => !!birthDate),
     onSubmit: loan => ({ borrower1, borrower2 }) =>
       updateBorrowers(loan, borrower1, borrower2),
     renderValue: loan => (

@@ -48,8 +48,8 @@ import {
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 
-loanUpdate.setHandler((context, { loanId, object }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId, context.userId);
+loanUpdate.setHandler(({ userId }, { loanId, object }) => {
+  SecurityService.loans.isAllowedToUpdate(loanId, userId);
   return LoanService.update({ loanId, object });
 });
 
@@ -58,13 +58,13 @@ loanDelete.setHandler((context, { loanId }) => {
   return LoanService.remove({ loanId });
 });
 
-pushLoanValue.setHandler((context, { loanId, object }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId, context.userId);
+pushLoanValue.setHandler(({ userId }, { loanId, object }) => {
+  SecurityService.loans.isAllowedToUpdate(loanId, userId);
   return LoanService.pushValue({ loanId, object });
 });
 
-popLoanValue.setHandler((context, { loanId, object }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId, context.userId);
+popLoanValue.setHandler(({ userId }, { loanId, object }) => {
+  SecurityService.loans.isAllowedToUpdate(loanId, userId);
   return LoanService.popValue({ loanId, object });
 });
 
@@ -112,35 +112,38 @@ userLoanInsert.setHandler(
 );
 userLoanInsert.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
-export const addStructureHandler = (context, { loanId }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId, context.userId);
+export const addStructureHandler = ({ userId }, { loanId }) => {
+  SecurityService.loans.isAllowedToUpdate(loanId, userId);
   return LoanService.addNewStructure({ loanId });
 };
 addNewStructure.setHandler(addStructureHandler);
 
-export const removeStructureHandler = (context, { loanId, structureId }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId, context.userId);
+export const removeStructureHandler = ({ userId }, { loanId, structureId }) => {
+  SecurityService.loans.isAllowedToUpdate(loanId, userId);
   return LoanService.removeStructure({ loanId, structureId });
 };
 removeStructure.setHandler(removeStructureHandler);
 
 export const updateStructureHandler = (
-  context,
+  { userId },
   { loanId, structureId, structure },
 ) => {
-  SecurityService.loans.isAllowedToUpdate(loanId, context.userId);
+  SecurityService.loans.isAllowedToUpdate(loanId, userId);
   return LoanService.updateStructure({ loanId, structureId, structure });
 };
 updateStructure.setHandler(updateStructureHandler);
 
-export const selectStructureHandler = (context, { loanId, structureId }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId);
+export const selectStructureHandler = ({ userId }, { loanId, structureId }) => {
+  SecurityService.loans.isAllowedToUpdate(loanId, userId);
   return LoanService.selectStructure({ loanId, structureId });
 };
 selectStructure.setHandler(selectStructureHandler);
 
-export const duplicateStructureHandler = (context, { loanId, structureId }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId, context.userId);
+export const duplicateStructureHandler = (
+  { userId },
+  { loanId, structureId },
+) => {
+  SecurityService.loans.isAllowedToUpdate(loanId, userId);
   return LoanService.duplicateStructure({ loanId, structureId });
 };
 duplicateStructure.setHandler(duplicateStructureHandler);
@@ -157,13 +160,12 @@ assignLoanToUser.setHandler(({ userId }, params) => {
   LoanService.assignLoanToUser(params);
 });
 
-switchBorrower.setHandler((context, params) => {
-  SecurityService.loans.isAllowedToUpdate(params.loanId, context.userId);
+switchBorrower.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
   return LoanService.switchBorrower(params);
 });
 
-sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
-  const { userId } = context;
+sendNegativeFeedbackToAllLenders.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);
   return LoanService.sendNegativeFeedbackToAllLenders(params);
 });
@@ -178,33 +180,33 @@ reuseProperty.setHandler((context, params) => {
   LoanService.reuseProperty(params);
 });
 
-setMaxPropertyValueOrBorrowRatio.setHandler((context, params) => {
-  SecurityService.loans.isAllowedToUpdate(params.loanId, context.userId);
+setMaxPropertyValueOrBorrowRatio.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
   return LoanService.setMaxPropertyValueOrBorrowRatio(params);
 });
 setMaxPropertyValueOrBorrowRatio.setRateLimit({ limit: 2, timeRange: 30000 }); // Twice every 30sec
 
-addNewMaxStructure.setHandler((context, params) => {
-  SecurityService.loans.isAllowedToUpdate(params.loanId, context.userId);
+addNewMaxStructure.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
   return LoanService.addNewMaxStructure(params);
 });
 addNewMaxStructure.setRateLimit({ limit: 2, timeRange: 30000 }); // Twice every 30sec
 
-setLoanStep.setHandler((context, params) => {
+setLoanStep.setHandler(({ userId }, params) => {
   const userAllowedSteps = [STEPS.SOLVENCY, STEPS.REQUEST];
 
   if (userAllowedSteps.includes(params.nextStep)) {
-    SecurityService.loans.isAllowedToUpdate(params.loanId, context.userId);
+    SecurityService.loans.isAllowedToUpdate(params.loanId, userId);
   } else {
-    Security.checkUserIsAdmin(context.userId);
+    Security.checkUserIsAdmin(userId);
   }
 
   return LoanService.setStep(params);
 });
 
-loanShareSolvency.setHandler((context, params) => {
+loanShareSolvency.setHandler(({ userId }, params) => {
   const { loanId, shareSolvency } = params;
-  SecurityService.loans.isAllowedToUpdate(loanId, context.userId);
+  SecurityService.loans.isAllowedToUpdate(loanId, userId);
   return LoanService.update({
     loanId: params.loanId,
     object: { shareSolvency },
@@ -247,9 +249,9 @@ anonymousLoanInsert.setHandler((context, params) => {
 });
 anonymousLoanInsert.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 30sec
 
-loanInsertBorrowers.setHandler((context, params) => {
+loanInsertBorrowers.setHandler(({ userId }, params) => {
   const { loanId } = params;
-  SecurityService.loans.isAllowedToUpdate(loanId, context.userId);
+  SecurityService.loans.isAllowedToUpdate(loanId, userId);
   LoanService.insertBorrowers(params);
 });
 loanInsertBorrowers.setRateLimit({ limit: 2, timeRange: 10000 }); // Twice every 10sec

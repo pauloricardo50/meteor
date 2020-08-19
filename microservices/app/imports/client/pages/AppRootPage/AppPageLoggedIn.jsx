@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import useCurrentUser from 'core/hooks/useCurrentUser';
+import { createRoute } from 'core/utils/routerUtils';
 
 import appRoutes from '../../../startup/client/appRoutes';
 
@@ -14,7 +15,13 @@ const AppPageLoggedIn = () => {
   }
 
   if (loans.length === 1) {
-    return <Redirect to={`/loans/${loans[0]._id}`} />;
+    return (
+      <Redirect
+        to={createRoute(appRoutes.DASHBOARD_PAGE.route, {
+          loanId: loans[0]._id,
+        })}
+      />
+    );
   }
 
   if (loans.length > 0) {

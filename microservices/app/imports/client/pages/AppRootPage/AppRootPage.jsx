@@ -1,9 +1,13 @@
 import React from 'react';
 
+import useCurrentUser from 'core/hooks/useCurrentUser';
+
 import AppPageLoggedIn from './AppPageLoggedIn';
 import AppPageLoggedOut from './AppPageLoggedOut';
 
-const AppRootPage = ({ currentUser }) => {
+const AppRootPage = () => {
+  const currentUser = useCurrentUser();
+
   if (currentUser === null) {
     return <AppPageLoggedOut />;
   }

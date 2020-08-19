@@ -75,8 +75,9 @@ const AppPageLoggedOut = () => {
 
   let query;
   if (searchParams.purchaseType) {
-    const search = new URLSearchParams();
-    search.append('purchaseType', searchParams.purchaseType);
+    const search = new URLSearchParams({
+      purchaseType: searchParams.purchaseType,
+    });
     query = search.toString();
   }
 

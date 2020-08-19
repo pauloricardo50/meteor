@@ -27,7 +27,7 @@ const OnboardingBorrowersForm = ({
   borrowerSchema,
   onSubmit,
   getModel = getModelBase,
-  ...rest
+  ...props
 }) => {
   const { loan } = useOnboarding();
   const twoBorrowers = loan.borrowers.length >= 2;
@@ -47,7 +47,7 @@ const OnboardingBorrowersForm = ({
       model={getModel(loan, borrowerSchema)}
       onSubmit={onSubmit}
       autoFormProps={{ autoFieldProps: { ignoreParentIntl: true } }}
-      {...rest}
+      {...props}
     />
   );
 };

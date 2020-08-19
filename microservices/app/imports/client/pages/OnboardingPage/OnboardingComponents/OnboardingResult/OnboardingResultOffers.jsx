@@ -7,13 +7,14 @@ import useMeteorData from 'core/hooks/useMeteorData';
 
 const ratesToShow = [
   INTEREST_RATES.LIBOR,
+  INTEREST_RATES.YEARS_5,
   INTEREST_RATES.YEARS_10,
-  INTEREST_RATES.YEARS_25,
+  INTEREST_RATES.YEARS_15,
 ];
 
 const OnboardingResultOffers = () => {
   const { data } = useMeteorData({ query: currentInterestRates });
-  console.log('rates:', data);
+
   if (!data?.rates) {
     return null;
   }

@@ -66,6 +66,7 @@ const LoanCardHeader = ({ loan, disableLink }) => {
           <img src={image} alt="property" />
         </div>
       )}
+
       <div className="loan-card-header-title">
         <h4>
           <small>
@@ -75,6 +76,7 @@ const LoanCardHeader = ({ loan, disableLink }) => {
         <h2>{getLoanTitle(name, customName)}</h2>
         <p>{getAddress({ promotions, properties, hasPromotion })}</p>
       </div>
+
       <LoanRenamer
         loanId={loanId}
         customName={customName}

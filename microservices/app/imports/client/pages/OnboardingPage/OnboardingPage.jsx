@@ -4,7 +4,6 @@ import OnboardingWithLoan from './OnboardingWithLoan';
 import OnboardingWithoutLoan from './OnboardingWithoutLoan';
 
 const OnboardingPage = ({ loan }) => {
-  console.log('loan:', loan);
   if (!loan) {
     return <OnboardingWithoutLoan />;
   }

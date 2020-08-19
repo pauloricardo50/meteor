@@ -150,7 +150,7 @@ class PropertySecurity {
       });
 
       if (property.userId || property.userLinks?.length) {
-        Security.checkOwnership(property);
+        Security.checkOwnership(property, userId);
       } else if (property.loans?.length === 1 && property.loans[0].anonymous) {
         LoanSecurity.checkAnonymousLoan(property.loans[0]._id);
       } else {
@@ -168,7 +168,7 @@ class PropertySecurity {
       userId: 1,
       userLinks: 1,
     });
-    Security.checkOwnership(property);
+    Security.checkOwnership(property, userId);
   }
 
   static hasAccessToProperty({ propertyId, userId }) {
@@ -304,10 +304,6 @@ class PropertySecurity {
         'Vous ne pouvez pas réserver ce bien immobilier à ce client',
       );
     }
-  }
-
-  static isAllowedToCancelReservation({ propertyId, loanId, userId }) {
-    // TODO
   }
 
   static isAllowedToSell({ propertyId, userId }) {
