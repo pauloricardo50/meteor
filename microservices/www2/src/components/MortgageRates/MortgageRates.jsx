@@ -19,6 +19,9 @@ const parseRateType = (language, rateType) => {
   let rateTypeDisplay = rateType.replace('interest', '');
 
   if (rateTypeDisplay.toLowerCase() !== 'libor') {
+    rateTypeDisplay = getLanguageData(language).rateType.prefix.concat(
+      rateTypeDisplay,
+    );
     rateTypeDisplay = rateTypeDisplay.concat(
       getLanguageData(language).rateType.suffix,
     );

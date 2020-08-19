@@ -50,11 +50,10 @@ const LinkedLocation = ({ location }) => (
         {locations[location].phone}
       </a>
 
-      <img
-        src="https://e-potek-public.s3.eu-central-1.amazonaws.com/epotek-localbusiness-image.jpg"
+      {/* https://webmasters.stackexchange.com/questions/84988/possible-to-display-none-for-schema-org-image-property */}
+      <link
         itemProp="image"
-        alt="e-Potek"
-        style={{ display: 'none' }}
+        href="https://e-potek-public.s3.eu-central-1.amazonaws.com/epotek-localbusiness-image.jpg"
       />
     </a>
   </div>
@@ -67,9 +66,9 @@ const FooterContact = ({ language }) => (
     itemType="https://schema.org/LocalBusiness"
   >
     {/* keep here for web crawlers */}
-    <h1 itemProp="name" hidden>
+    <div itemProp="name" hidden>
       e-Potek SA
-    </h1>
+    </div>
 
     <div>
       <b>Contactez nos équipes</b>

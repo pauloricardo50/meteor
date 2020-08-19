@@ -129,6 +129,7 @@ export class DripService {
       .then(response => {
         // Append the status to the body for the tests
         const { body, statusCode: status } = response;
+        console.log('Drip API called:', method, status);
         return { ...body, status };
       })
       .catch(error => {
@@ -153,6 +154,8 @@ export class DripService {
     if (hasTestTag) {
       return Promise.resolve();
     }
+
+    console.log('Drip webhook called:', method, data);
 
     return method
       ? this[method](data || { ...custom?.data, subscriber: Subscriber })
@@ -216,7 +219,7 @@ export class DripService {
     });
 
     if (!user) {
-      throw new Meteor.Error('User not found in database');
+      throw new Meteor.Error(`User not found in database: ${email}`);
     }
 
     const hasAPromotion =
@@ -484,7 +487,7 @@ export class DripService {
 
     if (user?._id) {
       setUserStatus.serverRun({
-        userId: user?._id,
+        userId: user._id,
         status: USER_STATUS.LOST,
         source: 'drip',
         reason: 'Subscriber unsubscribed',

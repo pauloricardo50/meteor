@@ -9,6 +9,10 @@ import ActivityService from '../../../activities/server/ActivityService';
 import NoOpAnalytics from '../../../analytics/server/NoOpAnalytics';
 import ErrorLogger from '../../../errorLogger/server/ErrorLogger';
 import generator from '../../../factories/server';
+import {
+  LOAN_STATUS,
+  UNSUCCESSFUL_LOAN_REASONS,
+} from '../../../loans/loanConstants';
 import UserService from '../../../users/server/UserService';
 import {
   ACQUISITION_CHANNELS,
@@ -366,7 +370,7 @@ describe('DripService', function () {
       expect(analyticsSpy.called).to.equal(false);
     });
 
-    it('sets the user status to LOST if tag is LOST and tracks the event in analytics', async () => {
+    it('sets the user status to LOST if tag is LOST, tracks the event in analytics and set his loan to unsuccessful', async () => {
       await DripService.handleWebhook({
         body: {
           event,
@@ -384,6 +388,17 @@ describe('DripService', function () {
         event: 'Drip Subscriber Lost',
       });
       expect(status).to.equal(USER_STATUS.LOST);
+
+      const { loans = [] } = UserService.get(SUBSCRIBER_ID, {
+        loans: { status: 1, unsuccessfulReason: 1 },
+      });
+
+      const [loan] = loans;
+
+      expect(loan).to.deep.include({
+        status: LOAN_STATUS.UNSUCCESSFUL,
+        unsuccessfulReason: UNSUCCESSFUL_LOAN_REASONS.CONTACT_LOSS_NO_ANSWER,
+      });
 
       await checkEmails(1);
     });
@@ -421,20 +436,14 @@ describe('DripService', function () {
 
       const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
 
-      expect(analyticsSpy.callCount).to.equal(4);
+      console.log('analyticsSpy:', analyticsSpy.args);
+      expect(analyticsSpy.callCount).to.equal(3);
       expect(
         analyticsSpy.args.some(
           ([{ userId, event }]) =>
             userId === SUBSCRIBER_ID && event === 'User Changed Status',
         ),
       ).to.equal(true, 'change status');
-      expect(
-        analyticsSpy.args.some(
-          ([{ userId, event }]) =>
-            userId === SUBSCRIBER_ID &&
-            event === 'Drip Subscriber Event Recorded',
-        ),
-      ).to.equal(true, 'event recorded');
       expect(
         analyticsSpy.args.some(
           ([{ userId, event }]) =>
@@ -496,7 +505,7 @@ describe('DripService', function () {
     const event = 'subscriber.unsubscribed_all';
 
     // All checks are performed in one test to avoid calling Drip API multiple times
-    it('sets the user status to LOST, tags the subscriber to LOST and tracks the event in analytics', async () => {
+    it('sets the user status to LOST, tags the subscriber to LOST, tracks the event in analytics and puts loans in unsuccessful', async () => {
       await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
       await DripService.handleWebhook({
         body: {
@@ -507,13 +516,17 @@ describe('DripService', function () {
         },
       });
 
-      const { status } = UserService.get(SUBSCRIBER_ID, { status: 1 });
+      const { status, loans } = UserService.get(SUBSCRIBER_ID, {
+        status: 1,
+        loans: { status: 1 },
+      });
 
       expect(analyticsSpy.lastCall.args[0]).to.deep.include({
         userId: SUBSCRIBER_ID,
         event: 'Drip Subscriber Unsubscribed',
       });
       expect(status).to.equal(USER_STATUS.LOST);
+      expect(loans[0].status).to.equal(LOAN_STATUS.UNSUCCESSFUL);
 
       const { subscribers } = await DripService.fetchSubscriber({
         subscriber: { email: SUBSCRIBER_EMAIL },
@@ -634,7 +647,7 @@ describe('DripService', function () {
     const event = 'subscriber.bounced';
 
     // All checks are performed in one test to avoid calling Drip API multiple times
-    it('sets the user status to LOST, tags the subscriber to LOST, tracks the event in analytics and adds the activity', async () => {
+    it('sets the user status to LOST, tags the subscriber to LOST, tracks the event in analytics, adds the activity and sets the loan status to unsuccessful', async () => {
       await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
       await DripService.handleWebhook({
         body: {
@@ -683,6 +696,17 @@ describe('DripService', function () {
         },
       });
 
+      const { loans = [] } = UserService.get(SUBSCRIBER_ID, {
+        loans: { status: 1, unsuccessfulReason: 1 },
+      });
+
+      const [loan] = loans;
+
+      expect(loan).to.deep.include({
+        status: LOAN_STATUS.UNSUCCESSFUL,
+        unsuccessfulReason: UNSUCCESSFUL_LOAN_REASONS.CONTACT_LOSS_UNREACHABLE,
+      });
+
       await checkEmails(1);
     });
   });
@@ -693,7 +717,7 @@ describe('DripService', function () {
     SUBSCRIBER_ID = Random.id();
 
     // All checks are performed in one test to avoid calling Drip API multiple times
-    it('sets the user status to LOST, tags the subscriber to LOST and tracks the event in analytics', async () => {
+    it('sets the user status to LOST, tags the subscriber to LOST, tracks the event in analytics and sets his loan to unsuccessful', async () => {
       await DripService.createSubscriber({ email: SUBSCRIBER_EMAIL });
       await DripService.handleWebhook({
         body: {
@@ -724,6 +748,17 @@ describe('DripService', function () {
       const [{ tags }] = subscribers;
 
       expect(tags).to.include(DRIP_TAGS.LOST);
+
+      const { loans = [] } = UserService.get(SUBSCRIBER_ID, {
+        loans: { status: 1, unsuccessfulReason: 1 },
+      });
+
+      const [loan] = loans;
+
+      expect(loan).to.deep.include({
+        status: LOAN_STATUS.UNSUCCESSFUL,
+        unsuccessfulReason: UNSUCCESSFUL_LOAN_REASONS.DRIP_COMPLAINED,
+      });
 
       await checkEmails(1);
     });

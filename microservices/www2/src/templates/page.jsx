@@ -3,11 +3,9 @@ import { graphql } from 'gatsby';
 
 import NotFound from '../components/NotFound';
 import PageSections from '../components/PageSections';
-import { BlogPostsContext, useBlogPosts } from '../contexts/BlogPostsContext';
-import { prismicPageFields, prismicPostFields } from '../utils/fragments';
 
 export const query = graphql`
-  query PRISMIC_PAGE($uid: String!, $blogAfter: String) {
+  query PRISMIC_PAGE($uid: String!) {
     prismic {
       page(uid: $uid, lang: "fr-ch") {
         ...prismicPageFields
@@ -337,84 +335,20 @@ export const query = graphql`
           }
         }
       }
-      allPosts(sortBy: date_DESC, after: $blogAfter) {
-        pageInfo {
-          endCursor
-          hasNextPage
-          hasPreviousPage
-          startCursor
-        }
-        totalCount
-        edges {
-          node {
-            _meta {
-              id
-              uid
-              tags
-              type
-              lang
-              alternateLanguages {
-                id
-                uid
-                type
-                lang
-              }
-            }
-            title
-            date
-            author {
-              ... on PRISMIC_Blog_post_author {
-                name
-                title
-                profile_photo
-              }
-            }
-            body {
-              ... on PRISMIC_PostBodyHero {
-                type
-                primary {
-                  section_id
-                  image_layout
-                  images
-                }
-              }
-              ... on PRISMIC_PostBodyQuote {
-                type
-                primary {
-                  quote
-                  quote_source
-                }
-              }
-              ... on PRISMIC_PostBodyText {
-                type
-                primary {
-                  section_id
-                  justification
-                  content
-                }
-              }
-            }
-          }
-        }
-      }
     }
   }
 `;
 
-const Page = ({ data, lang, prismic }) => {
+const Page = ({ data, lang }) => {
   const { page } = data.prismic;
 
   // handle unknown pages that don't get redirected to 404
   if (!page) return <NotFound pageType="page" pageLang={lang} />;
 
   return (
-    <BlogPostsContext.Provider
-      value={useBlogPosts({ prismic, data: data.prismic.allPosts })}
-    >
-      <div className="page" id={page.tracking_id} data-wio-id={page._meta.id}>
-        {page.body && <PageSections sections={page.body} />}
-      </div>
-    </BlogPostsContext.Provider>
+    <div className="page" id={page.tracking_id} data-wio-id={page._meta.id}>
+      {page.body && <PageSections sections={page.body} />}
+    </div>
   );
 };
 

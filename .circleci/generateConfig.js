@@ -3,7 +3,7 @@ import merge from 'lodash/merge';
 import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '/home/circleci/app';
-const CACHE_VERSION = 'master_16'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const CACHE_VERSION = 'master_17'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 const STAGING_BRANCH = 'staging';
 const MASTER_BRANCH = 'master';
 
@@ -29,6 +29,7 @@ const defaultJobValues = {
         // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
         METEOR_DISABLE_OPTIMISTIC_CACHING: 1, // big speed issue https://github.com/meteor/meteor/issues/10786
         RTL_SKIP_AUTO_CLEANUP: 1,
+        MUP_PROFILE_TASKS: 'true',
         HOME: '/home/circleci', // parts of CirceCI are hard coded to use /home/circleci, but cypress installs to $HOME
       },
     },
@@ -245,15 +246,16 @@ const testGatsbyJobE2E = () => {
   const name = 'www2'
   return ({
   ...defaultJobValues,
+  // TODO: we can probably use medium+ after updating to Meteor 1.10.3
+  resource_class: 'large',
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore global cache', cacheKeys.global()),
     restoreCache('Restore node_modules', cacheKeys.nodeModules()),
-    restoreCache('Restore meteor system', cacheKeys.meteorSystem()),
     restoreCache('Restore gatsby website', cacheKeys.gatsby()),
     restoreCache(
       'Restore meteor backend',
-      cacheKeys.meteorMicroservice('backend', testType),
+      cacheKeys.meteorMicroservice('backend', 'e2e'),
     ),
     runCommand(
       'Install netcat',
@@ -264,19 +266,17 @@ const testGatsbyJobE2E = () => {
     runCommand(
       'Install node_modules',
       `
-      function installBackend {
+      function installMicroservice {
         meteor npm --prefix microservices/${name} ci
-        touch $HOME/.npm-backend-done
+        touch $HOME/.npm-microservice-done
       }
 
-      installBackend &
+      installMicroservice &
 
-      ${
-        name !== 'backend' ? 'meteor npm --prefix microservices/backend ci' : ''
-      }
+      meteor npm --prefix microservices/backend ci
 
-      until [ -f $HOME/.npm-backend-done ]; do
-        echo "$HOME/.npm-backend-done does not exist. Waiting 1s"
+      until [ -f $HOME/.npm-microservice-done ]; do
+        echo "$HOME/.npm-microservice-done does not exist. Waiting 1s"
         sleep 1
       done
       `,
@@ -284,7 +284,7 @@ const testGatsbyJobE2E = () => {
 
     runCommand(
       'Run E2E tests',
-      `cd ./microservices/${name} && meteor npm run test-e2e`,
+      `cd ./microservices/${name} && meteor npm run test-e2e-ci`,
       '30m',
     ),
 
@@ -296,7 +296,7 @@ const testGatsbyJobE2E = () => {
 
     saveCache(
       'Cache meteor backend',
-      cacheKeys.meteorMicroservice('backend', testsType),
+      cacheKeys.meteorMicroservice('backend', 'e2e'),
       cachePaths.meteorMicroservice('backend'),
     ),
   ],
@@ -395,7 +395,7 @@ const makeConfig = () => ({
       testsType: 'unit',
     }),
     // 'Pro - unit tests': testMicroserviceJob({ name: 'pro', testsType: 'unit' }),
-    // 'Www2 - e2e tests': testGatsbyJobE2E(),
+    'Www2 - e2e tests': testGatsbyJobE2E(),
     'App - e2e tests': testMicroserviceJob({ name: 'app', testsType: 'e2e' }),
     'Admin - e2e tests': testMicroserviceJob({
       name: 'admin',
@@ -411,7 +411,6 @@ const makeConfig = () => ({
   workflows: {
     version: 2,
     'Test and deploy': {
-      // jobs: ['Www2 - unit tests'],
       jobs: [
         'Prepare',
         { 'Www2 - unit tests': { requires: ['Prepare'] } },
@@ -419,7 +418,7 @@ const makeConfig = () => ({
         { 'Core - unit tests': { requires: ['Prepare'] } },
         { 'Admin - unit tests': { requires: ['Prepare'] } },
         // { 'Pro - unit tests': { requires: ['Prepare'] } },
-        // { 'Www2 - e2e tests': { requires: ['Prepare'] } }, FIXME: Not working yet
+        { 'Www2 - e2e tests': { requires: ['Prepare'] } },
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
         { 'Pro - e2e tests': { requires: ['Prepare'] } },

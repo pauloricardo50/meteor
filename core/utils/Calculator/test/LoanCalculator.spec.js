@@ -920,9 +920,7 @@ describe('LoanCalculator', () => {
   describe('getMaxBorrowRatio', () => {
     it('returns the max ratio for a loan without offer', () => {
       expect(
-        Calculator.getMaxBorrowRatio({
-          loan: { structures: [] },
-        }),
+        Calculator.getMaxBorrowRatio({ loan: { structures: [] } }),
       ).to.equal(0.8);
     });
 
@@ -1002,6 +1000,35 @@ describe('LoanCalculator', () => {
           structureId: 'struct1',
         }),
       ).to.equal(0.5);
+    });
+
+    it('returns 0.85 if you pledge 50k, even if maxBorrowRatioWithPledge is 0.9', () => {
+      const calc = new CalculatorClass({
+        maxBorrowRatio: 0.8,
+        maxBorrowRatioWithPledge: 0.9,
+      });
+      const maxBorrowRatio = calc.getMaxBorrowRatio({
+        loan: {
+          structures: [
+            {
+              id: 'struct1',
+              propertyValue: 1000000,
+              wantedLoan: 850000,
+              ownFunds: [
+                {
+                  value: 50000,
+                  type: OWN_FUNDS_TYPES.INSURANCE_2,
+                  usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+                },
+              ],
+              notaryFees: 0,
+            },
+          ],
+        },
+        structureId: 'struct1',
+      });
+
+      expect(maxBorrowRatio).to.equal(0.85);
     });
   });
 

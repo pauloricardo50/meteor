@@ -135,8 +135,12 @@ const PromotionOptionsTable = ({ promotion }) => {
         columns={[
           {
             Header: <T id="PromotionOptionsTable.lotName" />,
-            accessor: 'name',
-            disableSortBy: true,
+            accessor: 'promotionLotCache.0.propertyCache.0.name',
+            Cell: ({
+              row: {
+                original: { name },
+              },
+            }) => name,
           },
           {
             Header: <T id="PromotionOptionsTable.promotionLotGroups" />,

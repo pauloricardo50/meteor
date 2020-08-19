@@ -220,8 +220,15 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   setUserStatus,
-  ({ params: { userId, status } }) => {
-    if (status === USER_STATUS.PROSPECT) {
+  ({ params: { userId, status, source, ...params }, response }) => {
+    console.log('DRIP setUserStatus Listener:', {
+      userId,
+      source,
+      ...params,
+      ...response,
+    });
+
+    if (status === USER_STATUS.PROSPECT || source === 'drip') {
       return;
     }
 

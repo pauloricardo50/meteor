@@ -85,7 +85,13 @@ const getSolvencyLabel = solvent => {
     <span className="customers-table-solvency">
       <Icon {...props} />
       &nbsp;
-      {title}
+      <div className="flex-col">
+        {title}
+
+        <small className="secondary m-0">
+          <T id={`Forms.solvency.${solvent}.tooltip`} />
+        </small>
+      </div>
     </span>
   );
 };
@@ -195,7 +201,13 @@ export default compose(
         createdAt: 1,
         anonymous: 1,
         status: 1,
-        user: { name: 1 },
+        user: {
+          name: 1,
+          phoneNumbers: 1,
+          email: 1,
+          referredByUser: { name: 1, organisations: { name: 1 } },
+          referredByOrganisation: { name: 1 },
+        },
         properties: { totalValue: 1 },
       },
     }),

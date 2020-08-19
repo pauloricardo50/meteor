@@ -401,6 +401,27 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         );
       }
 
+      return this.getMaxBorrowRatioBase({ loan, structureId });
+    }
+
+    // This method is helpful when you want to compare multiple lenders on the
+    // same structure, ignoring any currently selected offers
+    getMaxBorrowRatioBase({ loan, structureId }) {
+      if (this.maxBorrowRatioWithPledge) {
+        const pledgedOwnFunds = this.getPledgedOwnFunds({ loan, structureId });
+        if (pledgedOwnFunds) {
+          const propAndWork = this.getPropAndWork({ loan, structureId });
+          const pledgedRatio = pledgedOwnFunds / propAndWork;
+          return (
+            this.maxBorrowRatio +
+            Math.min(
+              pledgedRatio,
+              this.maxBorrowRatioWithPledge - this.maxBorrowRatio,
+            )
+          );
+        }
+      }
+
       return this.maxBorrowRatio;
     }
 
@@ -1163,7 +1184,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const maxLoan = this.getMaxLoanBase({
         propertyWork: structure.propertyWork,
         propertyValue: finalPropertyValue,
-        pledgedAmount: this.getPledgedOwnFunds({ loan }),
+        pledgedAmount: 0, // This is already accounted for in getMaxBorrowRatio
         residenceType: loan.residenceType,
         maxBorrowRatio: this.getMaxBorrowRatio({ loan, structureId }),
       });

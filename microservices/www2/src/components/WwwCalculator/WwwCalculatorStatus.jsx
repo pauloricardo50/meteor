@@ -58,7 +58,7 @@ const WwwCalculatorStatus = () => {
             })
           }
         >
-          <T id="getALoanText" />
+          <T id="WwwCalculatorStatus.continueProject" />
         </Button>
       </div>
       <hr className="mt-16" />

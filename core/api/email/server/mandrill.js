@@ -113,6 +113,17 @@ export const sendMandrillTemplate = (mandrillTemplate, address) => {
         });
         reject(error);
       }
+
+      if (!result.data) {
+        logError.run({
+          error: JSON.parse(
+            JSON.stringify(result, Object.getOwnPropertyNames(result)),
+          ),
+          additionalData: ['Mandrill error, no data'],
+        });
+        reject(result);
+      }
+
       resolve(result.data[0]);
     });
   });

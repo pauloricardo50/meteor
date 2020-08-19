@@ -101,14 +101,14 @@ const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
     lender: {
       organisation: { name: organisationName },
       contact: { email: address, name },
-      loan: { name: loanName, mainAssignee },
+      loan: { name: loanName, mainAssignee, user: { name: customerName } = {} },
     },
   } = OfferService.get(offerId, {
     createdAt: 1,
     lender: {
       organisation: { name: 1 },
       contact: { email: 1, name: 1 },
-      loan: { name: 1, mainAssignee: 1 },
+      loan: { name: 1, mainAssignee: 1, user: { name: 1 } },
     },
   });
 
@@ -125,6 +125,7 @@ const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
       organisationName,
       date: moment(createdAt).format('DD.MM.YYYY'),
       feedback,
+      customerName,
     },
   });
 };
@@ -494,9 +495,17 @@ addEmailListener({
   description: 'Notification au Pro si un de ses clients est mis en "Lost"',
   method: setUserStatus,
   func: ({
-    params: { userId, source, unsuccessfulReason },
+    params: { userId, source, unsuccessfulReason, ...params },
     result: { prevStatus, nextStatus },
   }) => {
+    console.log('EMAIL setUserStatus Listener:', {
+      userId,
+      source,
+      prevStatus,
+      nextStatus,
+      ...params,
+    });
+
     if (
       source === 'drip' &&
       nextStatus !== prevStatus &&

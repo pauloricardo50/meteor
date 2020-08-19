@@ -42,7 +42,27 @@
 
 [[redirects]]
   from = "/start/1"
-  to = "/fr/calculateur"
+  to = "/fr/calculateur-hypothecaire"
+  force = true
+
+[[redirects]]
+  from = "/fr/promoteurs"
+  to = "/fr/promoteurs-immobiliers"
+  force = true
+
+[[redirects]]
+  from = "/fr/promotions"
+  to = "/fr/promotions-immobilieres"
+  force = true
+
+[[redirects]]
+  from = "/home"
+  to = "/fr/accueil"
+  force = true
+
+[[redirects]]
+  from = "/mobile"
+  to = "/fr/accueil"
   force = true
 
 # Use conditional language redirect here once we have the site in multiple

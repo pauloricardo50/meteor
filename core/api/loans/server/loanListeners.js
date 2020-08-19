@@ -43,9 +43,17 @@ ServerEventService.addAfterMethodListener(
 ServerEventService.addAfterMethodListener(
   setUserStatus,
   ({
-    params: { userId, unsuccessfulReason },
+    params: { userId, unsuccessfulReason, ...params },
     result: { prevStatus, nextStatus },
   }) => {
+    console.log('LOAN setUserStatus Listener:', {
+      userId,
+      unsuccessfulReason,
+      prevStatus,
+      nextStatus,
+      ...params,
+    });
+
     if (
       prevStatus === USER_STATUS.PROSPECT &&
       nextStatus === USER_STATUS.LOST
@@ -58,6 +66,8 @@ ServerEventService.addAfterMethodListener(
 
       loans.forEach(({ _id, status }) => {
         if (status !== LOAN_STATUS.UNSUCCESSFUL) {
+          console.log('UNSUCESSFUL loanId:', _id);
+
           loanSetStatus.serverRun({
             loanId: _id,
             status: LOAN_STATUS.UNSUCCESSFUL,
@@ -79,11 +89,13 @@ ServerEventService.addAfterMethodListener(
       const loans = LoanService.fetch({ $filters: { userId }, _id: 1 });
 
       loans.forEach(({ _id }) => {
+        console.log('LEAD loanId:', _id);
         loanSetStatus.serverRun({
           loanId: _id,
           status: LOAN_STATUS.LEAD,
           activitySource: 'server, unbounce',
         });
+
         LoanService.update({
           loanId: _id,
           object: { unsuccessfulReason: 1 },

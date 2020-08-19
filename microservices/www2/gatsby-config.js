@@ -156,5 +156,8 @@ module.exports = {
 
     // Makes redirects work
     'gatsby-plugin-netlify',
+
+    // Improve performance
+    'gatsby-plugin-no-sourcemaps',
   ],
 };

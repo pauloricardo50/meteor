@@ -17,9 +17,9 @@ PromotionOptionService.cache(
   {
     collection: PromotionLots,
     type: 'many',
-    fields: ['promotionLotGroupIds'],
+    fields: ['promotionLotGroupIds', 'propertyCache'],
     referenceField: 'promotionLotLinks:_id',
     cacheField: 'promotionLotCache',
   },
-  // { promotionLotCache: { $exists: false } },
+  { 'promotionLotCache.0.propertyCache': { $exists: false } },
 );

@@ -15,6 +15,7 @@ export const mapOrganisation = ({ loan, structureId, organisation }) => {
   });
   const incomeRatio = calc.getIncomeRatio({ loan, structureId });
   const borrowRatio = calc.getBorrowRatio({ loan, structureId });
+  const maxBorrowRatio = calc.getMaxBorrowRatioBase({ loan, structureId });
 
   return {
     incomeRatio,
@@ -23,7 +24,8 @@ export const mapOrganisation = ({ loan, structureId, organisation }) => {
     expenses: calc.getMonthlyProjectCost({ loan, structureId }) * 12,
     calc,
     incomeRatioStatus: incomeRatio > calc.maxIncomeRatio ? ERROR : SUCCESS,
-    borrowRatioStatus: borrowRatio > calc.maxBorrowRatio ? ERROR : SUCCESS,
+    borrowRatioStatus: borrowRatio > maxBorrowRatio ? ERROR : SUCCESS,
+    maxBorrowRatio,
   };
 };
 
@@ -35,6 +37,7 @@ const LenderListItemRules = ({
   expenses,
   incomeRatioStatus,
   borrowRatioStatus,
+  maxBorrowRatio,
 }) => (
   <>
     {calc.adminComments && calc.adminComments.length > 0 && (
@@ -109,7 +112,7 @@ const LenderListItemRules = ({
           <br />
           <T
             id="PercentWithStatus.max"
-            values={{ max: <Percent value={calc.maxBorrowRatio} /> }}
+            values={{ max: <Percent value={maxBorrowRatio} /> }}
           />
         </span>
       }
