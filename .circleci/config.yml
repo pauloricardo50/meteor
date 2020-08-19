@@ -815,6 +815,12 @@ jobs:
     docker: *ref_0
     steps:
       - restore_cache:
+          name: Restore source
+          keys:
+            - 'source_master_17-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_17-{{ .Branch }}-'
+            - source_master_17-
+      - restore_cache:
           name: Restore global cache
           keys:
             - 'global_master_17_2-{{ checksum "./package-lock.json" }}'

@@ -373,6 +373,7 @@ const makeGatsbyDeployJob  = () => {
   return {
     ...defaultJobValues,
     steps: [
+      restoreCache('Restore source', cacheKeys.source()),
       restoreCache('Restore global cache', cacheKeys.global()),
       restoreCache('Restore node_modules', cacheKeys.nodeModules()),
       restoreCache('Restore gatsby website', cacheKeys.gatsby()),
