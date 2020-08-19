@@ -840,7 +840,7 @@ jobs:
           command: |2-
 
                      cd scripts
-                     bash setup-microservice www2
+                     bash setup-microservice.sh www2
                     
       - run:
           name: Deploy

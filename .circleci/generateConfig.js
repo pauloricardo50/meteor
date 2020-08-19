@@ -381,7 +381,7 @@ const makeGatsbyDeployJob  = () => {
         'Setup Microservice',
         `
          cd scripts
-         bash setup-microservice www2
+         bash setup-microservice.sh www2
         `
       ),
       runCommand(
