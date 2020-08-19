@@ -129,6 +129,7 @@ export class DripService {
       .then(response => {
         // Append the status to the body for the tests
         const { body, statusCode: status } = response;
+        console.log('Drip API called:', method, status);
         return { ...body, status };
       })
       .catch(error => {
@@ -153,6 +154,8 @@ export class DripService {
     if (hasTestTag) {
       return Promise.resolve();
     }
+
+    console.log('Drip webhook called:', method, data);
 
     return method
       ? this[method](data || { ...custom?.data, subscriber: Subscriber })
@@ -474,7 +477,6 @@ export class DripService {
   }
 
   async handleUnsubscribe({ subscriber }) {
-    console.log('handleUnsubscribe:', { subscriber });
     const user = UserService.getByEmail(subscriber?.email, {
       name: 1,
       email: 1,
@@ -482,7 +484,6 @@ export class DripService {
       referredByOrganisation: { name: 1 },
       assignedEmployee: { name: 1 },
     });
-    console.log('user:', user);
 
     if (user?._id) {
       setUserStatus.serverRun({

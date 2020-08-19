@@ -177,11 +177,11 @@ const getBorrowersCitizenship = borrowers =>
   });
 
 const getBorrowerCivilStatusAndDate = borrower => {
-  const { civilStatus, marriedDate, divorcedDate } = borrower;
+  const { civilStatus, marriedDate, divorcedDate, gender } = borrower;
   if (civilStatus === CIVIL_STATUS.MARRIED) {
     return (
       <span>
-        <T id={`Forms.civilStatus.${civilStatus}`} />
+        <T id={`Forms.civilStatus.${civilStatus}`} values={{ gender }} />
         {marriedDate ? ` (${moment(marriedDate).format('DD.MM.YYYY')})` : ''}
       </span>
     );
@@ -189,13 +189,13 @@ const getBorrowerCivilStatusAndDate = borrower => {
   if (civilStatus === CIVIL_STATUS.DIVORCED) {
     return (
       <span>
-        <T id={`Forms.civilStatus.${civilStatus}`} />
+        <T id={`Forms.civilStatus.${civilStatus}`} values={{ gender }} />
         {divorcedDate ? ` (${moment(divorcedDate).format('DD.MM.YYYY')})` : ''}
       </span>
     );
   }
 
-  return <T id={`Forms.civilStatus.${civilStatus}`} />;
+  return <T id={`Forms.civilStatus.${civilStatus}`} values={{ gender }} />;
 };
 
 const getBorrowerCompany = borrower => {

@@ -221,10 +221,8 @@ const createUsers = ({
   promotionOptionsPerUser,
 }) => {
   const today = new Date();
-  const { name: lastLoanName } = LoanService.get(
-    {},
-    { name: 1, $options: { sort: { name: -1 } } },
-  );
+  const { name: lastLoanName } =
+    LoanService.get({}, { name: 1, $options: { sort: { name: -1 } } }) || {};
   let nextLoanName = getNewLoanName(lastLoanName);
 
   generator({

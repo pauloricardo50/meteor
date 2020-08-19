@@ -17,29 +17,40 @@ import InterestsTableTrend from 'core/components/InterestRatesTable/InterestsTab
 import T from 'core/components/Translation';
 import Percent from 'core/components/Translation/numberComponents/Percent';
 
-const singleInterestRate = type => ({
-  [type]: { type: Object, optional: true },
-  [`${type}.rateLow`]: {
-    type: Number,
-    min: 0,
-    max: 1,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: '0.00%' },
-    optional: true,
-  },
-  [`${type}.rateHigh`]: {
-    type: Number,
-    min: 0,
-    max: 1,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: '0.00%' },
-    optional: true,
-  },
-  [`${type}.trend`]: {
-    type: String,
-    allowedValues: Object.values(TRENDS),
-    optional: true,
-    uniforms: { displayEmpty: false, placeholder: '' },
-  },
-});
+const MANDATORY_TYPES = [
+  INTEREST_RATES.LIBOR,
+  INTEREST_RATES.YEARS_5,
+  INTEREST_RATES.YEARS_10,
+  INTEREST_RATES.YEARS_15,
+];
+
+const singleInterestRate = type => {
+  const optional = !MANDATORY_TYPES.includes(type);
+
+  return {
+    [type]: { type: Object, optional: true },
+    [`${type}.rateLow`]: {
+      type: Number,
+      min: 0,
+      max: 1,
+      uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: '0.00%' },
+      optional,
+    },
+    [`${type}.rateHigh`]: {
+      type: Number,
+      min: 0,
+      max: 1,
+      uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: '0.00%' },
+      optional,
+    },
+    [`${type}.trend`]: {
+      type: String,
+      allowedValues: Object.values(TRENDS),
+      optional,
+      uniforms: { displayEmpty: false, placeholder: '' },
+    },
+  };
+};
 
 const rates = Object.values(INTEREST_RATES).reduce(
   (interestRates, type) => ({

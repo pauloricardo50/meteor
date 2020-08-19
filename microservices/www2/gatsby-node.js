@@ -1,5 +1,6 @@
 const { meteorClient } = require('./src/utils/meteorClient/meteorClient');
 const { createTestNodes } = require('./src/utils/test/gatsbyTestHelpers');
+const getAllBlogPosts = require('./src/utils/getAllBlogPosts');
 
 exports.sourceNodes = async ({
   actions,
@@ -71,6 +72,33 @@ exports.sourceNodes = async ({
           description: 'e-Potek Newsletter',
         },
       };
+      actions.createNode(node);
+    });
+  }
+
+  // create graphql nodes for all blog posts
+  let allBlogPosts;
+
+  try {
+    allBlogPosts = await getAllBlogPosts();
+  } catch (error) {
+    reporter.error('Failed to fetch blog posts:', error);
+  }
+
+  if (allBlogPosts) {
+    reporter.success('Prismic: retrieve all blog posts');
+
+    allBlogPosts.forEach(blogPost => {
+      const node = {
+        id: createNodeId(blogPost._meta.id),
+        ...blogPost,
+        internal: {
+          type: 'blogPost',
+          contentDigest: createContentDigest(blogPost),
+          description: 'Prismic Blog Post',
+        },
+      };
+
       actions.createNode(node);
     });
   }

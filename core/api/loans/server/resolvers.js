@@ -14,12 +14,13 @@ import UserService from '../../users/server/UserService';
 import LoanService from './LoanService';
 
 const proLoansFragment = proLoans();
-// These fields are required to get the solvency right
+// These fields are required to get the solvency and anonymization right
 const requiredData = {
   residenceType: 1,
   shareSolvency: 1,
   maxPropertyValue: 1,
   property: { totalValue: 1 },
+  properties: { category: 1, status: 1 },
 };
 
 const isSolventForProProperty = ({
@@ -117,6 +118,7 @@ export const proPropertyLoansResolver = ({
   const fragment = $body
     ? intersectDeep(proLoansFragment, $body)
     : proLoansFragment;
+
   const loans = LoanService.fetch({
     $filters: {
       propertyIds: propertyId,

@@ -52,6 +52,7 @@ export const getRedirect = (currentUser, pathname) => {
 
 const loanFragment = merge({}, calculatorLoan(), {
   applicationType: 1,
+  assignees: { name: 1, phoneNumber: 1, email: 1 },
   borrowers: { age: 1, name: 1, $options: { sort: { createdAt: 1 } } },
   contacts: 1,
   customName: 1,

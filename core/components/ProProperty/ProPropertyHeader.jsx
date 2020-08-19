@@ -77,7 +77,9 @@ const ProPropertyheader = ({ property, loan }) => {
           </p>
         )}
         <ProPropertyRecap property={property} />
-        {externalUrl && <ExternalUrl description={ogSiteName} />}
+        {externalUrl && (
+          <ExternalUrl description={ogSiteName} externalUrl={externalUrl} />
+        )}
       </div>
       <ImageCarrousel images={getImages(documents, imageUrls)} />
     </div>

@@ -9,7 +9,9 @@ import { RichText } from '../prismic';
 const BlogPostsGridItem = ({ post }) => {
   const defaultTitle = 'Untitled';
 
-  const postFirstHero = post.body.find(section => section.type === 'hero');
+  const postFirstHero = post.body.find(
+    section => section.slice_type === 'hero',
+  );
   const postFirstImage = postFirstHero?.primary?.images;
 
   return (
@@ -17,7 +19,7 @@ const BlogPostsGridItem = ({ post }) => {
       {postFirstImage && (
         <div
           className="blog-post-item-image"
-          style={{ backgroundImage: `url("${postFirstImage.url}")` }}
+          style={{ backgroundImage: `url("${postFirstImage.url}&w=400")` }}
         />
       )}
       <div className="flex center-align nowrap">

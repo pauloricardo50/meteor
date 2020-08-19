@@ -33,9 +33,10 @@ const languageData = {
     recentNewslettersToggle: `Voir les newsletters précédentes`,
     recommendedArticleHeader: `Nos articles récents`,
     rateTable: {
-      header: ['Durée', 'Tendance', 'Taux'],
+      header: ['Type', 'Tendance', 'Taux'],
     },
     rateType: {
+      prefix: 'Taux fixe ',
       suffix: ' ans',
     },
     'cityMarker.title': 'Région de {city}',
@@ -56,6 +57,8 @@ const languageData = {
     'WwwCalculatorChart.title': 'CHF {total} /mois',
     'WwwCalculatorChartForm.interests': "Taux d'intérêt indicatif",
     'WwwCalculatorChartForm.interestLibor': 'Taux Libor',
+    'WwwCalculatorChartForm.interest1': 'Taux 1 ans',
+    'WwwCalculatorChartForm.interest2': 'Taux 2 ans',
     'WwwCalculatorChartForm.interest5': 'Taux 5 ans',
     'WwwCalculatorChartForm.interest10': 'Taux 10 ans',
     'WwwCalculatorChartForm.interest15': 'Taux 15 ans',
@@ -114,11 +117,11 @@ const languageData = {
       "Prêt / {purchaseType, select, ACQUISITION {Prix d'achat} other {Valeur du bien}}",
     'WwwCalculatorRecap.incomeRule': 'Charges / Revenus',
     'WwwCalculatorStatus.borrowError.ACQUISITION':
-      'Les fonds propres ne suffisent pas pour votre projet. Continuez et parlons-en',
+      'Les fonds propres ne suffisent pas pour votre projet. Continuez et parlons-en.',
     'WwwCalculatorStatus.borrowWarning.ACQUISITION':
       'Les fonds propres ne sont pas dans les normes attendues, mais il existe des solutions. Continuez et parlons-en.',
     'WwwCalculatorStatus.borrowError.REFINANCING':
-      'Ce renouvellement est trop élevé. Continuez et parlons-en',
+      'Ce renouvellement est trop élevé. Continuez et parlons-en.',
     'WwwCalculatorStatus.borrowWarning.REFINANCING':
       'Ce renouvellement est élevé, mais il existe des solutions. Continuez et parlons-en.',
     'WwwCalculatorStatus.empty':
@@ -130,12 +133,15 @@ const languageData = {
     'WwwCalculatorStatus.success': 'Tout est bon !',
     'WwwCalculatorStatus.tutorial':
       'Complétez les champs que vous voulez, nous faisons le reste.',
+    'WwwCalculatorStatus.continueProject': 'Continuer mon projet',
     '404.title': 'Erreur quatre-cent-quatre',
     '404.description':
       'Il semblerait que nous vous ayions perdu sur notre site.',
     '404.backToHome': 'Retourner au début',
     'MortgageRates.lastUpdate':
       "Dernière mise à jour {days, plural, =0 {aujourd'hui.} =1 {il y a un jour.} other {il y a # jours.}}",
+    'MortageRateCarousel.title':
+      "Les meilleurs taux d'intérêt hypothécaires actuels",
   },
 };
 
