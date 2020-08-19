@@ -810,7 +810,7 @@ jobs:
           path: ./e2e-results
       - store_artifacts:
           path: ./e2e-results
-  Www2 - Deploy:
+  Www2 - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
     steps:

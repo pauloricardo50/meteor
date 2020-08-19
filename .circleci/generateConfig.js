@@ -428,7 +428,7 @@ const makeConfig = () => ({
       testsType: 'e2e',
     }),
     'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
-    'Www2 - Deploy': makeGatsbyDeployJob(),
+    'Www2 - deploy': makeGatsbyDeployJob(),
     'App - deploy': makeDeployJob({ name: 'app' }),
     'Admin - deploy': makeDeployJob({ name: 'admin' }),
     'Pro - deploy': makeDeployJob({ name: 'pro' }),
