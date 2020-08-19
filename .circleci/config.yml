@@ -847,7 +847,7 @@ jobs:
           command: |2-
 
                       cd microservices/www2
-                      npm run predeploy
+                      npm run deploy
                     
   App - deploy:
     working_directory: /home/circleci/app
