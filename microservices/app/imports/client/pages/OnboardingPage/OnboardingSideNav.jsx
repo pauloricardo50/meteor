@@ -13,6 +13,7 @@ const SideNav = ({ fixed }) => (
     <div className={cx('onboarding-side-nav', { fixed })}>
       <div className="onboarding-side-nav-header">
         <TopNavLogo light />
+        <span className="epotek font-size-3 ml-8 mr-16">e-Potek</span>
       </div>
 
       <OnboardingStepper />

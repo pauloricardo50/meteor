@@ -75,7 +75,9 @@ const OnboardingWithoutLoan = () => {
                   size="large"
                   className="m-4"
                   raised
-                  primary
+                  color={
+                    type === PURCHASE_TYPE.ACQUISITION ? 'primary' : 'secondary'
+                  }
                   loading={loading}
                   onClick={() => handleInsert(PURCHASE_TYPE[type])}
                 >
