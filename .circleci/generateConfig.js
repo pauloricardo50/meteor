@@ -367,6 +367,32 @@ const makeDeployJob = ({ name, job }) => ({
   ],
 });
 
+const makeGatsbyDeployJob  = () => {
+  const name = 'www2';
+
+  return {
+    ...defaultJobValues,
+    steps: [
+      restoreCache('Restore global cache', cacheKeys.global()),
+      restoreCache('Restore node_modules', cacheKeys.nodeModules()),
+      restoreCache('Restore gatsby website', cacheKeys.gatsby()),
+      runCommand(
+        'Setup Microservice',
+        `
+         cd scripts
+         bash setup-microservice www2
+        `
+      ),
+      runCommand(
+        'Deploy',
+        `
+          npm run predeploy
+        `
+      )
+    ]
+  }
+}
+
 const testJobs = [
   'App - unit tests',
   'Admin - unit tests',
@@ -402,7 +428,7 @@ const makeConfig = () => ({
       testsType: 'e2e',
     }),
     'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
-    'Www - deploy': makeDeployJob({ name: 'www' }),
+    'Www2 - Deploy': makeGatsbyDeployJob(),
     'App - deploy': makeDeployJob({ name: 'app' }),
     'Admin - deploy': makeDeployJob({ name: 'admin' }),
     'Pro - deploy': makeDeployJob({ name: 'pro' }),
@@ -426,7 +452,8 @@ const makeConfig = () => ({
         { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
         { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
         { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
-      ],
+        { 'Www2 - deploy': { requires: [ 'Www 2- unit tests', 'Www2 - e2e tests' ], filters: deployBranchFilter } },
+     ],
     },
   },
 });
