@@ -94,6 +94,7 @@ describe('OfferService', () => {
           },
           loans: {
             _id: 'loanId',
+            name: '20-9999',
             lenders: {
               _id: 'lenderId',
               organisation: { _id: 'orgId' },
@@ -145,7 +146,10 @@ describe('OfferService', () => {
       expect(bcc.type).to.equal('bcc');
       expect(from_name).to.equal('Dev E-Potek');
       expect(subject).to.include('Feedback client sur');
-      expect(subject).to.include('Susan Boyle');
+      expect(subject).to.include('20-9999 Susan Boyle');
+      expect(
+        global_merge_vars.find(({ name }) => name === 'TITLE').content,
+      ).to.include('20-9999 Susan Boyle');
       expect(
         global_merge_vars.find(({ name }) => name === 'BODY').content,
       ).to.include(feedback);
