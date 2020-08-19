@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import {
+  MuiThemeProvider,
+  StylesProvider,
+  jssPreset,
+} from '@material-ui/core/styles';
+import { create } from 'jss';
 import PropTypes from 'prop-types';
 import { IntlProvider } from 'react-intl';
 import { withProps } from 'recompose';
@@ -7,15 +12,16 @@ import { withProps } from 'recompose';
 import createTheme from '../../config/muiCustom';
 
 const MaterialUiTheme = withProps({ theme: createTheme({}) })(MuiThemeProvider);
+const jss = create({
+  ...jssPreset(),
+  insertionPoint: document.getElementById('jss-insertion-point'),
+});
 
-const LibraryWrappers = ({
-  i18n: { locale, messages, formats },
-  children,
-  withMui = true,
-}) => {
+const LibraryWrappers = ({ i18n: { locale, messages, formats }, children }) => {
   useEffect(() => {
     window.intlMessages = messages;
   }, [messages]);
+
   const content = (
     <IntlProvider
       locale={locale}
@@ -28,11 +34,11 @@ const LibraryWrappers = ({
     </IntlProvider>
   );
 
-  if (!withMui) {
-    return content;
-  }
-
-  return <MaterialUiTheme>{content}</MaterialUiTheme>;
+  return (
+    <StylesProvider jss={jss}>
+      <MaterialUiTheme>{content}</MaterialUiTheme>
+    </StylesProvider>
+  );
 };
 
 LibraryWrappers.propTypes = {
