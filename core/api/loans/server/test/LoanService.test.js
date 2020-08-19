@@ -49,7 +49,7 @@ import {
 import {
   loanSetAdminNote,
   loanSetStatus,
-  sendNegativeFeedbackToAllLenders,
+  sendNegativeFeedbackToLenders,
   setLoanStep,
 } from '../../methodDefinitions';
 import LoanService from '../LoanService';
@@ -919,8 +919,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe('sendNegativeFeedbackToAllLenders', () => {
-    let addresses = [];
+  describe('sendNegativeFeedbackToLenders', () => {
     const insertMultipleOffers = ({
       numberOfLenders,
       numberOfOffersPerLender,
@@ -929,10 +928,9 @@ describe('LoanService', function () {
 
       [...Array(numberOfLenders)].forEach((_, index) => {
         // Create contact
-        const address = faker.internet.email();
-        addresses = [...addresses, address];
-        const contactId = Factory.create('contact', { emails: [{ address }] })
-          ._id;
+        const address = `contact@org${index + 1}.com`;
+        const contactId = `contact${index + 1}`;
+        Factory.create('contact', { _id: contactId, emails: [{ address }] });
 
         // Create org
         const organisationId = Factory.create('organisation', {
@@ -985,11 +983,9 @@ describe('LoanService', function () {
           },
         ],
       });
-
-      addresses = [];
     });
 
-    it('sends a negative feedback to all lenders', async () => {
+    it('sends a negative feedback to 3 lenders', async () => {
       const numberOfLenders = 5;
       const numberOfOffersPerLender = 1;
 
@@ -1004,18 +1000,24 @@ describe('LoanService', function () {
       );
 
       await ddpWithUserId('adminId', () =>
-        sendNegativeFeedbackToAllLenders.run({ loanId }),
+        sendNegativeFeedbackToLenders.run({
+          loanId,
+          contactIds: ['contact1', 'contact3', 'contact4'],
+        }),
       );
 
-      const emails = await checkEmails(numberOfLenders);
+      const emails = await checkEmails(3);
 
-      expect(emails.length).to.equal(numberOfLenders);
-      addresses.forEach(email =>
+      [
+        'contact@org1.com',
+        'contact@org3.com',
+        'contact@org4.com',
+      ].forEach(email =>
         expect(emails.some(({ address }) => address === email)).to.equal(true),
       );
     });
 
-    it('sends a negative feedback to all lenders once only', async () => {
+    it('sends a negative feedback to lenders once only', async () => {
       const numberOfLenders = 5;
       const numberOfOffersPerLender = 10;
 
@@ -1030,20 +1032,26 @@ describe('LoanService', function () {
       );
 
       await ddpWithUserId('adminId', () =>
-        sendNegativeFeedbackToAllLenders.run({ loanId }),
+        sendNegativeFeedbackToLenders.run({
+          loanId,
+          contactIds: ['contact1', 'contact3', 'contact4'],
+        }),
       );
 
-      const emails = await checkEmails(numberOfLenders);
+      const emails = await checkEmails(3);
 
-      expect(emails.length).to.equal(numberOfLenders);
-      addresses.forEach(email =>
+      [
+        'contact@org1.com',
+        'contact@org3.com',
+        'contact@org4.com',
+      ].forEach(email =>
         expect(emails.some(({ address }) => address === email)).to.equal(true),
       );
     });
 
     it('does not send any feedback if there is no lender', async () => {
       await ddpWithUserId('adminId', () =>
-        sendNegativeFeedbackToAllLenders.run({ loanId }),
+        sendNegativeFeedbackToLenders.run({ loanId, contactIds: [] }),
       );
 
       const emails = await checkEmails(1, { timeout: 2000, noExpect: true });
@@ -1064,7 +1072,7 @@ describe('LoanService', function () {
       expect(offerIds.length).to.equal(0);
 
       await ddpWithUserId('adminId', () =>
-        sendNegativeFeedbackToAllLenders.run({ loanId }),
+        sendNegativeFeedbackToLenders.run({ loanId, contactIds: ['contact1'] }),
       );
 
       const emails = await checkEmails(1, { timeout: 2000, noExpect: true });
