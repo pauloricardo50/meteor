@@ -387,6 +387,7 @@ const makeGatsbyDeployJob  = () => {
       runCommand(
         'Deploy',
         `
+          cd microservices/www2
           npm run predeploy
         `
       )

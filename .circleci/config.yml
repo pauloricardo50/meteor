@@ -846,6 +846,7 @@ jobs:
           name: Deploy
           command: |2-
 
+                      cd microservices/www2
                       npm run predeploy
                     
   App - deploy:
