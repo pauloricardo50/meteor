@@ -9,7 +9,7 @@ import { insuranceRequestSetAdminNote } from '../../insuranceRequests/methodDefi
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import {
   loanSetAdminNote,
-  sendNegativeFeedbackToAllLenders,
+  sendNegativeFeedbackToLenders,
   setLoanStep,
 } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
@@ -137,8 +137,8 @@ addEmailListener({
 });
 
 addEmailListener({
-  description: "Feedback négatif à tous les prêteurs d'un dossier -> Prêteurs",
-  method: sendNegativeFeedbackToAllLenders,
+  description: "Feedback négatif aux prêteurs d'un dossier -> Prêteurs",
+  method: sendNegativeFeedbackToLenders,
   func: ({ result }) => {
     result.map(sendOfferFeedbackEmail);
   },

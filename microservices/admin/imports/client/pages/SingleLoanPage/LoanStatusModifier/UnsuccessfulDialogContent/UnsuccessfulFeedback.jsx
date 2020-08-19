@@ -1,74 +1,77 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { faEnvelope } from '@fortawesome/pro-light-svg-icons/faEnvelope';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ConfirmMethod from 'imports/core/components/ConfirmMethod';
 import uniqBy from 'lodash/uniqBy';
 import { withProps } from 'recompose';
+import SimpleSchema from 'simpl-schema';
 
-import { sendNegativeFeedbackToAllLenders } from 'core/api/loans/methodDefinitions';
+import { sendNegativeFeedbackToLenders } from 'core/api/loans/methodDefinitions';
+import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import Button from 'core/components/Button';
+import Calculator from 'core/utils/Calculator';
 
 import DialogContentSection from '../DialogContentSection';
 
-const makeSendNegativeFeedbackToAllLenders = (
-  loan,
-  closeModal,
-  returnValue,
-) => () => {
-  const { _id: loanId, offers = [] } = loan;
-
-  // Don't show duplicate lenders
-  const contacts = uniqBy(
-    offers,
-    ({
-      lender: {
-        contact: { name },
+const makeSchema = contacts =>
+  new SimpleSchema({
+    contactIds: {
+      type: Array,
+      minCount: 1,
+      uniforms: {
+        checkboxes: true,
+        label: 'Prêteurs',
+        initialValue: [],
+        options: contacts,
+        allowClear: true,
       },
-    }) => name,
-  ).map(
-    ({
-      lender: {
-        contact: { name },
-        organisation: { name: organisationName },
-      },
-    }) => `${name} (${organisationName})`,
-  );
+    },
+    'contactIds.$': {
+      type: String,
+    },
+  });
 
-  if (offers.length) {
-    const confirm = window.confirm(
-      `Attention: enverra un feedback aux prêteurs suivants:\n\n${contacts.join(
-        '\n',
-      )}\n\nValider pour envoyer les feedbacks.`,
-    );
+const makeOnSubmit = ({ setOpenConfirmDialog, setContactIds }) => ({
+  contactIds,
+}) => {
+  setContactIds(contactIds);
+  setOpenConfirmDialog(true);
 
-    if (confirm) {
-      return sendNegativeFeedbackToAllLenders
-        .run({ loanId })
-        .then(() => closeModal({ ...returnValue }));
-    }
-  }
+  return Promise.resolve();
 };
 
 const UnsucessfulFeedback = ({
-  sendFeedbackToAllLenders,
+  onSubmit,
   closeModal,
   returnValue,
   enableFeedbackButton,
+  schema,
+  openConfirmDialog,
+  setOpenConfirmDialog,
+  contactIds,
+  contacts,
+  loan,
 }) => (
   <div className="loan-status-modifier-dialog-content animated fadeIn">
     <DialogContentSection
-      title="Envoyer un feedback à tous les prêteurs"
-      description='Envoie un feedback "négatif sans suite" à tous les prêteurs
-        sur le dossier.'
+      title="Envoyer un feedback aux prêteurs"
+      description='Envoie un feedback "négatif sans suite" aux prêteurs que vous sélectionnez.'
       buttons={[
-        <Button
-          primary
-          outlined
-          icon={<FontAwesomeIcon icon={faEnvelope} />}
-          label="Envoyer un feedback"
-          onClick={sendFeedbackToAllLenders}
+        <AutoFormDialog
           key="sendFeedback"
-          disabled={!enableFeedbackButton}
-          tooltip={!enableFeedbackButton && 'Aucune offre sur ce dossier'}
+          title="Envoyer un feedback aux prêteurs"
+          description="Sélectionnez les prêteurs à qui envoyer le feedback"
+          schema={schema}
+          model={{ contactIds: [] }}
+          onSubmit={onSubmit}
+          buttonProps={{
+            primary: true,
+            outlined: true,
+            icon: <FontAwesomeIcon icon={faEnvelope} />,
+            label: 'Envoyer un feedback',
+            disabled: !enableFeedbackButton,
+            tooltip: !enableFeedbackButton && 'Aucune offre sur ce dossier',
+          }}
         />,
         <Button
           error
@@ -79,15 +82,65 @@ const UnsucessfulFeedback = ({
         />,
       ]}
       styles={{ buttons: { width: '100%' } }}
-    />
+    >
+      <ConfirmMethod
+        method={() =>
+          sendNegativeFeedbackToLenders
+            .run({ loanId: loan._id, contactIds })
+            .then(() => setOpenConfirmDialog(false))
+            .then(() => closeModal({ ...returnValue }))
+        }
+        type="modal"
+        open={openConfirmDialog}
+        onClose={() => setOpenConfirmDialog(false)}
+        description={
+          <div className="flex-col">
+            <p className="description">
+              Attention! Enverra un feedback aux prêteurs suivants:
+            </p>
+            <ul>
+              {contacts
+                .filter(({ value }) => contactIds?.includes(value))
+                .map(({ label, value }) => (
+                  <li key={value}>{label}</li>
+                ))}
+            </ul>
+          </div>
+        }
+      />
+    </DialogContentSection>
   </div>
 );
 
-export default withProps(({ loan, closeModal, returnValue }) => ({
-  sendFeedbackToAllLenders: makeSendNegativeFeedbackToAllLenders(
-    loan,
-    closeModal,
-    returnValue,
-  ),
-  enableFeedbackButton: loan && loan.offers && loan.offers.length,
-}))(UnsucessfulFeedback);
+export default withProps(({ loan }) => {
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [contactIds, setContactIds] = useState();
+
+  const lendersWithOffers = loan?.lenders?.filter(
+    ({ offers = [] }) => offers.length,
+  );
+
+  const contacts = uniqBy(
+    lendersWithOffers,
+    ({ contact: { name } }) => name,
+  ).map(
+    ({ contact: { name, _id }, organisation: { name: organisationName } }) => ({
+      value: _id,
+      label: `${name} (${organisationName})`,
+    }),
+  );
+
+  return {
+    schema: makeSchema(contacts),
+    onSubmit: makeOnSubmit({
+      setOpenConfirmDialog,
+      setContactIds,
+    }),
+    enableFeedbackButton: Calculator.selectOffers({ loan }).length,
+    openConfirmDialog,
+    setOpenConfirmDialog,
+    contactIds,
+    setContactIds,
+    contacts,
+  };
+})(UnsucessfulFeedback);
