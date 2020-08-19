@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useInsuranceRequestContacts from 'core/components/AdminNote/useInsuranceRequestContacts';
+import { useInsuranceRequestContacts } from 'core/hooks/useContacts';
 
 import RequestContact from '../../components/RequestContact';
 
