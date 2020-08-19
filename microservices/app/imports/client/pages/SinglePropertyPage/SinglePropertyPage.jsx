@@ -9,12 +9,12 @@ import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import ProProperty from 'core/components/ProProperty';
 import T from 'core/components/Translation';
+import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'core/utils/routerUtils';
 
 import APP_ROUTES from '../../../startup/client/appRoutes';
 import PageApp from '../../components/PageApp';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
-import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageForms from './SinglePropertyPageForms';
 import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 
@@ -103,4 +103,4 @@ SinglePropertyPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default SinglePropertyPageContainer(SinglePropertyPage);
+export default withMatchParam('propertyId')(SinglePropertyPage);

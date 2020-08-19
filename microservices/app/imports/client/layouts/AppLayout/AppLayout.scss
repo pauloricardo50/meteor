@@ -10,16 +10,7 @@
   flex-grow: 1;
 
   width: 100%;
-  min-width: 1200px;
   height: 100%;
-
-  @include screen(med) {
-    min-width: 800px;
-  }
-
-  &.mobile {
-    min-width: unset;
-  }
 }
 
 .app-layout {
@@ -37,6 +28,13 @@
 
   @include screen(med) {
     padding-left: 16px;
+  }
+
+  @include screen(large, min) {
+    padding: 32px;
+    padding-top: 96px;
+    padding-bottom: 32px;
+    padding-left: 282px; /* side-nav width + 32px  */
   }
 
   &.no-nav {

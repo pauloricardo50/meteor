@@ -8,7 +8,6 @@ import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'core/utils/routerUtils';
 
 import appRoutes from '../../../startup/client/appRoutes';
-import withSimpleAppPage from '../../components/SimpleAppPage/SimpleAppPage';
 
 const promotionFragment = {
   address: 1,
@@ -64,7 +63,6 @@ const AppPromotionPageContainer = compose(
     invitedByUser: getInvitedByUser({ promotion, promotionId, loan }),
     route: createRoute(appRoutes.APP_PROMOTION_PAGE.path, { loanId: loan._id }),
   })),
-  withSimpleAppPage,
 );
 
 export default AppPromotionPageContainer(PromotionPage);

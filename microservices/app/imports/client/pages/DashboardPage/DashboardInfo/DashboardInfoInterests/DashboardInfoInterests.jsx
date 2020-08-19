@@ -16,7 +16,9 @@ const DashboardInfoInterests = props => {
   } = props;
 
   return (
-    <div className={cx('dashboard-info-team card1', { offers: enableOffers })}>
+    <div
+      className={cx('dashboard-info-interests card1', { offers: enableOffers })}
+    >
       <div className="card-top">
         <h3 className={enableOffers ? 'mb-0' : ''}>
           <T

@@ -38,6 +38,10 @@
     align-items: stretch;
     max-width: 800px;
 
+    @media screen and (max-width: $med) {
+      justify-content: center;
+    }
+
     > * {
       border: 1px solid transparent;
       padding: 32px;

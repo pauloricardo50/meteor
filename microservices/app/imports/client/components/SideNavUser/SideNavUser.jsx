@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
+import BlueTheme from 'core/components/Themes/BlueTheme';
 import useCurrentUser from 'core/hooks/useCurrentUser';
 
 import LoanSelector from './LoanSelector';
@@ -39,22 +40,27 @@ const SideNavUser = ({ style, fixed, closeDrawer, loan }) => {
   }
 
   return (
-    <nav className={classnames({ 'side-nav-user': true, fixed })} style={style}>
-      <SideNavHeader closeDrawer={closeDrawer} />
-      <div className="scrollable">
-        {!!(loans && loans.length > 0) && (
-          <LoanSelector
-            history={history}
-            currentUser={currentUser}
-            value={loanId}
-            closeDrawer={closeDrawer}
-          />
-        )}
-        {loanId && currentLoan && (
-          <LoanSideNav closeDrawer={closeDrawer} loan={loan} />
-        )}
-      </div>
-    </nav>
+    <BlueTheme>
+      <nav
+        className={classnames({ 'side-nav-user': true, fixed })}
+        style={style}
+      >
+        <SideNavHeader closeDrawer={closeDrawer} />
+        <div className="scrollable">
+          {!!(loans && loans.length > 0) && (
+            <LoanSelector
+              history={history}
+              currentUser={currentUser}
+              value={loanId}
+              closeDrawer={closeDrawer}
+            />
+          )}
+          {loanId && currentLoan && (
+            <LoanSideNav closeDrawer={closeDrawer} loan={loan} />
+          )}
+        </div>
+      </nav>
+    </BlueTheme>
   );
 };
 

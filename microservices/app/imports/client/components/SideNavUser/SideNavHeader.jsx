@@ -18,7 +18,7 @@ const SideNavHeader = ({ closeDrawer }) => {
       )}
       <Link to="/">
         <img
-          src="/img/logo_square_black.svg"
+          src="/img/logo_square_white.svg"
           alt="e-Potek"
           className="logo logo-home"
         />

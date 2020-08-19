@@ -8,13 +8,11 @@ import DashboardProgressBar from './DashboardProgressBar';
 import DashboardProgressInfo from './DashboardProgressInfo';
 
 const DashboardProgress = props => (
-  <div className="dashboard-progress">
-    <p className="title">
-      <b>
-        <T id="DashboardProgressBar.title" />
-      </b>
-    </p>
-    <DashboardProgressBar {...props} />
+  <div className="dashboard-progress card1 card-top">
+    <h3 className="title">
+      <T id="DashboardProgressBar.title" />
+    </h3>
+    {/* <DashboardProgressBar {...props} /> */}
     <DashboardProgressInfo {...props} />
     <LoanChecklistDialog {...props} />
   </div>
