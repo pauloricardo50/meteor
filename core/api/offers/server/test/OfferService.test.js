@@ -11,7 +11,6 @@ import OfferService from '../OfferService';
 
 /* eslint-env mocha */
 
-
 describe('OfferService', () => {
   let offer;
   let offerId;
@@ -77,13 +76,15 @@ describe('OfferService', () => {
     });
   });
 
-  describe('send feedback', function() {
+  describe('send feedback', function () {
     this.timeout(10000);
 
     it('sends the feedback to the lender ', async () => {
       generator({
         users: {
           _id: 'userId',
+          firstName: 'Susan',
+          lastName: 'Boyle',
           assignedEmployee: {
             _id: 'adminId',
             _factory: 'admin',
@@ -144,6 +145,7 @@ describe('OfferService', () => {
       expect(bcc.type).to.equal('bcc');
       expect(from_name).to.equal('Dev E-Potek');
       expect(subject).to.include('Feedback client sur');
+      expect(subject).to.include('Susan Boyle');
       expect(
         global_merge_vars.find(({ name }) => name === 'BODY').content,
       ).to.include(feedback);

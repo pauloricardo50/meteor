@@ -1240,7 +1240,7 @@
   "Forms.additionalMargin.placeholder": "CHF 100 000",
   "Forms.feedback.placeholder": "Bonjour M. Dubois, ...",
   "emails.SEND_FEEDBACK_TO_LENDER.TITLE": "Feedback client sur l'offre de {organisationName} du {date}",
-  "emails.SEND_FEEDBACK_TO_LENDER.SUBJECT": "e-Potek - {loanName} - Feedback client sur l'offre du {date}",
+  "emails.SEND_FEEDBACK_TO_LENDER.SUBJECT": "e-Potek - {loanName} {customerName} - Feedback client sur l'offre du {date}",
   "FinancingProjectFees.noCanton": "Ajoutez un code postal sur ce bien immobilier pour que nous puissions calculer les frais de notaire.",
   "AccountPage.changePassword": "Changer mot de passe",
   "errors.sameName.title": "Pas de noms identiques",
