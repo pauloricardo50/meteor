@@ -36,6 +36,7 @@ const DataTable = ({
   initialPageSize = paginationOptions[0],
   columns,
   initialSort,
+  onStateChangeCallback = () => null,
   ...rest
 }) => {
   const [dataTableState, setDataTableState] = useState({
@@ -51,7 +52,8 @@ const DataTable = ({
   const memoizedColumns = useMemo(() => columns, [columns]);
   const memoizedData = useMemo(() => data, [data]);
 
-  const onStateChange = useCallback(({ pageIndex, pageSize, sortBy }) => {
+  const onStateChange = useCallback(state => {
+    const { pageIndex, pageSize, sortBy } = state;
     const [{ desc, id } = {}] = sortBy;
     setDataTableState({
       pageIndex,
@@ -59,6 +61,7 @@ const DataTable = ({
       sort: id,
       sortDirection: desc ? 1 : -1,
     });
+    onStateChangeCallback(state);
   }, []);
 
   return (
