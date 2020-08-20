@@ -4,12 +4,10 @@ import { compose } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import {
-  anonymousLoanInsert,
   loanLinkProperty,
   userLoanInsert,
 } from 'core/api/loans/methodDefinitions';
 import { anonymousProperty } from 'core/api/properties/queries';
-import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
 import Button from 'core/components/Button';
 import NotFound from 'core/components/NotFound';
 import ProProperty from 'core/components/ProProperty';
@@ -20,6 +18,7 @@ import { createRoute } from 'core/utils/routerUtils';
 
 import appRoutes from '../../../startup/client/appRoutes';
 import useAnonymousLoan from '../../hooks/useAnonymousLoan';
+import { insertAnonymousLoan } from '../OnboardingPage/onboardingHelpers';
 
 const youngestFirst = ({ createdAt: A }, { createdAt: B }) =>
   B.getTime() - A.getTime();
@@ -68,25 +67,14 @@ const getCta = ({ propertyId, currentUser, history, anonymousLoan }) => {
     return {
       label: <T id="ProPropertyPage.addPropertyToLoan" />,
       onClick: () =>
-        anonymousLoanInsert
-          .run({
-            existingAnonymousLoanId: anonymousLoan._id,
-            proPropertyId: propertyId,
-            referralId: localStorage.getItem(LOCAL_STORAGE_REFERRAL),
-          })
-          .then(routeToLoan),
+        insertAnonymousLoan({ proPropertyId: propertyId }).then(routeToLoan),
     };
   }
 
   return {
     label: <T id="ProPropertyPage.getALoan" />,
     onClick: () =>
-      anonymousLoanInsert
-        .run({
-          proPropertyId: propertyId,
-          referralId: localStorage.getItem(LOCAL_STORAGE_REFERRAL),
-        })
-        .then(routeToLoan),
+      insertAnonymousLoan({ proPropertyId: propertyId }).then(routeToLoan),
   };
 };
 
@@ -117,7 +105,13 @@ const ProPropertyPage = ({ property }) => {
   return (
     <div>
       <div className="flex sb mb-16">
-        <Button raised primary link to={`/?property-id=${property._id}`}>
+        <Button
+          raised
+          primary
+          onClick={() => {
+            history.goBack();
+          }}
+        >
           <T id="general.back" />
         </Button>
 

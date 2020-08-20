@@ -8,6 +8,7 @@ import {
 } from 'core/api/users/userConstants';
 import Loading from 'core/components/Loading';
 import useSearchParams from 'core/hooks/useSearchParams';
+import { createRoute } from 'core/utils/routerUtils';
 
 import appRoutes from '../../../startup/client/appRoutes';
 import useAnonymousLoan from '../../hooks/useAnonymousLoan';
@@ -60,8 +61,24 @@ const AppPageLoggedOut = () => {
     return <Loading />;
   }
 
+  if (searchParams['property-id']) {
+    return (
+      <Redirect
+        to={createRoute(appRoutes.PRO_PROPERTY_PAGE.path, {
+          propertyId: searchParams['property-id'],
+        })}
+      />
+    );
+  }
+
   if (anonymousLoan) {
-    return <Redirect to={`/loans/${anonymousLoan._id}`} />;
+    return (
+      <Redirect
+        to={createRoute(appRoutes.LOAN_ONBOARDING_PAGE.path, {
+          loanId: anonymousLoan._id,
+        })}
+      />
+    );
   }
 
   const search = new URLSearchParams(searchParams);
