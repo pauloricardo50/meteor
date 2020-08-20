@@ -1,7 +1,4 @@
-import {
-  APPLICATION_TYPES,
-  STEPS,
-} from '../../imports/core/api/loans/loanConstants';
+import { STEPS } from '../../imports/core/api/loans/loanConstants';
 /* eslint-env mocha */
 import { ROLES } from '../../imports/core/api/users/userConstants';
 import {
@@ -81,7 +78,6 @@ describe('App Pages', () => {
                 borrowers: {},
                 displayWelcomeScreen: false,
                 step: STEPS.REQUEST,
-                applicationType: APPLICATION_TYPES.FULL,
               },
               {},
             ],

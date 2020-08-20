@@ -126,11 +126,6 @@ export const SOLVENCY_TYPE = {
   FULL: 'FULL',
 };
 
-export const APPLICATION_TYPES = {
-  SIMPLE: 'SIMPLE',
-  FULL: 'FULL',
-};
-
 export const ORGANISATION_NAME_SEPARATOR = ' / ';
 
 export const LOCAL_STORAGE_ANONYMOUS_LOAN = 'ANONYMOUS_LOAN_ID';

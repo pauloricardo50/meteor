@@ -15,7 +15,6 @@ import { withSideNavContextProvider } from './SideNavContext';
 
 const loanFragment = merge({}, calculatorLoan(), {
   acquisitionStatus: 1,
-  applicationType: 1,
   assignees: { name: 1, phoneNumber: 1, email: 1 },
   borrowers: { age: 1, name: 1, $options: { sort: { createdAt: 1 } } },
   contacts: 1,

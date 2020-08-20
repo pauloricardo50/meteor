@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
-import { APPLICATION_TYPES, PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import { createRoute } from 'core/utils/routerUtils';
 
 import APP_ROUTES from '../../../startup/client/appRoutes';

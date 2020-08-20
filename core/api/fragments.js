@@ -227,7 +227,6 @@ export const formLoan = () => ({
 export const loan = () => ({
   ...formLoan(),
   acquisitionStatus: 1,
-  applicationType: 1,
   assignees: { name: 1, phoneNumber: 1, email: 1 },
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },

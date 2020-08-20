@@ -71,11 +71,6 @@ const OverviewTab = props => {
             fields={['purchaseType']}
             collection={Loans}
           />
-          <UpdateField
-            doc={loan}
-            fields={['applicationType']}
-            collection={Loans}
-          />
           <LoanStepSetter loan={loan} />
           <LoanDisbursementDate loan={loan} />
           <AssigneesManager doc={loan} collection={LOANS_COLLECTION} />

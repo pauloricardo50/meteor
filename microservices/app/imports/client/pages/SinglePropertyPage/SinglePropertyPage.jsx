@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
-import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
 import { propertyDelete } from 'core/api/properties/methodDefinitions';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
@@ -22,7 +21,7 @@ const SinglePropertyPage = props => {
   const history = useHistory();
   const { loan, propertyId, currentUser } = props;
   const { loans } = currentUser || {};
-  const { borrowers, properties, _id: loanId, applicationType } = loan;
+  const { borrowers, properties, _id: loanId } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
 
   if (!property) {
@@ -32,13 +31,7 @@ const SinglePropertyPage = props => {
   }
 
   if (property.category === PROPERTY_CATEGORY.PRO) {
-    return (
-      <ProProperty
-        property={property}
-        simple={applicationType === APPLICATION_TYPES.SIMPLE}
-        loan={loan}
-      />
-    );
+    return <ProProperty property={property} loan={loan} />;
   }
 
   const { address1, address, zipCode, city } = property;
@@ -49,7 +42,6 @@ const SinglePropertyPage = props => {
     <PageApp
       id="SinglePropertyPage"
       title={<SinglePropertyPageTitle loan={loan} property={property} />}
-      displayTopBar={applicationType === APPLICATION_TYPES.FULL}
     >
       <section className="card1 card-top property-page">
         <h1 className="text-center">{title}</h1>

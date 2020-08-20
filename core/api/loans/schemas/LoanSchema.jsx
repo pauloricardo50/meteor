@@ -16,7 +16,6 @@ import { RESIDENCE_TYPE } from '../../properties/propertyConstants';
 import { initialDocuments } from '../loanAdditionalDocuments';
 import {
   ACQUISITION_STATUS,
-  APPLICATION_TYPES,
   CANTONS,
   INSURANCE_POTENTIAL,
   LOAN_CATEGORIES,
@@ -87,12 +86,6 @@ const LoanSchema = new SimpleSchema({
   },
   enableOffers: { type: Boolean, optional: true, defaultValue: false },
   customName: { type: String, optional: true },
-  applicationType: {
-    type: String,
-    allowedValues: Object.values(APPLICATION_TYPES),
-    defaultValue: APPLICATION_TYPES.SIMPLE,
-    uniforms: { placeholder: null },
-  },
   previousLender: { type: String, optional: true },
   previousLoanAmortization: moneyField,
   ...contactsSchema,
