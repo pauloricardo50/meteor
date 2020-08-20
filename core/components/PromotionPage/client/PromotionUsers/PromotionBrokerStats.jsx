@@ -25,22 +25,17 @@ const getBrokerStats = ({ promotionOptions = [], userId, loading }) => {
       const loanId = promotionOption?.loanCache?._id;
       const status = promotionOption?.status;
 
-      const { loanCount = 0, reservedCount = 0 } = stats;
+      const { loanCount = 0, reservedCount = 0, soldCount = 0 } = stats;
       const isLoanAlreadyCounted = loanIds.includes(loanId);
       loanIds = [...loanIds, loanId];
 
+      const isReserved = status === PROMOTION_OPTION_STATUS.RESERVED;
+      const isSold = status === PROMOTION_OPTION_STATUS.SOLD;
+
       return {
         loanCount: !isLoanAlreadyCounted ? loanCount + 1 : loanCount,
-        reservedCount: [
-          PROMOTION_OPTION_STATUS.RESERVED,
-          PROMOTION_OPTION_STATUS.SOLD,
-        ].includes(status)
-          ? reservedCount + 1
-          : reservedCount,
-        soldCount:
-          status === PROMOTION_OPTION_STATUS.SOLD
-            ? reservedCount + 1
-            : reservedCount,
+        reservedCount: isReserved || isSold ? reservedCount + 1 : reservedCount,
+        soldCount: isSold ? soldCount + 1 : soldCount,
       };
     }, {});
 };
@@ -65,12 +60,12 @@ const Stat = ({ stats, id, isLastElement }) => {
         }
         size="lg"
       />
-      <span
+      <b
         className={cx('ml-4', { 'mr-4': !isLastElement })}
         style={{ minWidth: '2em' }}
       >
         {count}
-      </span>
+      </b>
     </>
   );
 };
