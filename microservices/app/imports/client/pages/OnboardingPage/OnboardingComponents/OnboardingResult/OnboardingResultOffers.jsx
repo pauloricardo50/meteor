@@ -21,10 +21,6 @@ const OnboardingResultOffers = () => {
 
   return (
     <div className="onboarding-result-offers animated fadeIn">
-      <h3>
-        <T id="OnboardingResultOffers.title" />
-      </h3>
-
       <div className="offers">
         {ratesToShow.map(rate => {
           const value = data.rates.find(({ type }) => type === rate);
@@ -40,6 +36,10 @@ const OnboardingResultOffers = () => {
               </span>
               <br />
               <h4 className="m-0">
+                <small>
+                  <T id="OnboardingResultOffers.from" />
+                </small>
+                &nbsp;
                 <Percent value={value.rateLow} />
               </h4>
             </div>

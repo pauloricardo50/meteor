@@ -88,10 +88,9 @@
     &-value {
       margin: 40px 0;
       font-size: 5em;
-      align-self: center;
 
-      @include screen(med) {
-        font-size: 3em;
+      @include screen(large) {
+        font-size: 4em;
       }
     }
 
@@ -101,7 +100,6 @@
       .offers {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
       }
 
       .offer {
@@ -111,6 +109,22 @@
         border: 1px solid $border-grey;
         border-radius: 4px;
         text-align: center;
+      }
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+    }
+
+    &-signup {
+      img {
+        margin: 16px auto;
+        width: 300px;
+
+        @include screen(med) {
+          width: 200px;
+        }
       }
     }
   }

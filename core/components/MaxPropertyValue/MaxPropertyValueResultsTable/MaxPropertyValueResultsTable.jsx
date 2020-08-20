@@ -2,13 +2,12 @@ import { Meteor } from 'meteor/meteor';
 
 import React, { useEffect, useRef, useState } from 'react';
 import CountUp from 'react-countup';
-import { withState } from 'recompose';
 
 import { PURCHASE_TYPE } from '../../../api/loans/loanConstants';
 import useMedia from '../../../hooks/useMedia';
-import Calculator from '../../../utils/Calculator';
 import Button from '../../Button';
 import T, { Money } from '../../Translation';
+import { parseMaxPropertyValue } from './maxPropertyValueHelpers';
 import MaxPropertyValueResultsTableAcquisition from './MaxPropertyValueResultsTableAcquisition';
 import MaxPropertyValueResultsTableRefinancing from './MaxPropertyValueResultsTableRefinancing';
 import MaxPropertyValueResultsToggle from './MaxPropertyValueResultsToggle';
@@ -23,62 +22,25 @@ const shouldShowToggle = ({ purchaseType, min, max }) => {
   }
 };
 
-const MaxPropertyValueResultsTable = ({
-  min = {},
-  max,
-  residenceType,
-  canton,
-  showBest,
-  setShowBest,
-  purchaseType,
-  previousLoan,
-}) => {
+const MaxPropertyValueResultsTable = ({ loan }) => {
   const isSmallMobile = useMedia({ maxWidth: 480 });
   const [showRecap, setShowRecap] = useState(true);
+  const [showBest, setShowBest] = useState(true);
   const {
-    propertyValue: minPropertyValue,
-    borrowRatio: minBorrowRatio,
-    organisationName: minOrganisationName,
-  } = min;
+    propertyValue,
+    notaryFees,
+    ownFunds,
+    loanValue,
+    raise,
+    valueToDisplay,
+    minOrganisationName,
+    maxOrganisationName,
+    previousLoan,
+  } = parseMaxPropertyValue(loan, showBest);
   const {
-    propertyValue: maxPropertyValue,
-    borrowRatio: maxBorrowRatio,
-    organisationName: maxOrganisationName,
-  } = max;
-
-  const minLoan = minPropertyValue * minBorrowRatio;
-  const maxLoan = maxPropertyValue * maxBorrowRatio;
-
-  const minNotaryFees = Calculator.getNotaryFees({
-    loan: Calculator.createLoanObject({
-      residenceType,
-      wantedLoan: minLoan,
-      propertyValue: minPropertyValue,
-      canton,
-      purchaseType,
-    }),
-  }).total;
-  const maxNotaryFees = Calculator.getNotaryFees({
-    loan: Calculator.createLoanObject({
-      residenceType,
-      wantedLoan: maxLoan,
-      propertyValue: maxPropertyValue,
-      canton,
-      purchaseType,
-    }),
-  }).total;
-
-  const minOwnFunds = minPropertyValue * (1 - minBorrowRatio) + minNotaryFees;
-  const maxOwnFunds = maxPropertyValue * (1 - maxBorrowRatio) + maxNotaryFees;
-
-  const propertyValue = showBest ? maxPropertyValue : minPropertyValue;
-  const notaryFees = showBest ? maxNotaryFees : minNotaryFees;
-  const ownFunds = showBest ? maxOwnFunds : minOwnFunds;
-  const loan = showBest ? maxLoan : minLoan;
-  const raise = loan - previousLoan;
-
-  const valueToDisplay =
-    purchaseType === PURCHASE_TYPE.REFINANCING ? loan : propertyValue;
+    purchaseType,
+    maxPropertyValue: { min, max },
+  } = loan;
 
   const prevValueRef = useRef();
   useEffect(() => {
@@ -150,13 +112,13 @@ const MaxPropertyValueResultsTable = ({
           propertyValue={propertyValue}
           notaryFees={notaryFees}
           ownFunds={ownFunds}
-          loan={loan}
+          loan={loanValue}
         />
       )}
 
       {purchaseType === PURCHASE_TYPE.REFINANCING && (
         <MaxPropertyValueResultsTableRefinancing
-          loan={loan}
+          loan={loanValue}
           previousLoan={previousLoan}
         />
       )}
@@ -172,8 +134,4 @@ const MaxPropertyValueResultsTable = ({
   );
 };
 
-export default withState(
-  'showBest',
-  'setShowBest',
-  true,
-)(MaxPropertyValueResultsTable);
+export default MaxPropertyValueResultsTable;

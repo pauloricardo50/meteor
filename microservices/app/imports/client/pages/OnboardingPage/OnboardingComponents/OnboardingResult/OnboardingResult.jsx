@@ -21,16 +21,21 @@ const OnboardingResult = () => {
     residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
       ? maxPropertyValue?.main.max.propertyValue
       : maxPropertyValue?.second.max.propertyValue;
+  // const loan =
 
   return (
     <div className="onboarding-result">
-      <h1 className="text-center">
+      <img src="/img/logo_square_black.svg" alt="e-Potek" className="logo" />
+      <h1 className="flex center-align">
         <T id="OnboardingResult.title" />
-        <br />
-        <small className="secondary">
-          <T id="OnboardingResult.subtitle" />
-        </small>
       </h1>
+
+      <h2>
+        <T id={`OnboardingResult.${loan.purchaseType}.title`} />
+      </h2>
+      <p className="secondary mt-0">
+        <T id={`OnboardingResult.${loan.purchaseType}.subtitle`} />
+      </p>
 
       <div className="onboarding-result-value">
         <CountUp
@@ -43,9 +48,16 @@ const OnboardingResult = () => {
         />
       </div>
 
-      <p>
-        <T id="OnboardingResult.description" />
-      </p>
+      {!loan.hasPromotion && (
+        <>
+          <h2>
+            <T id="OnboardingResultOffers.title" />
+          </h2>
+          <p className="secondary mt-0">
+            <T id="OnboardingResultOffers.subtitle" />
+          </p>
+        </>
+      )}
 
       <OnboardingResultOffers />
 
@@ -53,4 +65,5 @@ const OnboardingResult = () => {
     </div>
   );
 };
+
 export default OnboardingResult;

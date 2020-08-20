@@ -7,7 +7,7 @@ import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
 
 import { isProFlow, isRefinancing, steps } from './onboardingSteps';
 
-const onboardingFlows = {
+export const ONBOARDING_FLOWS = {
   ACQUISITION_SEARCH: 'ACQUISITION_SEARCH',
   ACQUISITION_IDENTIFIED: 'ACQUISITION_IDENTIFIED',
   PRO_OR_PROMO: 'PRO_OR_PROMO',
@@ -33,15 +33,15 @@ export const insertAnonymousLoan = purchaseType =>
 
 export const getOnBoardingFlow = loan => {
   if (isProFlow(loan)) {
-    return onboardingFlows.PRO_OR_PROMO;
+    return ONBOARDING_FLOWS.PRO_OR_PROMO;
   }
   if (isRefinancing(loan)) {
-    return onboardingFlows.REFINANCING;
+    return ONBOARDING_FLOWS.REFINANCING;
   }
 
   if (loan.acquisitionStatus === ACQUISITION_STATUS.SEARCHING) {
-    return onboardingFlows.ACQUISITION_SEARCH;
+    return ONBOARDING_FLOWS.ACQUISITION_SEARCH;
   }
 
-  return onboardingFlows.ACQUISITION_IDENTIFIED;
+  return ONBOARDING_FLOWS.ACQUISITION_IDENTIFIED;
 };

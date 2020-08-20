@@ -31,14 +31,13 @@ const MaxPropertyValueResults = ({
   hideTitle,
 }) => {
   const {
-    maxPropertyValue: { main, second, borrowerHash, canton },
+    maxPropertyValue: { borrowerHash, canton },
     hasProProperty,
     hasPromotion,
     shareSolvency,
     _id: loanId,
     purchaseType,
   } = loan;
-  const previousLoan = Calculator.getPreviousLoanValue({ loan });
   const hash = Calculator.getMaxPropertyValueHash({ loan });
   const shouldRecalculate = borrowerHash != hash;
 
@@ -85,13 +84,7 @@ const MaxPropertyValueResults = ({
         </div>
       </div>
       <div className="max-property-value-results-table">
-        <MaxPropertyValueResultsTable
-          {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
-          residenceType={residenceType}
-          canton={canton}
-          purchaseType={purchaseType}
-          previousLoan={previousLoan}
-        />
+        <MaxPropertyValueResultsTable loan={loan} />
       </div>
       <MaxPropertyValueCertificate
         loan={loan}
