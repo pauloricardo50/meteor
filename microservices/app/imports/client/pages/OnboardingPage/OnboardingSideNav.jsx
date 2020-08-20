@@ -10,7 +10,12 @@ import OnboardingStepper from './OnboardingStepper';
 
 const SideNav = ({ fixed }) => (
   <BlueTheme>
-    <div className={cx('onboarding-side-nav', { fixed })}>
+    <div
+      className={cx('onboarding-side-nav', {
+        fixed,
+        'animated fadeInLeft': fixed,
+      })}
+    >
       <div className="onboarding-side-nav-header">
         <TopNavLogo light />
         <span className="epotek font-size-3 ml-8 mr-16">e-Potek</span>

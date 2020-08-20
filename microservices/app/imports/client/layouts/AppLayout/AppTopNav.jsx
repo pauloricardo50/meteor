@@ -40,7 +40,8 @@ const AppTopNav = ({ toggleDrawer, shouldShowSideNav, history, children }) => {
           <IconButton onClick={toggleDrawer} type="menu" />
         )}
 
-        <TopNavlogo />
+        {/* Put an empty div here for flex-alignment on desktop */}
+        {isMobile ? <TopNavlogo /> : <div />}
 
         {renderButtons(history) && (
           <div className="flex">

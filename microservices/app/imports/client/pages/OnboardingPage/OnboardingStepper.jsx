@@ -80,7 +80,7 @@ const OnboardingStepper = () => {
 
             {/* https://github.com/mui-org/material-ui/issues/22167 */}
             <StepContent>
-              {isCompleted ? (
+              {isCompleted && renderValue ? (
                 <small className="secondary">{renderValue(loan)}</small>
               ) : null}
             </StepContent>

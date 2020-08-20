@@ -6,16 +6,21 @@ import T from 'core/components/Translation';
 
 import { useOnboarding } from '../../OnboardingContext';
 import OnboardingResultCtas from './OnboardingResultCtas';
+import OnboardingResultEmpty from './OnboardingResultEmpty';
 import OnboardingResultOffers from './OnboardingResultOffers';
 
 const OnboardingResult = () => {
   const { loan } = useOnboarding();
   const { residenceType, maxPropertyValue } = loan;
 
+  if (!maxPropertyValue?.date) {
+    return <OnboardingResultEmpty />;
+  }
+
   const value =
     residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
-      ? maxPropertyValue?.main.max
-      : maxPropertyValue?.second.max;
+      ? maxPropertyValue?.main.max.propertyValue
+      : maxPropertyValue?.second.max.propertyValue;
 
   return (
     <div className="onboarding-result">
@@ -29,7 +34,7 @@ const OnboardingResult = () => {
 
       <div className="onboarding-result-value">
         <CountUp
-          end={value || 1000000}
+          end={value}
           className="recap-value text-center animated fadeIn"
           duration={1}
           prefix="CHF "

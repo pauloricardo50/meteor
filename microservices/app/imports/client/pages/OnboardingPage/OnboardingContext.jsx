@@ -3,13 +3,14 @@ import { StringParam, useQueryParam } from 'use-query-params';
 
 import useMedia from 'core/hooks/useMedia';
 
-import { getSteps } from './onboardingHelpers';
+import { getOnBoardingFlow, getSteps } from './onboardingHelpers';
 
 const Context = React.createContext();
 
 export const useOnboarding = () => useContext(Context);
 
-const getCurrentTodoStep = steps => steps.find(({ done }) => !done).id;
+const getCurrentTodoStep = steps =>
+  steps.find(({ done }) => !done)?.id || 'result';
 
 const withOnboardingContext = Component => ({ loan }) => {
   const steps = getSteps(loan).map(step => ({
@@ -59,6 +60,7 @@ const withOnboardingContext = Component => ({ loan }) => {
         currentTodoStep,
         showDrawer,
         setShowDrawer,
+        flow: getOnBoardingFlow(loan),
       }}
     >
       <Component />

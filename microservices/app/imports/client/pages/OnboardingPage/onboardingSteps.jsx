@@ -1,9 +1,14 @@
 import React from 'react';
 import { faBuilding } from '@fortawesome/pro-duotone-svg-icons/faBuilding';
 import { faCommentDollar } from '@fortawesome/pro-duotone-svg-icons/faCommentDollar';
+import { faEnvelopeOpenDollar } from '@fortawesome/pro-duotone-svg-icons/faEnvelopeOpenDollar';
+import { faFileSignature } from '@fortawesome/pro-duotone-svg-icons/faFileSignature';
 import { faHomeLg } from '@fortawesome/pro-duotone-svg-icons/faHomeLg';
 import { faHouseDay } from '@fortawesome/pro-duotone-svg-icons/faHouseDay';
+import { faLightbulbDollar } from '@fortawesome/pro-duotone-svg-icons/faLightbulbDollar';
 import { faSearchLocation } from '@fortawesome/pro-duotone-svg-icons/faSearchLocation';
+import { faUser } from '@fortawesome/pro-duotone-svg-icons/faUser';
+import { faUserFriends } from '@fortawesome/pro-duotone-svg-icons/faUserFriends';
 import SimpleSchema from 'simpl-schema';
 
 import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
@@ -34,8 +39,9 @@ import {
 } from './OnboardingComponents/onboardingFormSchemas';
 
 const always = () => true;
-const isProFlow = loan => loan.hasPromotion || loan.hasProProperty;
-const isRefinancing = loan => loan.purchaseType === PURCHASE_TYPE.REFINANCING;
+export const isProFlow = loan => loan.hasPromotion || loan.hasProProperty;
+export const isRefinancing = loan =>
+  loan.purchaseType === PURCHASE_TYPE.REFINANCING;
 const knowsProperty = loan =>
   loan.projectStatus && loan.projectStatus !== ACQUISITION_STATUS.SEARCHING;
 
@@ -92,10 +98,10 @@ export const steps = [
     props: {
       choices: [
         { id: ACQUISITION_STATUS.SEARCHING, icon: faSearchLocation },
-        { id: ACQUISITION_STATUS.PROPERTY_IDENTIFIED, icon: faCommentDollar },
+        { id: ACQUISITION_STATUS.PROPERTY_IDENTIFIED, icon: faLightbulbDollar },
         { id: ACQUISITION_STATUS.OFFER_MADE, icon: faCommentDollar },
-        { id: ACQUISITION_STATUS.PROMISE_INCOMING, icon: faCommentDollar },
-        { id: ACQUISITION_STATUS.PROMISE_SIGNED, icon: faCommentDollar },
+        { id: ACQUISITION_STATUS.PROMISE_INCOMING, icon: faEnvelopeOpenDollar },
+        { id: ACQUISITION_STATUS.PROMISE_SIGNED, icon: faFileSignature },
       ],
     },
     condition: not(or(isProFlow, isRefinancing)),
@@ -186,7 +192,10 @@ export const steps = [
     id: 'borrowerCount',
     component: 'OnboardingChoice',
     props: {
-      choices: [{ id: 1 }, { id: 2 }],
+      choices: [
+        { id: 1, icon: faUser },
+        { id: 2, icon: faUserFriends },
+      ],
     },
     condition: always,
     isDone: loan => loan.borrowers?.length > 0,

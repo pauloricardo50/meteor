@@ -1,4 +1,7 @@
 {
+  "OnboardingResultEmpty.title": "Obtenez vos offres",
+  "OnboardingResultEmpty.description": "Nous allons calculer votre solvabilité auprès de chacun de nos partenaires, banques et assurances.{verticalSpace}Ça peut prendre jusqu'à 15 secondes.",
+  "OnboardingResultEmpty.cta": "C'est Tipar",
   "OnboardingWithoutLoan.title": "Bienvenue sur e-Potek",
   "OnboardingWithoutLoan.ACQUISITION": "Acheter un nouveau bien",
   "OnboardingWithoutLoan.REFINANCING": "Renouveler un prêt",
@@ -24,8 +27,8 @@
   "OnboardingStepper.result": "Vos offres",
   "OnboardingRecap.title": "En résumé",
   "OnboardingStep.purchaseType.title": "Quel est votre projet ?",  
-  "OnboardingStep.purchaseType.description": " ",  
-  "OnboardingStep.acquisitionStatus.title": "Où en êtes vous dans votre projet ?",  
+  "OnboardingStep.purchaseType.description": " ",
+  "OnboardingStep.acquisitionStatus.title": "Où en êtes vous dans votre projet ?",
   "OnboardingStep.acquisitionStatus.description": "Nous adapterons le formulaire en fonction de votre réponse",  
   "OnboardingStep.residenceType.title": "{purchaseType, select, ACQUISITION {Comment souhaiteriez vous utiliser ce logement ?} other {Comment utilisez vous ce logement ?}}",  
   "OnboardingStep.residenceType.description": "{purchaseType, select, ACQUISITION {Les critères des prêteurs varient en fonction de l'usage prévu du bien} other {Les critères des prêteurs varient en fonction de l'usage du bien}}",  
