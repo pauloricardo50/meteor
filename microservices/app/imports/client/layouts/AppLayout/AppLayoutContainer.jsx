@@ -30,7 +30,6 @@ const loanFragment = merge({}, calculatorLoan(), {
     organisation: { logo: 1 },
   },
   maxPropertyValue: 1,
-  maxPropertyValueExists: 1,
   name: 1,
   promotionOptions: {
     name: 1,
