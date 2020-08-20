@@ -1,4 +1,8 @@
 {
+  "PromotionPage.PromotionUsers.stats": "Statistiques",
+  "PromotionPage.PromotionUsers.stats.loanCount": "{count} clients invités",
+  "PromotionPage.PromotionUsers.stats.reservedCount": "{count} lots réservés (y.c. vendus)",
+  "PromotionPage.PromotionUsers.stats.soldCount": "{count} lots vendus",
   "Forms.interestLibor.rateLow": "Libor min",
   "Forms.interestLibor.rateHigh": "Libor max",
   "Forms.interestLibor.trend": "Tendance Libor",

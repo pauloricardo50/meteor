@@ -222,8 +222,8 @@ export const makePromotionOptionAnonymizer = ({
 
   return promotionOption => {
     const { loan, promotionLots = [], invitedBy } = promotionOption;
-    const [promotionLot] = promotionLots;
-    const { status: promotionLotStatus, attributedTo } = promotionLot;
+    const { status: promotionLotStatus, attributedTo } =
+      promotionLots?.[0] || {};
 
     const customerOwnerType = getCustomerOwnerType({
       invitedBy,

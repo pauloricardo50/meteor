@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { getUserNameAndOrganisation } from '../../../../api/helpers';
+import { proPromotionOptions } from '../../../../api/promotionOptions/queries';
 import { removeProFromPromotion } from '../../../../api/promotions/methodDefinitions';
+import useMeteorData from '../../../../hooks/useMeteorData';
 import ConfirmMethod from '../../../ConfirmMethod';
 import Table from '../../../DataTable/Table';
 import IconButton from '../../../IconButton';
@@ -9,6 +11,7 @@ import ImpersonateLink from '../../../Impersonate/ImpersonateLink';
 import ProCustomer from '../../../ProCustomer';
 import T from '../../../Translation';
 import { usePromotion } from '../PromotionPageContext';
+import PromotionBrokerStats from './PromotionBrokerStats';
 import PromotionUserPermissionsModifier from './PromotionUserPermissionsModifier';
 import PromotionUserRoles from './PromotionUserRoles';
 
@@ -17,6 +20,17 @@ const PromotionUsers = () => {
     promotion: { _id: promotionId, name: promotionName, users },
     permissions: { canManageProUsers },
   } = usePromotion();
+
+  const { data: promotionOptions, loading } = useMeteorData({
+    query: proPromotionOptions,
+    params: {
+      promotionId,
+      $body: {
+        loan: { promotions: { _id: 1 } },
+        status: 1,
+      },
+    },
+  });
 
   return (
     <div className="animated fadeIn mt-16">
@@ -39,6 +53,21 @@ const PromotionUsers = () => {
                 <ProCustomer
                   user={{ ...user, name: getUserNameAndOrganisation({ user }) }}
                   iconStyle={{ maxWidth: 'unset' }}
+                />
+              ),
+            },
+            {
+              accessor: 'brokerStats',
+              disableSortBy: true,
+              Header: <T id="PromotionPage.PromotionUsers.stats" />,
+              Cell: ({
+                row: {
+                  original: { _id: userId },
+                },
+              }) => (
+                <PromotionBrokerStats
+                  promotionOptions={loading ? [] : promotionOptions}
+                  userId={userId}
                 />
               ),
             },
@@ -73,7 +102,6 @@ const PromotionUsers = () => {
                     className="impersonate-link mr-4"
                     size="small"
                   />
-
                   <ConfirmMethod
                     TriggerComponent={IconButton}
                     buttonProps={{
