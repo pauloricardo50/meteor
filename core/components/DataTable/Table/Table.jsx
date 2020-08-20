@@ -32,7 +32,6 @@ const Table = ({
   sortable = true,
   stickyHeader,
   tableOptions,
-  emptyEffectCallback = () => null,
 }) => {
   const {
     allColumns,
@@ -63,13 +62,17 @@ const Table = ({
   );
 
   const { pageIndex, pageSize, sortBy } = state;
-  useStateChangeCallback(onStateChange, { pageIndex, pageSize, sortBy });
   const rowCount = allRowsCount || rows.length;
   const isEmpty = rowCount === 0;
 
-  useEffect(() => {
-    emptyEffectCallback(isEmpty);
-  }, [isEmpty]);
+  useStateChangeCallback(onStateChange, {
+    pageIndex,
+    pageSize,
+    sortBy,
+    allRowsCount,
+    rows,
+    page,
+  });
 
   if (hideIfEmpty && isEmpty) {
     return null;

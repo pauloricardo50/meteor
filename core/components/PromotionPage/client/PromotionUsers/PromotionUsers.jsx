@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { getUserNameAndOrganisation } from '../../../../api/helpers';
 import { proPromotionOptions } from '../../../../api/promotionOptions/queries';
@@ -21,15 +21,33 @@ const PromotionUsers = () => {
     permissions: { canManageProUsers },
   } = usePromotion();
 
-  const { data: promotionOptions, loading } = useMeteorData({
-    query: proPromotionOptions,
-    params: {
-      promotionId,
-      $body: {
-        loan: { promotions: { _id: 1 } },
-        status: 1,
+  const [invitedBy, setInvitedBy] = useState();
+
+  const { data: promotionOptions, loading } = useMeteorData(
+    {
+      query: invitedBy && proPromotionOptions,
+      params: {
+        promotionId,
+        invitedBy,
+        $body: {
+          loanCache: { _id: 1 },
+          invitedBy: 1,
+          status: 1,
+        },
       },
+      refetchOnMethodCall: false,
     },
+    [invitedBy],
+  );
+
+  const onStateChange = useCallback(({ page }) => {
+    const userIds = page?.map(({ original }) => original?._id);
+    const shouldUpdateInvitedBy =
+      userIds?.length && invitedBy?.$in?.join('') !== userIds.join('');
+
+    if (shouldUpdateInvitedBy) {
+      setInvitedBy({ $in: userIds });
+    }
   });
 
   return (
@@ -66,8 +84,9 @@ const PromotionUsers = () => {
                 },
               }) => (
                 <PromotionBrokerStats
-                  promotionOptions={loading ? [] : promotionOptions}
+                  promotionOptions={promotionOptions}
                   userId={userId}
+                  loading={loading}
                 />
               ),
             },
@@ -122,6 +141,7 @@ const PromotionUsers = () => {
             },
           ].filter(x => x)}
           data={users}
+          onStateChange={onStateChange}
         />
       </div>
     </div>

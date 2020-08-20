@@ -8,18 +8,21 @@ import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promot
 import { FaIcon } from '../../../Icon';
 import T from '../../../Translation';
 
-const getBrokerStats = ({ promotionOptions = [], userId }) => {
+const getBrokerStats = ({ promotionOptions = [], userId, loading }) => {
+  if (loading) {
+    return {};
+  }
+
   let loanIds = [];
 
   return promotionOptions
     .filter(promotionOption => {
-      const invitedBy =
-        promotionOption?.loan?.promotions?.[0]?.$metadata?.invitedBy;
+      const invitedBy = promotionOption?.invitedBy;
 
       return userId === invitedBy;
     })
     .reduce((stats, promotionOption) => {
-      const loanId = promotionOption?.loan?._id;
+      const loanId = promotionOption?.loanCache?._id;
       const status = promotionOption?.status;
 
       const { loanCount = 0, reservedCount = 0 } = stats;
@@ -72,10 +75,11 @@ const Stat = ({ stats, id, isLastElement }) => {
   );
 };
 
-const PromotionBrokerStats = ({ promotionOptions, userId }) => {
+const PromotionBrokerStats = ({ promotionOptions, userId, loading }) => {
   const stats = getBrokerStats({
     promotionOptions,
     userId,
+    loading,
   });
 
   return (

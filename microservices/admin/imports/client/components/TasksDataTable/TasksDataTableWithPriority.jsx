@@ -70,7 +70,11 @@ const TasksDataTableWithPriority = () => {
         filters={priorityFilters}
         showRelatedTo
         hideIfEmpty
-        emptyEffectCallback={isEmpty => setDisplayPriorityTasks(!isEmpty)}
+        onStateChangeCallback={({ allRowsCount, rows }) => {
+          const shouldDisplayPriorityTasks =
+            allRowsCount === 0 || rows.length === 0;
+          setDisplayPriorityTasks(!shouldDisplayPriorityTasks);
+        }}
       />
       <h3 style={{ marginTop: 40 }}>Défaut</h3>
       <TasksDataTable filters={defaultFilters} showRelatedTo />
