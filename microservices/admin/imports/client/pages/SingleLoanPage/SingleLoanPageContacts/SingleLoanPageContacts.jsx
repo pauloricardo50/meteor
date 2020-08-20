@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { CONTACT_TYPES, useLoanContacts } from 'core/hooks/useContacts';
+import Calculator from 'core/utils/Calculator';
 
 import RequestContact from '../../../components/RequestContact';
 
 const SingleLoanPageContacts = ({ loan }) => {
-  const { _id: loanId, lenders = [] } = loan;
+  const { _id: loanId } = loan;
   const { loading, contacts } = useLoanContacts(loanId);
   let filteredContacts = contacts || [];
 
@@ -17,12 +18,19 @@ const SingleLoanPageContacts = ({ loan }) => {
         return true;
       }
 
-      const lender = lenders.find(({ offers = [] }) =>
-        offers.some(({ _id }) => selectedOfferId === _id),
-      );
+      const lender = Calculator.selectLenderForOfferId({
+        loan,
+        offerId: selectedOfferId,
+      });
 
       return lender?.contact?.email === email;
     });
+
+    filteredContacts = filteredContacts.map(({ type, title, ...contact }) => ({
+      ...contact,
+      type,
+      title: type === CONTACT_TYPES.LENDER ? 'Prêteur retenu' : title,
+    }));
   }
 
   const showLoading = loading && !contacts;
