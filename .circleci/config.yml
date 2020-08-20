@@ -850,7 +850,7 @@ jobs:
                       mv ./netlifyctl /usr/local/bin
 
                       cd microservices/www2
-                      npm run deploy
+                      npm run deploy -- -A "$NETLIFY_ACCESS_TOKEN"
                     
   App - deploy:
     working_directory: /home/circleci/app

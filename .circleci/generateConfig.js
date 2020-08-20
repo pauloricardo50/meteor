@@ -391,7 +391,7 @@ const makeGatsbyDeployJob  = () => {
           mv ./netlifyctl /usr/local/bin
 
           cd microservices/www2
-          npm run deploy
+          npm run deploy -- -A "$NETLIFY_ACCESS_TOKEN"
         `
       )
     ]
