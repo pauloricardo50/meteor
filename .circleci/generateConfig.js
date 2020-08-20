@@ -4,7 +4,7 @@ import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '/home/circleci/app';
 const CACHE_VERSION = 'master_17'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
-const STAGING_BRANCH = 'chore/deploy-www2';
+const STAGING_BRANCH = 'staging';
 const MASTER_BRANCH = 'master';
 
 const defaultJobValues = {
@@ -389,9 +389,16 @@ const makeGatsbyDeployJob  = () => {
         `
           wget -qO- 'https://cli.netlify.com/download/latest/linux' | tar xz
           mv ./netlifyctl /usr/local/bin
-
           cd microservices/www2
-          npm run deploy -- -A "$NETLIFY_ACCESS_TOKEN"
+
+          if [ "$CIRCLE_BRANCH" = "${STAGING_BRANCH}" ]; then
+            npm run deploy-draft -- -A "$NETLIFY_ACCESS_TOKEN"
+          elif [ "$CIRCLE_BRANCH" = "${MASTER_BRANCH}" ]; then
+            npm run deploy -- -A "$NETLIFY_ACCESS_TOKEN"
+          else
+            echo "Deployments not configured for this branch"
+            exit 1
+          fi
         `
       )
     ]
@@ -444,19 +451,19 @@ const makeConfig = () => ({
     'Test and deploy': {
       jobs: [
         'Prepare',
-        // { 'Www2 - unit tests': { requires: ['Prepare'] } },
-        // { 'App - unit tests': { requires: ['Prepare'] } },
-        // { 'Core - unit tests': { requires: ['Prepare'] } },
-        // { 'Admin - unit tests': { requires: ['Prepare'] } },
+        { 'Www2 - unit tests': { requires: ['Prepare'] } },
+        { 'App - unit tests': { requires: ['Prepare'] } },
+        { 'Core - unit tests': { requires: ['Prepare'] } },
+        { 'Admin - unit tests': { requires: ['Prepare'] } },
         // { 'Pro - unit tests': { requires: ['Prepare'] } },
-        // { 'Www2 - e2e tests': { requires: ['Prepare'] } },
-        // { 'App - e2e tests': { requires: ['Prepare'] } },
-        // { 'Admin - e2e tests': { requires: ['Prepare'] } },
-        // { 'Pro - e2e tests': { requires: ['Prepare'] } },
-        // { 'App - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        // { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        // { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        // { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        { 'Www2 - e2e tests': { requires: ['Prepare'] } },
+        { 'App - e2e tests': { requires: ['Prepare'] } },
+        { 'Admin - e2e tests': { requires: ['Prepare'] } },
+        { 'Pro - e2e tests': { requires: ['Prepare'] } },
+        { 'App - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
         { 'Www2 - deploy': { requires: [ 'Prepare' ], filters: deployBranchFilter } },
      ],
     },

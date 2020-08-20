@@ -848,9 +848,16 @@ jobs:
 
                       wget -qO- 'https://cli.netlify.com/download/latest/linux' | tar xz
                       mv ./netlifyctl /usr/local/bin
-
                       cd microservices/www2
-                      npm run deploy -- -A "$NETLIFY_ACCESS_TOKEN"
+
+                      if [ "$CIRCLE_BRANCH" = "staging" ]; then
+                        npm run deploy-draft -- -A "$NETLIFY_ACCESS_TOKEN"
+                      elif [ "$CIRCLE_BRANCH" = "master" ]; then
+                        npm run deploy -- -A "$NETLIFY_ACCESS_TOKEN"
+                      else
+                        echo "Deployments not configured for this branch"
+                        exit 1
+                      fi
                     
   App - deploy:
     working_directory: /home/circleci/app
@@ -910,7 +917,7 @@ jobs:
                     cd deploy
                     ENVIRONMENT="staging"
 
-                    if [ "$CIRCLE_BRANCH" = "chore/deploy-www2" ]; then
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
                     elif [ "$CIRCLE_BRANCH" = "master" ]; then
                       ENVIRONMENT="prod"
@@ -991,7 +998,7 @@ jobs:
                     cd deploy
                     ENVIRONMENT="staging"
 
-                    if [ "$CIRCLE_BRANCH" = "chore/deploy-www2" ]; then
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
                     elif [ "$CIRCLE_BRANCH" = "master" ]; then
                       ENVIRONMENT="prod"
@@ -1070,7 +1077,7 @@ jobs:
                     cd deploy
                     ENVIRONMENT="staging"
 
-                    if [ "$CIRCLE_BRANCH" = "chore/deploy-www2" ]; then
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
                     elif [ "$CIRCLE_BRANCH" = "master" ]; then
                       ENVIRONMENT="prod"
@@ -1151,7 +1158,7 @@ jobs:
                     cd deploy
                     ENVIRONMENT="staging"
 
-                    if [ "$CIRCLE_BRANCH" = "chore/deploy-www2" ]; then
+                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
                       ENVIRONMENT="staging"
                     elif [ "$CIRCLE_BRANCH" = "master" ]; then
                       ENVIRONMENT="prod"
@@ -1179,11 +1186,53 @@ workflows:
   Test and deploy:
     jobs:
       - Prepare
+      - Www2 - unit tests:
+          requires:
+            - Prepare
+      - App - unit tests:
+          requires:
+            - Prepare
+      - Core - unit tests:
+          requires:
+            - Prepare
+      - Admin - unit tests:
+          requires:
+            - Prepare
+      - Www2 - e2e tests:
+          requires:
+            - Prepare
+      - App - e2e tests:
+          requires:
+            - Prepare
+      - Admin - e2e tests:
+          requires:
+            - Prepare
+      - Pro - e2e tests:
+          requires:
+            - Prepare
+      - App - deploy:
+          requires: &ref_1
+            - App - unit tests
+            - Admin - unit tests
+            - Core - unit tests
+            - App - e2e tests
+            - Admin - e2e tests
+            - Pro - e2e tests
+          filters: &ref_2
+            branches:
+              only:
+                - staging
+                - master
+      - Admin - deploy:
+          requires: *ref_1
+          filters: *ref_2
+      - Pro - deploy:
+          requires: *ref_1
+          filters: *ref_2
+      - Backend - deploy:
+          requires: *ref_1
+          filters: *ref_2
       - Www2 - deploy:
           requires:
             - Prepare
-          filters:
-            branches:
-              only:
-                - chore/deploy-www2
-                - master
+          filters: *ref_2
