@@ -12,6 +12,8 @@ const routesWithoutSidenav = [
   // /loans/:loanId/onboarding
   { route: '/onboarding', func: 'startsWith' },
   { route: '/onboarding', func: 'endsWith' },
+  { route: '/properties', func: 'startsWith' },
+  { route: '/promotions', func: 'startsWith' },
 ];
 
 const getShowSideNav = ({ location }) =>

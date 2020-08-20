@@ -116,7 +116,28 @@ const ProPropertyPage = ({ property }) => {
 
   return (
     <div>
-      <div className="flex fe">
+      <div className="flex sb mb-16">
+        <Button raised primary link to={`/?property-id=${property._id}`}>
+          <T id="general.back" />
+        </Button>
+
+        <Button
+          raised
+          secondary
+          loading={buttonLoading}
+          onClick={() => {
+            setButtonLoading(true);
+            Promise.resovle(onClick()).catch(() => setButtonLoading(false));
+          }}
+          size="large"
+        >
+          {label}
+        </Button>
+      </div>
+
+      <ProProperty property={property} />
+
+      <div className="flex fe mt-16">
         <Button
           raised
           secondary
@@ -125,11 +146,11 @@ const ProPropertyPage = ({ property }) => {
             setButtonLoading(true);
             onClick();
           }}
+          size="large"
         >
           {label}
         </Button>
       </div>
-      <ProProperty property={property} />
     </div>
   );
 };

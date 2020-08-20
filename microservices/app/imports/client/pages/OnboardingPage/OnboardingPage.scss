@@ -193,3 +193,24 @@
     color: white;
   }
 }
+
+.onboarding-miniature {
+  border: 1px solid $border-grey;
+  border-radius: $border-radius;
+  height: 140px;
+  color: $body-text;
+
+  .img {
+    width: 140px;
+    height: 140px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-right: 16px;
+    border-radius: $border-radius;
+    background-size: cover;
+  }
+
+  &:hover {
+    border-color: $primary;
+  }
+}

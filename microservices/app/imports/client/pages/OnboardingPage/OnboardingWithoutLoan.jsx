@@ -8,22 +8,31 @@ import useSearchParams from 'core/hooks/useSearchParams';
 import { createRoute } from 'core/utils/routerUtils';
 
 import appRoutes from '../../../startup/client/appRoutes';
+import OnboardingPromotionMiniature from './OnboardingComponents/OnboardingPromotionMiniature';
+import OnboardingPropertyMiniature from './OnboardingComponents/OnboardingPropertyMiniature';
 import { insertAnonymousLoan } from './onboardingHelpers';
 import OnboardingMarketing from './OnboardingMarketing';
 
 const OnboardingWithoutLoan = () => {
-  const { purchaseType } = useSearchParams();
+  const { purchaseType, ...rest } = useSearchParams();
+  const propertyId = rest['property-id'];
+  const promotionId = rest['promotion-id'];
   const shouldInsertLoan = Object.values(PURCHASE_TYPE).includes(purchaseType);
   const [loading, setLoading] = useState(shouldInsertLoan);
   const [redirect, setRedirect] = useState();
-  const hasPropertyOrPromotion = false; // TODO:
+  const [hasPropertyOrPromotion, setHasPropertyOrPromotion] = useState(
+    propertyId || promotionId,
+  );
 
   const handleInsert = pType => {
     if (!loading) {
       setLoading(true);
     }
 
-    return insertAnonymousLoan(pType).then(loanId => {
+    return insertAnonymousLoan({
+      purchaseType: pType,
+      proPropertyId: propertyId,
+    }).then(loanId => {
       setRedirect(createRoute(appRoutes.LOAN_ONBOARDING_PAGE.path, { loanId }));
     });
   };
@@ -57,12 +66,28 @@ const OnboardingWithoutLoan = () => {
             <T id="OnboardingWithoutLoan.description" />
           </p>
 
+          {hasPropertyOrPromotion && propertyId ? (
+            <OnboardingPropertyMiniature
+              setHasPropertyOrPromotion={setHasPropertyOrPromotion}
+              propertyId={propertyId}
+            />
+          ) : null}
+
+          {hasPropertyOrPromotion && promotionId ? (
+            <OnboardingPromotionMiniature
+              setHasPropertyOrPromotion={setHasPropertyOrPromotion}
+              promotionId={promotionId}
+            />
+          ) : null}
+
           <div className="onboarding-without-loan-ctas">
             {hasPropertyOrPromotion && (
               <Button
                 size="large"
                 loading={loading}
-                onClick={() => handleInsert(PURCHASE_TYPE.ACQUISITION)}
+                onClick={() => handleInsert()}
+                raised
+                secondary
               >
                 <T id="OnboardingWithoutLoan.start" />
               </Button>

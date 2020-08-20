@@ -152,7 +152,7 @@ export const anonymousLoanInsert = new Method({
     existingAnonymousLoanId: Match.Maybe(Match.OneOf(String, null)),
     proPropertyId: Match.Maybe(String),
     purchaseType: Match.Maybe(String),
-    referralId: Match.Maybe(String),
+    referralId: Match.Maybe(Match.OneOf(String, null)),
   },
 });
 

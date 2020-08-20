@@ -17,7 +17,7 @@ export const ONBOARDING_FLOWS = {
 export const getSteps = loan =>
   steps.filter(({ condition }) => condition(loan));
 
-export const insertAnonymousLoan = purchaseType =>
+export const insertAnonymousLoan = ({ purchaseType, proPropertyId }) =>
   anonymousLoanInsert
     .run({
       referralId: localStorage.getItem(LOCAL_STORAGE_REFERRAL) || undefined,
@@ -25,6 +25,7 @@ export const insertAnonymousLoan = purchaseType =>
         LOCAL_STORAGE_ANONYMOUS_LOAN,
       ),
       purchaseType,
+      proPropertyId,
     })
     .then(loanId => {
       localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);

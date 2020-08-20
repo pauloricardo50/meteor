@@ -60,26 +60,13 @@ const AppPageLoggedOut = () => {
     return <Loading />;
   }
 
-  if (searchParams['property-id']) {
-    return null;
-  }
-
-  if (searchParams['promotion-id']) {
-    // TODO: Do this
-    return null;
-  }
-
   if (anonymousLoan) {
     return <Redirect to={`/loans/${anonymousLoan._id}`} />;
   }
 
-  let query;
-  if (searchParams.purchaseType) {
-    const search = new URLSearchParams({
-      purchaseType: searchParams.purchaseType,
-    });
-    query = search.toString();
-  }
+  const search = new URLSearchParams(searchParams);
+  search.delete('ref');
+  const query = search.toString();
 
   return (
     <Redirect

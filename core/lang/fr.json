@@ -1,4 +1,7 @@
 {
+  "ProPropertyPage.getALoan": "Calculer ma capacité d'achat",
+  "ProPropertyPage.addPropertyToLoan": "Ajouter ce bien à mon dossier",
+  "OnboardingWithoutLoan.start": "Calculer ma capacité d'achat",
   "OnboardingResultCtas.calendly": "Planifier un rendez-vous",
   "OnboardingResultCtas.goToDashboard": "Obtenir mon prêt",
   "OnboardingResultCtas.signup": "Sauvegarder mon progrès et obtenir mon prêt",
