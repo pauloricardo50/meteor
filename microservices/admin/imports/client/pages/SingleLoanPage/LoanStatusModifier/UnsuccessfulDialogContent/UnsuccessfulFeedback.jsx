@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { faEnvelope } from '@fortawesome/pro-light-svg-icons/faEnvelope';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ConfirmMethod from 'imports/core/components/ConfirmMethod';
@@ -49,7 +49,7 @@ const UnsucessfulFeedback = ({
   openConfirmDialog,
   setOpenConfirmDialog,
   contactIds,
-  contacts,
+  selectedContacts,
   loan,
 }) => (
   <div className="loan-status-modifier-dialog-content animated fadeIn">
@@ -87,8 +87,10 @@ const UnsucessfulFeedback = ({
         method={() =>
           sendNegativeFeedbackToLenders
             .run({ loanId: loan._id, contactIds })
-            .then(() => setOpenConfirmDialog(false))
-            .then(() => closeModal({ ...returnValue }))
+            .then(() => {
+              setOpenConfirmDialog(false);
+              return closeModal({ ...returnValue });
+            })
         }
         type="modal"
         open={openConfirmDialog}
@@ -99,11 +101,9 @@ const UnsucessfulFeedback = ({
               Attention! Enverra un feedback aux prêteurs suivants:
             </p>
             <ul>
-              {contacts
-                .filter(({ value }) => contactIds?.includes(value))
-                .map(({ label, value }) => (
-                  <li key={value}>{label}</li>
-                ))}
+              {selectedContacts.map(({ label, value }) => (
+                <li key={value}>{label}</li>
+              ))}
             </ul>
           </div>
         }
@@ -130,8 +130,14 @@ export default withProps(({ loan }) => {
     }),
   );
 
+  const selectedContacts = contacts.filter(({ value }) =>
+    contactIds?.includes(value),
+  );
+
+  const schema = useMemo(() => makeSchema(contacts), [contacts]);
+
   return {
-    schema: makeSchema(contacts),
+    schema,
     onSubmit: makeOnSubmit({
       setOpenConfirmDialog,
       setContactIds,
@@ -141,6 +147,6 @@ export default withProps(({ loan }) => {
     setOpenConfirmDialog,
     contactIds,
     setContactIds,
-    contacts,
+    selectedContacts,
   };
 })(UnsucessfulFeedback);
