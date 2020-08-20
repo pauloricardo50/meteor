@@ -13,7 +13,7 @@ const SideNav = ({ fixed }) => (
     <div
       className={cx('onboarding-side-nav', {
         fixed,
-        'animated fadeInLeft': fixed,
+        'animated fadeInLeftHalf': fixed,
       })}
     >
       <div className="onboarding-side-nav-header">
