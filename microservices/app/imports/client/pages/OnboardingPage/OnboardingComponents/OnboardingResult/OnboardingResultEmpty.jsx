@@ -31,7 +31,7 @@ const OnboardingResultEmpty = () => {
   const canton = getCanton(loan);
 
   return (
-    <div className="animated fadeInUp">
+    <div className="animated fadeIn">
       <h1>
         <T id="OnboardingResultEmpty.title" />
       </h1>

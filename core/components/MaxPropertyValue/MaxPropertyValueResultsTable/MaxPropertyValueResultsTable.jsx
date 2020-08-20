@@ -12,17 +12,23 @@ import MaxPropertyValueResultsTableAcquisition from './MaxPropertyValueResultsTa
 import MaxPropertyValueResultsTableRefinancing from './MaxPropertyValueResultsTableRefinancing';
 import MaxPropertyValueResultsToggle from './MaxPropertyValueResultsToggle';
 
-const shouldShowToggle = ({ purchaseType, min, max }) => {
+const shouldShowToggle = ({
+  purchaseType,
+  minBorrowRatio,
+  maxBorrowRatio,
+  minPropertyValue,
+  maxPropertyValue,
+}) => {
   if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
-    return !!min.propertyValue && min.propertyValue !== max.propertyValue;
+    return !!minPropertyValue && minPropertyValue !== maxPropertyValue;
   }
 
   if (purchaseType === PURCHASE_TYPE.REFINANCING) {
-    return !!min.borrowRatio && min.borrowRatio !== max.borrowRatio;
+    return !!minBorrowRatio && minBorrowRatio !== maxBorrowRatio;
   }
 };
 
-const MaxPropertyValueResultsTable = ({ loan }) => {
+const MaxPropertyValueResultsTable = ({ loan, showMoreProps }) => {
   const isSmallMobile = useMedia({ maxWidth: 480 });
   const [showRecap, setShowRecap] = useState(true);
   const [showBest, setShowBest] = useState(true);
@@ -36,11 +42,12 @@ const MaxPropertyValueResultsTable = ({ loan }) => {
     minOrganisationName,
     maxOrganisationName,
     previousLoan,
+    minBorrowRatio,
+    maxBorrowRatio,
+    minPropertyValue,
+    maxPropertyValue,
   } = parseMaxPropertyValue(loan, showBest);
-  const {
-    purchaseType,
-    maxPropertyValue: { min, max },
-  } = loan;
+  const { purchaseType } = loan;
 
   const prevValueRef = useRef();
   useEffect(() => {
@@ -50,7 +57,13 @@ const MaxPropertyValueResultsTable = ({ loan }) => {
   if (showRecap) {
     return (
       <>
-        {shouldShowToggle({ purchaseType, min, max }) && (
+        {shouldShowToggle({
+          purchaseType,
+          minBorrowRatio,
+          maxBorrowRatio,
+          minPropertyValue,
+          maxPropertyValue,
+        }) && (
           <MaxPropertyValueResultsToggle
             showBest={showBest}
             setShowBest={setShowBest}
@@ -80,6 +93,7 @@ const MaxPropertyValueResultsTable = ({ loan }) => {
           className="show-recap-button"
           onClick={() => setShowRecap(false)}
           size="small"
+          {...showMoreProps}
         >
           <T id="MaxPropertyValue.showDetail" />
         </Button>
@@ -89,7 +103,7 @@ const MaxPropertyValueResultsTable = ({ loan }) => {
 
   return (
     <>
-      {!!min.propertyValue && min.propertyValue !== max.propertyValue && (
+      {!!minPropertyValue && minPropertyValue !== maxPropertyValue && (
         <MaxPropertyValueResultsToggle
           showBest={showBest}
           setShowBest={setShowBest}
@@ -98,8 +112,8 @@ const MaxPropertyValueResultsTable = ({ loan }) => {
           maxOrganisationName={maxOrganisationName}
         />
       )}
-      {!!min.propertyValue &&
-        min.propertyValue === max.propertyValue &&
+      {!!minPropertyValue &&
+        minPropertyValue === maxPropertyValue &&
         Meteor.microservice === 'admin' && (
           <span>
             [ADMIN]&nbsp;
@@ -127,6 +141,7 @@ const MaxPropertyValueResultsTable = ({ loan }) => {
         className="show-recap-button"
         onClick={() => setShowRecap(true)}
         size="small"
+        {...showMoreProps}
       >
         <T id="MaxPropertyValue.showRecap" />
       </Button>

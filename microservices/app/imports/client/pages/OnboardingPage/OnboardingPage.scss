@@ -1,3 +1,5 @@
+@import "./OnboardingComponents/OnboardingComponents.scss";
+
 .onboarding {
   display: flex;
   flex-direction: column;
@@ -11,7 +13,6 @@
     flex-grow: 1;
     padding: 16px;
     display: flex;
-    flex-wrap: wrap;
 
     > :first-child {
       flex-grow: 1;
@@ -48,103 +49,6 @@
 
       p {
         font-size: 0.8em;
-      }
-    }
-  }
-  
-  &-choices {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    max-width: 800px;
-
-    @media screen and (max-width: $med) {
-      justify-content: center;
-    }
-
-    > * {
-      border: 1px solid transparent;
-      padding: 32px;
-      margin: 8px;
-      transition: border 200ms $bezier, transform 200ms $bezier;
-      width: 250px;
-      background-color: white;
-      transform: scale(1);
-
-      @media screen and (max-width: $med) {
-        width: 200px;
-      }
-
-      &:hover {
-        border: 1px solid $primary;
-        transform: scale(1.05);
-      }
-    }
-  }
-
-  &-form {
-    max-width: 400px;
-    margin-top: 32px;
-
-
-    &.wide-form {
-      max-width: 800px;
-    }
-    
-
-    button[type=submit] {
-      margin-top: 40px;
-      display: flex;
-      margin-left: auto;
-      margin-right: 0;
-    }
-  }
-
-
-  &-result {
-    display: flex;
-    flex-direction: column;
-
-    &-value {
-      margin: 40px 0;
-      font-size: 5em;
-
-      @include screen(large) {
-        font-size: 4em;
-      }
-    }
-
-    &-offers {
-      text-align: center;
-
-      .offers {
-        display: flex;
-        flex-wrap: wrap;
-      }
-
-      .offer {
-        width: 150px;
-        margin: 8px;
-        padding: 16px;
-        border: 1px solid $border-grey;
-        border-radius: 4px;
-        text-align: center;
-      }
-    }
-
-    .logo {
-      width: 80px;
-      height: 80px;
-    }
-
-    &-signup {
-      img {
-        margin: 16px auto;
-        width: 300px;
-
-        @include screen(med) {
-          width: 200px;
-        }
       }
     }
   }
@@ -211,26 +115,5 @@
 
   .epotek {
     color: white;
-  }
-}
-
-.onboarding-miniature {
-  border: 1px solid $border-grey;
-  border-radius: $border-radius;
-  height: 140px;
-  color: $body-text;
-
-  .img {
-    width: 140px;
-    height: 140px;
-    background-position: center center;
-    background-repeat: no-repeat;
-    margin-right: 16px;
-    border-radius: $border-radius;
-    background-size: cover;
-  }
-
-  &:hover {
-    border-color: $primary;
   }
 }

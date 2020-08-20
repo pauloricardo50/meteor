@@ -1,19 +1,22 @@
 import { PURCHASE_TYPE } from '../../../api/loans/loanConstants';
+import { RESIDENCE_TYPE } from '../../../api/properties/propertyConstants';
 import Calculator from '../../../utils/Calculator';
 
 export const parseMaxPropertyValue = (loan, showBest) => {
   const { maxPropertyValue: mPV, purchaseType, residenceType } = loan;
   const { canton } = mPV;
+  const { max, min } =
+    residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? mPV.main : mPV.second;
   const {
     propertyValue: minPropertyValue,
     borrowRatio: minBorrowRatio,
     organisationName: minOrganisationName,
-  } = mPV.min;
+  } = min || {};
   const {
     propertyValue: maxPropertyValue,
     borrowRatio: maxBorrowRatio,
     organisationName: maxOrganisationName,
-  } = mPV.max;
+  } = max || {};
   const previousLoan = Calculator.getPreviousLoanValue({ loan });
 
   const minLoan = minPropertyValue * minBorrowRatio;
@@ -51,14 +54,18 @@ export const parseMaxPropertyValue = (loan, showBest) => {
     purchaseType === PURCHASE_TYPE.REFINANCING ? loan : propertyValue;
 
   return {
-    propertyValue,
+    loanValue,
+    maxBorrowRatio,
+    maxOrganisationName,
+    minBorrowRatio,
+    minOrganisationName,
     notaryFees,
     ownFunds,
-    loanValue,
+    previousLoan,
+    propertyValue,
     raise,
     valueToDisplay,
-    minOrganisationName,
-    maxOrganisationName,
-    previousLoan,
+    minPropertyValue,
+    maxPropertyValue,
   };
 };

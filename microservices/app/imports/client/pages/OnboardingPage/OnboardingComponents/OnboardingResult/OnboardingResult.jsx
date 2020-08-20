@@ -1,7 +1,6 @@
 import React from 'react';
-import CountUp from 'react-countup';
 
-import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
+import MaxPropertyValueResultsTable from 'core/components/MaxPropertyValue/MaxPropertyValueResultsTable';
 import T from 'core/components/Translation';
 
 import { useOnboarding } from '../../OnboardingContext';
@@ -11,17 +10,11 @@ import OnboardingResultOffers from './OnboardingResultOffers';
 
 const OnboardingResult = () => {
   const { loan } = useOnboarding();
-  const { residenceType, maxPropertyValue } = loan;
+  const { maxPropertyValue } = loan;
 
   if (!maxPropertyValue?.date) {
     return <OnboardingResultEmpty />;
   }
-
-  const value =
-    residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
-      ? maxPropertyValue?.main.max.propertyValue
-      : maxPropertyValue?.second.max.propertyValue;
-  // const loan =
 
   return (
     <div className="onboarding-result">
@@ -37,14 +30,10 @@ const OnboardingResult = () => {
         <T id={`OnboardingResult.${loan.purchaseType}.subtitle`} />
       </p>
 
-      <div className="onboarding-result-value">
-        <CountUp
-          end={value}
-          className="recap-value text-center animated fadeIn"
-          duration={1}
-          prefix="CHF "
-          preserveValue
-          separator=" "
+      <div className="onboarding-result-max-property-value max-property-value-results-table">
+        <MaxPropertyValueResultsTable
+          loan={loan}
+          showMoreProps={{ primary: true }}
         />
       </div>
 
