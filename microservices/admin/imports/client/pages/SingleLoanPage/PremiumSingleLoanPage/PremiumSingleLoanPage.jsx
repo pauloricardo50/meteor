@@ -30,7 +30,7 @@ const PremiumSingleLoanPage = props => {
           collection={loan._collection}
           className="single-loan-page-tasks card1 card-top"
         />
-        <SingleLoanPageContacts loanId={loan._id} />
+        <SingleLoanPageContacts loan={loan} />
       </div>
       <PremiumLoanTabs {...props} />
       <UnsuccessfulReasonModal loan={loan} />

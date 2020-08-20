@@ -12,8 +12,10 @@ import {
   loanRemoveAdminNote,
   loanSetAdminNote,
 } from '../../api/loans/methodDefinitions';
-import useInsuranceRequestContacts from './useInsuranceRequestContacts';
-import useLoanContacts from './useLoanContacts';
+import {
+  useInsuranceRequestContacts,
+  useLoanContacts,
+} from '../../hooks/useContacts';
 
 const AUTHORIZED_COLLECTIONS = [
   LOANS_COLLECTION,
