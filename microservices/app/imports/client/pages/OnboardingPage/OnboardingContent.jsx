@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 
+import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
+
 import OnboardingBorrowersForm from './OnboardingComponents/OnboardingBorrowersForm';
 import OnboardingChoice from './OnboardingComponents/OnboardingChoice';
 import OnboardingForm from './OnboardingComponents/OnboardingForm';
+import { PropertyMiniature } from './OnboardingComponents/OnboardingPropertyMiniature';
 import OnboardingResult from './OnboardingComponents/OnboardingResult/OnboardingResult';
 import { useOnboarding } from './OnboardingContext';
 import { steps } from './onboardingSteps';
@@ -35,6 +38,14 @@ const OnboardingContent = () => {
   return (
     <div className="onboarding-content">
       <Component id={id} key={id} {...props} onSubmit={onSubmit?.(loan)} />
+
+      {loan.hasProProperty ? (
+        <PropertyMiniature
+          property={loan.properties.find(
+            ({ category }) => category === PROPERTY_CATEGORY.PRO,
+          )}
+        />
+      ) : null}
     </div>
   );
 };

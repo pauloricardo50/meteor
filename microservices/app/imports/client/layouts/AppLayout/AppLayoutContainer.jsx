@@ -43,7 +43,11 @@ const loanFragment = merge({}, calculatorLoan(), {
     status: 1,
     users: { name: 1, organisations: { name: 1 } },
   },
-  properties: { address: 1, $options: { sort: { createdAt: 1 } } },
+  properties: {
+    address: 1,
+    imageUrls: 1,
+    $options: { sort: { createdAt: 1 } },
+  },
   shareSolvency: 1,
   showClosingChecklists: 1,
   step: 1,

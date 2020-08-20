@@ -9,6 +9,7 @@ import {
 } from 'core/api/loans/methodDefinitions';
 import { anonymousProperty } from 'core/api/properties/queries';
 import Button from 'core/components/Button';
+import Icon from 'core/components/Icon';
 import NotFound from 'core/components/NotFound';
 import ProProperty from 'core/components/ProProperty';
 import T from 'core/components/Translation';
@@ -111,6 +112,7 @@ const ProPropertyPage = ({ property }) => {
           onClick={() => {
             history.goBack();
           }}
+          icon={<Icon type="left" />}
         >
           <T id="general.back" />
         </Button>

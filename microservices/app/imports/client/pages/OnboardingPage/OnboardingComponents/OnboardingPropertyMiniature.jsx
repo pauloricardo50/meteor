@@ -19,6 +19,25 @@ const MiniatureImage = ({ url }) => {
   return <FaIcon icon={faHome} />;
 };
 
+export const PropertyMiniature = ({ property }) => {
+  const { imageUrls, address1, totalValue, _id: propertyId } = property;
+
+  return (
+    <Link
+      to={createRoute(appRoutes.PRO_PROPERTY_PAGE.path, { propertyId })}
+      className="onboarding-miniature flex"
+    >
+      <MiniatureImage url={imageUrls?.[0]} />
+      <div className="flex-col sa p-16">
+        <h4 className="m-0">{address1}</h4>
+        <span className="secondary font-size-3">
+          <Money value={totalValue} />
+        </span>
+      </div>
+    </Link>
+  );
+};
+
 const OnboardingPropertyMiniature = ({
   propertyId,
   setHasPropertyOrPromotion,
@@ -47,22 +66,7 @@ const OnboardingPropertyMiniature = ({
     );
   }
 
-  const { imageUrls, address1, totalValue } = proProperty;
-
-  return (
-    <Link
-      to={createRoute(appRoutes.PRO_PROPERTY_PAGE.path, { propertyId })}
-      className="onboarding-miniature flex"
-    >
-      <MiniatureImage url={imageUrls?.[0]} />
-      <div className="flex-col sa p-16">
-        <h4 className="m-0">{address1}</h4>
-        <span className="secondary font-size-3">
-          <Money value={totalValue} />
-        </span>
-      </div>
-    </Link>
-  );
+  return <PropertyMiniature property={proProperty} />;
 };
 
 export default OnboardingPropertyMiniature;
