@@ -387,6 +387,9 @@ const makeGatsbyDeployJob  = () => {
       runCommand(
         'Deploy',
         `
+          wget -qO- 'https://cli.netlify.com/download/latest/linux' | tar xz
+          mv ./netlifyctl /usr/local/bin
+
           cd microservices/www2
           npm run deploy
         `
