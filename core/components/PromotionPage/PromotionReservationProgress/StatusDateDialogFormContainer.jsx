@@ -65,8 +65,18 @@ export default withProps(
           {getEmailsToBeSentWarning(emailsToBeSent)}
         </div>
       ),
-      onSubmit: values =>
-        openPreConfirmDialog({
+      onSubmit (values) {
+        if ('date' in values && values.date instanceof Date) {
+          // Uniforms is given the date without a timezone so it is parsed in the UTC timezone,
+          // even though it is in the local time zone
+          // https://github.com/vazco/uniforms/issues/532
+
+          // timezone offset is in minutes
+          const offsetInMilliseconds = values.date.getTimezoneOffset() * 60 * 1000;
+          values.date = new Date(values.date.getTime() + offsetInMilliseconds);
+        }
+
+        return openPreConfirmDialog({
           values,
           id,
           setOpenConfirmDialog,
@@ -90,7 +100,8 @@ export default withProps(
               setConfirmDialogProps,
               setConfirmDialogActions,
             }),
-          ),
+          )
+      },
       openConfirmDialog,
       confirmDialogActions,
       confirmDialogProps,
