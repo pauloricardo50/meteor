@@ -67,8 +67,8 @@ export default withProps(
       ),
       onSubmit (values) {
         if ('date' in values && values.date instanceof Date) {
-          // Uniforms is given the date without a timezone so it is parsed in the UTC timezone,
-          // even though it is in the local time zone
+          // Uniforms is given the date string without a timezone so it is parsed in
+          // the UTC timezone, even though it was in the local time zone
           // https://github.com/vazco/uniforms/issues/532
 
           // timezone offset is in minutes
