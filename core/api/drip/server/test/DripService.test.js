@@ -364,7 +364,13 @@ describe('DripService', function () {
 
     it('does nothing if tag is not LOST, QUALIFIED or CALENDLY', async () => {
       await DripService.handleWebhook({
-        body: { event, data: { properties: { tag: DRIP_TAGS.TEST } } },
+        body: {
+          event,
+          data: {
+            properties: { tag: DRIP_TAGS.TEST },
+            subscriber: { email: '' },
+          },
+        },
       });
 
       expect(analyticsSpy.called).to.equal(false);
