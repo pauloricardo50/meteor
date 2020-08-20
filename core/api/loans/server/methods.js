@@ -37,7 +37,7 @@ import {
   reuseProperty,
   selectStructure,
   sendLoanChecklist,
-  sendNegativeFeedbackToAllLenders,
+  sendNegativeFeedbackToLenders,
   setLoanStep,
   setMaxPropertyValueOrBorrowRatio,
   switchBorrower,
@@ -159,12 +159,6 @@ assignLoanToUser.setHandler(({ userId }, params) => {
 switchBorrower.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.switchBorrower(params);
-});
-
-sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
-  const { userId } = context;
-  Security.checkUserIsAdmin(userId);
-  return LoanService.sendNegativeFeedbackToAllLenders(params);
 });
 
 loanUpdatePromotionInvitedBy.setHandler(({ userId }, params) => {
@@ -362,4 +356,10 @@ notifyInsuranceTeamForPotential.setHandler(({ userId }, { loanId }) => {
 updateInsurancePotential.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   return LoanService.updateInsurancePotential(params);
+});
+
+sendNegativeFeedbackToLenders.setHandler((context, params) => {
+  const { userId } = context;
+  Security.checkUserIsAdmin(userId);
+  return LoanService.sendNegativeFeedbackToLenders(params);
 });

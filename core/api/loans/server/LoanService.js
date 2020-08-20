@@ -623,7 +623,7 @@ class LoanService extends CollectionService {
     }
   }
 
-  sendNegativeFeedbackToAllLenders({ loanId }) {
+  sendNegativeFeedbackToLenders({ loanId, contactIds }) {
     const loan = this.get(loanId, {
       structure: 1,
       properties: { address1: 1, zipCode: 1, city: 1 },
@@ -644,6 +644,7 @@ class LoanService extends CollectionService {
     }
 
     const lastOffers = loan.lenders
+      .filter(({ contact }) => contactIds.includes(contact._id))
       .filter(({ offers }) => offers?.length)
       .map(({ offers }) => offers[0]);
 

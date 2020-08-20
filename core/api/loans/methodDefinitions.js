@@ -107,11 +107,6 @@ export const switchBorrower = new Method({
   },
 });
 
-export const sendNegativeFeedbackToAllLenders = new Method({
-  name: 'sendNegativeFeedbackToAllLenders',
-  params: { loanId: String },
-});
-
 export const loanUpdatePromotionInvitedBy = new Method({
   name: 'loanUpdatePromotionInvitedBy',
   params: { loanId: String, promotionId: String, invitedBy: String },
@@ -265,4 +260,12 @@ export const notifyInsuranceTeamForPotential = new Method({
 export const updateInsurancePotential = new Method({
   name: 'updateInsurancePotential',
   params: { loanId: String, insurancePotential: String },
+});
+
+export const sendNegativeFeedbackToLenders = new Method({
+  name: 'sendNegativeFeedbackToLenders',
+  params: {
+    loanId: String,
+    contactIds: Array,
+  },
 });
