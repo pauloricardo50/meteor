@@ -687,6 +687,10 @@ class LoanService extends CollectionService {
     });
     const maxPropertyValues = organisations
       .map(({ lenderRules, name }) => {
+        // Hack from Micaiah that yields the current fiber, and avoids blocking
+        // the main thread if someone else wants to execute a method
+        Promise.await(new Promise(resolve => Meteor._setImmediate(resolve)));
+
         const calculator = new CalculatorClass({
           loan: loanObject,
           lenderRules,
