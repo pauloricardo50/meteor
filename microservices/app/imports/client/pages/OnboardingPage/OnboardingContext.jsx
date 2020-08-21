@@ -13,6 +13,14 @@ export const useOnboarding = () => useContext(Context);
 const getCurrentTodoStep = steps =>
   steps.find(({ done }) => !done)?.id || 'result';
 
+const getPreviousStep = (steps, activeStep) => {
+  const previousSteps = [...steps].splice(
+    0,
+    steps.findIndex(({ id }) => id === activeStep),
+  );
+  return previousSteps.filter(({ done }) => done).slice(-1)?.[0]?.id;
+};
+
 const withOnboardingContext = Component => ({ loan }) => {
   const steps = getSteps(loan).map(step => ({
     ...step,
@@ -31,12 +39,14 @@ const withOnboardingContext = Component => ({ loan }) => {
 
   // Triggered when user lands on a step
   useEffect(() => {
+    const previousStep = getPreviousStep(steps, activeStep);
     analyticsOnboardingStep.run({
       loanId: loan?._id,
       activeStep,
       currentTodoStep,
       latestStep,
       nextStep: nextStepId,
+      previousStep,
     });
   }, [activeStep]);
 

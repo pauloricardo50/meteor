@@ -68,5 +68,6 @@ export const analyticsOnboardingStep = new Method({
     currentTodoStep: String,
     // If undefined, it means that it is the very last step
     nextStep: Match.Maybe(String),
+    previousStep: Match.Maybe(String),
   },
 });
