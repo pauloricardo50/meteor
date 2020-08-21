@@ -1,9 +1,9 @@
 import React from 'react';
 
-import RevenuesByStatus from 'core/components/RevenuesByStatus';
 import Select from 'core/components/Select';
 import T from 'core/components/Translation';
 
+import CommissionsByStatus from '../../components/CommissionsByStatus';
 import ProRevenuesPageExplained from './ProRevenuesExplained';
 import ProRevenuesPipelineContainer from './ProRevenuesPipelineContainer';
 
@@ -94,7 +94,12 @@ const ProRevenuesPipeline = ({
           className="mr-8"
         />
       </div>
-      <RevenuesByStatus loans={noPromotionLoans} multiplier={commissionRate} />
+
+      <CommissionsByStatus
+        loans={noPromotionLoans}
+        commissionRate={commissionRate}
+        organisationId={organisationId}
+      />
     </div>
   );
 };
