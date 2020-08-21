@@ -32,7 +32,7 @@ import {
   analyticsVerifyEmail,
 } from '../methodDefinitions';
 import { addAnalyticsListener } from './analyticsHelpers';
-import { getOnboardingStepEvent } from './onboardingStepAnalyticsHelpers';
+import { getOnboardingStepProperties } from './onboardingStepAnalyticsHelpers';
 
 addAnalyticsListener({
   method: [proInviteUser, proInviteUserToOrganisation, adminCreateUser],
@@ -516,6 +516,7 @@ addAnalyticsListener({
       user = {},
       promotions = [],
       properties = [],
+      anonymous,
     } = LoanService.get(loanId, {
       name: 1,
       purchaseType: 1,
@@ -528,6 +529,7 @@ addAnalyticsListener({
       },
       promotions: { name: 1 },
       properties: { _id: 1 },
+      anonymous: 1,
     });
 
     const [promotion] = promotions;
@@ -549,7 +551,7 @@ addAnalyticsListener({
       loanId,
       propertyId: proPropertyId,
       referralId,
-      anonymous: true,
+      anonymous,
       loanName,
       purchaseType,
       userId,
@@ -566,7 +568,12 @@ addAnalyticsListener({
     });
 
     if (purchaseType) {
-      // TODO: Track SET PURCHASE TYPE
+      analytics.track(EVENTS.COMPLETED_ONBOARDING_STEP, {
+        loanId,
+        anonymous,
+        completedStep: 'purchaseType',
+        purchaseType,
+      });
     }
   },
 });
@@ -908,7 +915,8 @@ addAnalyticsListener({
       return;
     }
 
-    const properties = getOnboardingStepEvent({ context, params });
-    console.log('properties:', properties);
+    const properties = getOnboardingStepProperties({ context, params });
+
+    analytics.track(EVENTS.COMPLETED_ONBOARDING_STEP, properties);
   },
 });

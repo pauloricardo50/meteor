@@ -337,6 +337,27 @@ export const EVENTS_CONFIG = {
     name: 'User submitted promotion interest form',
     properties: ['userEmail', 'promotionName'],
   },
+  [EVENTS.COMPLETED_ONBOARDING_STEP]: {
+    name: 'User Completed Onboarding step',
+    properties: [
+      ...eventsSharedProperties,
+      'completedStep',
+      { name: 'currentStep', optional: true },
+      'loanId',
+      'anonymous',
+      { name: 'purchaseType', optional: true },
+      { name: 'acquisitionStaus', optional: true },
+      { name: 'residenceType', optional: true },
+      { name: 'canton', optional: true },
+      { name: 'propertyValue', optional: true },
+      { name: 'previousLoanValue', optional: true },
+      { name: 'borrowerCount', optional: true },
+      { name: 'borrower1BirthDate', optional: true },
+      { name: 'borrower2BirthDate', optional: true },
+      { name: 'borrowersFortune', optional: true },
+      { name: 'borrowersSalary', optional: true },
+    ],
+  },
 };
 
 export const TRACKING_ORIGIN = {

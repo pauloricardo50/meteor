@@ -36,19 +36,16 @@ const getLoanProperties = ({ loan, previousStep }) => {
   const {
     anonymous,
     purchaseType,
-    hasPromotion,
-    hasProProperty,
     acquisitionStatus,
     residenceType,
-    canton,
     properties = [],
     borrowers = [],
+    _id: loanId,
   } = loan;
   const commonProperties = {
     anonymous,
     purchaseType,
-    hasPromotion,
-    hasProProperty,
+    loanId,
   };
 
   switch (previousStep) {
