@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StringParam, useQueryParam } from 'use-query-params';
 
+import { analyticsOnboardingStep } from 'core/api/analytics/methodDefinitions';
 import useMedia from 'core/hooks/useMedia';
 
 import { getOnBoardingFlow, getSteps } from './onboardingHelpers';
@@ -27,6 +28,17 @@ const withOnboardingContext = Component => ({ loan }) => {
   const isMobile = useMedia({ maxWidth: 768 });
   const nextStepId = stepIds[stepIds.findIndex(id => id === activeStep) + 1];
   const [showDrawer, setShowDrawer] = useState(false);
+
+  // Triggered when user lands on a step
+  useEffect(() => {
+    analyticsOnboardingStep.run({
+      loanId: loan?._id,
+      activeStep,
+      currentTodoStep,
+      latestStep,
+      nextStep: nextStepId,
+    });
+  }, [activeStep]);
 
   const handleNextStep = (delay = 200) => {
     if (activeStep !== 'result') {

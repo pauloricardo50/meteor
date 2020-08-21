@@ -1,6 +1,7 @@
 import {
   analyticsCTA,
   analyticsLogin,
+  analyticsOnboardingStep,
   analyticsOpenedIntercom,
   analyticsPage,
   analyticsVerifyEmail,
@@ -16,3 +17,5 @@ analyticsVerifyEmail.setHandler(() => {});
 analyticsCTA.setHandler(() => {});
 
 analyticsOpenedIntercom.setHandler(() => {});
+
+analyticsOnboardingStep.setHandler(() => {});

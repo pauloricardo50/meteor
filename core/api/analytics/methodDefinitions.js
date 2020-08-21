@@ -54,3 +54,19 @@ export const analyticsOpenedIntercom = new Method({
   },
   doNotRefetchQueries: true,
 });
+
+// Triggered when a user lands on a step
+export const analyticsOnboardingStep = new Method({
+  name: 'analyticsOnboardingStep',
+  params: {
+    loanId: String,
+    activeStep: String,
+    // If undefined, it means that:
+    // - It is the very first step
+    // - User came back to continue its onboarding in a new session
+    latestStep: Match.Maybe(String),
+    currentTodoStep: String,
+    // If undefined, it means that it is the very last step
+    nextStep: Match.Maybe(String),
+  },
+});
