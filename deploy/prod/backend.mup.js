@@ -7,7 +7,7 @@ module.exports = generateConfig({
   microservice: 'backend',
   subDomains: ['backend'],
   hooks: {
-    'post.logs': {
+    'post.deploy': {
       localCommand: getFullCommand('--config api.mup.js reconfig'),
     },
   },
