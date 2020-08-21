@@ -18,7 +18,7 @@ const OnboardingResultCtas = () => {
   if (currentUser) {
     return (
       <div className="flex mt-40">
-        <Button raised secondary className="mr-16">
+        <Button raised primary className="mr-16">
           <T id="OnboardingResultCtas.calendly" />
         </Button>
 
@@ -26,7 +26,7 @@ const OnboardingResultCtas = () => {
           link
           to={createRoute(appRoutes.DASHBOARD_PAGE.path, { loanId })}
           raised
-          primary
+          secondary
         >
           <T id="OnboardingResultCtas.goToDashboard" />
         </Button>
@@ -45,11 +45,11 @@ const OnboardingResultCtas = () => {
         dialog
         submitFieldProps={{
           label: <T id="OnboardingResultCtas.goToDashboard" />,
-          secondary: true,
+          primary: true,
         }}
         buttonProps={{
           raised: true,
-          primary: true,
+          secondary: true,
           label: <T id="OnboardingResultCtas.signup" />,
         }}
         description={
