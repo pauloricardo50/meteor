@@ -1,10 +1,24 @@
 import uniqBy from 'lodash/uniqBy';
 
-import { BORROWERS_COLLECTION } from '../../api/borrowers/borrowerConstants';
-import { CONTACTS_COLLECTION } from '../../api/contacts/contactsConstants';
-import { ORGANISATIONS_COLLECTION } from '../../api/organisations/organisationConstants';
-import { USERS_COLLECTION } from '../../api/users/userConstants';
-import collectionIcons from '../../arrays/collectionIcons';
+import { BORROWERS_COLLECTION } from '../api/borrowers/borrowerConstants';
+import { CONTACTS_COLLECTION } from '../api/contacts/contactsConstants';
+import { INSURANCE_REQUESTS_COLLECTION } from '../api/insuranceRequests/insuranceRequestConstants';
+import { LOANS_COLLECTION } from '../api/loans/loanConstants';
+import { ORGANISATIONS_COLLECTION } from '../api/organisations/organisationConstants';
+import { PROPERTY_CATEGORY } from '../api/properties/propertyConstants';
+import { USERS_COLLECTION } from '../api/users/userConstants';
+import collectionIcons from '../arrays/collectionIcons';
+import { useStaticMeteorData } from './useMeteorData';
+
+export const CONTACT_TYPES = {
+  USER: 'USER',
+  REFERRAL: 'REFERRAL',
+  BORROWER: 'BORROWER',
+  PERSONAL_CONTACT: 'PERSONAL_CONTACT',
+  BROKER: 'PROPERTY_BROKER',
+  PROMOTION_BROKER: 'PROMOTION_BROKER',
+  LENDER: 'LENDER',
+};
 
 const getCommonContacts = ({
   user,
@@ -21,6 +35,7 @@ const getCommonContacts = ({
       title: 'Compte utilisateur',
       icon: collectionIcons[USERS_COLLECTION],
       phoneNumber: user.phoneNumber,
+      type: CONTACT_TYPES.USER,
     });
   }
 
@@ -33,6 +48,7 @@ const getCommonContacts = ({
       phoneNumber: user.referredByUser.phoneNumber,
       isEmailable: true,
       withCta: true,
+      type: CONTACT_TYPES.REFERRAL,
     });
   }
 
@@ -48,6 +64,7 @@ const getCommonContacts = ({
         icon: collectionIcons[ORGANISATIONS_COLLECTION],
         isEmailable: true,
         withCta: false,
+        type: CONTACT_TYPES.REFERRAL,
       }),
     );
   }
@@ -59,6 +76,7 @@ const getCommonContacts = ({
       title: 'Emprunteur',
       icon: collectionIcons[BORROWERS_COLLECTION],
       phoneNumber: borrower.phoneNumber,
+      type: CONTACT_TYPES.BORROWER,
     });
   });
 
@@ -69,6 +87,7 @@ const getCommonContacts = ({
       title: `Contact perso - ${contact.title}`,
       icon: collectionIcons[CONTACTS_COLLECTION],
       phoneNumber: contact.phoneNumber,
+      type: CONTACT_TYPES.PERSONAL_CONTACT,
     });
   });
 
@@ -81,6 +100,7 @@ const getCommonContacts = ({
         icon: collectionIcons[USERS_COLLECTION],
         phoneNumber: pro.phoneNumber,
         isEmailable: true,
+        type: CONTACT_TYPES.PROMOTION_BROKER,
       });
     });
   });
@@ -88,7 +108,7 @@ const getCommonContacts = ({
   return contactsArray;
 };
 
-export const getInsuranceRequestContacts = props => {
+const getInsuranceRequestContacts = props => {
   const contactsArray = getCommonContacts(props);
   return uniqBy(
     contactsArray.filter(({ email, phoneNumber }) => email || phoneNumber),
@@ -96,7 +116,7 @@ export const getInsuranceRequestContacts = props => {
   );
 };
 
-export const getLoanContacts = props => {
+const getLoanContacts = props => {
   const contactsArray = getCommonContacts(props);
   const { lenders = [], promotions = [] } = props;
 
@@ -110,6 +130,7 @@ export const getLoanContacts = props => {
         phoneNumber: contact.phoneNumber,
         isEmailable: true,
         withCta: false,
+        type: CONTACT_TYPES.LENDER,
       });
     }
   });
@@ -125,6 +146,7 @@ export const getLoanContacts = props => {
         phoneNumber: invitedByUser.phoneNumber,
         isEmailable: true,
         withCta: true,
+        type: CONTACT_TYPES.PROMOTION_BROKER,
       });
     }
 
@@ -151,4 +173,60 @@ export const getLoanContacts = props => {
     contactsArray.filter(({ email, phoneNumber }) => email || phoneNumber),
     'email',
   );
+};
+
+export const useLoanContacts = loanId => {
+  const { loading, data: loanWithContacts } = useStaticMeteorData({
+    query: LOANS_COLLECTION,
+    params: {
+      $filters: {
+        _id: loanId,
+      },
+      user: {
+        email: 1,
+        phoneNumber: 1,
+        name: 1,
+        referredByUser: { email: 1, phoneNumber: 1, name: 1 },
+        referredByOrganisation: { name: 1, emails: 1 },
+      },
+      borrowers: { email: 1, phoneNumber: 1, name: 1 },
+      promotions: { _id: 1, users: { name: 1, email: 1, phoneNumber: 1 } },
+      contacts: 1,
+      lenders: {
+        organisation: { name: 1 },
+        contact: { name: 1, email: 1, phoneNumber: 1 },
+      },
+      properties: {
+        $filters: { category: PROPERTY_CATEGORY.PRO },
+        users: { name: 1, email: 1, phoneNumber: 1 },
+      },
+    },
+    type: 'single',
+  });
+  const contacts = loanWithContacts && getLoanContacts(loanWithContacts);
+  return { loading, contacts };
+};
+
+export const useInsuranceRequestContacts = insuranceRequestId => {
+  const { loading, data: insuranceRequestWithContacts } = useStaticMeteorData({
+    query: INSURANCE_REQUESTS_COLLECTION,
+    params: {
+      $filters: { _id: insuranceRequestId },
+
+      user: {
+        email: 1,
+        phoneNumber: 1,
+        name: 1,
+        referredByUser: { email: 1, phoneNumber: 1, name: 1 },
+        referredByOrganisation: { name: 1, emails: 1 },
+      },
+      borrowers: { email: 1, phoneNumber: 1, name: 1 },
+      contacts: 1,
+    },
+    type: 'single',
+  });
+  const contacts = !loading
+    ? getInsuranceRequestContacts(insuranceRequestWithContacts)
+    : [];
+  return { loading, contacts };
 };
