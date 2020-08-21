@@ -26,11 +26,13 @@ import EVENTS from '../events';
 import {
   analyticsCTA,
   analyticsLogin,
+  analyticsOnboardingStep,
   analyticsOpenedIntercom,
   analyticsPage,
   analyticsVerifyEmail,
 } from '../methodDefinitions';
 import { addAnalyticsListener } from './analyticsHelpers';
+import { getOnboardingStepEvent } from './onboardingStepAnalyticsHelpers';
 
 addAnalyticsListener({
   method: [proInviteUser, proInviteUserToOrganisation, adminCreateUser],
@@ -486,17 +488,34 @@ addAnalyticsListener({
 });
 
 addAnalyticsListener({
-  method: [anonymousLoanInsert, userLoanInsert, adminLoanInsert],
-  func: ({
-    analytics,
-    params: { proPropertyId, referralId },
-    result: loanId,
-  }) => {
+  method: [anonymousLoanInsert, userLoanInsert, adminLoanInsert, proInviteUser],
+  analyticsProps: ({ result }) => {
+    const userId = result?.userId;
+    if (userId) {
+      return { userId };
+    }
+
+    return undefined;
+  },
+  func: ({ analytics, params: { referralId }, result }) => {
+    let loanId;
+    if (typeof result === 'object') {
+      // Lets assume that only one loan is created.
+      // The case where many loans are created happens when
+      // a pro invites a user to multiple promotions, which
+      // should not occur
+      const { loanIds = [] } = result;
+      loanId = loanIds?.[0];
+    } else {
+      loanId = result;
+    }
+
     const {
       name: loanName,
       purchaseType,
       user = {},
       promotions = [],
+      properties = [],
     } = LoanService.get(loanId, {
       name: 1,
       purchaseType: 1,
@@ -508,9 +527,11 @@ addAnalyticsListener({
         assignedEmployee: { name: 1 },
       },
       promotions: { name: 1 },
+      properties: { _id: 1 },
     });
 
     const [promotion] = promotions;
+    const proPropertyId = properties?.[0]?._id;
 
     const {
       _id: userId,
@@ -523,6 +544,7 @@ addAnalyticsListener({
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
+
     analytics.track(EVENTS.LOAN_CREATED, {
       loanId,
       propertyId: proPropertyId,
@@ -542,6 +564,10 @@ addAnalyticsListener({
       promotionId: promotion?._id,
       promotionName: promotion?.name,
     });
+
+    if (purchaseType) {
+      // TODO: Track SET PURCHASE TYPE
+    }
   },
 });
 
@@ -864,5 +890,25 @@ addAnalyticsListener({
         statusChangeReason: reason,
       });
     }
+  },
+});
+
+addAnalyticsListener({
+  method: analyticsOnboardingStep,
+  func: ({ analytics, context, params }) => {
+    const { latestStep, activeStep, currentTodoStep } = params;
+    // User landed on the very first step, or came back to continue on a new session
+    // No progress is made, therefore we should not track this step
+    if (!latestStep) {
+      return;
+    }
+
+    // User went to a different step that the one he needs to complete in the flow
+    if (activeStep !== currentTodoStep) {
+      return;
+    }
+
+    const properties = getOnboardingStepEvent({ context, params });
+    console.log('properties:', properties);
   },
 });
