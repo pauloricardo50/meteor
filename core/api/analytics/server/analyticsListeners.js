@@ -510,6 +510,10 @@ addAnalyticsListener({
       loanId = result;
     }
 
+    if (!loanId) {
+      return;
+    }
+
     const {
       name: loanName,
       purchaseType,
