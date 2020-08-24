@@ -46,7 +46,7 @@ const getInvitedByUser = ({ promotion, promotionId, loan }) => {
   return users.find(({ _id }) => _id === invitedBy);
 };
 
-const AppPromotionPageContainer = compose(
+export const AppPromotionPageContainer = compose(
   withMatchParam('promotionId'),
   withSmartQuery({
     query: appPromotion,
@@ -61,7 +61,9 @@ const AppPromotionPageContainer = compose(
   withPromotionPageContext(),
   withProps(({ promotion, promotionId, loan }) => ({
     invitedByUser: getInvitedByUser({ promotion, promotionId, loan }),
-    route: createRoute(appRoutes.APP_PROMOTION_PAGE.path, { loanId: loan._id }),
+    route: createRoute(appRoutes.APP_PROMOTION_PAGE.path, {
+      loanId: loan._id,
+    }),
   })),
 );
 
