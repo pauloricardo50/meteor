@@ -43,7 +43,10 @@ const Team = ({ primary, fields }) => (
               </div>
 
               <div className="team-member__contact">
-                <a href={getMailTo(field.member_name)} className="email mr-4">
+                <a
+                  href={getMailTo(RichText.asText(field.member_name))}
+                  className="email mr-4"
+                >
                   <IconButton size="small" type="mail" />
                 </a>
 
