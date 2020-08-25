@@ -14,6 +14,7 @@ import {
   CUSTOM_AUTOFIELD_TYPES,
   FIELDS_TO_IGNORE,
 } from './autoFormConstants';
+import { useAutoFormContext } from './AutoFormContext';
 import { getLabel, getPlaceholder } from './autoFormHelpers';
 import CustomBooleanRadioField from './CustomBooleanRadioField';
 import { OptimizedListField } from './CustomListField';
@@ -154,6 +155,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     },
   ) => {
     const intl = useIntl();
+    const { transformIntlId } = useAutoFormContext();
     const { allowedValues, field, fieldType, margin = 'normal' } = props;
 
     const { condition, customAllowedValues, customAutoValue } = schema.getField(
@@ -187,6 +189,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
           ...additionalProps,
           intlPrefix,
           label: labels[props.name],
+          transformIntlId,
         }),
       [],
     );

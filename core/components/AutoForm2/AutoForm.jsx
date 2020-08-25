@@ -6,6 +6,7 @@ import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { AutoForm } from 'uniforms-material';
 
 import { CustomAutoField, makeCustomAutoField } from './AutoFormComponents';
+import { AutoFormContextProvider } from './AutoFormContext';
 import AutoFormLayout from './AutoFormLayout';
 import CustomAutoFields from './CustomAutoFields';
 import CustomSubmitField from './CustomSubmitField';
@@ -23,6 +24,7 @@ const CustomAutoForm = (
     schema,
     submitFieldProps,
     className,
+    transformIntlId,
     ...props
   },
   ref,
@@ -56,31 +58,33 @@ const CustomAutoForm = (
   }, []);
 
   return (
-    <AutoForm
-      showInlineError
-      model={pickBy(model, (_, key) => !key.startsWith('$'))}
-      placeholder={placeholder}
-      className={cx('autoform', className)}
-      onSubmit={handleSubmit}
-      schema={bridgedSchema}
-      ref={ref}
-      {...props}
-    >
-      {children || (
-        <>
-          {layout ? (
-            <AutoFormLayout
-              AutoField={autoField}
-              layout={layout}
-              schemaKeys={schemaKeys}
-            />
-          ) : (
-            <CustomAutoFields omitFields={omitFields} autoField={autoField} />
-          )}
-          <CustomSubmitField {...submitFieldProps} />
-        </>
-      )}
-    </AutoForm>
+    <AutoFormContextProvider value={{ transformIntlId }}>
+      <AutoForm
+        showInlineError
+        model={pickBy(model, (_, key) => !key.startsWith('$'))}
+        placeholder={placeholder}
+        className={cx('autoform', className)}
+        onSubmit={handleSubmit}
+        schema={bridgedSchema}
+        ref={ref}
+        {...props}
+      >
+        {children || (
+          <>
+            {layout ? (
+              <AutoFormLayout
+                AutoField={autoField}
+                layout={layout}
+                schemaKeys={schemaKeys}
+              />
+            ) : (
+              <CustomAutoFields omitFields={omitFields} autoField={autoField} />
+            )}
+            <CustomSubmitField {...submitFieldProps} />
+          </>
+        )}
+      </AutoForm>
+    </AutoFormContextProvider>
   );
 };
 

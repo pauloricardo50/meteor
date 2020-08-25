@@ -46,7 +46,16 @@ const OnboardingBorrowersForm = ({
       schema={schema}
       model={getModel(loan, borrowerSchema)}
       onSubmit={onSubmit}
-      autoFormProps={{ autoFieldProps: { ignoreParentIntl: true } }}
+      autoFormProps={{
+        transformIntlId: id => {
+          if (id.includes('borrower1') || id.includes('borrower2')) {
+            const [part1, borr, ...rest] = id.split('.');
+            return [part1, ...rest].join('.');
+          }
+
+          return id;
+        },
+      }}
       {...props}
     />
   );

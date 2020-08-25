@@ -43,6 +43,7 @@ export const getLabel = ({
   label,
   isListField,
   parent,
+  transformIntlId = x => x,
 }) => {
   if (label === null) {
     return null;
@@ -56,7 +57,9 @@ export const getLabel = ({
     overrideLabel,
     label,
     uniforms && uniforms.label,
-    <T id={formatStringId({ intlPrefix, intlId, name, parent })} />,
+    <T
+      id={transformIntlId(formatStringId({ intlPrefix, intlId, name, parent }))}
+    />,
   ]);
 };
 
