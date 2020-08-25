@@ -99,6 +99,7 @@ const config = {
         'BorrowerAddPartner',
         'BorrowerRemover',
         'BorrowersPage',
+        'CalendlyModal',
         'collections',
         'ConditionsButton',
         'ConfirmMethod',

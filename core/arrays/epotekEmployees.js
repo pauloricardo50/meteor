@@ -47,7 +47,7 @@ const employees = [
     phoneNumber: '+41 22 566 82 98',
     _id: 'gTB7r7E5j5YGiseoF',
     gender: 'F',
-    calendly: 'https://www.calendly.com/epotek-elise',
+    calendly: 'https://www.calendly.com/epotek-quentin',
   },
   {
     email: 'yannis@e-potek.ch',

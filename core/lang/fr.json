@@ -1,4 +1,8 @@
 {
+  "CalendlyModal.title": "Planifier un rendez-vous",
+  "CalendlyModal.eventScheduled.title": "Vous avez déjà planifié un rendez-vous",
+  "CalendlyModal.eventScheduled.description": "Voulez-vous en planifier un autre ?",
+  "CalendlyModal.eventScheduled.button": "Rendez-vous",
   "ProPropertyPage.getALoan": "Calculer ma capacité d'achat",
   "ProPropertyPage.addPropertyToLoan": "Ajouter ce bien à mon dossier",
   "OnboardingWithoutLoan.start": "Calculer ma capacité d'achat",
