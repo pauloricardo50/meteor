@@ -20,7 +20,7 @@ fi
 ${SCRIPTPATH}/run-backend-ci.sh --test &
 
 DDP_DEFAULT_CONNECTION_URL=http://localhost:$BACKEND_PORT \
-    METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" \
+    METEOR_PACKAGE_DIRS="packages:../../../meteorPackages" \
     meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port ${SERVER_PORT} &
 
 TEST_E2E_CMD="../../node_modules/cypress/bin/cypress run --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json"
