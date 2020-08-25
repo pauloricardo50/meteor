@@ -48,6 +48,7 @@ const OnboardingBorrowersForm = ({
       onSubmit={onSubmit}
       autoFormProps={{
         transformIntlId: id => {
+          // Remove nested borrower1 or borrower2 from intlIds
           if (id.includes('borrower1') || id.includes('borrower2')) {
             const [part1, borr, ...rest] = id.split('.');
             return [part1, ...rest].join('.');

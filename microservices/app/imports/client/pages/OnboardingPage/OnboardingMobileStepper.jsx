@@ -2,6 +2,10 @@ import React from 'react';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import { makeStyles } from '@material-ui/core/styles';
 
+import Button from 'core/components/Button';
+import Icon from 'core/components/Icon';
+import T from 'core/components/Translation';
+
 import { useOnboarding } from './OnboardingContext';
 
 const useStyles = makeStyles({
@@ -10,8 +14,16 @@ const useStyles = makeStyles({
 
 const OnboardingMobileStepper = () => {
   const classes = useStyles();
-  const { isMobile, activeStep, stepIds, setShowDrawer } = useOnboarding();
+  const {
+    isMobile,
+    activeStep,
+    stepIds,
+    setShowDrawer,
+    currentTodoStep,
+    resetPosition,
+  } = useOnboarding();
   const activeStepIndex = stepIds.findIndex(id => id === activeStep);
+  const isOnLatestStep = activeStep === currentTodoStep;
 
   if (isMobile) {
     return (
@@ -22,7 +34,26 @@ const OnboardingMobileStepper = () => {
           steps={stepIds.length}
           position="static"
           activeStep={activeStepIndex}
-          nextButton={<div />}
+          nextButton={
+            isOnLatestStep ? (
+              <div />
+            ) : (
+              <Button
+                primary
+                raised
+                onClick={event => {
+                  // Avoid setShowDrawer triggering
+                  event.stopPropagation();
+                  resetPosition();
+                }}
+                icon={<Icon type="right" />}
+                iconAfter
+                className="animated fadeIn"
+              >
+                <T id="OnboardingMobileStepper.resetPosition" />
+              </Button>
+            )
+          }
           backButton={<div />}
           onClick={() => {
             setShowDrawer(true);

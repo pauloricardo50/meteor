@@ -23,6 +23,7 @@ import {
   loanRemoveAdminNote,
   loanSetAdminNote,
   loanSetAssignees,
+  loanSetBorrowers,
   loanSetCreatedAtActivityDescription,
   loanSetDisbursementDate,
   loanSetStatus,
@@ -247,9 +248,16 @@ anonymousLoanInsert.setRateLimit({ limit: 1, timeRange: 30000 }); // Once every 
 loanInsertBorrowers.setHandler(({ userId }, params) => {
   const { loanId } = params;
   SecurityService.loans.isAllowedToUpdate(loanId, userId);
-  LoanService.insertBorrowers(params);
+  return LoanService.insertBorrowers(params);
 });
 loanInsertBorrowers.setRateLimit({ limit: 2, timeRange: 10000 }); // Twice every 10sec
+
+loanSetBorrowers.setHandler(({ userId }, params) => {
+  const { loanId } = params;
+  SecurityService.loans.isAllowedToUpdate(loanId, userId);
+  return LoanService.setBorrowers(params);
+});
+loanSetBorrowers.setRateLimit({ limit: 2, timeRange: 10000 }); // Twice every 10sec
 
 loanLinkPromotion.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { setMaxPropertyValueOrBorrowRatio } from 'core/api/loans/methodDefinitions';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import Button from 'core/components/Button';
+import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 
 import { useOnboarding } from '../../OnboardingContext';
@@ -58,6 +59,7 @@ const OnboardingResultEmpty = () => {
             });
         }}
         loading={loading}
+        icon={<Icon type="check" />}
       >
         <T id="OnboardingResultEmpty.cta" />
       </Button>

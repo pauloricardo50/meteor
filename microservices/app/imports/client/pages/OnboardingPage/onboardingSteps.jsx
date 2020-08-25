@@ -17,7 +17,7 @@ import {
   PURCHASE_TYPE,
 } from 'core/api/loans/loanConstants';
 import {
-  loanInsertBorrowers,
+  loanSetBorrowers,
   loanUpdate,
   upsertUserProperty,
 } from 'core/api/loans/methodDefinitions';
@@ -200,7 +200,7 @@ export const steps = [
     condition: always,
     isDone: loan => loan.borrowers?.length > 0,
     onSubmit: loan => amount =>
-      loanInsertBorrowers.run({ loanId: loan._id, amount }),
+      loanSetBorrowers.run({ loanId: loan._id, amount }),
     renderValue: loan => (
       <T id={`Forms.borrowerCount.${loan.borrowers.length}`} />
     ),
