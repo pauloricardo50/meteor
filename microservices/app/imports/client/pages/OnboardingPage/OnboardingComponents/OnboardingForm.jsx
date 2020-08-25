@@ -19,7 +19,7 @@ const OnboardingForm = ({
   const { handleNextStep, loan } = useOnboarding();
   const finalSchema = useMemo(
     () => (typeof schema === 'function' ? schema(loan) : schema),
-    [],
+    [schema],
   );
 
   return (
