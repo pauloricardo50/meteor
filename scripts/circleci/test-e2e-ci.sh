@@ -17,7 +17,11 @@ then
     let SERVER_PORT="4115"
 fi
 
-SERVER_E2E_CMD="DDP_DEFAULT_CONNECTION_URL=http://localhost:$BACKEND_PORT METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port ${SERVER_PORT}"
-TEST_E2E_CMD="../../node_modules/cypress/bin/cypress run --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json"
+${SCRIPTPATH}/run-backend-ci.sh --test &
 
-${SCRIPTPATH}/run-backend-ci.sh --test & ${SCRIPTPATH}/wait-port.sh $BACKEND_PORT $SERVER_E2E_CMD &  ${SCRIPTPATH}/wait-port.sh $SERVER_PORT $TEST_E2E_CMD
+DDP_DEFAULT_CONNECTION_URL=http://localhost:$BACKEND_PORT \
+    METEOR_PACKAGE_DIRS=\"packages:../../meteorPackages\" \
+    meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port ${SERVER_PORT} &
+
+TEST_E2E_CMD="../../node_modules/cypress/bin/cypress run --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json"
+${SCRIPTPATH}/wait-port.sh $BACKEND_PORT "echo \"backend running\"" && ${SCRIPTPATH}/wait-port.sh $SERVER_PORT $TEST_E2E_CMD
