@@ -17,6 +17,12 @@ then
     let SERVER_PORT="4115"
 fi
 
+# If two Meteor apps try to build a local package at the same time,
+# One of them will fail when copying node_modules
+# meteor list builds local packages, so only the other app still
+# has to build them
+METEOR_PACKAGE_DIRS="packages:../../meteorPackages" meteor list
+
 ${SCRIPTPATH}/run-backend-ci.sh --test &
 
 DDP_DEFAULT_CONNECTION_URL=http://localhost:$BACKEND_PORT \
