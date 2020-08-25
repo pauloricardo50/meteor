@@ -1,1 +1,1 @@
-export { default } from './Promotionpage';
+export { default } from './PromotionPage';

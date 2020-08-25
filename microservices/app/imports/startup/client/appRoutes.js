@@ -93,7 +93,7 @@ export default {
     component: ProPropertyPage,
   },
   PROMOTION_PAGE: {
-    path: '/promotions/:promotionId',
+    path: '/promotions/:promotionId/:tabId?',
     component: PromotionPage,
   },
   SIGNUP_SUCCESS_PAGE: {

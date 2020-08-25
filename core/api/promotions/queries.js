@@ -45,3 +45,14 @@ export const promotionsList = Promotions.createQuery(
     externalUrl: 1,
   },
 );
+
+export const anonymousPromotion = Promotions.createQuery(
+  PROMOTION_QUERIES.ANONYMOUS_PROMOTION,
+  {
+    canton: 1,
+    city: 1,
+    documents: { promotionImage: 1 },
+    lotsCount: 1,
+    name: 1,
+  },
+);

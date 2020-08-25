@@ -8,6 +8,16 @@ import UserPromotionOptionsTable from '../UserPromotionOptionsTable';
 import UserReservation from '../UserReservation';
 
 const AppPromotionPageOverview = ({ loan, promotion }) => {
+  if (!loan) {
+    return (
+      <AppPromotionLotsTable
+        promotion={promotion}
+        loan={loan}
+        className="card1 card-top animated fadeIn"
+      />
+    );
+  }
+
   const { residenceType, promotionOptions } = loan;
   const activePromotionOptions = Calculator.getActivePromotionOptions({ loan });
 

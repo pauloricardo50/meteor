@@ -46,3 +46,5 @@ export const getOnBoardingFlow = loan => {
 
   return ONBOARDING_FLOWS.ACQUISITION_IDENTIFIED;
 };
+
+export const hasStartedOnboarding = loan => getSteps(loan)[0].isDone(loan);

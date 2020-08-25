@@ -1,9 +1,10 @@
-import { compose, lifecycle, withProps, withState } from 'recompose';
+import React, { useEffect } from 'react';
+import { compose, withProps, withState } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
 import { anonymousLoanInsert } from 'core/api/loans/methodDefinitions';
-import { anonymousLoan } from 'core/api/loans/queries';
+import { anonymousLoan as anonymousLoanQuery } from 'core/api/loans/queries';
 import { LOCAL_STORAGE_REFERRAL } from 'core/api/users/userConstants';
 import { createRoute } from 'core/utils/routerUtils';
 
@@ -14,7 +15,7 @@ export const withAnonymousLoan = compose(
     localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN),
   ),
   withSmartQuery({
-    query: anonymousLoan,
+    query: anonymousLoanQuery,
     skip: ({ anonymousLoanId }) => !anonymousLoanId,
     params: ({ anonymousLoanId }) => ({
       _id: anonymousLoanId,
@@ -32,14 +33,22 @@ export const withAnonymousLoan = compose(
     renderMissingDoc: false,
     refetchOnMethodCall: false,
   }),
-  lifecycle({
-    componentDidMount() {
-      if (this.props.anonymousLoanId && !this.props.anonymousLoan) {
-        localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-        this.props.setAnonymousLoanId(undefined);
+  Component => props => {
+    const { anonymousLoanId, anonymousLoan, setAnonymousLoanId } = props;
+    const hasInvalidAnonymousLoanId = anonymousLoanId && !anonymousLoan;
+
+    useEffect(() => {
+      if (hasInvalidAnonymousLoanId) {
+        setAnonymousLoanId(undefined);
       }
-    },
-  }),
+    }, []);
+
+    if (hasInvalidAnonymousLoanId) {
+      return null;
+    }
+
+    return <Component {...props} />;
+  },
 );
 
 export default compose(
@@ -56,11 +65,7 @@ export default compose(
         })
         .then(loanId => {
           localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, loanId);
-          history.push(
-            createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
-              loanId,
-            }),
-          );
+          history.push(createRoute(APP_ROUTES.DASHBOARD_PAGE.path, { loanId }));
         }),
   })),
 );

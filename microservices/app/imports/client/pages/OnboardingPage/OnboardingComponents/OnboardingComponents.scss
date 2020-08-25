@@ -123,9 +123,9 @@
     height: 140px;
     background-position: center center;
     background-repeat: no-repeat;
-    margin-right: 16px;
     border-radius: $border-radius;
     background-size: cover;
+    flex-shrink: 0;
   }
 
   &:hover {

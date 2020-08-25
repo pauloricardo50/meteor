@@ -5,6 +5,7 @@ import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import OnboardingBorrowersForm from './OnboardingComponents/OnboardingBorrowersForm';
 import OnboardingChoice from './OnboardingComponents/OnboardingChoice';
 import OnboardingForm from './OnboardingComponents/OnboardingForm';
+import { PromotionMiniature } from './OnboardingComponents/OnboardingPromotionMiniature';
 import { PropertyMiniature } from './OnboardingComponents/OnboardingPropertyMiniature';
 import OnboardingResult from './OnboardingComponents/OnboardingResult/OnboardingResult';
 import { useOnboarding } from './OnboardingContext';
@@ -45,6 +46,10 @@ const OnboardingContent = () => {
             ({ category }) => category === PROPERTY_CATEGORY.PRO,
           )}
         />
+      ) : null}
+
+      {loan.hasPromotion ? (
+        <PromotionMiniature promotion={loan.promotions[0]} />
       ) : null}
     </div>
   );

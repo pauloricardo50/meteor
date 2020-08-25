@@ -17,7 +17,7 @@ const AppPageLoggedIn = () => {
   if (loans.length === 1) {
     return (
       <Redirect
-        to={createRoute(appRoutes.DASHBOARD_PAGE.route, {
+        to={createRoute(appRoutes.DASHBOARD_PAGE.path, {
           loanId: loans[0]._id,
         })}
       />

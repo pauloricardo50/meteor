@@ -13,7 +13,7 @@ import OnboardingPropertyMiniature from './OnboardingComponents/OnboardingProper
 import { insertAnonymousLoan } from './onboardingHelpers';
 import OnboardingMarketing from './OnboardingMarketing';
 
-const OnboardingWithoutLoan = () => {
+const OnboardingWithoutLoan = ({ promotion, onStart }) => {
   const { purchaseType, ...rest } = useSearchParams();
   const propertyId = rest['property-id'];
   const promotionId = rest['promotion-id'];
@@ -21,7 +21,7 @@ const OnboardingWithoutLoan = () => {
   const [loading, setLoading] = useState(shouldInsertLoan);
   const [redirect, setRedirect] = useState();
   const [hasPropertyOrPromotion, setHasPropertyOrPromotion] = useState(
-    propertyId || promotionId,
+    promotion || propertyId || promotionId,
   );
 
   const handleInsert = pType => {
@@ -73,10 +73,11 @@ const OnboardingWithoutLoan = () => {
             />
           ) : null}
 
-          {hasPropertyOrPromotion && promotionId ? (
+          {hasPropertyOrPromotion && (promotion?._id || promotionId) ? (
             <OnboardingPromotionMiniature
               setHasPropertyOrPromotion={setHasPropertyOrPromotion}
-              promotionId={promotionId}
+              promotionId={promotion?._id || promotionId}
+              onStart={onStart}
             />
           ) : null}
 
@@ -85,7 +86,13 @@ const OnboardingWithoutLoan = () => {
               <Button
                 size="large"
                 loading={loading}
-                onClick={() => handleInsert()}
+                onClick={() => {
+                  if (onStart) {
+                    onStart();
+                  } else {
+                    handleInsert();
+                  }
+                }}
                 raised
                 secondary
               >
