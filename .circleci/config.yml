@@ -400,7 +400,7 @@ jobs:
   Www2 - e2e tests:
     working_directory: /home/circleci/app
     docker: *ref_0
-    resource_class: large
+    resource_class: medium+
     steps:
       - restore_cache:
           name: Restore source
