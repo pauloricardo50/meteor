@@ -42,6 +42,13 @@ const withOnboardingContext = Component => ({ loan }) => {
     setShowDrawer(false);
   }, [isMobile]);
 
+  useEffect(() => {
+    // Make sure the user never lands on a step that is outside of his flow
+    if (!stepIds.includes(activeStep)) {
+      resetPosition();
+    }
+  });
+
   return (
     <Context.Provider
       value={{
