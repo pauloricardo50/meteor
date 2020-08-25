@@ -29,7 +29,7 @@ import { analyticsOnboardingStep } from '../../methodDefinitions';
 import { EVENTS_CONFIG } from '../eventsConfig';
 import NoOpAnalytics from '../NoOpAnalytics';
 
-describe.only('analyticsListeners', () => {
+describe('analyticsListeners', () => {
   let analyticsSpy;
 
   beforeEach(() => {
@@ -147,6 +147,18 @@ describe.only('analyticsListeners', () => {
   });
 
   describe('userLoanInsert', () => {
+    const commonProperties = {
+      anonymous: false,
+      userEmail: 'tom.sawyer@e-potek.ch',
+      userName: 'Tom Sawyer',
+      referringUserId: 'pro',
+      referringUserName: 'Pro User',
+      referringOrganisationId: 'proOrg',
+      referringOrganisationName: 'org',
+      assigneeId: 'advisor',
+      assigneeName: 'Advisor E-Potek',
+    };
+
     it('tracks LOAN_CREATED event', async () => {
       await ddpWithUserId('user', () => userLoanInsert.run({}));
 
@@ -154,17 +166,7 @@ describe.only('analyticsListeners', () => {
 
       expect(userId).to.equal('user');
       expect(event).to.equal(EVENTS_CONFIG[EVENTS.LOAN_CREATED].name);
-      expect(properties).to.deep.include({
-        anonymous: false,
-        userEmail: 'tom.sawyer@e-potek.ch',
-        userName: 'Tom Sawyer',
-        referringUserId: 'pro',
-        referringUserName: 'Pro User',
-        referringOrganisationId: 'proOrg',
-        referringOrganisationName: 'org',
-        assigneeId: 'advisor',
-        assigneeName: 'Advisor E-Potek',
-      });
+      expect(properties).to.deep.include(commonProperties);
     });
 
     it('tracks LOAN_CREATED event with a property', async () => {
@@ -177,15 +179,7 @@ describe.only('analyticsListeners', () => {
       expect(userId).to.equal('user');
       expect(event).to.equal(EVENTS_CONFIG[EVENTS.LOAN_CREATED].name);
       expect(properties).to.deep.include({
-        anonymous: false,
-        userEmail: 'tom.sawyer@e-potek.ch',
-        userName: 'Tom Sawyer',
-        referringUserId: 'pro',
-        referringUserName: 'Pro User',
-        referringOrganisationId: 'proOrg',
-        referringOrganisationName: 'org',
-        assigneeId: 'advisor',
-        assigneeName: 'Advisor E-Potek',
+        ...commonProperties,
         propertyId: 'property',
       });
     });
@@ -208,23 +202,26 @@ describe.only('analyticsListeners', () => {
         EVENTS_CONFIG[EVENTS.COMPLETED_ONBOARDING_STEP].name,
       );
       expect(properties).to.deep.include({
+        ...commonProperties,
         completedStep: 'purchaseType',
         purchaseType: PURCHASE_TYPE.ACQUISITION,
-        anonymous: false,
-        userEmail: 'tom.sawyer@e-potek.ch',
-        userName: 'Tom Sawyer',
-        referringUserId: 'pro',
-        referringUserName: 'Pro User',
-        referringOrganisationId: 'proOrg',
-        referringOrganisationName: 'org',
-        assigneeId: 'advisor',
-        assigneeName: 'Advisor E-Potek',
         propertyId: 'property',
       });
     });
   });
 
   describe('adminLoanInsert', () => {
+    const commonProperties = {
+      anonymous: false,
+      userEmail: 'tom.sawyer@e-potek.ch',
+      userName: 'Tom Sawyer',
+      referringUserId: 'pro',
+      referringUserName: 'Pro User',
+      referringOrganisationId: 'proOrg',
+      referringOrganisationName: 'org',
+      assigneeId: 'advisor',
+      assigneeName: 'Advisor E-Potek',
+    };
     it('tracks LOAN_CREATED event', async () => {
       await ddpWithUserId('advisor', () =>
         adminLoanInsert.run({ userId: 'user' }),
@@ -234,17 +231,7 @@ describe.only('analyticsListeners', () => {
 
       expect(userId).to.equal('user');
       expect(event).to.equal(EVENTS_CONFIG[EVENTS.LOAN_CREATED].name);
-      expect(properties).to.deep.include({
-        anonymous: false,
-        userEmail: 'tom.sawyer@e-potek.ch',
-        userName: 'Tom Sawyer',
-        referringUserId: 'pro',
-        referringUserName: 'Pro User',
-        referringOrganisationId: 'proOrg',
-        referringOrganisationName: 'org',
-        assigneeId: 'advisor',
-        assigneeName: 'Advisor E-Potek',
-      });
+      expect(properties).to.deep.include(commonProperties);
     });
 
     it('tracks COMPLETED_ONBOARDING_STEP event', async () => {
@@ -265,22 +252,26 @@ describe.only('analyticsListeners', () => {
         EVENTS_CONFIG[EVENTS.COMPLETED_ONBOARDING_STEP].name,
       );
       expect(properties).to.deep.include({
+        ...commonProperties,
         completedStep: 'purchaseType',
         purchaseType: PURCHASE_TYPE.ACQUISITION,
-        anonymous: false,
-        userEmail: 'tom.sawyer@e-potek.ch',
-        userName: 'Tom Sawyer',
-        referringUserId: 'pro',
-        referringUserName: 'Pro User',
-        referringOrganisationId: 'proOrg',
-        referringOrganisationName: 'org',
-        assigneeId: 'advisor',
-        assigneeName: 'Advisor E-Potek',
       });
     });
   });
 
   describe('proInviteUser', () => {
+    const commonProperties = {
+      anonymous: false,
+      userEmail: 'bob.dylan@e-potek.ch',
+      userName: 'Bob Dylan',
+      referringUserId: 'pro',
+      referringUserName: 'Pro User',
+      referringOrganisationId: 'proOrg',
+      referringOrganisationName: 'org',
+      assigneeId: 'advisor',
+      assigneeName: 'Advisor E-Potek',
+      propertyId: 'property',
+    };
     it('tracks LOAN_CREATED event when invited to a property', async () => {
       let userId;
       await ddpWithUserId('pro', () =>
@@ -307,18 +298,7 @@ describe.only('analyticsListeners', () => {
 
       expect(uid).to.equal(userId);
       expect(event).to.equal(EVENTS_CONFIG[EVENTS.LOAN_CREATED].name);
-      expect(properties).to.deep.include({
-        anonymous: false,
-        userEmail: 'bob.dylan@e-potek.ch',
-        userName: 'Bob Dylan',
-        referringUserId: 'pro',
-        referringUserName: 'Pro User',
-        referringOrganisationId: 'proOrg',
-        referringOrganisationName: 'org',
-        assigneeId: 'advisor',
-        assigneeName: 'Advisor E-Potek',
-        propertyId: 'property',
-      });
+      expect(properties).to.deep.include(commonProperties);
 
       await checkEmails(2);
     });
@@ -354,17 +334,9 @@ describe.only('analyticsListeners', () => {
         EVENTS_CONFIG[EVENTS.COMPLETED_ONBOARDING_STEP].name,
       );
       expect(properties).to.deep.include({
+        ...commonProperties,
         completedStep: 'purchaseType',
         purchaseType: PURCHASE_TYPE.ACQUISITION,
-        anonymous: false,
-        userEmail: 'bob.dylan@e-potek.ch',
-        userName: 'Bob Dylan',
-        referringUserId: 'pro',
-        referringUserName: 'Pro User',
-        referringOrganisationId: 'proOrg',
-        referringOrganisationName: 'org',
-        assigneeId: 'advisor',
-        assigneeName: 'Advisor E-Potek',
       });
     });
   });

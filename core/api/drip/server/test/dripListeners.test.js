@@ -223,7 +223,7 @@ describe('dripListeners', function () {
       await waitForStub(callDripAPIStub, 2);
       const analyticsArgs = await waitForStub(analyticsSpy, 4);
 
-      const dripAnalyticsArgs = analyticsArgs.slice(-2).map(args => args[0]);
+      const dripAnalyticsArgs = analyticsArgs.map(args => args[0]);
       const subscriberCreatedEvent = dripAnalyticsArgs.find(
         ({ event }) => event === 'Drip Subscriber Created',
       );

@@ -668,7 +668,7 @@ describe('Collection Security', () => {
 
         expect(() =>
           SecurityService.properties.isAllowedToUpdate('propertyId', 'userId'),
-        ).to.throw('Checking ownership [NOT_AUTHORIZED]');
+        ).to.throw('property update not allowed');
       });
 
       it('does not throw if user is user and is allowed to update', () => {
@@ -767,7 +767,7 @@ describe('Collection Security', () => {
     });
   });
 
-  describe('FileSecurity', function() {
+  describe('FileSecurity', function () {
     this.timeout(10000);
 
     describe('isAllowedToAccess ', () => {
