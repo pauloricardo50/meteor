@@ -23,26 +23,22 @@ const withOnboardingContext = Component => ({ loan }) => {
     'step',
     StringParam,
   );
-  const [latestStep, setLatestStep] = useState();
   const isMobile = useMedia({ maxWidth: 768 });
   const nextStepId = stepIds[stepIds.findIndex(id => id === activeStep) + 1];
   const [showDrawer, setShowDrawer] = useState(false);
 
-  const handleNextStep = (delay = 200) => {
+  const handleNextStep = () => {
     if (activeStep !== 'result') {
-      setLatestStep(nextStepId);
-      setTimeout(() => {
-        setActiveStep(nextStepId);
-      }, delay); // Make transitions smoother when possible with a little delay
+      setActiveStep(nextStepId);
     }
   };
 
   const resetPosition = () => {
-    setActiveStep(latestStep);
+    setActiveStep(currentTodoStep);
   };
 
   useEffect(() => {
-    // Reset drawer state when changing window width
+    // Reset drawer state when changing window width, to avoid invalid UI states
     setShowDrawer(false);
   }, [isMobile]);
 

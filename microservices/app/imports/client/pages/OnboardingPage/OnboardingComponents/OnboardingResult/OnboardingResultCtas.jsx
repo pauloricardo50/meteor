@@ -36,7 +36,7 @@ const OnboardingResultCtas = () => {
 
   return (
     <div className="flex mt-40">
-      <Button raised secondary className="mr-16">
+      <Button raised primary className="mr-16">
         <T id="OnboardingResultCtas.calendly" />
       </Button>
 

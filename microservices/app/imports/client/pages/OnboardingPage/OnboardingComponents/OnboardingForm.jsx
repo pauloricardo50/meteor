@@ -38,7 +38,7 @@ const OnboardingForm = ({
             schema={finalSchema}
             model={model || loan}
             onSubmit={onSubmit}
-            onSubmitSuccess={() => handleNextStep(0)}
+            onSubmitSuccess={handleNextStep}
             submitFieldProps={{
               label: submitLabel,
               size: 'large',
