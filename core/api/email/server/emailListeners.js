@@ -9,7 +9,7 @@ import { insuranceRequestSetAdminNote } from '../../insuranceRequests/methodDefi
 import InsuranceRequestService from '../../insuranceRequests/server/InsuranceRequestService';
 import {
   loanSetAdminNote,
-  sendNegativeFeedbackToAllLenders,
+  sendNegativeFeedbackToLenders,
   setLoanStep,
 } from '../../loans/methodDefinitions';
 import LoanService from '../../loans/server/LoanService';
@@ -101,14 +101,14 @@ const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
     lender: {
       organisation: { name: organisationName },
       contact: { email: address, name },
-      loan: { name: loanName, mainAssignee },
+      loan: { name: loanName, mainAssignee, user: { name: customerName } = {} },
     },
   } = OfferService.get(offerId, {
     createdAt: 1,
     lender: {
       organisation: { name: 1 },
       contact: { email: 1, name: 1 },
-      loan: { name: 1, mainAssignee: 1 },
+      loan: { name: 1, mainAssignee: 1, user: { name: 1 } },
     },
   });
 
@@ -125,6 +125,7 @@ const sendOfferFeedbackEmail = ({ offerId, feedback }) => {
       organisationName,
       date: moment(createdAt).format('DD.MM.YYYY'),
       feedback,
+      customerName,
     },
   });
 };
@@ -136,8 +137,8 @@ addEmailListener({
 });
 
 addEmailListener({
-  description: "Feedback négatif à tous les prêteurs d'un dossier -> Prêteurs",
-  method: sendNegativeFeedbackToAllLenders,
+  description: "Feedback négatif aux prêteurs d'un dossier -> Prêteurs",
+  method: sendNegativeFeedbackToLenders,
   func: ({ result }) => {
     result.map(sendOfferFeedbackEmail);
   },

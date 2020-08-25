@@ -219,7 +219,7 @@ export class DripService {
     });
 
     if (!user) {
-      throw new Meteor.Error('User not found in database');
+      throw new Meteor.Error(`User not found in database: ${email}`);
     }
 
     const hasAPromotion =

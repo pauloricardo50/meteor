@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MuiTable from '@material-ui/core/Table';
 import { useTable } from 'react-table';
 
@@ -62,9 +62,17 @@ const Table = ({
   );
 
   const { pageIndex, pageSize, sortBy } = state;
-  useStateChangeCallback(onStateChange, { pageIndex, pageSize, sortBy });
   const rowCount = allRowsCount || rows.length;
   const isEmpty = rowCount === 0;
+
+  useStateChangeCallback(onStateChange, {
+    pageIndex,
+    pageSize,
+    sortBy,
+    allRowsCount,
+    rows,
+    page,
+  });
 
   if (hideIfEmpty && isEmpty) {
     return null;

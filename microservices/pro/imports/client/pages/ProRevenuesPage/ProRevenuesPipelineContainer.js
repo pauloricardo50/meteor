@@ -38,7 +38,7 @@ export default compose(
           promotionLots: { properties: { totalValue: 1, value: 1 } },
         },
         properties: { totalValue: 1, value: 1 },
-        revenues: { amount: 1 },
+        revenues: { amount: 1, organisationLinks: 1 },
         selectedStructure: 1,
         status: 1,
         structures: {

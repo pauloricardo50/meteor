@@ -127,7 +127,7 @@ exposeQuery({
     },
     validateParams: {
       anonymize: Match.Maybe(Boolean),
-      invitedBy: Match.Maybe(Match.OneOf(String, null)),
+      invitedBy: Match.Maybe(Match.OneOf(String, Object, null)),
       loanStatus: Match.Maybe(Match.OneOf(String, Object)),
       promotionId: Match.Maybe(String),
       promotionLotId: Match.Maybe(String),

@@ -39,6 +39,7 @@ const TasksDataTableWithPriority = () => {
   });
   const [status, setStatus] = useState({ $in: [TASK_STATUS.ACTIVE] });
   const [uptoDate, setUptoDate] = useState('TOMORROW');
+  const [displayPriorityTasks, setDisplayPriorityTasks] = useState(true);
   const priorityFilters = useMemo(
     () => ({
       ...getQueryFilters({ assignee, status, uptoDate }),
@@ -64,8 +65,17 @@ const TasksDataTableWithPriority = () => {
         uptoDate={uptoDate}
         setUptoDate={setUptoDate}
       />
-      <h3 style={{ marginTop: 40 }}>Prioritaire</h3>
-      <TasksDataTable filters={priorityFilters} showRelatedTo />
+      {displayPriorityTasks && <h3 style={{ marginTop: 40 }}>Prioritaire</h3>}
+      <TasksDataTable
+        filters={priorityFilters}
+        showRelatedTo
+        hideIfEmpty
+        onStateChangeCallback={({ allRowsCount, rows }) => {
+          const shouldDisplayPriorityTasks =
+            allRowsCount === 0 || rows.length === 0;
+          setDisplayPriorityTasks(!shouldDisplayPriorityTasks);
+        }}
+      />
       <h3 style={{ marginTop: 40 }}>Défaut</h3>
       <TasksDataTable filters={defaultFilters} showRelatedTo />
     </div>

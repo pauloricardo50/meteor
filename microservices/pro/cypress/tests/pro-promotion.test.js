@@ -59,6 +59,8 @@ describe('Pro promotion', () => {
 
     cy.get('tbody tr').should('have.length', 2);
     cy.get('tbody tr').first().contains('XXX').should('exist');
+    cy.wait(2000);
+
     cy.get('tbody tr')
       .first()
       .should('contain', 'XXX')
@@ -76,7 +78,7 @@ describe('Pro promotion', () => {
     // customers are invited by user
     cy.callMethod('setInvitedBy', { email: PRO_EMAIL });
     cy.refetch();
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('tbody tr').first().should('not.contain', 'XXX');
 
     cy.get('tbody tr').first().find('.icon-link').last().trigger('mouseover');
@@ -102,7 +104,7 @@ describe('Pro promotion', () => {
     });
     cy.callMethod('setInvitedBy', { email: PRO_EMAIL_2 });
     cy.refetch();
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('tbody tr').first().should('not.contain', 'XXX');
     cy.get('tbody tr').find('.icon-link').last().trigger('mouseover');
     cy.get('tbody tr')
@@ -122,7 +124,7 @@ describe('Pro promotion', () => {
       },
     });
     cy.refetch();
-    cy.wait(500);
+    cy.wait(1000);
 
     cy.get('.actions').first().click();
 
