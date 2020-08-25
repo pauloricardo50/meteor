@@ -3,10 +3,11 @@ import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
 
 const commonFragment = {
+  name: 1,
   purchaseType: 1,
-  hasPromotion: 1,
-  hasProProperty: 1,
   anonymous: 1,
+  properties: { _id: 1 },
+  promotions: { _id: 1, name: 1 },
 };
 
 const previousStepFragment = {
@@ -41,14 +42,27 @@ const getLoanProperties = ({ loan, previousStep }) => {
     properties = [],
     borrowers = [],
     _id: loanId,
+    name: loanName,
+    promotions = [],
   } = loan;
+
+  const propertyId = properties?.[0]?._id;
+  const promotionId = promotions?.[0]?._id;
+  const promotionName = promotions?.[0]?.name;
+
   const commonProperties = {
     anonymous,
     purchaseType,
     loanId,
+    propertyId,
+    promotionId,
+    promotionName,
+    loanName,
   };
 
   switch (previousStep) {
+    case 'purchaseType':
+      return commonProperties;
     case 'acquisitionStatus':
       return { ...commonProperties, acquisitionStatus };
     case 'residenceType':

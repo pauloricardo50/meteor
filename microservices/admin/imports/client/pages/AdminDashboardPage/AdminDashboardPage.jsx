@@ -25,7 +25,9 @@ const AdminDashboardPage = ({ history }) => (
 
           <div className="flex">
             <UserAdder buttonProps={{ className: 'mr-8' }} />
-            <LoanAdder onSuccess={loanId => history.push(`/loans/${loanId}`)} />
+            <LoanAdder
+              onSuccess={({ loanId }) => history.push(`/loans/${loanId}`)}
+            />
           </div>
         </div>
 

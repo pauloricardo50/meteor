@@ -504,8 +504,8 @@ addAnalyticsListener({
       // The case where many loans are created happens when
       // a pro invites a user to multiple promotions, which
       // should not occur
-      const { loanIds = [] } = result;
-      loanId = loanIds?.[0];
+      const { loanIds = [], loanId: resultLoanId } = result;
+      loanId = resultLoanId || loanIds?.[0];
     } else {
       loanId = result;
     }
@@ -574,9 +574,22 @@ addAnalyticsListener({
     if (purchaseType) {
       analytics.track(EVENTS.COMPLETED_ONBOARDING_STEP, {
         loanId,
+        loanName,
         anonymous,
         completedStep: 'purchaseType',
         purchaseType,
+        userId,
+        userName,
+        userEmail,
+        referringUserId,
+        referringUserName,
+        referringOrganisationId,
+        referringOrganisationName,
+        assigneeId,
+        assigneeName,
+        promotionId: promotion?._id,
+        promotionName: promotion?.name,
+        propertyId: proPropertyId,
       });
     }
   },

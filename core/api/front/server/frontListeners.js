@@ -44,7 +44,7 @@ ServerEventService.addAfterMethodListener(
 
 ServerEventService.addAfterMethodListener(
   adminLoanInsert,
-  ({ context, params: { userId }, result: loanId }) => {
+  ({ context, params: { userId }, result: { loanId } }) => {
     context.unblock();
 
     if (!userId) {

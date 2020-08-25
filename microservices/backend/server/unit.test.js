@@ -37,6 +37,7 @@ import '/imports/core/api/activities/server/test/toggleAccountListener.test.js';
 import '/imports/core/api/activities/server/test/userPasswordResetListener.test.js';
 import '/imports/core/api/activities/server/test/userVerifyEmailListener.test.js';
 import '/imports/core/api/analytics/server/test/Analytics.test.js';
+import '/imports/core/api/analytics/server/test/analyticsListeners.test.js';
 import '/imports/core/api/borrowers/server/test/BorrowerService.test.js';
 import '/imports/core/api/checklists/server/test/ChecklistService.test.js';
 import '/imports/core/api/commissionRates/server/test/CommissionRateService.test.js';
