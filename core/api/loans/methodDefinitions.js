@@ -159,6 +159,14 @@ export const loanInsertBorrowers = new Method({
   },
 });
 
+export const loanSetBorrowers = new Method({
+  name: 'loanSetBorrowers',
+  params: {
+    loanId: String,
+    amount: Number,
+  },
+});
+
 export const loanLinkPromotion = new Method({
   name: 'loanLinkPromotion',
   params: {

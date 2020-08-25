@@ -978,7 +978,7 @@ class LoanService extends CollectionService {
     }
 
     if (existingBorrowers.length === 1 && amount === 2) {
-      throw new Meteor.Error('Can insert only one more borrower');
+      throw new Meteor.Error('Cannot have more than 2 borrowers');
     }
 
     if (amount === 1) {
@@ -986,12 +986,14 @@ class LoanService extends CollectionService {
         userId,
         loanId,
       });
-    } else if (amount === 2) {
+      return [borrowerId];
+    }
+    if (amount === 2) {
       const borrowerId1 = BorrowerService.insert({ userId, loanId });
       const borrowerId2 = BorrowerService.insert({ userId, loanId });
-    } else {
-      throw new Meteor.Error('Invalid borrowers number');
+      return [borrowerId1, borrowerId2];
     }
+    throw new Meteor.Error('Invalid borrowers number');
   }
 
   linkPromotion({ promotionId, loanId }) {
@@ -1254,6 +1256,26 @@ class LoanService extends CollectionService {
       property: { ...property, category: PROPERTY_CATEGORY.USER }, // Avoid extra fetch in PropertyService
       loanId,
     });
+  }
+
+  setBorrowers({ loanId, amount }) {
+    const { borrowers = [] } = this.get(loanId, { borrowers: { _id: 1 } });
+
+    if (borrowers.length === 2) {
+      return;
+    }
+
+    if (borrowers.length === 1) {
+      if (amount === 1) {
+        return;
+      }
+
+      if (amount === 2) {
+        return this.insertBorrowers({ loanId, amount: 1 });
+      }
+    }
+
+    return this.insertBorrowers({ loanId, amount });
   }
 }
 
