@@ -15,7 +15,7 @@ import {
   insuranceSetAdminNote,
 } from 'core/api/insurances/methodDefinitions';
 import { AdminNoteSetter } from 'core/components/AdminNote/AdminNoteAdder';
-import useInsuranceRequestContacts from 'core/components/AdminNote/useInsuranceRequestContacts';
+import { useInsuranceRequestContacts } from 'core/hooks/useContacts';
 
 const documentSelectSchema = (availableDocuments = []) =>
   new SimpleSchema({

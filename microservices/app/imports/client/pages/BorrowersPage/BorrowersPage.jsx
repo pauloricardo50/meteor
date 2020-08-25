@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import PropTypes from 'prop-types';
 
 import BorrowerAdder from 'core/components/BorrowerAdder';
@@ -82,7 +83,11 @@ const BorrowersPage = props => {
       id="BorrowersPage"
       title={<BorrowersPageTitle borrowers={borrowers} />}
     >
-      <section className="borrower-page">
+      <section
+        className={cx('borrower-page', {
+          'two-borrowers': borrowers.length >= 2,
+        })}
+      >
         <Tabs tabs={tabs} initialIndex={initialIndex} />
       </section>
       <span className="borrowers-page-buttons">

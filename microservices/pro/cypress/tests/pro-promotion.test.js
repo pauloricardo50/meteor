@@ -59,6 +59,8 @@ describe('Pro promotion', () => {
 
     cy.get('tbody tr').should('have.length', 2);
     cy.get('tbody tr').first().contains('XXX').should('exist');
+    cy.wait(200);
+
     cy.get('tbody tr')
       .first()
       .should('contain', 'XXX')

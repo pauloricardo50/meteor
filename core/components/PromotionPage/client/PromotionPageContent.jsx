@@ -44,4 +44,5 @@ const getRoutes = ({ tabs, route, props }) => {
 const PromotionPageContent = ({ route, tabs, ...props }) => (
   <Switch>{getRoutes({ tabs, route, props })}</Switch>
 );
+
 export default PromotionPageContent;

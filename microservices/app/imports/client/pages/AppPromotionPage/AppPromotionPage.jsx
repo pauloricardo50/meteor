@@ -38,6 +38,10 @@ const promotionFragment = {
 };
 
 const getInvitedByUser = ({ promotion, promotionId, loan }) => {
+  if (!loan) {
+    return;
+  }
+
   const { promotions = [] } = loan;
   const { $metadata = {} } =
     promotions.find(({ _id }) => _id === promotionId) || {};
@@ -46,22 +50,20 @@ const getInvitedByUser = ({ promotion, promotionId, loan }) => {
   return users.find(({ _id }) => _id === invitedBy);
 };
 
-const AppPromotionPageContainer = compose(
+export const AppPromotionPageContainer = compose(
   withMatchParam('promotionId'),
   withSmartQuery({
     query: appPromotion,
-    params: ({ promotionId, loan: { _id: loanId } }) => ({
-      promotionId,
-      loanId,
-      $body: promotionFragment,
-    }),
+    params: ({ promotionId }) => ({ promotionId, $body: promotionFragment }),
     queryOptions: { single: true },
     dataName: 'promotion',
   }),
   withPromotionPageContext(),
   withProps(({ promotion, promotionId, loan }) => ({
     invitedByUser: getInvitedByUser({ promotion, promotionId, loan }),
-    route: createRoute(appRoutes.APP_PROMOTION_PAGE.path, { loanId: loan._id }),
+    route: createRoute(appRoutes.APP_PROMOTION_PAGE.path, {
+      loanId: loan?._id,
+    }),
   })),
 );
 

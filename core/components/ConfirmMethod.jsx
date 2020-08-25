@@ -24,9 +24,11 @@ export default class ConfirmMethod extends Component {
   };
 
   handleClose = event => {
+    const { onClose = () => null } = this.props;
     event.preventDefault();
     event.stopPropagation();
     this.setState({ open: false });
+    onClose();
   };
 
   handleSubmit = event => {

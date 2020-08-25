@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { compose, withProps, withState } from 'recompose';
 
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
@@ -64,36 +64,33 @@ const AnonymousLoanClaimer = ({
 
 export default compose(
   withAnonymousLoan,
-  withRouter,
   withState('loading', 'setLoading', false),
   withProps(
-    ({
-      anonymousLoan,
-      setAnonymousLoanId,
-      currentUser,
-      setLoading,
-      history,
-    }) => ({
-      open: !!anonymousLoan,
-      claimLoan: () => {
-        setLoading(true);
-        assignLoanToUser
-          .run({ loanId: anonymousLoan._id, userId: currentUser._id })
-          .then(() => {
-            localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-            setAnonymousLoanId(undefined);
-            history.push(
-              createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
-                loanId: anonymousLoan._id,
-              }),
-            );
-          })
-          .finally(() => setLoading(false));
-      },
-      removeAnonymousLoan: () => {
-        localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
-        setAnonymousLoanId(undefined);
-      },
-    }),
+    ({ anonymousLoan, setAnonymousLoanId, currentUser, setLoading }) => {
+      const history = useHistory();
+
+      return {
+        open: !!anonymousLoan,
+        claimLoan: () => {
+          setLoading(true);
+          assignLoanToUser
+            .run({ loanId: anonymousLoan._id, userId: currentUser._id })
+            .then(() => {
+              localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
+              setAnonymousLoanId(undefined);
+              history.push(
+                createRoute(APP_ROUTES.DASHBOARD_PAGE.path, {
+                  loanId: anonymousLoan._id,
+                }),
+              );
+            })
+            .finally(() => setLoading(false));
+        },
+        removeAnonymousLoan: () => {
+          localStorage.removeItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
+          setAnonymousLoanId(undefined);
+        },
+      };
+    },
   ),
 )(AnonymousLoanClaimer);

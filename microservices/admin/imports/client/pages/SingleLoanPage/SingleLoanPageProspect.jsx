@@ -35,7 +35,7 @@ const SingleLoanPageProspect = props => {
           className="single-loan-page-tasks card1 card-top"
           noInitialFilter
         />
-        <SingleLoanPageContacts loanId={loan._id} />
+        <SingleLoanPageContacts loan={loan} />
       </div>
       <div className="card1 card-top">
         <div className="text-center mb-32 mt-16 animated fadeIn">

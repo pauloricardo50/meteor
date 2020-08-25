@@ -32,7 +32,7 @@ const SingleLoanPage = props => {
           className="single-loan-page-tasks card1 card-top"
           noInitialFilter
         />
-        <SingleLoanPageContacts loanId={loan._id} />
+        <SingleLoanPageContacts loan={loan} />
       </div>
       <LoanTabs {...props} />
       <UnsuccessfulReasonModal loan={loan} />

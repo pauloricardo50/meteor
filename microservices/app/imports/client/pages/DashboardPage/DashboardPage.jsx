@@ -19,7 +19,7 @@ const DashboardPage = props => {
     currentUser === null || !loan.maxPropertyValue?.date;
 
   if (loan.displayWelcomeScreen && !window.hideWelcomeScreen) {
-    return <WelcomeScreen rerender={rerender} />;
+    return <WelcomeScreen rerender={rerender} loan={loan} />;
   }
 
   if (hasTodoOnboarding) {

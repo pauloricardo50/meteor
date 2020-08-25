@@ -255,7 +255,7 @@ export const PropertySchema = new SimpleSchema({
     },
   },
   copropertyPercentage: {
-    type: SimpleSchema.Integer,
+    type: Number,
     min: 0,
     max: 1000,
     optional: true,
