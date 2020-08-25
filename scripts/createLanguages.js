@@ -100,6 +100,7 @@ const config = {
         'BorrowerRemover',
         'BorrowersPage',
         'BorrowersSummary',
+        'CalendlyModal',
         'collections',
         'ConditionsButton',
         'ConfirmMethod',

@@ -1,4 +1,8 @@
 {
+  "CalendlyModal.title": "Planifier un rendez-vous",
+  "CalendlyModal.eventScheduled.title": "Vous avez déjà planifié un rendez-vous",
+  "CalendlyModal.eventScheduled.description": "Voulez-vous en planifier un autre ?",
+  "CalendlyModal.eventScheduled.button": "Rendez-vous",
   "LoanRenamer.title": "Nom personnalisé de votre dossier",
   "OnboardingMobileStepper.resetPosition": "Continuer",
   "ProPropertyPage.getALoan": "Calculer ma capacité d'achat",
