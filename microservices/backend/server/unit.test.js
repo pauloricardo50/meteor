@@ -3,7 +3,6 @@ import '/imports/core/lib/test/server/lib.test.js';
 import '/imports/core/lib/server/serverTestSetup.test.js';
 import '/imports/core/lib/testInit.test.js';
 import '/imports/core/api/email/server/test/emailSetup.test.js';
-
 // Server only tests
 import '/imports/core/api/RESTAPI/server/endpoints/zipLoan/test/FilesBinPacker.test.js';
 import '/imports/core/api/RESTAPI/server/endpoints/zipLoan/test/zipLoan.test.js';
@@ -106,6 +105,7 @@ import '/imports/core/api/migrations/server/test/6.test.js';
 import '/imports/core/api/migrations/server/test/7.test.js';
 import '/imports/core/api/migrations/server/test/8.test.js';
 import '/imports/core/api/migrations/server/test/9.test.js';
+import '/imports/core/api/migrations/server/test/43.test.js';
 import '/imports/core/api/monitoring/server/test/monitoring.test.js';
 import '/imports/core/api/mortgageNotes/server/test/MortgageNoteService.test.js';
 import '/imports/core/api/notifications/server/test/NotificationService.test.js';

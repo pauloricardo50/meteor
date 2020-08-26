@@ -124,6 +124,13 @@ export const personalInfoSchema = {
     min: 0,
     max: 20,
   },
+  children: {
+    type: Array,
+    defaultValue: [],
+  },
+  'children.$': Object,
+  'children.$.name': { type: String, optional: true },
+  'children.$.age': { type: SimpleSchema.Integer, optional: true, min: 0 },
   company: {
     type: String,
     optional: true,

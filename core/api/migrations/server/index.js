@@ -39,6 +39,7 @@ import './38';
 import './39';
 import './40';
 import './41';
+import './43';
 
 import { Meteor } from 'meteor/meteor';
 import { Migrations } from 'meteor/percolate:migrations';
