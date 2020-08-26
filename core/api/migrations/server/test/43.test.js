@@ -6,7 +6,7 @@ import { down, up } from '../43';
 
 /* eslint-env-mocha */
 
-describe.only('Migration 43', () => {
+describe('Migration 43', () => {
   beforeEach(() => {
     resetDatabase();
   });

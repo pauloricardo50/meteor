@@ -6,7 +6,7 @@ export const emptyFakeBorrower = {};
 export const fakeBorrower = {
   address1: 'Chemin du Mont 3',
   birthDate: '1980-03-01',
-  childrenCount: 2,
+  children: 2,
   citizenships: 'Suisse, Français',
   city: 'Yverdon-les-Bains',
   civilStatus: 'SINGLE',

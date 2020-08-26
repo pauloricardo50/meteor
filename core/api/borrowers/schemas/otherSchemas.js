@@ -118,6 +118,7 @@ export const personalInfoSchema = {
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
     condition: ({ civilStatus }) => civilStatus === CIVIL_STATUS.DIVORCED,
   },
+  // Remove this once PR is merged and migration is ok
   childrenCount: {
     type: SimpleSchema.Integer,
     optional: true,

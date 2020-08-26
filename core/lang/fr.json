@@ -1,4 +1,7 @@
 {
+  "Forms.children": "Enfants",
+  "Forms.children.name": "Prénom",
+  "Forms.children.age": "Âge",
   "PromotionPage.PromotionUsers.stats": "Statistiques",
   "PromotionPage.PromotionUsers.stats.loanCount": "{count} clients invités",
   "PromotionPage.PromotionUsers.stats.reservedCount": "{count} lots réservés (y.c. vendus)",
