@@ -15,7 +15,10 @@ import {
   render,
 } from 'core/utils/testHelpers/testing-library';
 
-import withOnboardingContext, { useOnboarding } from '../OnboardingContext';
+import withOnboardingContext, {
+  getNextStepId,
+  useOnboarding,
+} from '../OnboardingContext';
 
 const ComponentA = withOnboardingContext(() => {
   const {
@@ -57,97 +60,171 @@ const Component = ({ loan }) => (
 );
 
 describe('Onboarding State', () => {
-  beforeEach(async () => {
-    await cleanup();
+  describe('useOnboarding', () => {
+    beforeEach(async () => {
+      await cleanup();
+    });
+
+    it('starts onboarding with purchaseType', () => {
+      const { getByText } = render(<Component loan={{}} />);
+
+      const result = getByText('activeStep: purchaseType');
+      expect(!!result).to.equal(true);
+    });
+
+    it('skips purchaseType if it is already set', () => {
+      const { getByText } = render(
+        <Component loan={{ purchaseType: PURCHASE_TYPE.ACQUISITION }} />,
+      );
+
+      const result = getByText('activeStep: acquisitionStatus');
+      expect(!!result).to.equal(true);
+    });
+
+    it('skips refinancing step when doing an acquisition', () => {
+      const { queryByText } = render(
+        <Component loan={{ purchaseType: PURCHASE_TYPE.ACQUISITION }} />,
+      );
+
+      const purchaseType = queryByText('step: purchaseType');
+      expect(!!purchaseType).to.equal(true);
+
+      const refinancing = queryByText('step: refinancing');
+      expect(!!refinancing).to.equal(false);
+    });
+
+    it('keeps track of the next step to do', async () => {
+      const { getByText, findByText } = render(
+        <Component
+          loan={{
+            purchaseType: PURCHASE_TYPE.ACQUISITION,
+            acquisitionStatus: ACQUISITION_STATUS.SEARCHING,
+          }}
+        />,
+      );
+
+      const residenceType = getByText('activeStep: residenceType');
+      expect(!!residenceType).to.equal(true);
+
+      fireEvent.click(getByText('goToStep: purchaseType'));
+
+      const purchaseType = await findByText('activeStep: purchaseType');
+      expect(!!purchaseType).to.equal(true);
+
+      const residenceTypeTodo = await findByText(
+        'currentTodoStep: residenceType',
+      );
+      expect(!!residenceTypeTodo).to.equal(true);
+    });
+
+    it('goes to the next step', async () => {
+      const loan = {};
+      const { getByText, findByText } = render(<Component loan={loan} />);
+
+      const purchaseType = getByText('activeStep: purchaseType');
+      expect(!!purchaseType).to.equal(true);
+
+      fireEvent.click(getByText('Next'));
+
+      const acquisitionStatus = await findByText(
+        'activeStep: acquisitionStatus',
+      );
+      expect(!!acquisitionStatus).to.equal(true);
+    });
+
+    it('sets the right next step if you go back and change stuff', () => {
+      const loan = {
+        purchaseType: PURCHASE_TYPE.ACQUISITION,
+        acquisitionStatus: ACQUISITION_STATUS.SEARCHING,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        properties: [{ _id: 'propertyId', canton: 'GE', value: 1000000 }],
+        borrowers: [{ birthDate: '01-01-1992' }],
+      };
+      const { getByText, rerender } = render(<Component loan={loan} />);
+
+      const income = getByText('currentTodoStep: income');
+      expect(!!income).to.equal(true);
+
+      fireEvent.click(getByText('goToStep: purchaseType'));
+
+      rerender(
+        <Component
+          loan={{ ...loan, purchaseType: PURCHASE_TYPE.REFINANCING }}
+        />,
+      );
+
+      fireEvent.click(getByText('Reset'));
+
+      const refinancing = getByText('activeStep: refinancing');
+      expect(!!refinancing).to.equal(true);
+    });
   });
 
-  it('starts onboarding with purchaseType', () => {
-    const { getByText } = render(<Component loan={{}} />);
+  describe.only('getNextStepId', () => {
+    it('returns the next step', () => {
+      const steps = [
+        { id: 'a', done: false },
+        { id: 'b', done: false },
+        { id: 'c', done: false },
+      ];
+      const activeStep = 'a';
 
-    const result = getByText('activeStep: purchaseType');
-    expect(!!result).to.equal(true);
-  });
+      expect(getNextStepId(steps, activeStep)).to.equal('b');
+    });
 
-  it('skips purchaseType if it is already set', () => {
-    const { getByText } = render(
-      <Component loan={{ purchaseType: PURCHASE_TYPE.ACQUISITION }} />,
-    );
+    it('returns the first step to be done', () => {
+      const steps = [
+        { id: 'a', done: true },
+        { id: 'b', done: false },
+        { id: 'c', done: false },
+      ];
+      const activeStep = 'a';
 
-    const result = getByText('activeStep: acquisitionStatus');
-    expect(!!result).to.equal(true);
-  });
+      expect(getNextStepId(steps, activeStep)).to.equal('b');
+    });
 
-  it('skips refinancing step when doing an acquisition', () => {
-    const { queryByText } = render(
-      <Component loan={{ purchaseType: PURCHASE_TYPE.ACQUISITION }} />,
-    );
+    it('returns the first step to be done', () => {
+      const steps = [
+        { id: 'a', done: true },
+        { id: 'b', done: true },
+        { id: 'c', done: false },
+      ];
+      const activeStep = 'a';
 
-    const purchaseType = queryByText('step: purchaseType');
-    expect(!!purchaseType).to.equal(true);
+      expect(getNextStepId(steps, activeStep)).to.equal('c');
+    });
 
-    const refinancing = queryByText('step: refinancing');
-    expect(!!refinancing).to.equal(false);
-  });
+    it('returns the first step to be done', () => {
+      const steps = [
+        { id: 'a', done: false },
+        { id: 'b', done: true },
+        { id: 'c', done: false },
+      ];
+      const activeStep = 'a';
 
-  it('keeps track of the next step to do', async () => {
-    const { getByText, findByText } = render(
-      <Component
-        loan={{
-          purchaseType: PURCHASE_TYPE.ACQUISITION,
-          acquisitionStatus: ACQUISITION_STATUS.SEARCHING,
-        }}
-      />,
-    );
+      expect(getNextStepId(steps, activeStep)).to.equal('c');
+    });
 
-    const residenceType = getByText('activeStep: residenceType');
-    expect(!!residenceType).to.equal(true);
+    it('returns the steps in the past if necessary', () => {
+      const steps = [
+        { id: 'a', done: false },
+        { id: 'b', done: true },
+        { id: 'c', done: false },
+      ];
+      const activeStep = 'b';
 
-    fireEvent.click(getByText('goToStep: purchaseType'));
+      expect(getNextStepId(steps, activeStep)).to.equal('a');
+    });
 
-    const purchaseType = await findByText('activeStep: purchaseType');
-    expect(!!purchaseType).to.equal(true);
+    it('returns result if all are done', () => {
+      const steps = [
+        { id: 'a', done: true },
+        { id: 'b', done: true },
+        { id: 'c', done: true },
+      ];
+      const activeStep = 'b';
 
-    const residenceTypeTodo = await findByText(
-      'currentTodoStep: residenceType',
-    );
-    expect(!!residenceTypeTodo).to.equal(true);
-  });
-
-  it('goes to the next step', async () => {
-    const loan = {};
-    const { getByText, findByText } = render(<Component loan={loan} />);
-
-    const purchaseType = getByText('activeStep: purchaseType');
-    expect(!!purchaseType).to.equal(true);
-
-    fireEvent.click(getByText('Next'));
-
-    const acquisitionStatus = await findByText('activeStep: acquisitionStatus');
-    expect(!!acquisitionStatus).to.equal(true);
-  });
-
-  it('sets the right next step if you go back and change stuff', () => {
-    const loan = {
-      purchaseType: PURCHASE_TYPE.ACQUISITION,
-      acquisitionStatus: ACQUISITION_STATUS.SEARCHING,
-      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-      properties: [{ _id: 'propertyId', canton: 'GE', value: 1000000 }],
-      borrowers: [{ birthDate: '01-01-1992' }],
-    };
-    const { getByText, rerender } = render(<Component loan={loan} />);
-
-    const income = getByText('currentTodoStep: income');
-    expect(!!income).to.equal(true);
-
-    fireEvent.click(getByText('goToStep: purchaseType'));
-
-    rerender(
-      <Component loan={{ ...loan, purchaseType: PURCHASE_TYPE.REFINANCING }} />,
-    );
-
-    fireEvent.click(getByText('Reset'));
-
-    const refinancing = getByText('activeStep: refinancing');
-    expect(!!refinancing).to.equal(true);
+      expect(getNextStepId(steps, activeStep)).to.equal('result');
+    });
   });
 });

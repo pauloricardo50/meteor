@@ -112,7 +112,11 @@ exposeQuery({
   query: userProperty,
   overrides: {
     firewall(userId, { _id: propertyId }) {
-      Security.properties.hasAccessToProperty({ propertyId, userId });
+      try {
+        Security.properties.checkPropertyIsPublic({ propertyId });
+      } catch (error) {
+        Security.properties.hasAccessToProperty({ propertyId, userId });
+      }
     },
     embody: body => {
       body.$filter = ({ filters, params: { propertyId } }) => {

@@ -41,10 +41,7 @@ export const PromotionMiniature = ({ promotion }) => {
   );
 };
 
-const OnboardingPromotionMiniature = ({
-  promotionId,
-  setHasPropertyOrPromotion,
-}) => {
+const OnboardingPromotionMiniature = ({ promotionId, setHasInvalidQuery }) => {
   const { data: promotion, loading } = useMeteorData({
     query: anonymousPromotion,
     params: {
@@ -60,11 +57,10 @@ const OnboardingPromotionMiniature = ({
     refetchOnMethodCall: false,
     type: 'single',
   });
-  console.log('promotion:', promotion);
 
   useEffect(() => {
     if (!loading && !promotion) {
-      setHasPropertyOrPromotion(false);
+      setHasInvalidQuery(true);
     }
   }, []);
 

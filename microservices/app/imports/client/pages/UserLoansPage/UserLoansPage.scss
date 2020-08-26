@@ -1,29 +1,17 @@
 .user-loans {
   display: flex;
-  align-items: center;
   flex-direction: column;
-
-  margin: -16px;
 
   &-title {
     display: flex;
-    align-items: center;
-    align-self: stretch;
     flex-direction: column;
 
     margin-bottom: 32px;
-    padding: 32px;
-
-    background-color: $primary;
 
     h1,
     p {
       margin: 0;
       margin-bottom: 16px;
-
-      text-align: center;
-
-      color: white;
     }
     p {
       font-size: 1.3rem;
@@ -135,9 +123,9 @@
           left: 0;
 
           background: linear-gradient(
-          to right,
-          rgba(0, 0, 0, 0.65) 0%,
-          rgba(0, 0, 0, 0) 100%
+            to right,
+            rgba(0, 0, 0, 0.65) 0%,
+            rgba(0, 0, 0, 0) 100%
           );
         }
       }

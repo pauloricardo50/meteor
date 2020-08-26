@@ -233,6 +233,7 @@ export const loan = () => ({
   createdAt: 1,
   customName: 1,
   enableOffers: 1,
+  hasCompletedOnboarding: 1,
   hasProProperty: 1,
   hasPromotion: 1,
   name: 1,

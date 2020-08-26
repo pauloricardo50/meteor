@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import StepConnector from '@material-ui/core/StepConnector';
@@ -20,18 +20,13 @@ const useStyles = makeStyles({
   connectorLineVertical: { minHeight: 8 },
 });
 
-const isStepDone = (done, steps, index) => {
-  if (!steps[index - 1]) {
-    return done;
+const isStepDisabled = (done, currentTodoStep, stepId) => {
+  if (done) {
+    return false;
   }
 
-  // This guarantees that the stepper always appears linear, even if some steps
-  // are completed in the wrong order
-  return done && steps[index - 1].done;
+  return currentTodoStep !== stepId;
 };
-
-const isStepDisabled = (done, currentTodoStep, stepId) =>
-  !done && !(currentTodoStep === stepId);
 
 const OnboardingStepper = () => {
   const classes = useStyles();
@@ -57,16 +52,16 @@ const OnboardingStepper = () => {
         />
       }
     >
-      {steps.map(({ id, done, renderValue }, index) => {
-        const isCompleted = isStepDone(done, steps, index);
-        const isActive = isCompleted || activeStep === id;
+      {steps.map(({ id, done, renderValue }) => {
+        const isActive = done || activeStep === id;
+        const isDisabled = isStepDisabled(done, currentTodoStep, id);
 
         return (
           <Step
             key={id}
-            completed={isCompleted}
+            completed={done}
             active={isActive}
-            disabled={isStepDisabled(done, currentTodoStep, id)}
+            disabled={isDisabled}
             classes={{ root: classes.stepRoot }}
           >
             <StepButton onClick={() => setActiveStep(id)}>
@@ -80,7 +75,7 @@ const OnboardingStepper = () => {
 
             {/* https://github.com/mui-org/material-ui/issues/22167 */}
             <StepContent>
-              {isCompleted && renderValue ? (
+              {done && renderValue ? (
                 <small className="secondary">{renderValue(loan)}</small>
               ) : null}
             </StepContent>

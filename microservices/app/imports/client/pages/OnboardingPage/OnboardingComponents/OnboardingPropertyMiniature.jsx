@@ -9,7 +9,7 @@ import appRoutes from '../../../../startup/client/appRoutes';
 import OnboardingMiniature from './OnboardingMiniature';
 
 export const PropertyMiniature = ({ property }) => {
-  const { imageUrls, address1, totalValue, _id: propertyId } = property;
+  const { imageUrls, address1, totalValue, _id: propertyId } = property || {};
 
   return (
     <OnboardingMiniature
@@ -17,15 +17,12 @@ export const PropertyMiniature = ({ property }) => {
       title={address1}
       subtitle={<Money value={totalValue} />}
       imageUrl={imageUrls?.[0]}
-      link={createRoute(appRoutes.PRO_PROPERTY_PAGE.path, { propertyId })}
+      link={createRoute(appRoutes.APP_PRO_PROPERTY_PAGE.path, { propertyId })}
     />
   );
 };
 
-const OnboardingPropertyMiniature = ({
-  propertyId,
-  setHasPropertyOrPromotion,
-}) => {
+const OnboardingPropertyMiniature = ({ propertyId, setHasInvalidQuery }) => {
   const { data: proProperty, loading } = useMeteorData({
     query: anonymousProperty,
     params: {
@@ -38,7 +35,7 @@ const OnboardingPropertyMiniature = ({
 
   useEffect(() => {
     if (!loading && !proProperty) {
-      setHasPropertyOrPromotion(false);
+      setHasInvalidQuery(true);
     }
   }, [loading]);
 

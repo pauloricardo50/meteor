@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import { employeesById } from 'core/arrays/epotekEmployees';
 import Button from 'core/components/Button';
 import CalendlyModal from 'core/components/Calendly/CalendlyModal';
@@ -12,11 +14,18 @@ import UserCreatorForm from '../../../../components/UserCreator/UserCreatorForm'
 import { useOnboarding } from '../../OnboardingContext';
 
 const OnboardingResultCtas = () => {
+  const history = useHistory();
   const currentUser = useCurrentUser();
   const [openCalendly, setOpenCalendly] = useState(false);
   const {
-    loan: { _id: loanId },
+    loan: { _id: loanId, hasCompletedOnboarding },
   } = useOnboarding();
+
+  useEffect(() => {
+    if (hasCompletedOnboarding) {
+      history.push(createRoute(appRoutes.DASHBOARD_PAGE.path, { loanId }));
+    }
+  }, hasCompletedOnboarding);
 
   if (currentUser) {
     const { assignedEmployee: { _id: assigneeId } = {} } = currentUser;
@@ -39,10 +48,11 @@ const OnboardingResultCtas = () => {
         </Button>
 
         <Button
-          link
-          to={createRoute(appRoutes.DASHBOARD_PAGE.path, { loanId })}
           raised
           secondary
+          onClick={() =>
+            loanUpdate.run({ loanId, object: { hasCompletedOnboarding: true } })
+          }
         >
           <T id="OnboardingResultCtas.goToDashboard" />
         </Button>

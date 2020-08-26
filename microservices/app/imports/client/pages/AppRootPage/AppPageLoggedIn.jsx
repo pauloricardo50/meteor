@@ -2,13 +2,26 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import useCurrentUser from 'core/hooks/useCurrentUser';
+import useSearchParams from 'core/hooks/useSearchParams';
 import { createRoute } from 'core/utils/routerUtils';
 
 import appRoutes from '../../../startup/client/appRoutes';
 
 const AppPageLoggedIn = () => {
+  const searchParams = useSearchParams();
   const currentUser = useCurrentUser();
   const { loans, isPro } = currentUser;
+
+  // TODO: Handle promotion-id
+  if (searchParams['property-id']) {
+    return (
+      <Redirect
+        to={createRoute(appRoutes.APP_PRO_PROPERTY_PAGE.path, {
+          propertyId: searchParams['property-id'],
+        })}
+      />
+    );
+  }
 
   if (isPro) {
     return <Redirect to={appRoutes.PRO_PAGE.path} />;

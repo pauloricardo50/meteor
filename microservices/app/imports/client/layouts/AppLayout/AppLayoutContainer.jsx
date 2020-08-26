@@ -21,6 +21,7 @@ const loanFragment = merge({}, calculatorLoan(), {
   customName: 1,
   displayWelcomeScreen: 1,
   enableOffers: 1,
+  hasCompletedOnboarding: 1,
   lenders: {
     offers: {
       conditions: 1,

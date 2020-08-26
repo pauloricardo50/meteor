@@ -11,6 +11,7 @@ const WITHOUT_LOAN = [
   '/add-loan',
   '/enroll-account',
   '/reset-password',
+  '/onboarding',
 ];
 
 const WITHOUT_LOGIN = [

@@ -103,9 +103,9 @@ class LoanService extends CollectionService {
       loanId,
       object: {
         anonymous: true,
-        displayWelcomeScreen: false,
         referralId,
         purchaseType,
+        hasStartedOnboarding: true,
       },
     });
 
