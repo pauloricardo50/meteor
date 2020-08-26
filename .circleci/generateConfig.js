@@ -3,7 +3,7 @@ import merge from 'lodash/merge';
 import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '/home/circleci/app';
-const CACHE_VERSION = 'master_17'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const CACHE_VERSION = 'master_18'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 const STAGING_BRANCH = 'staging';
 const MASTER_BRANCH = 'master';
 
@@ -18,7 +18,7 @@ const defaultJobValues = {
         LANGUAGE: 'C.UTF-8',
         LC_ALL: 'C.UTF-8',
         LC_NUMERIC: 'en_US.UTF-8',
-        METEOR_VERSION: '1.10.2',
+        METEOR_VERSION: '1.11',
         NODE_ENV: 'development', // Some packages require this during tests
         TOOL_NODE_FLAGS:
           '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // NodeJS kung-fu to make your builds run faster, without running out of memory
@@ -246,8 +246,7 @@ const testGatsbyJobE2E = () => {
   const name = 'www2'
   return ({
   ...defaultJobValues,
-  // TODO: we can probably use medium+ after updating to Meteor 1.10.3
-  resource_class: 'large',
+  resource_class: 'medium+',
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
     restoreCache('Restore global cache', cacheKeys.global()),
@@ -367,6 +366,44 @@ const makeDeployJob = ({ name, job }) => ({
   ],
 });
 
+const makeGatsbyDeployJob  = () => {
+  const name = 'www2';
+
+  return {
+    ...defaultJobValues,
+    steps: [
+      restoreCache('Restore source', cacheKeys.source()),
+      restoreCache('Restore global cache', cacheKeys.global()),
+      restoreCache('Restore node_modules', cacheKeys.nodeModules()),
+      restoreCache('Restore gatsby website', cacheKeys.gatsby()),
+      runCommand(
+        'Setup Microservice',
+        `
+         cd scripts
+         bash setup-microservice.sh www2
+        `
+      ),
+      runCommand(
+        'Deploy',
+        `
+          wget -qO- 'https://cli.netlify.com/download/latest/linux' | tar xz
+          mv ./netlifyctl /usr/local/bin
+          cd microservices/www2
+
+          if [ "$CIRCLE_BRANCH" = "${STAGING_BRANCH}" ]; then
+            npm run deploy-draft -- -A "$NETLIFY_ACCESS_TOKEN"
+          elif [ "$CIRCLE_BRANCH" = "${MASTER_BRANCH}" ]; then
+            npm run deploy -- -A "$NETLIFY_ACCESS_TOKEN"
+          else
+            echo "Deployments not configured for this branch"
+            exit 1
+          fi
+        `
+      )
+    ]
+  }
+}
+
 const testJobs = [
   'App - unit tests',
   'Admin - unit tests',
@@ -402,7 +439,7 @@ const makeConfig = () => ({
       testsType: 'e2e',
     }),
     'Pro - e2e tests': testMicroserviceJob({ name: 'pro', testsType: 'e2e' }),
-    'Www - deploy': makeDeployJob({ name: 'www' }),
+    'Www2 - deploy': makeGatsbyDeployJob(),
     'App - deploy': makeDeployJob({ name: 'app' }),
     'Admin - deploy': makeDeployJob({ name: 'admin' }),
     'Pro - deploy': makeDeployJob({ name: 'pro' }),
@@ -426,7 +463,8 @@ const makeConfig = () => ({
         { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
         { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
         { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
-      ],
+        { 'Www2 - deploy': { requires: [ 'Prepare' ], filters: deployBranchFilter } },
+     ],
     },
   },
 });
