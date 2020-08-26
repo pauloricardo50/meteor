@@ -20,10 +20,12 @@ export const getBorrowersFormSchema = (borrowerCount, schema) => {
       borrower1: {
         type: new SimpleSchema({ ...header0, ...schema }),
         uniforms: { label: null },
+        ignoreParentInLabel: true,
       },
       borrower2: {
         type: new SimpleSchema({ ...header1, ...schema }),
         uniforms: { label: null },
+        ignoreParentInLabel: true,
       },
     });
   }
@@ -32,6 +34,7 @@ export const getBorrowersFormSchema = (borrowerCount, schema) => {
     borrower1: {
       type: new SimpleSchema({ ...header0, ...schema }),
       uniforms: { label: null },
+      ignoreParentInLabel: true,
     },
   });
 };
@@ -40,16 +43,23 @@ export const birthDateSchema = {
   birthDate: {
     type: Date,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    optional: false,
   },
 };
 
 export const incomeSchema = {
-  salary: borrowerSchemaObject.salary,
+  salary: { ...borrowerSchemaObject.salary, optional: false },
   netSalary: borrowerSchemaObject.netSalary,
 };
 
 export const ownFundsSchema = Object.values(OWN_FUNDS_TYPES).reduce(
-  (obj, key) => ({ ...obj, [key]: moneyField }),
+  (obj, key) => ({
+    ...obj,
+    [key]:
+      key === OWN_FUNDS_TYPES.BANK_FORTUNE
+        ? { ...moneyField, optional: false }
+        : moneyField,
+  }),
   {},
 );
 

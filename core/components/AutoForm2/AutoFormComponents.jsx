@@ -144,19 +144,15 @@ const determineComponentFromProps = ({
 };
 
 export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
-  const CustomAutoField = (
-    props,
-    {
-      uniforms: {
-        schema,
-        model,
-        state: { submitting },
-      },
-    },
-  ) => {
+  const CustomAutoField = (props, { uniforms, ...args }) => {
+    const {
+      schema,
+      model,
+      state: { submitting },
+    } = uniforms;
     const intl = useIntl();
     const { transformIntlId } = useAutoFormContext();
-    const { allowedValues, field, fieldType, margin = 'normal' } = props;
+    const { allowedValues, field, fieldType, margin = 'normal', name } = props;
 
     const { condition, customAllowedValues, customAutoValue } = schema.getField(
       props.name,
@@ -187,9 +183,10 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
         getLabel({
           ...props,
           ...additionalProps,
-          intlPrefix,
+          // intlPrefix,
           label: labels[props.name],
-          transformIntlId,
+          schema: schema.schema,
+          name,
         }),
       [],
     );
