@@ -27,7 +27,7 @@ meteortesting:mocha@2.0.0
 # User Accounts
 alanning:roles@2.1.0
 
-email@1.2.3
+email@2.0.0!
 
 
 # Data
@@ -46,9 +46,9 @@ meteorhacks:inject-initial
 # Production
 force-ssl@1.1.0                      # Automatically route users to https
 dynamic-import@0.5.2
-accounts-password@1.6.0
+accounts-password@1.6.2
 epotek:google-maps
-montiapm:agent@2.39.0-beta.8
+montiapm:agent@2.39.0
 tmeasday:acceptance-test-driver
 epotek:accounts-ui
 underscore@1.0.10
