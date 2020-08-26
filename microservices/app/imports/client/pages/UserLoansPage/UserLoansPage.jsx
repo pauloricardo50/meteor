@@ -47,10 +47,10 @@ const UserLoansPage = () => {
     <div className="user-loans">
       <div className="user-loans-title">
         <h1>
-          <T id="SuperDashboard.welcome" values={{ name }} />
+          <T id="UserLoansPage.welcome" values={{ name }} />
         </h1>
         <p>
-          <T id="SuperDashboard.welcome.subtitle" />
+          <T id="UserLoansPage.welcome.subtitle" />
         </p>
       </div>
       <LoanCards loans={loans} />

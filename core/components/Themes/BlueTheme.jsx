@@ -14,6 +14,20 @@ const theme = {
         backgroundColor: 'rgba(255, 255, 255, 0.3)',
       },
     },
+    MuiListItem: {
+      ...defaultTheme.overrides.MuiListItem,
+      root: {
+        ...defaultTheme.overrides.MuiListItem.root,
+        color: colors.body,
+      },
+    },
+    MuiListItemIcon: {
+      ...defaultTheme.overrides.MuiListItemIcon,
+      root: {
+        ...defaultTheme.overrides.MuiListItemIcon.root,
+        color: 'inherit',
+      },
+    },
   },
   palette: {
     ...defaultTheme.palette,

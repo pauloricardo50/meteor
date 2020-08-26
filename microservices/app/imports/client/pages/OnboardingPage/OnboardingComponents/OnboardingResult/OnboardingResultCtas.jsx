@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import { employeesById } from 'core/arrays/epotekEmployees';
 import Button from 'core/components/Button';
+import CalendlyModal from 'core/components/Calendly/CalendlyModal';
 import T from 'core/components/Translation';
 import useCurrentUser from 'core/hooks/useCurrentUser';
 import { createRoute } from 'core/utils/routerUtils';
@@ -11,14 +13,28 @@ import { useOnboarding } from '../../OnboardingContext';
 
 const OnboardingResultCtas = () => {
   const currentUser = useCurrentUser();
+  const [openCalendly, setOpenCalendly] = useState(false);
   const {
     loan: { _id: loanId },
   } = useOnboarding();
 
   if (currentUser) {
+    const { assignedEmployee: { _id: assigneeId } = {} } = currentUser;
+    const calendlyLink = employeesById[assigneeId]?.calendly;
+
     return (
       <div className="flex mt-40">
-        <Button raised primary className="mr-16">
+        <CalendlyModal
+          link={calendlyLink}
+          open={openCalendly}
+          onClose={() => setOpenCalendly(false)}
+        />
+        <Button
+          raised
+          primary
+          className="mr-16"
+          onClick={() => setOpenCalendly(true)}
+        >
           <T id="OnboardingResultCtas.calendly" />
         </Button>
 
@@ -36,10 +52,6 @@ const OnboardingResultCtas = () => {
 
   return (
     <div className="flex mt-40">
-      <Button raised secondary className="mr-16">
-        <T id="OnboardingResultCtas.calendly" />
-      </Button>
-
       <UserCreatorForm
         omitValues={['firstName', 'lastName', 'phoneNumber']}
         dialog

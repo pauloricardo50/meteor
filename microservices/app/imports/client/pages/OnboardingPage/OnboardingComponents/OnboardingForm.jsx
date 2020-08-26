@@ -19,7 +19,7 @@ const OnboardingForm = ({
   const { handleNextStep, loan } = useOnboarding();
   const finalSchema = useMemo(
     () => (typeof schema === 'function' ? schema(loan) : schema),
-    [],
+    [schema],
   );
 
   return (
@@ -38,7 +38,7 @@ const OnboardingForm = ({
             schema={finalSchema}
             model={model || loan}
             onSubmit={onSubmit}
-            onSubmitSuccess={() => handleNextStep(0)}
+            onSubmitSuccess={handleNextStep}
             submitFieldProps={{
               label: submitLabel,
               size: 'large',

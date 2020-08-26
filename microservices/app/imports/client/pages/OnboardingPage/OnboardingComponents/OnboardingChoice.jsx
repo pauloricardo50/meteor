@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
 import FaIcon from 'core/components/Icon/FaIcon';
@@ -10,6 +10,7 @@ import OnboardingStep from './OnboardingStep';
 
 const OnboardingChoice = ({ id, choices, onSubmit }) => {
   const { handleNextStep } = useOnboarding();
+  const [loading, setLoading] = useState(false);
 
   return (
     <OnboardingStep>
@@ -18,8 +19,14 @@ const OnboardingChoice = ({ id, choices, onSubmit }) => {
           <ButtonBase
             key={choiceId}
             onClick={() => {
-              handleNextStep();
-              onSubmit(choiceId);
+              if (loading) {
+                return;
+              }
+
+              setLoading(true);
+              onSubmit(choiceId)
+                .then(() => handleNextStep())
+                .finally(() => setLoading(false));
             }}
             className="flex-col center-align"
             focusRipple
