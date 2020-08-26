@@ -10,7 +10,7 @@ import {
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
-describe.only('App onboarding', () => {
+describe('App onboarding', () => {
   before(() => {
     cy.startTest();
     cy.meteorLogout();
@@ -24,10 +24,6 @@ describe.only('App onboarding', () => {
     cy.meteorLogout();
     cy.routeTo('/');
     cy.checkConnection();
-  });
-
-  afterEach(() => {
-    // cy.callMethod('resetDatabase');
   });
 
   describe('onboarding flows', () => {

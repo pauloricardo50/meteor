@@ -25,6 +25,11 @@ import UserLoansPage from '../../client/pages/UserLoansPage/loadable';
 import WelcomePage from '../../client/pages/WelcomePage/loadable';
 
 export default {
+  USER_LOANS_PAGE: {
+    path: '/loans',
+    component: UserLoansPage,
+    exact: true,
+  },
   REFINANCING_PAGE: {
     path: '/loans/:loanId/refinancing',
     component: RefinancingPage,
@@ -78,11 +83,6 @@ export default {
   DASHBOARD_PAGE: {
     path: '/loans/:loanId',
     component: DashboardPage,
-  },
-  USER_LOANS_PAGE: {
-    path: '/loans',
-    component: UserLoansPage,
-    exact: true,
   },
   PRO_PAGE: {
     path: '/pro',

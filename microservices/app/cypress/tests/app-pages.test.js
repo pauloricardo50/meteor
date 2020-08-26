@@ -25,7 +25,7 @@ const pages = {
   },
 
   user: {
-    App: route('/', { shouldRender: '#app-page' }),
+    App: route('/loans', { shouldRender: '.user-loans' }),
 
     Account: route('/account', { shouldRender: '#AccountPage' }),
 
@@ -76,7 +76,8 @@ describe('App Pages', () => {
                 _id: 'loanId',
                 properties: { _id: 'propertyId' },
                 borrowers: {},
-                displayWelcomeScreen: false,
+                hasStartedOnboarding: true,
+                hasCompletedOnboarding: true,
                 step: STEPS.REQUEST,
               },
               {},
