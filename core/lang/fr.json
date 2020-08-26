@@ -1,4 +1,8 @@
 {
+  "PromotionReservationDeadline.epotekRejected": "Dossier refusé",
+  "PromotionReservationDeadline.epotekRejected.description": "La solvabilité du client n’a pas pu être validée sur la base des éléments échangés.",
+  "PromotionReservationDeadline.bankRejected": "Dossier refusé",
+  "PromotionReservationDeadline.bankRejected.description": "Le dossier du client n’a pas été accepté par la banque.",
   "PromotionPage.PromotionUsers.stats": "Statistiques",
   "PromotionPage.PromotionUsers.stats.loanCount": "{count} clients invités",
   "PromotionPage.PromotionUsers.stats.reservedCount": "{count} lots réservés (y.c. vendus)",

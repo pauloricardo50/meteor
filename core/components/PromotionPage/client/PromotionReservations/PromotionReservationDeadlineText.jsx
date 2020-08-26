@@ -64,11 +64,29 @@ const getAppDescriptionId = (promotionOption, loan) => {
 };
 
 const getTextLabel = (promotionOption, loan) => {
-  const { status } = promotionOption;
+  const {
+    status,
+    bank,
+    simpleVerification,
+    fullVerification,
+  } = promotionOption;
 
   if (isApp && status === PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE) {
     const id = getAppDescriptionId(promotionOption, loan);
     return `PromotionReservationDeadline.app.${id}`;
+  }
+
+  if (bank.status === PROMOTION_OPTION_BANK_STATUS.REJECTED) {
+    return 'PromotionReservationDeadline.bankRejected';
+  }
+
+  if (
+    simpleVerification.status ===
+      PROMOTION_OPTION_SIMPLE_VERIFICATION_STATUS.REJECTED ||
+    fullVerification.status ===
+      PROMOTION_OPTION_FULL_VERIFICATION_STATUS.REJECTED
+  ) {
+    return 'PromotionReservationDeadline.epotekRejected';
   }
 
   return `PromotionReservationDeadline.${status}`;
