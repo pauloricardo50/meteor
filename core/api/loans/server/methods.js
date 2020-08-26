@@ -97,14 +97,14 @@ userLoanInsert.setHandler(
       return LoanService.insertPropertyLoan({
         userId,
         propertyIds: [proPropertyId],
-        loan: { displayWelcomeScreen: false },
+        loan: { hasStartedOnboarding: true },
       });
     }
 
     return LoanService.fullLoanInsert({
       userId,
       loan: {
-        displayWelcomeScreen: false,
+        hasStartedOnboarding: true,
         status: test ? LOAN_STATUS.TEST : LOAN_STATUS.LEAD,
         purchaseType,
       },

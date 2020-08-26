@@ -24,7 +24,6 @@ export const loanStep2 = {
   residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
   purchaseType: 'ACQUISITION',
   step: STEPS.OFFERS,
-  displayWelcomeScreen: false,
   structures: [
     {
       id: 'randomStructureId',
