@@ -11,11 +11,7 @@ const OnboardingPage = ({ loan }) => {
     return <OnboardingWithoutLoan />;
   }
 
-  if (
-    loan.hasPromotion &&
-    !hasStartedOnboarding(loan) &&
-    !hasSeenInitialScreen
-  ) {
+  if (!loan.hasStartedOnboarding && !hasSeenInitialScreen) {
     return (
       <OnboardingWithoutLoan
         promotion={loan.promotions[0]}

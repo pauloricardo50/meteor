@@ -65,6 +65,17 @@ const getCta = ({ propertyId, currentUser, history, anonymousLoan }) => {
   }
 
   if (anonymousLoan) {
+    const loanHasProperty = anonymousLoan.propertyIds?.find(
+      id => id === propertyId,
+    );
+
+    if (loanHasProperty) {
+      return {
+        label: <T id="general.continue" />,
+        onClick: () => routeToLoan(anonymousLoan._id),
+      };
+    }
+
     return {
       label: <T id="ProPropertyPage.addPropertyToLoan" />,
       onClick: () =>

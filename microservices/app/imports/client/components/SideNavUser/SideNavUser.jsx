@@ -14,13 +14,15 @@ const SideNavUser = ({ style, fixed, closeDrawer, loan }) => {
   const history = useHistory();
   const currentUser = useCurrentUser();
 
+  const emptySideNav = (
+    <nav className="side-nav-user">
+      <SideNavHeader />
+    </nav>
+  );
+
   // Return an empty side nav if there is no loan
   if (!currentUser) {
-    return (
-      <nav className="side-nav-user">
-        <SideNavHeader />
-      </nav>
-    );
+    return emptySideNav;
   }
   const { loans } = currentUser;
 
@@ -39,6 +41,12 @@ const SideNavUser = ({ style, fixed, closeDrawer, loan }) => {
     currentLoan = loans.find(r => r._id === loanId);
   }
 
+  if (currentLoan && !currentLoan.hasCompletedOnboarding) {
+    // This avoids a race condition, where the user has not yet been redirected
+    // to the onboarding page, so it briefly shows the full side nav, which is bad
+    return emptySideNav;
+  }
+
   return (
     <BlueTheme>
       <nav
@@ -55,6 +63,7 @@ const SideNavUser = ({ style, fixed, closeDrawer, loan }) => {
               closeDrawer={closeDrawer}
             />
           )}
+          {/* Don't show the full side nav if onboarding still needs to be done */}
           {loanId && currentLoan && (
             <LoanSideNav closeDrawer={closeDrawer} loan={loan} />
           )}

@@ -49,13 +49,13 @@
       font-size: 5em;
       line-height: 1;
 
-
       @include screen(large) {
         font-size: 4em;
       }
     }
 
-    .balance-sheet, .sums {
+    .balance-sheet,
+    .sums {
       width: 100%;
       max-width: 400px;
     }
@@ -130,5 +130,13 @@
 
   &:hover {
     border-color: $primary;
+  }
+
+  .miniature-icon {
+    padding: 16px;
+    svg {
+      width: 100px;
+      height: 100px;
+    }
   }
 }

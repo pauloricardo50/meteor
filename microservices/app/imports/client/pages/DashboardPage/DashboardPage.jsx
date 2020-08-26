@@ -16,11 +16,11 @@ const DashboardPage = props => {
   const [, rerender] = useState(); // Use this to rerender after changing the window object
   const currentUser = useCurrentUser();
   const hasTodoOnboarding =
-    currentUser === null || !loan.maxPropertyValue?.date;
+    currentUser === null || !loan.hasCompletedOnboarding;
 
-  if (loan.displayWelcomeScreen && !window.hideWelcomeScreen) {
-    return <WelcomeScreen rerender={rerender} loan={loan} />;
-  }
+  // if (loan.displayWelcomeScreen && !window.hideWelcomeScreen) {
+  //   return <WelcomeScreen rerender={rerender} loan={loan} />;
+  // }
 
   if (hasTodoOnboarding) {
     return (

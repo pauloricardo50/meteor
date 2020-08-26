@@ -20,9 +20,10 @@ const OnboardingWithoutLoan = ({ promotion, onStart }) => {
   const shouldInsertLoan = Object.values(PURCHASE_TYPE).includes(purchaseType);
   const [loading, setLoading] = useState(shouldInsertLoan);
   const [redirect, setRedirect] = useState();
-  const [hasPropertyOrPromotion, setHasPropertyOrPromotion] = useState(
-    promotion || propertyId || promotionId,
-  );
+  const [hasInvalidQuery, setHasInvalidQuery] = useState();
+  const hasPropertyOrPromotion = promotion || propertyId || promotionId;
+  const hasValidPropertyOrPromotion =
+    hasPropertyOrPromotion && !hasInvalidQuery;
 
   const handleInsert = pType => {
     if (!loading) {
@@ -66,23 +67,23 @@ const OnboardingWithoutLoan = ({ promotion, onStart }) => {
             <T id="OnboardingWithoutLoan.description" />
           </p>
 
-          {hasPropertyOrPromotion && propertyId ? (
+          {hasValidPropertyOrPromotion && propertyId ? (
             <OnboardingPropertyMiniature
-              setHasPropertyOrPromotion={setHasPropertyOrPromotion}
+              setHasInvalidQuery={setHasInvalidQuery}
               propertyId={propertyId}
             />
           ) : null}
 
-          {hasPropertyOrPromotion && (promotion?._id || promotionId) ? (
+          {hasValidPropertyOrPromotion && (promotion?._id || promotionId) ? (
             <OnboardingPromotionMiniature
-              setHasPropertyOrPromotion={setHasPropertyOrPromotion}
+              setHasInvalidQuery={setHasInvalidQuery}
               promotionId={promotion?._id || promotionId}
               onStart={onStart}
             />
           ) : null}
 
           <div className="onboarding-without-loan-ctas">
-            {hasPropertyOrPromotion && (
+            {hasValidPropertyOrPromotion && (
               <Button
                 size="large"
                 loading={loading}
@@ -100,7 +101,7 @@ const OnboardingWithoutLoan = ({ promotion, onStart }) => {
               </Button>
             )}
 
-            {!hasPropertyOrPromotion &&
+            {!hasValidPropertyOrPromotion &&
               Object.values(PURCHASE_TYPE).map(type => (
                 <Button
                   key={type}

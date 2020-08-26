@@ -97,12 +97,9 @@ Cypress.Commands.add(
       let promise;
 
       if (Meteor.userId()) {
-        console.log('logging out');
-
         // Logout first if the user is already logged in
         promise = cy.meteorLogout();
       } else {
-        console.log('not logged in');
         promise = Promise.resolve();
       }
 

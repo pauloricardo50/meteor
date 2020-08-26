@@ -126,6 +126,10 @@ const LoanSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(ACQUISITION_STATUS),
   },
+  hasCompletedOnboarding: {
+    type: Boolean,
+    optional: true,
+  },
 
   // Link storage fields
   ...promotionSchema,

@@ -16,7 +16,10 @@ exposeQuery({
   query: anonymousProperty,
   overrides: {
     firewall(userId, { _id }) {
+      console.log('firewall??', _id);
+
       Security.properties.checkPropertyIsPublic({ propertyId: _id });
+      console.log('firewall done');
     },
   },
   options: { allowFilterById: true },

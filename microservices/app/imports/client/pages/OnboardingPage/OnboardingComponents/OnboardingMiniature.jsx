@@ -4,13 +4,18 @@ import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
 import FaIcon from 'core/components/Icon/FaIcon';
 import Link from 'core/components/Link';
 import Loading from 'core/components/Loading';
+import colors from 'core/config/colors';
 
 const MiniatureImage = ({ url }) => {
   if (url) {
     return <div className="img" style={{ backgroundImage: `url("${url}")` }} />;
   }
 
-  return <FaIcon icon={faHome} />;
+  return (
+    <div className="flex center miniature-icon">
+      <FaIcon icon={faHome} color={colors.primary} />
+    </div>
+  );
 };
 
 const OnboardingMiniature = ({ loading, title, subtitle, imageUrl, link }) => {

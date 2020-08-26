@@ -12,6 +12,7 @@ import { faUserFriends } from '@fortawesome/pro-duotone-svg-icons/faUserFriends'
 import SimpleSchema from 'simpl-schema';
 
 import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
+import { moneyField } from 'core/api/helpers/sharedSchemas';
 import {
   ACQUISITION_STATUS,
   PURCHASE_TYPE,
@@ -162,7 +163,7 @@ export const steps = [
     component: 'OnboardingForm',
     condition: or(isRefinancing, knowsProperty),
     props: {
-      schema: new SimpleSchema({ value: Number }),
+      schema: new SimpleSchema({ value: { ...moneyField, optional: false } }),
     },
     isDone: loan => !!loan.properties?.[0]?.value,
     onSubmit: loan => values =>
@@ -210,7 +211,9 @@ export const steps = [
     component: 'OnboardingBorrowersForm',
     condition: always,
     props: { borrowerSchema: birthDateSchema },
-    isDone: loan => loan.borrowers?.every(({ birthDate }) => !!birthDate),
+    isDone: loan =>
+      loan.borrowers.length > 0 &&
+      loan.borrowers?.every(({ birthDate }) => !!birthDate),
     onSubmit: loan => ({ borrower1, borrower2 }) =>
       updateBorrowers(loan, borrower1, borrower2),
     renderValue: loan => (

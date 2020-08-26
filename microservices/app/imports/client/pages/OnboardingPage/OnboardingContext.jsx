@@ -12,6 +12,12 @@ export const useOnboarding = () => useContext(Context);
 const getCurrentTodoStep = steps =>
   steps.find(({ done }) => !done)?.id || 'result';
 
+export const getNextStepId = steps => {
+  const nextStep = steps.find(({ done }) => !done);
+
+  return nextStep?.id || 'result';
+};
+
 const withOnboardingContext = Component => ({ loan }) => {
   const steps = getSteps(loan).map(step => ({
     ...step,
@@ -23,15 +29,31 @@ const withOnboardingContext = Component => ({ loan }) => {
     'step',
     StringParam,
   );
+  const [waitForStepDone, setWaitForStepDone] = useState();
   const isMobile = useMedia({ maxWidth: 768 });
-  const nextStepId = stepIds[stepIds.findIndex(id => id === activeStep) + 1];
+  const nextStepId = getNextStepId(steps, activeStep);
   const [showDrawer, setShowDrawer] = useState(false);
 
   const handleNextStep = () => {
     if (activeStep !== 'result') {
-      setActiveStep(nextStepId);
+      setWaitForStepDone(activeStep);
     }
   };
+
+  useEffect(() => {
+    // This mechanic avoids race conditions in the onboarding, as we're waiting
+    // for the loan subscription to come back from the server with updated data,
+    // this waits for the loan to have the right state before going to the next
+    // step
+    if (waitForStepDone) {
+      const isStepDone = steps.find(({ id }) => id === waitForStepDone)?.done;
+
+      if (isStepDone) {
+        setActiveStep(nextStepId);
+        setWaitForStepDone(null);
+      }
+    }
+  });
 
   const resetPosition = () => {
     setActiveStep(currentTodoStep);
