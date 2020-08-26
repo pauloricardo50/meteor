@@ -29,6 +29,7 @@ import {
   analyticsOnboardingStep,
   analyticsOpenedIntercom,
   analyticsPage,
+  analyticsStartedOnboarding,
   analyticsVerifyEmail,
 } from '../methodDefinitions';
 import { addAnalyticsListener } from './analyticsHelpers';
@@ -489,8 +490,8 @@ addAnalyticsListener({
 
 addAnalyticsListener({
   method: [anonymousLoanInsert, userLoanInsert, adminLoanInsert, proInviteUser],
-  analyticsProps: ({ result }) => {
-    const userId = result?.userId;
+  analyticsProps: ({ result, params }) => {
+    const userId = result?.userId || params?.userId;
     if (userId) {
       return { userId };
     }
@@ -571,27 +572,27 @@ addAnalyticsListener({
       promotionName: promotion?.name,
     });
 
-    if (purchaseType) {
-      analytics.track(EVENTS.COMPLETED_ONBOARDING_STEP, {
-        loanId,
-        loanName,
-        anonymous,
-        completedStep: 'purchaseType',
-        purchaseType,
-        userId,
-        userName,
-        userEmail,
-        referringUserId,
-        referringUserName,
-        referringOrganisationId,
-        referringOrganisationName,
-        assigneeId,
-        assigneeName,
-        promotionId: promotion?._id,
-        promotionName: promotion?.name,
-        propertyId: proPropertyId,
-      });
-    }
+    // if (purchaseType) {
+    //   analytics.track(EVENTS.COMPLETED_ONBOARDING_STEP, {
+    //     loanId,
+    //     loanName,
+    //     anonymous,
+    //     completedStep: 'purchaseType',
+    //     purchaseType,
+    //     userId,
+    //     userName,
+    //     userEmail,
+    //     referringUserId,
+    //     referringUserName,
+    //     referringOrganisationId,
+    //     referringOrganisationName,
+    //     assigneeId,
+    //     assigneeName,
+    //     promotionId: promotion?._id,
+    //     promotionName: promotion?.name,
+    //     propertyId: proPropertyId,
+    //   });
+    // }
   },
 });
 
@@ -935,5 +936,72 @@ addAnalyticsListener({
     const properties = getOnboardingStepProperties({ context, params });
 
     analytics.track(EVENTS.COMPLETED_ONBOARDING_STEP, properties);
+  },
+});
+
+addAnalyticsListener({
+  method: analyticsStartedOnboarding,
+  type: 'before',
+  func: ({
+    analytics,
+    context: { userId },
+    params: { loanId, activeStep, previousStep },
+  }) => {
+    const {
+      hasStartedOnboarding,
+      anonymous,
+      purchaseType,
+      properties = [],
+      promotions = [],
+      name: loanName,
+    } = LoanService.get(loanId, {
+      anonymous: 1,
+      purchaseType: 1,
+      properties: { _id: 1 },
+      promotions: { name: 1 },
+      name: 1,
+      hasStartedOnboarding: 1,
+    });
+
+    if (hasStartedOnboarding) {
+      return;
+    }
+
+    let params = {
+      loanId,
+      loanName,
+      propertyId: properties?.[0]?._id,
+      promotionId: promotions?.[0]?._id,
+      promotionName: promotions?.[0]?.name,
+      purchaseType,
+      anonymous,
+      currentStep: activeStep,
+      previousStep,
+    };
+
+    if (userId) {
+      const user = UserService.get(userId, {
+        name: 1,
+        email: 1,
+        referredByUser: { name: 1 },
+        referredByOrganisation: { name: 1 },
+        assignedEmployee: { intercomId: 1, name: 1 },
+      });
+
+      params = {
+        ...params,
+        userId: user?._id,
+        userName: user?.name,
+        userEmail: user?.email,
+        referringUserId: user?.referredByUser?._id,
+        referringUserName: user?.referredByUser?.name,
+        referringOrganisationId: user?.referredByOrganisation?._id,
+        referringOrganisationName: user?.referredByOrganisation?.name,
+        assigneeId: user?.assignedEmployee?._id,
+        assigneeName: user?.assignedEmployee?.name,
+      };
+    }
+
+    analytics.track(EVENTS.STARTED_ONBOARDING, params);
   },
 });

@@ -362,6 +362,21 @@ export const EVENTS_CONFIG = {
       { name: 'borrowersSalary', optional: true },
     ],
   },
+  [EVENTS.STARTED_ONBOARDING]: {
+    name: 'User Started Onboarding',
+    properties: [
+      ...eventsSharedProperties,
+      { name: 'previousStep', optional: true },
+      { name: 'currentStep', optional: true },
+      'loanId',
+      'loanName',
+      'anonymous',
+      { name: 'propertyId', optional: true },
+      { name: 'promotionId', optional: true },
+      { name: 'promotionName', optional: true },
+      { name: 'purchaseType', optional: true },
+    ],
+  },
 };
 
 export const TRACKING_ORIGIN = {

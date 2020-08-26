@@ -84,7 +84,7 @@ export const adminLoanInsertHandler = (
     });
   }
 
-  return { loanId, userId };
+  return loanId;
 };
 adminLoanInsert.setHandler(adminLoanInsertHandler);
 

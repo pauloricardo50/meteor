@@ -1,3 +1,5 @@
+import merge from 'lodash/merge';
+
 import Calculator from '../../../utils/Calculator';
 import LoanService from '../../loans/server/LoanService';
 import UserService from '../../users/server/UserService';
@@ -7,7 +9,7 @@ const commonFragment = {
   purchaseType: 1,
   anonymous: 1,
   properties: { _id: 1 },
-  promotions: { _id: 1, name: 1 },
+  promotions: { name: 1 },
 };
 
 const previousStepFragment = {
@@ -116,7 +118,7 @@ const getUserProperties = userId => {
     email: 1,
     referredByUser: { name: 1 },
     referredByOrganisation: { name: 1 },
-    assignedEmployee: { intercomId: 1, name: 1 },
+    assignedEmployee: { name: 1 },
   });
 
   return {
@@ -136,7 +138,11 @@ export const getOnboardingStepProperties = ({ context, params }) => {
   const { loanId, activeStep, previousStep } = params;
   const { userId } = context;
 
-  const fragment = { ...commonFragment, ...previousStepFragment[previousStep] };
+  const fragment = merge(
+    {},
+    commonFragment,
+    previousStepFragment[previousStep],
+  );
 
   const loan = LoanService.get(loanId, fragment);
 

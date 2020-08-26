@@ -1255,6 +1255,18 @@ class LoanService extends CollectionService {
       loanId,
     });
   }
+
+  startedOnboarding({ loanId }) {
+    const { hasStartedOnboarding } = this.get(loanId, {
+      hasStartedOnboarding: 1,
+    });
+
+    if (hasStartedOnboarding) {
+      return;
+    }
+
+    return this._update({ id: loanId, object: { hasStartedOnboarding: true } });
+  }
 }
 
 export default new LoanService({});

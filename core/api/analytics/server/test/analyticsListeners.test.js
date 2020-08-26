@@ -25,7 +25,10 @@ import {
 } from '../../../properties/propertyConstants';
 import { proInviteUser } from '../../../users/methodDefinitions';
 import EVENTS from '../../events';
-import { analyticsOnboardingStep } from '../../methodDefinitions';
+import {
+  analyticsOnboardingStep,
+  analyticsStartedOnboarding,
+} from '../../methodDefinitions';
 import { EVENTS_CONFIG } from '../eventsConfig';
 import NoOpAnalytics from '../NoOpAnalytics';
 
@@ -120,30 +123,6 @@ describe('analyticsListeners', () => {
         propertyId: 'property',
       });
     });
-
-    it('tracks COMPLETED_ONBOARDING_STEP event', async () => {
-      await anonymousLoanInsert.run({
-        referralId: 'pro',
-        proPropertyId: 'property',
-        purchaseType: PURCHASE_TYPE.ACQUISITION,
-      });
-
-      const [_, [{ userId, event, properties }]] = await waitForStub(
-        analyticsSpy,
-        2,
-      );
-
-      expect(userId).to.equal(null);
-      expect(event).to.equal(
-        EVENTS_CONFIG[EVENTS.COMPLETED_ONBOARDING_STEP].name,
-      );
-      expect(properties).to.deep.include({
-        completedStep: 'purchaseType',
-        purchaseType: PURCHASE_TYPE.ACQUISITION,
-        anonymous: true,
-        propertyId: 'property',
-      });
-    });
   });
 
   describe('userLoanInsert', () => {
@@ -183,31 +162,6 @@ describe('analyticsListeners', () => {
         propertyId: 'property',
       });
     });
-
-    it('tracks COMPLETED_ONBOARDING_STEP event', async () => {
-      await ddpWithUserId('user', () =>
-        userLoanInsert.run({
-          purchaseType: PURCHASE_TYPE.ACQUISITION,
-          proPropertyId: 'property',
-        }),
-      );
-
-      const [_, [{ userId, event, properties }]] = await waitForStub(
-        analyticsSpy,
-        2,
-      );
-
-      expect(userId).to.equal('user');
-      expect(event).to.equal(
-        EVENTS_CONFIG[EVENTS.COMPLETED_ONBOARDING_STEP].name,
-      );
-      expect(properties).to.deep.include({
-        ...commonProperties,
-        completedStep: 'purchaseType',
-        purchaseType: PURCHASE_TYPE.ACQUISITION,
-        propertyId: 'property',
-      });
-    });
   });
 
   describe('adminLoanInsert', () => {
@@ -232,30 +186,6 @@ describe('analyticsListeners', () => {
       expect(userId).to.equal('user');
       expect(event).to.equal(EVENTS_CONFIG[EVENTS.LOAN_CREATED].name);
       expect(properties).to.deep.include(commonProperties);
-    });
-
-    it('tracks COMPLETED_ONBOARDING_STEP event', async () => {
-      await ddpWithUserId('advisor', () =>
-        adminLoanInsert.run({
-          userId: 'user',
-          loan: { purchaseType: PURCHASE_TYPE.ACQUISITION },
-        }),
-      );
-
-      const [_, [{ userId, event, properties }]] = await waitForStub(
-        analyticsSpy,
-        2,
-      );
-
-      expect(userId).to.equal('user');
-      expect(event).to.equal(
-        EVENTS_CONFIG[EVENTS.COMPLETED_ONBOARDING_STEP].name,
-      );
-      expect(properties).to.deep.include({
-        ...commonProperties,
-        completedStep: 'purchaseType',
-        purchaseType: PURCHASE_TYPE.ACQUISITION,
-      });
     });
   });
 
@@ -290,7 +220,7 @@ describe('analyticsListeners', () => {
           }),
       );
 
-      const analyticsArgs = await waitForStub(analyticsSpy, 6);
+      const analyticsArgs = await waitForStub(analyticsSpy, 5);
 
       const [{ userId: uid, event, properties }] = analyticsArgs.find(
         args => args[0].event === EVENTS_CONFIG[EVENTS.LOAN_CREATED].name,
@@ -302,53 +232,103 @@ describe('analyticsListeners', () => {
 
       await checkEmails(2);
     });
-
-    it('tracks COMPLETED_ONBOARDING_STEP event', async () => {
-      let userId;
-      await ddpWithUserId('pro', () =>
-        proInviteUser
-          .run({
-            user: {
-              firstName: 'Bob',
-              lastName: 'Dylan',
-              email: 'bob.dylan@e-potek.ch',
-              phoneNumber: '12345678',
-            },
-            propertyIds: ['property'],
-          })
-          .then(({ userId: uid }) => {
-            userId = uid;
-          }),
-      );
-
-      const analyticsArgs = await waitForStub(analyticsSpy, 6);
-
-      const [{ userId: uid, event, properties }] = analyticsArgs.find(
-        args =>
-          args[0].event ===
-          EVENTS_CONFIG[EVENTS.COMPLETED_ONBOARDING_STEP].name,
-      ) || [{}];
-
-      expect(uid).to.equal(userId);
-      expect(event).to.equal(
-        EVENTS_CONFIG[EVENTS.COMPLETED_ONBOARDING_STEP].name,
-      );
-      expect(properties).to.deep.include({
-        ...commonProperties,
-        completedStep: 'purchaseType',
-        purchaseType: PURCHASE_TYPE.ACQUISITION,
-      });
-    });
   });
 
   context('onboarding', () => {
     beforeEach(() => {
       generator({
-        loans: {
-          _id: 'loan',
-          userId: 'user',
-          properties: [{ _id: 'property' }],
-        },
+        loans: [
+          {
+            _id: 'loan',
+            userId: 'user',
+            properties: [{ _id: 'property' }],
+          },
+          { _id: 'anonymousLoan', anonymous: true },
+        ],
+      });
+    });
+
+    describe('analyticsStartedOnboarding', () => {
+      it('does not track the event if onboarding has already started', async () => {
+        LoanService._update({
+          id: 'loan',
+          object: { hasStartedOnboarding: true },
+        });
+
+        await ddpWithUserId('user', () =>
+          analyticsStartedOnboarding.run({
+            loanId: 'loan',
+            activeStep: 'purchaseType',
+          }),
+        );
+
+        expect(analyticsSpy.called).to.equal(false);
+      });
+
+      it('does not track the event twice', async () => {
+        await ddpWithUserId('user', () =>
+          analyticsStartedOnboarding.run({
+            loanId: 'loan',
+            activeStep: 'purchaseType',
+          }),
+        );
+        await ddpWithUserId('user', () =>
+          analyticsStartedOnboarding.run({
+            loanId: 'loan',
+            activeStep: 'purchaseType',
+          }),
+        );
+
+        expect(analyticsSpy.callCount).to.equal(1);
+      });
+
+      it('tracks the event if onboarding has not started yet', async () => {
+        await ddpWithUserId('user', () =>
+          analyticsStartedOnboarding.run({
+            loanId: 'loan',
+            activeStep: 'purchaseType',
+          }),
+        );
+
+        const [[{ userId, event, properties }]] = await waitForStub(
+          analyticsSpy,
+        );
+
+        expect(userId).to.equal('user');
+        expect(event).to.equal(EVENTS_CONFIG[EVENTS.STARTED_ONBOARDING].name);
+        expect(properties).to.deep.include({
+          loanId: 'loan',
+          userEmail: 'tom.sawyer@e-potek.ch',
+          userName: 'Tom Sawyer',
+          referringUserId: 'pro',
+          referringUserName: 'Pro User',
+          referringOrganisationId: 'proOrg',
+          referringOrganisationName: 'org',
+          assigneeId: 'advisor',
+          assigneeName: 'Advisor E-Potek',
+          propertyId: 'property',
+          anonymous: false,
+          currentStep: 'purchaseType',
+        });
+      });
+
+      it('tracks the event if onboarding has not started yet with an anonymous loan', async () => {
+        await analyticsStartedOnboarding.run({
+          loanId: 'anonymousLoan',
+          activeStep: 'purchaseType',
+        });
+
+        const [[{ userId, event, properties }]] = await waitForStub(
+          analyticsSpy,
+        );
+
+        expect(userId).to.equal(null);
+        expect(event).to.equal(EVENTS_CONFIG[EVENTS.STARTED_ONBOARDING].name);
+        expect(properties).to.deep.include({
+          loanId: 'anonymousLoan',
+          anonymous: true,
+          currentStep: 'purchaseType',
+        });
       });
     });
 

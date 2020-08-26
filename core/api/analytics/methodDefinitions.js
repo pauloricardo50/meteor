@@ -66,8 +66,15 @@ export const analyticsOnboardingStep = new Method({
     // - User came back to continue its onboarding in a new session
     latestStep: Match.Maybe(String),
     currentTodoStep: String,
-    // If undefined, it means that it is the very last step
-    nextStep: Match.Maybe(String),
+    previousStep: Match.Maybe(String),
+  },
+});
+
+export const analyticsStartedOnboarding = new Method({
+  name: 'analyticsStartedOnboarding',
+  params: {
+    loanId: String,
+    activeStep: String,
     previousStep: Match.Maybe(String),
   },
 });

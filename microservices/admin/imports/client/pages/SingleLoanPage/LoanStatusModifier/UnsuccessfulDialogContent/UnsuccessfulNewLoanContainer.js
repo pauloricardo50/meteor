@@ -28,7 +28,7 @@ const insertNewLoan = ({
 
   return adminLoanInsert
     .run({ userId })
-    .then(({ loanId }) =>
+    .then(loanId =>
       loanUpdate.run({ loanId, object: { status } }).then(() => loanId),
     )
     .then(loanId => {

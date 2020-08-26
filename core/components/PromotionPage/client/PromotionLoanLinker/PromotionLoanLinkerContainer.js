@@ -39,7 +39,7 @@ export default compose(
       return confirm
         ? adminLoanInsert
             .run({})
-            .then(({ loanId }) =>
+            .then(loanId =>
               loanLinkPromotion.run({
                 loanId,
                 promotionId: promotion._id,

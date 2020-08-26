@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StringParam, useQueryParam } from 'use-query-params';
 
-import { analyticsOnboardingStep } from 'core/api/analytics/methodDefinitions';
+import {
+  analyticsOnboardingStep,
+  analyticsStartedOnboarding,
+} from 'core/api/analytics/methodDefinitions';
 import useMedia from 'core/hooks/useMedia';
 
 import { getOnBoardingFlow, getSteps } from './onboardingHelpers';
@@ -37,6 +40,17 @@ const withOnboardingContext = Component => ({ loan }) => {
   const nextStepId = stepIds[stepIds.findIndex(id => id === activeStep) + 1];
   const [showDrawer, setShowDrawer] = useState(false);
 
+  useEffect(() => {
+    if (!loan?.hasStartedOnboarding) {
+      const previousStep = getPreviousStep(steps, activeStep);
+      analyticsStartedOnboarding.run({
+        loanId: loan?._id,
+        activeStep,
+        previousStep,
+      });
+    }
+  }, []);
+
   // Triggered when user lands on a step
   useEffect(() => {
     const previousStep = getPreviousStep(steps, activeStep);
@@ -45,7 +59,6 @@ const withOnboardingContext = Component => ({ loan }) => {
       activeStep,
       currentTodoStep,
       latestStep,
-      nextStep: nextStepId,
       previousStep,
     });
   }, [activeStep]);

@@ -19,7 +19,7 @@ const LoanSummaryList = ({ loans, userId, withAdder }) => {
           {withAdder && (
             <LoanAdder
               userId={userId}
-              onSuccess={({ loanId }) =>
+              onSuccess={loanId =>
                 history.push(
                   createRoute(ADMIN_ROUTES.SINGLE_LOAN_PAGE.path, { loanId }),
                 )
