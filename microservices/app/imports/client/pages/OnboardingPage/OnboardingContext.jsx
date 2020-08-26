@@ -47,14 +47,12 @@ const withOnboardingContext = Component => ({ loan }) => {
   const [latestStep, setLatestStep] = useState();
 
   useEffect(() => {
-    if (!loan?.hasStartedOnboarding) {
-      const previousStep = getPreviousStep(steps, activeStep);
-      analyticsStartedOnboarding.run({
-        loanId: loan?._id,
-        activeStep,
-        previousStep,
-      });
-    }
+    const previousStep = getPreviousStep(steps, activeStep);
+    analyticsStartedOnboarding.run({
+      loanId: loan?._id,
+      activeStep,
+      previousStep,
+    });
   }, []);
 
   // Triggered when user lands on a step
@@ -70,6 +68,7 @@ const withOnboardingContext = Component => ({ loan }) => {
   }, [activeStep]);
 
   const handleNextStep = () => {
+    setLatestStep(activeStep);
     if (activeStep !== 'result') {
       setWaitForStepDone(activeStep);
     }
@@ -86,7 +85,6 @@ const withOnboardingContext = Component => ({ loan }) => {
       if (isStepDone) {
         setActiveStep(nextStepId);
         setWaitForStepDone(null);
-        setLatestStep(waitForStepDone);
       }
     }
   });

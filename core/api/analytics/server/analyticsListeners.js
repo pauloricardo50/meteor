@@ -571,28 +571,38 @@ addAnalyticsListener({
       promotionId: promotion?._id,
       promotionName: promotion?.name,
     });
+  },
+});
 
-    // if (purchaseType) {
-    //   analytics.track(EVENTS.COMPLETED_ONBOARDING_STEP, {
-    //     loanId,
-    //     loanName,
-    //     anonymous,
-    //     completedStep: 'purchaseType',
-    //     purchaseType,
-    //     userId,
-    //     userName,
-    //     userEmail,
-    //     referringUserId,
-    //     referringUserName,
-    //     referringOrganisationId,
-    //     referringOrganisationName,
-    //     assigneeId,
-    //     assigneeName,
-    //     promotionId: promotion?._id,
-    //     promotionName: promotion?.name,
-    //     propertyId: proPropertyId,
-    //   });
-    // }
+addAnalyticsListener({
+  method: anonymousLoanInsert,
+  func: ({ analytics, result: loanId }) => {
+    const {
+      anonymous,
+      purchaseType,
+      properties = [],
+      promotions = [],
+      name: loanName,
+    } = LoanService.get(loanId, {
+      anonymous: 1,
+      purchaseType: 1,
+      properties: { _id: 1 },
+      promotions: { name: 1 },
+      name: 1,
+      hasStartedOnboarding: 1,
+    });
+
+    const params = {
+      loanId,
+      loanName,
+      propertyId: properties?.[0]?._id,
+      promotionId: promotions?.[0]?._id,
+      promotionName: promotions?.[0]?.name,
+      purchaseType,
+      anonymous,
+    };
+
+    analytics.track(EVENTS.STARTED_ONBOARDING, params);
   },
 });
 
