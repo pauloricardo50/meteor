@@ -37,10 +37,7 @@ const formatRevenue = revenue => {
   const user = loan ? loan.user : insuranceRequest?.user;
   const name = loan
     ? loan.name
-    : insuranceRequest?.name
-        ?.split('-')
-        ?.slice(0, 2)
-        ?.join('-');
+    : insuranceRequest?.name?.split('-')?.slice(0, 2)?.join('-');
 
   return { ...revenue, user, name };
 };
@@ -112,6 +109,7 @@ const ProRevenuesTable = () => {
     },
     [proCommissionStatus],
   );
+
   // Do this because revenues can be null
   const formattedRevenues = (revenues || []).map(formatRevenue);
 

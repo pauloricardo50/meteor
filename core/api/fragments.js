@@ -373,7 +373,7 @@ export const proLoans = () => ({
 
 export const proLoanWithRevenues = () => ({
   ...proLoans(),
-  revenues: { amount: 1 },
+  revenues: { amount: 1, organisationLinks: 1 },
   // TODO: Use structureCache instead
   selectedStructure: 1,
   structures: {
@@ -943,7 +943,10 @@ export const proRevenue = () => ({
   loan: {
     name: 1,
     status: 1,
-    user: { name: 1, referredByUser: { name: 1, mainOrganisation: 1 } },
+    user: {
+      name: 1,
+      referredByUser: { name: 1, mainOrganisation: 1 },
+    },
   },
   insurance: {
     name: 1,
@@ -953,7 +956,10 @@ export const proRevenue = () => ({
   insuranceRequest: {
     name: 1,
     status: 1,
-    user: { name: 1, referredByUser: { name: 1, mainOrganisation: 1 } },
+    user: {
+      name: 1,
+      referredByUser: { name: 1, mainOrganisation: 1 },
+    },
   },
   organisationLinks: 1,
   paidAt: 1,
