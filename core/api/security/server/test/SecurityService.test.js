@@ -198,7 +198,7 @@ describe('Security service', () => {
           userId,
           collection: PROPERTIES_COLLECTION,
         }),
-      ).to.throw('Checking ownership');
+      ).to.throw('property update not allowed');
     });
 
     it('lets an admin modify promotion files', () => {

@@ -1258,6 +1258,18 @@ class LoanService extends CollectionService {
     });
   }
 
+  startedOnboarding({ loanId }) {
+    const { hasStartedOnboarding } = this.get(loanId, {
+      hasStartedOnboarding: 1,
+    });
+
+    if (hasStartedOnboarding) {
+      return;
+    }
+
+    return this._update({ id: loanId, object: { hasStartedOnboarding: true } });
+  }
+
   setBorrowers({ loanId, amount }) {
     const { borrowers = [] } = this.get(loanId, { borrowers: { _id: 1 } });
 

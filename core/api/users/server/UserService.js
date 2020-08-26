@@ -503,7 +503,7 @@ export class UserServiceClass extends CollectionService {
 
       loanIds = [
         ...loanIds,
-        ...PropertyService.inviteUser({
+        PropertyService.inviteUser({
           propertyIds: internalPropertyIds,
           userId,
           shareSolvency,

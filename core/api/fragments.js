@@ -286,6 +286,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   user: appUser(),
   userFormsEnabled: 1,
   maxPropertyValue: userMaxPropertyValue,
+  hasStartedOnboarding: 1,
   ...(withFilteredPromotions
     ? {
         promotions: {

@@ -54,6 +54,7 @@ const loanFragment = merge({}, calculatorLoan(), {
   step: 1,
   userCache: 1,
   userFormsEnabled: 1,
+  hasStartedOnboarding: 1,
 });
 
 const withUserLoan = withSmartQuery({
