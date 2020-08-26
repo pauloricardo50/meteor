@@ -810,13 +810,10 @@ jobs:
           path: ./e2e-results
       - store_artifacts:
           path: ./e2e-results
-  Www - deploy:
+  Www2 - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
     steps:
-      - add_ssh_keys
-      - setup_remote_docker:
-          version: 19.03.12
       - restore_cache:
           name: Restore source
           keys:
@@ -824,71 +821,44 @@ jobs:
             - 'source_master_18-{{ .Branch }}-'
             - source_master_18-
       - restore_cache:
+          name: Restore global cache
+          keys:
+            - 'global_master_18_2-{{ checksum "./package-lock.json" }}'
+            - global_master_18_2-
+      - restore_cache:
           name: Restore node_modules
           keys:
             - 'node_modules_master_18_{{ checksum "./package-lock.json" }}'
       - restore_cache:
-          name: Restore meteor microservice
+          name: Restore gatsby website
           keys:
-            - >-
-              meteor_microservice_master_18_www_e2e-{{ .Branch }}-{{ .Revision
-              }}
-            - 'meteor_microservice_master_18_www_e2e-{{ .Branch }}-'
-            - meteor_microservice_master_18_www_e2e-
-      - restore_cache:
-          name: Restore minifier cache
-          keys:
-            - 'minifier_microservice_master_18_www-{{ .Branch }}-{{ .Revision }}'
-            - 'minifier_microservice_master_18_www-{{ .Branch }}-'
-            - minifier_microservice_master_18_www-
+            - 'source_master_18-{{ .Branch }}-{{ .Revision }}'
+            - 'source_master_18-{{ .Branch }}-'
+            - source_master_18-
       - run:
-          name: Install meteor
-          command: ./scripts/circleci/install_meteor.sh
-      - run:
-          name: Install GCloud
+          name: Setup Microservice
           command: |2-
 
-                  cd ~
-                  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-                  apt-get install apt-transport-https ca-certificates gnupg
-                  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-                  apt-get update && apt-get install -y google-cloud-sdk
-
-                  echo "$GCLOUD_SDK_KEY" > ./gcloud-key.json
-                  gcloud auth activate-service-account  --key-file=./gcloud-key.json
-                  rm ./gcloud-key.json
-                
-      - run:
-          name: Install Docker
-          command: 'wget -qO- https://get.docker.com/ | sh'
+                     cd scripts
+                     bash setup-microservice.sh www2
+                    
       - run:
           name: Deploy
           command: |2-
 
-                    cd deploy
-                    ENVIRONMENT="staging"
+                      wget -qO- 'https://cli.netlify.com/download/latest/linux' | tar xz
+                      mv ./netlifyctl /usr/local/bin
+                      cd microservices/www2
 
-                    if [ "$CIRCLE_BRANCH" = "staging" ]; then
-                      ENVIRONMENT="staging"
-                    elif [ "$CIRCLE_BRANCH" = "master" ]; then
-                      ENVIRONMENT="prod"
-                    else
-                      echo "Deployments not configured for this branch"
-                      exit 1
-                    fi
-
-                    # Uses the fingerprint as the name
-                    mv ~/.ssh/id_rsa_02c8ca4cac313d6026c95416de40b8b8 ~/.ssh/epotek
-                    node run-all -e $ENVIRONMENT --apps www validate
-                    node run-all -e $ENVIRONMENT --apps www deploy
-                  
-          no_output_timeout: 30m
-      - save_cache:
-          name: Save minifier cache
-          key: 'minifier_microservice_master_18_www-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - >-
-              ./microservices/www/.meteor/local/plugin-cache/zodern_standard-minifier-js
+                      if [ "$CIRCLE_BRANCH" = "staging" ]; then
+                        npm run deploy-draft -- -A "$NETLIFY_ACCESS_TOKEN"
+                      elif [ "$CIRCLE_BRANCH" = "master" ]; then
+                        npm run deploy -- -A "$NETLIFY_ACCESS_TOKEN"
+                      else
+                        echo "Deployments not configured for this branch"
+                        exit 1
+                      fi
+                    
   App - deploy:
     working_directory: /home/circleci/app
     docker: *ref_0
@@ -1261,4 +1231,8 @@ workflows:
           filters: *ref_2
       - Backend - deploy:
           requires: *ref_1
+          filters: *ref_2
+      - Www2 - deploy:
+          requires:
+            - Prepare
           filters: *ref_2
