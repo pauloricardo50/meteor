@@ -41,7 +41,7 @@ const SideNavUser = ({ style, fixed, closeDrawer, loan }) => {
     currentLoan = loans.find(r => r._id === loanId);
   }
 
-  if (currentLoan && !currentLoan.hasCompletedOnboarding) {
+  if (loan && !loan.hasCompletedOnboarding) {
     // This avoids a race condition, where the user has not yet been redirected
     // to the onboarding page, so it briefly shows the full side nav, which is bad
     return emptySideNav;

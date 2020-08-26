@@ -17,7 +17,7 @@ export const PropertyMiniature = ({ property }) => {
       title={address1}
       subtitle={<Money value={totalValue} />}
       imageUrl={imageUrls?.[0]}
-      link={createRoute(appRoutes.PRO_PROPERTY_PAGE.path, { propertyId })}
+      link={createRoute(appRoutes.APP_PRO_PROPERTY_PAGE.path, { propertyId })}
     />
   );
 };

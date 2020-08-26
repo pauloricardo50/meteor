@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { hasStartedOnboarding } from './onboardingHelpers';
+import { loanUpdate } from 'core/api/loans/methodDefinitions';
+
 import OnboardingWithLoan from './OnboardingWithLoan';
 import OnboardingWithoutLoan from './OnboardingWithoutLoan';
 
@@ -15,7 +16,16 @@ const OnboardingPage = ({ loan }) => {
     return (
       <OnboardingWithoutLoan
         promotion={loan.promotions[0]}
-        onStart={() => setHasSeenInitialScreen(true)}
+        onStart={purchaseType => {
+          if (purchaseType) {
+            loanUpdate
+              .run({ loanId: loan._id, object: { purchaseType } })
+              .then(() => setHasSeenInitialScreen(true));
+          } else {
+            setHasSeenInitialScreen(true);
+          }
+        }}
+        loanId={loan._id}
       />
     );
   }

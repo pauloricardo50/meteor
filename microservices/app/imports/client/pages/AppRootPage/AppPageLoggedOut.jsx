@@ -64,7 +64,7 @@ const AppPageLoggedOut = () => {
   if (searchParams['property-id']) {
     return (
       <Redirect
-        to={createRoute(appRoutes.PRO_PROPERTY_PAGE.path, {
+        to={createRoute(appRoutes.APP_PRO_PROPERTY_PAGE.path, {
           propertyId: searchParams['property-id'],
         })}
       />

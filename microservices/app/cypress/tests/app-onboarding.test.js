@@ -26,6 +26,10 @@ describe.only('App onboarding', () => {
     cy.checkConnection();
   });
 
+  afterEach(() => {
+    // cy.callMethod('resetDatabase');
+  });
+
   describe('onboarding flows', () => {
     it('should go through onboarding and create an account', () => {
       cy.callMethod('generateScenario', {
@@ -257,7 +261,7 @@ describe.only('App onboarding', () => {
     cy.contains('Acheter un nouveau bien').should('exist');
     cy.contains('Je recherche encore un logement').should('exist');
 
-    cy.get('.logo-home').click();
+    cy.get('.onboarding-side-nav .logo-home').click();
     cy.get('.loan-card').should('have.length', 2);
   });
 
@@ -336,7 +340,7 @@ describe.only('App onboarding', () => {
     });
   });
 
-  it.only('should not route to an existing loan if a new property is expected', () => {
+  it('should not route to an existing loan if a new property is expected', () => {
     cy.callMethod('generateScenario', {
       scenario: {
         users: {
@@ -354,17 +358,14 @@ describe.only('App onboarding', () => {
     cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
     cy.routeTo('/');
     cy.url().should('include', '/loans/');
-    cy.get('[type="checkbox"]').check();
 
-    // cy.contains('Démarrer').click();
+    cy.contains('button', 'Acheter un nouveau bien').click();
 
-    // cy.routeTo(`/?property-id=proPropertyId`);
-    // cy.contains('Chemin Auguste-Vilbert 14').should('exist');
-    // cy.contains('Démarrer').click();
-    // cy.url().should('include', '/loans/');
+    cy.routeTo(`/?property-id=proPropertyId`);
+    cy.contains('Chemin Auguste-Vilbert 14').should('exist');
 
-    // cy.get('.logo-home').click();
-
-    // cy.get('.loan-card').should('have.length', 2);
+    cy.contains('Ajouter ce bien').click();
+    cy.url().should('include', '/loans/');
+    cy.contains('Chemin Auguste-Vilbert 14').should('exist');
   });
 });

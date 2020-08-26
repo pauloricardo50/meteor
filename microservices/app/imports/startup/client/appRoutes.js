@@ -7,6 +7,7 @@ import PasswordResetPage from 'core/components/PasswordResetPage/loadable';
 
 import AppAccountPage from '../../client/pages/AppAccountPage/loadable';
 import AppPromotionPage from '../../client/pages/AppPromotionPage/loadable';
+import AppProPropertyPage from '../../client/pages/AppProPropertyPage/loadable';
 import AppRootPage from '../../client/pages/AppRootPage'; // No loadable here, this should load instantly
 import BorrowersPage from '../../client/pages/BorrowersPage/loadable';
 import DashboardPage from '../../client/pages/DashboardPage/loadable';
@@ -16,7 +17,6 @@ import OnboardingPage from '../../client/pages/OnboardingPage';
 import PromotionPage from '../../client/pages/PromotionPage/loadable';
 import ProPage from '../../client/pages/ProPage/loadable';
 import PropertiesPage from '../../client/pages/PropertiesPage/loadable';
-import ProPropertyPage from '../../client/pages/ProPropertyPage/loadable';
 import RefinancingPage from '../../client/pages/RefinancingPage/loadable';
 import SignupSuccessPage from '../../client/pages/SignupSuccessPage/loadable';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
@@ -88,9 +88,9 @@ export default {
     path: '/pro',
     component: ProPage,
   },
-  PRO_PROPERTY_PAGE: {
+  APP_PRO_PROPERTY_PAGE: {
     path: '/properties/:propertyId',
-    component: ProPropertyPage,
+    component: AppProPropertyPage,
   },
   PROMOTION_PAGE: {
     path: '/promotions/:promotionId/:tabId?',

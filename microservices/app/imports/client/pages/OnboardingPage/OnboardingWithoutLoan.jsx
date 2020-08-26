@@ -112,7 +112,14 @@ const OnboardingWithoutLoan = ({ promotion, onStart }) => {
                     type === PURCHASE_TYPE.ACQUISITION ? 'primary' : 'secondary'
                   }
                   loading={loading}
-                  onClick={() => handleInsert(PURCHASE_TYPE[type])}
+                  onClick={() => {
+                    if (onStart) {
+                      setLoading(true);
+                      onStart(PURCHASE_TYPE[type]);
+                    } else {
+                      handleInsert(PURCHASE_TYPE[type]);
+                    }
+                  }}
                 >
                   <T id={`OnboardingWithoutLoan.${type}`} />
                 </Button>
