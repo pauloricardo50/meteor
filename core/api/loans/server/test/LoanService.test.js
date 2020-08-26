@@ -1686,11 +1686,11 @@ describe('LoanService', function () {
       expect(
         LoanService.get(
           {},
-          { anonymous: 1, displayWelcomeScreen: 1, referralId: 1 },
+          { anonymous: 1, hasStartedOnboarding: 1, referralId: 1 },
         ),
       ).to.deep.include({
         anonymous: true,
-        displayWelcomeScreen: false,
+        hasStartedOnboarding: true,
         referralId: 'someId',
       });
     });

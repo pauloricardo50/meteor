@@ -149,11 +149,9 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
     case STEPS.OFFERS:
       loan.step = STEPS.OFFERS;
       loan.loanTranches = [{ value: 750000, type: 'interest10' }];
-      loan.displayWelcomeScreen = false;
       break;
     case STEPS.REQUEST:
       loan.step = STEPS.REQUEST;
-      loan.displayWelcomeScreen = false;
       break;
     default:
       loan.step = STEPS.SOLVENCY;

@@ -22,7 +22,6 @@ import SignupSuccessPage from '../../client/pages/SignupSuccessPage/loadable';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
 import SolvencyPage from '../../client/pages/SolvencyPage/loadable';
 import UserLoansPage from '../../client/pages/UserLoansPage/loadable';
-import WelcomePage from '../../client/pages/WelcomePage/loadable';
 
 export default {
   USER_LOANS_PAGE: {
@@ -63,10 +62,6 @@ export default {
   APP_PROMOTION_PAGE: {
     path: '/loans/:loanId/promotions/:promotionId/:tabId?',
     component: AppPromotionPage,
-  },
-  WELCOME_PAGE: {
-    path: '/loans/:loanId/welcome',
-    component: WelcomePage,
   },
   SOLVENCY_PAGE: {
     path: '/loans/:loanId/solvency',

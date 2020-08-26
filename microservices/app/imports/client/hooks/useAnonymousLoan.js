@@ -28,7 +28,7 @@ const useAnonymousLoan = fragment => {
     }
   }, [anonymousLoanId, anonymousLoan, loading]);
 
-  return { anonymousLoan, loading };
+  return { anonymousLoan, loading, setAnonymousLoanId };
 };
 
 export default useAnonymousLoan;

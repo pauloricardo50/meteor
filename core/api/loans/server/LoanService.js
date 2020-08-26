@@ -474,6 +474,7 @@ class LoanService extends CollectionService {
       referralId,
       anonymous,
       assigneeLinks,
+      hasStartedOnboarding,
     } = this.get(loanId, {
       referralId: 1,
       properties: { loans: { _id: 1 }, address1: 1, category: 1 },
@@ -484,6 +485,7 @@ class LoanService extends CollectionService {
       },
       anonymous: 1,
       assigneeLinks: 1,
+      hasStartedOnboarding: 1,
     });
     const user = UserService.get(userId, {
       assignedEmployee: { name: 1 },
@@ -519,8 +521,9 @@ class LoanService extends CollectionService {
       object: {
         userId,
         anonymous: false,
-        // If the loan was anonymous before, don't show welcome screen again
-        displayWelcomeScreen: anonymous ? false : undefined,
+        // If the loan was anonymous before, don't show onboarding start screen again,
+        // as this method call has been initiated by the user himself
+        hasStartedOnboarding: anonymous ? true : hasStartedOnboarding,
       },
     });
     this.update({ loanId, object: { referralId: true }, operator: '$unset' });
