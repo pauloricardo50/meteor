@@ -1,4 +1,6 @@
 {
+  "FinancingHeaderActions.removeDescriptionDisabled": "Vous ne pouvez pas supprimer un plan financier verrouillé",
+  "FinancingHeaderActions.removeDescriptionSelected": "Vous ne pouvez pas supprimer le plan financier choisi",
   "PromotionReservationDeadline.epotekRejected": "Dossier refusé",
   "PromotionReservationDeadline.epotekRejected.description": "La solvabilité du client n’a pas pu être validée sur la base des éléments échangés.",
   "PromotionReservationDeadline.bankRejected": "Dossier refusé",
