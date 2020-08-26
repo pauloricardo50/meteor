@@ -1,6 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StringParam, useQueryParam } from 'use-query-params';
 
+import {
+  analyticsOnboardingStep,
+  analyticsStartedOnboarding,
+} from 'core/api/analytics/methodDefinitions';
 import useMedia from 'core/hooks/useMedia';
 
 import { getOnBoardingFlow, getSteps } from './onboardingHelpers';
@@ -11,6 +15,14 @@ export const useOnboarding = () => useContext(Context);
 
 const getCurrentTodoStep = steps =>
   steps.find(({ done }) => !done)?.id || 'result';
+
+const getPreviousStep = (steps, activeStep) => {
+  const previousSteps = [...steps].splice(
+    0,
+    steps.findIndex(({ id }) => id === activeStep),
+  );
+  return previousSteps.filter(({ done }) => done).slice(-1)?.[0]?.id;
+};
 
 const withOnboardingContext = Component => ({ loan }) => {
   const steps = getSteps(loan).map(step => ({
@@ -26,9 +38,34 @@ const withOnboardingContext = Component => ({ loan }) => {
   const isMobile = useMedia({ maxWidth: 768 });
   const nextStepId = stepIds[stepIds.findIndex(id => id === activeStep) + 1];
   const [showDrawer, setShowDrawer] = useState(false);
+  const [latestStep, setLatestStep] = useState();
+
+  useEffect(() => {
+    if (!loan?.hasStartedOnboarding) {
+      const previousStep = getPreviousStep(steps, activeStep);
+      analyticsStartedOnboarding.run({
+        loanId: loan?._id,
+        activeStep,
+        previousStep,
+      });
+    }
+  }, []);
+
+  // Triggered when user lands on a step
+  useEffect(() => {
+    const previousStep = getPreviousStep(steps, activeStep);
+    analyticsOnboardingStep.run({
+      loanId: loan?._id,
+      activeStep,
+      currentTodoStep,
+      latestStep,
+      previousStep,
+    });
+  }, [activeStep]);
 
   const handleNextStep = () => {
     if (activeStep !== 'result') {
+      setLatestStep(nextStepId);
       setActiveStep(nextStepId);
     }
   };

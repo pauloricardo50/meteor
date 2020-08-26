@@ -3,7 +3,6 @@ import '/imports/core/lib/test/server/lib.test.js';
 import '/imports/core/lib/server/serverTestSetup.test.js';
 import '/imports/core/lib/testInit.test.js';
 import '/imports/core/api/email/server/test/emailSetup.test.js';
-
 // Server only tests
 import '/imports/core/api/RESTAPI/server/endpoints/zipLoan/test/FilesBinPacker.test.js';
 import '/imports/core/api/RESTAPI/server/endpoints/zipLoan/test/zipLoan.test.js';
@@ -38,6 +37,7 @@ import '/imports/core/api/activities/server/test/toggleAccountListener.test.js';
 import '/imports/core/api/activities/server/test/userPasswordResetListener.test.js';
 import '/imports/core/api/activities/server/test/userVerifyEmailListener.test.js';
 import '/imports/core/api/analytics/server/test/Analytics.test.js';
+import '/imports/core/api/analytics/server/test/analyticsListeners.test.js';
 import '/imports/core/api/borrowers/server/test/BorrowerService.test.js';
 import '/imports/core/api/checklists/server/test/ChecklistService.test.js';
 import '/imports/core/api/commissionRates/server/test/CommissionRateService.test.js';
@@ -101,10 +101,10 @@ import '/imports/core/api/migrations/server/test/39.test.js';
 import '/imports/core/api/migrations/server/test/4.test.js';
 import '/imports/core/api/migrations/server/test/40.test.js';
 import '/imports/core/api/migrations/server/test/41.test.js';
+import '/imports/core/api/migrations/server/test/42.test.js';
 import '/imports/core/api/migrations/server/test/5.test.js';
 import '/imports/core/api/migrations/server/test/6.test.js';
 import '/imports/core/api/migrations/server/test/7.test.js';
-import '/imports/core/api/migrations/server/test/8.test.js';
 import '/imports/core/api/migrations/server/test/9.test.js';
 import '/imports/core/api/monitoring/server/test/monitoring.test.js';
 import '/imports/core/api/mortgageNotes/server/test/MortgageNoteService.test.js';
