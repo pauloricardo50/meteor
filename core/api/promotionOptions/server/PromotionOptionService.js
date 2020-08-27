@@ -28,18 +28,14 @@ class PromotionOptionService extends CollectionService {
   constructor() {
     super(PromotionOptions, {
       autoValues: {
-        'reservationAgreement.startDate': function() {
+        'reservationAgreement.startDate': function () {
           if (this.isSet && this.value) {
-            return moment(this.value)
-              .startOf('day')
-              .toDate();
+            return moment(this.value).startOf('day').toDate();
           }
         },
-        'reservationAgreement.expirationDate': function() {
+        'reservationAgreement.expirationDate': function () {
           if (this.isSet && this.value) {
-            return moment(this.value)
-              .endOf('day')
-              .toDate();
+            return moment(this.value).endOf('day').toDate();
           }
         },
         priorityOrder() {
@@ -449,6 +445,19 @@ class PromotionOptionService extends CollectionService {
           status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
         });
       }
+
+      if (
+        id === 'bank' &&
+        object.status.valueOf() !==
+          PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS
+      ) {
+        this._update({
+          id: promotionOptionId,
+          object: { 'bank.conditions': 1 },
+          operator: '$unset',
+        });
+      }
+
       return {
         prevStatus: model.status,
         nextStatus: object.status,
@@ -459,10 +468,7 @@ class PromotionOptionService extends CollectionService {
   }
 
   getExpiringReservations = () => {
-    const yesterdayNight = moment()
-      .subtract(1, 'day')
-      .endOf('day')
-      .toDate();
+    const yesterdayNight = moment().subtract(1, 'day').endOf('day').toDate();
 
     return this.fetch({
       $filters: {
@@ -494,9 +500,7 @@ class PromotionOptionService extends CollectionService {
     const expiringSoon = this.fetch({
       $filters: {
         'reservationAgreement.expirationDate': {
-          $gte: moment()
-            .endOf('day')
-            .toDate(),
+          $gte: moment().endOf('day').toDate(),
           $lte: tomorrow.endOf('day').toDate(),
         },
         status: PROMOTION_OPTION_STATUS.RESERVATION_ACTIVE,
