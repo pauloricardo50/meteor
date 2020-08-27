@@ -11,7 +11,7 @@ export const initCalc = ({
   Calculator: InitializedCalculator,
 }) => {
   if (offer?._id) {
-    const { organisation } = Calculator.selectLenderForOfferId({
+    const lender = Calculator.selectLenderForOfferId({
       loan,
       offerId: offer._id,
     });
@@ -19,7 +19,7 @@ export const initCalc = ({
     return new CalculatorClass({
       loan,
       structureId,
-      lenderRules: organisation.lenderRules,
+      lenderRules: lender.organisation.lenderRules,
     });
   }
 

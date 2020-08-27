@@ -210,13 +210,18 @@ describe('FinancingResult', () => {
             category: PROPERTY_CATEGORY.USER,
           },
         ],
-        offers: [
+        lenders: [
           {
-            _id: 'offer',
-            interest2: 0.02,
-            interestLibor: 0.01,
-            amortizationGoal: 0.5,
-            amortizationYears: 5,
+            organisation: { name: 'yo' },
+            offers: [
+              {
+                _id: 'offer',
+                interest2: 0.02,
+                interestLibor: 0.01,
+                amortizationGoal: 0.5,
+                amortizationYears: 5,
+              },
+            ],
           },
         ],
         currentInterestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
