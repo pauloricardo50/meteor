@@ -1,4 +1,8 @@
 {
+  "PasswordResetPage.passwordCriterion.correctLength": "Au moins 8 caractères",
+  "PasswordResetPage.passwordCriterion.atLeastOneLetter": "Au moins 1 lettre",
+  "PasswordResetPage.passwordCriterion.atLeastOneDigit": "Au moins 1 chiffre",
+  "PasswordResetPage.passwordCriterion.passwordMatch": "Mots de passe identiques",
   "files.category.ADMIN": "Documents Admin",
   "files.ADMIN": "Admin",
   "files.ADMIN.tooltip": "Accessibles uniquement aux conseillers",

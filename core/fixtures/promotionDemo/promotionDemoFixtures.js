@@ -120,7 +120,7 @@ const createUsers = ({
       role: ROLES.USER,
       options: {
         email: user.email,
-        password: '12345678',
+        password: '12345678abc',
       },
     });
 
