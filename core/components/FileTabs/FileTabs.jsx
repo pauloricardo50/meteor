@@ -214,19 +214,12 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
                         loan={loan}
                         withAdditionalDocAdder={false}
                         handleSuccess={({ Key }) =>
-                          setFileRoles
-                            .run({
-                              Key,
-                              roles: [FILE_ROLES.ADMIN],
-                              docId: loan._id,
-                              collection: loan._collection,
-                            })
-                            .then(() =>
-                              updateDocumentsCache.run({
-                                docId: loan._id,
-                                collection: loan._collection,
-                              }),
-                            )
+                          setFileRoles.run({
+                            Key,
+                            roles: [FILE_ROLES.ADMIN],
+                            docId: loan._id,
+                            collection: loan._collection,
+                          })
                         }
                       />
                     ),
