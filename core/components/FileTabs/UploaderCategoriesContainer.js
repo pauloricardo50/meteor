@@ -25,8 +25,11 @@ const makeDocumentsForCategoryObject = ({
   }),
 });
 
-const getOtherDocuments = documents =>
+const getOtherDocuments = (documents, ignoreDocuments) =>
   documents.filter(({ id, category: docCategory }) => {
+    if (ignoreDocuments.includes(id)) {
+      return false;
+    }
     if (docCategory) {
       return (
         docCategory === 'OTHER' ||
@@ -40,24 +43,39 @@ const getOtherDocuments = documents =>
     return !docIsInList;
   });
 
-const makeOtherDocumentsObject = ({ documentsToDisplay, documentsToHide }) => ({
-  documentsToDisplay: getOtherDocuments(documentsToDisplay),
-  documentsToHide: getOtherDocuments(documentsToHide),
+const makeOtherDocumentsObject = ({
+  documentsToDisplay,
+  documentsToHide,
+  ignoreDocuments,
+}) => ({
+  documentsToDisplay: getOtherDocuments(documentsToDisplay, ignoreDocuments),
+  documentsToHide: getOtherDocuments(documentsToHide, ignoreDocuments),
 });
 
-export default withProps(({ documentsToDisplay, documentsToHide }) => ({
-  categories: {
-    ...Object.keys(DOCUMENTS_CATEGORIES).reduce(
-      (categories, category) => ({
-        ...categories,
-        [category]: makeDocumentsForCategoryObject({
-          documentsToDisplay,
-          documentsToHide,
-          category,
+export default withProps(
+  ({
+    documentsToDisplay,
+    documentsToHide,
+    categories,
+    ignoreDocuments = [],
+  }) => ({
+    categories: categories || {
+      ...Object.keys(DOCUMENTS_CATEGORIES).reduce(
+        (cats, category) => ({
+          ...cats,
+          [category]: makeDocumentsForCategoryObject({
+            documentsToDisplay,
+            documentsToHide,
+            category,
+          }),
         }),
+        {},
+      ),
+      OTHER: makeOtherDocumentsObject({
+        documentsToDisplay,
+        documentsToHide,
+        ignoreDocuments,
       }),
-      {},
-    ),
-    OTHER: makeOtherDocumentsObject({ documentsToDisplay, documentsToHide }),
-  },
-}));
+    },
+  }),
+);

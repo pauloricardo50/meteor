@@ -155,9 +155,7 @@ const addMeteorProps = withProps(
           .run({ fileKey: Key, newStatus })
           .then(() => updateDocumentsCache.run({ docId, collection })),
       handleSetRoles: (Key, roles = []) =>
-        setFileRoles
-          .run({ Key, roles, docId, collection })
-          .then(() => updateDocumentsCache.run({ docId, collection })),
+        setFileRoles.run({ Key, roles, docId, collection }),
       draggable: true,
       allowStatusChange: true,
       allowSetRoles,

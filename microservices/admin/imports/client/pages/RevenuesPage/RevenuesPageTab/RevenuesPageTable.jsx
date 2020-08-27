@@ -16,8 +16,8 @@ import { revenuesFilter } from './revenuePageHelpers';
 
 const RevenuesPageTable = () => {
   const [type, setType] = useState();
-  const [assignee, setAssignee] = useState(null);
-  const [referrer, setReferrer] = useState(null);
+  const [assignee, setAssignee] = useState();
+  const [referrer, setReferrer] = useState();
   const [status, setStatus] = useState({ $in: [REVENUE_STATUS.EXPECTED] });
   const options = Object.values(REVENUE_STATUS).map(s => ({
     id: s,
@@ -29,7 +29,11 @@ const RevenuesPageTable = () => {
     loading: orgLoading,
   } = useStaticMeteorData({
     query: ORGANISATIONS_COLLECTION,
-    params: { $filters: { referredUsersCount: { $gte: 1 } }, name: 1 },
+    params: {
+      $filters: { referredUsersCount: { $gte: 1 } },
+      name: 1,
+      $options: { sort: { name: 1 } },
+    },
   });
 
   return (
