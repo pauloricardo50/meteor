@@ -5,7 +5,7 @@ import BorrowerService from '../../borrowers/server/BorrowerService';
 export const up = () => {
   const borrowers = BorrowerService.fetch({
     $filters: { childrenCount: { $exists: true } },
-    bankFortune: 1,
+    childrenCount: 1,
   });
 
   return Promise.all(
