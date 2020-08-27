@@ -207,6 +207,11 @@ const LoanSchema = new SimpleSchema({
   'closingChecklistLinks.$': Object,
   'closingChecklistLinks.$._id': String,
   showClosingChecklists: { type: Boolean, defaultValue: false },
+  adminAnalysis: {
+    type: String,
+    optional: true,
+    uniforms: { multiline: true, rows: 5, label: 'Analyse', placeholder: ' ' },
+  },
 });
 
 export default LoanSchema;

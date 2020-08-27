@@ -5,7 +5,7 @@ import { setLoanStep } from 'core/api/loans/methodDefinitions';
 import UpdateField from 'core/components/UpdateField';
 import { shouldSendStepNotification } from 'core/utils/loanFunctions';
 
-const LoanStepSetter = ({ loan }) => {
+const LoanStepSetter = ({ loan, ...props }) => {
   const { _id: loanId, step } = loan;
 
   return (
@@ -30,6 +30,7 @@ const LoanStepSetter = ({ loan }) => {
         location.reload();
         return Promise.resolve();
       }}
+      {...props}
     />
   );
 };
