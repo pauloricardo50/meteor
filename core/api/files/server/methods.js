@@ -131,7 +131,7 @@ setFileRoles.setHandler(({ userId }, { docId, collection, Key, roles }) => {
     fileKey: Key,
     userId,
   });
-  return FileService.setFileRoles({ Key, roles });
+  return FileService.setFileRoles({ Key, roles, docId, collection });
 });
 
 handleSuccessfulUpload.setHandler(

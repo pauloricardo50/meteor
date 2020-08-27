@@ -28,6 +28,7 @@ const RevenuesToPay = ({ _id: organisationId }) => {
           'sourceOrganisationLink._id': organisationId,
           status,
         })}
+        deps={[status]}
       />
     </>
   );

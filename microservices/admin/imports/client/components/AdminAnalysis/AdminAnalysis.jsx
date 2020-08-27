@@ -11,6 +11,7 @@ const AdminAnalysis = ({ loan, ...props }) => (
     onSubmit={({ adminAnalysis }) =>
       loanUpdate.run({ loanId: loan._id, object: { adminAnalysis } })
     }
+    submitFieldProps={{ label: 'Sauver' }}
     {...props}
   />
 );
