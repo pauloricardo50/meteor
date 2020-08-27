@@ -10,6 +10,7 @@ import { toMoney } from 'core/utils/conversionFunctions';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 import LoanStatusModifier from './LoanStatusModifier/LoanStatusModifier';
 import SingleLoanPageCustomName from './SingleLoanPageCustomName';
+import SingleLoanPageHeaderPromotion from './SingleLoanPageHeaderPromotion';
 
 const getUserName = ({ anonymous, userCache, category }) => {
   if (anonymous) {
@@ -36,7 +37,7 @@ const SingleLoanPageHeader = ({
   withPdf = true,
   withCustomName = true,
 }) => {
-  const { userCache, status, name } = loan;
+  const { userCache, name } = loan;
   const userName = getUserName(loan);
   const loanValue = Calculator.selectLoanValue({ loan });
 
@@ -62,9 +63,7 @@ const SingleLoanPageHeader = ({
             loanId={loan._id}
           />
         )}
-        {loan.hasPromotion && (
-          <CollectionIconLink relatedDoc={loan.promotions[0]} />
-        )}
+        {loan.hasPromotion && <SingleLoanPageHeaderPromotion loan={loan} />}
         {loan.financedPromotion && (
           <CollectionIconLink relatedDoc={loan.financedPromotion} />
         )}

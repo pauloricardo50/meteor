@@ -9,8 +9,8 @@ const InvitedByAssignDropdown = ({ options, invitedByName }) => (
     <DropdownMenu
       iconType="personAdd"
       options={options}
-      tooltip={<T id="PromotionLotLoansTable.assignInvitedBy" />}
-      buttonProps={{ size: 'small' }}
+      tooltip={<T id="PromotionCustomersTable.assignInvitedBy" />}
+      buttonProps={{ size: 'small', className: 'mr-4' }}
     />
     <span>{invitedByName}</span>
   </div>

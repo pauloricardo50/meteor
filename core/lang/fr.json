@@ -107,6 +107,7 @@
   "PromotionCustomersTable.priorityOrder": "Priorité",
   "PromotionCustomersTable.actions": "Actions",
   "PromotionCustomersTable.invitedBy": "Invité par",
+  "PromotionCustomersTable.assignInvitedBy": "Changer Invité par",
   "Forms.acquisitionChannel.REFERRAL_ORGANIC": "Referral organique",
   "ProRevenuesPage.promotionLoans": "{count} dossiers liés à des promotions immobilières ne sont pas pris en compte dans cette pipeline.",
   "Forms.unsuccessfulReason.NO_ANSWER": "Le client ne répond pas après 3 emails",

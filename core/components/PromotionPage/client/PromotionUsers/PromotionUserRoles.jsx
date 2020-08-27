@@ -47,6 +47,7 @@ const PromotionUserRoles = ({ user }) => {
               size="small"
               onClick={handleOpen}
               tooltip="Modifier rôles"
+              className="mr-4"
             />
           )}
           title={`Changer rôles de ${name} sur ${promotionName}`}

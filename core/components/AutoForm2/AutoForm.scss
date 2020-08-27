@@ -13,4 +13,25 @@
 
 .list-add-field {
   flex: 0 0 auto;
+  align-items: center;
+  align-self: center;
+
+  width: 24px;
+  height: 24px;
+
+  > span {
+    display: block;
+    line-height: 17px;
+  }
+}
+
+.list-del-field {
+  width: 24px;
+  height: 24px;
+  margin-left: 4px;
+
+  > span {
+    display: block;
+    line-height: 17px;
+  }
 }

@@ -59,7 +59,7 @@ export class SessionService extends CollectionService {
 
   isImpersonatedSession(connectionId) {
     const session = this.getByConnectionId(connectionId);
-    return session && session.isImpersonate;
+    return !!session?.isImpersonate;
   }
 
   shareImpersonatedSession(connectionId, share) {

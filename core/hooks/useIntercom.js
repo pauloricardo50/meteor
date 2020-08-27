@@ -112,7 +112,7 @@ const useIntercom = () => {
       delete window.Intercom;
       delete window.intercomSettings;
     };
-  });
+  }, []);
 
   const currentUser = useCurrentUser();
 
