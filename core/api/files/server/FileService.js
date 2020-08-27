@@ -89,10 +89,10 @@ class FileService {
       });
   };
 
-  setFileRoles = ({ Key, roles = [] }) =>
+  setFileRoles = ({ Key, roles = [], docId, collection }) =>
     S3Service.updateMetadata(Key, {
       roles: roles.join(','),
-    });
+    }).then(() => this.updateDocumentsCache({ docId, collection }));
 
   deleteFileAPI = ({ docId, collection, key }) =>
     this.listFilesForDoc(docId)
