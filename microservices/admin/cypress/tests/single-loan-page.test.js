@@ -61,7 +61,7 @@ describe('Single Loan Page', () => {
     cy.contains('En cours').click();
     cy.contains('Closing').click({ force: true });
 
-    cy.contains('Ok').click();
+    cy.contains('Ok').click({ force: true });
     cy.get('.status-label').should('not.contain', 'Prospect');
     cy.get('.status-label').should('contain', 'Closing');
   });
