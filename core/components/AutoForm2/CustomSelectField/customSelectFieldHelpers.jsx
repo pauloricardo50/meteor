@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
+import { makeStyles } from '@material-ui/core/styles';
 import { filterDOMProps } from 'uniforms';
 import { wrapField } from 'uniforms-material';
 
@@ -21,6 +22,13 @@ const xor = (item, array) => {
 
   return array.slice(0, index).concat(array.slice(index + 1));
 };
+
+const useStyles = makeStyles({
+  multiple: {
+    paddingTop: 6.5,
+    paddingBottom: 6.5,
+  },
+});
 
 export const RenderSelect = ({
   allowedValues,
@@ -50,6 +58,7 @@ export const RenderSelect = ({
   variant,
   ...props
 }) => {
+  const classes = useStyles();
   const hasPlaceholder = !!placeholder;
   const hasValue = value !== '' && value !== undefined;
 
@@ -62,6 +71,7 @@ export const RenderSelect = ({
 
     return mapSelectOptions(options, grouping);
   }, [allowedValues]);
+  const multiple = fieldType === Array || undefined;
 
   return (
     <TextField
@@ -82,9 +92,10 @@ export const RenderSelect = ({
       SelectProps={{
         displayEmpty: hasPlaceholder,
         inputProps: { name, ...inputProps },
-        multiple: fieldType === Array || undefined,
+        multiple,
         native,
         MenuProps: { PaperProps: { style: { maxHeight: 400 } } },
+        classes: { root: multiple ? classes.multiple : undefined },
         ...filterDOMProps(props),
       }}
       value={native && !value ? '' : value}
