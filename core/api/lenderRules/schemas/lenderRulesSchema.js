@@ -136,4 +136,14 @@ export const LenderRulesEditorSchema = LenderRulesSchema.pick(
   ...Object.keys(otherParams),
 );
 
+export const lenderRulesParts = [
+  {
+    title: 'Revenus',
+    keys: Object.keys(incomeConsideration),
+  },
+  { title: 'Charges théoriques', keys: Object.keys(theoreticalExpenses) },
+  { title: "Critères d'octroi", keys: Object.keys(cutOffCriteria) },
+  { title: 'Autres', keys: Object.keys(otherParams) },
+];
+
 export default LenderRulesSchema;
