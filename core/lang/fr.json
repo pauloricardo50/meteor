@@ -1,4 +1,8 @@
 {
+  "PasswordResetPage.passwordCriterion.correctLength": "Au moins 8 caractères",
+  "PasswordResetPage.passwordCriterion.atLeastOneLetter": "Au moins 1 lettre",
+  "PasswordResetPage.passwordCriterion.atLeastOneDigit": "Au moins 1 chiffre",
+  "PasswordResetPage.passwordCriterion.passwordMatch": "Mots de passe identiques",
   "FinancingHeaderActions.removeDescriptionDisabled": "Vous ne pouvez pas supprimer un plan financier verrouillé",
   "FinancingHeaderActions.removeDescriptionSelected": "Vous ne pouvez pas supprimer le plan financier choisi",
   "PromotionReservationDeadline.epotekRejected": "Dossier refusé",
