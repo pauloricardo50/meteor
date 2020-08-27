@@ -9,6 +9,11 @@ import PropTypes from 'prop-types';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../api/events/ClientEventService';
+import { FILE_ROLES } from '../../api/files/fileConstants';
+import {
+  setFileRoles,
+  updateDocumentsCache,
+} from '../../api/files/methodDefinitions';
 import { addBorrower } from '../../api/methods/methodDefinitions';
 import { PROPERTY_CATEGORY } from '../../api/properties/propertyConstants';
 import Calculator from '../../utils/Calculator';
@@ -179,9 +184,55 @@ const FileTabs = ({ loan, disabled, currentUser }) => {
                   disabled={disabled}
                   currentUser={currentUser}
                   loan={loan}
+                  ignoreDocuments={['ADMIN']}
                 />
               ),
             },
+            ...(isAdmin
+              ? [
+                  {
+                    label: (
+                      <FileTabLabel
+                        id="FileTabs.admin"
+                        progress={{ percent: 1 }}
+                      />
+                    ),
+                    content: (
+                      <SingleFileTab
+                        documentArray={[{ id: 'ADMIN' }]}
+                        categories={{
+                          ADMIN: {
+                            documentsToDisplay: [{ id: 'ADMIN' }],
+                            documentsToHide: [],
+                          },
+                        }}
+                        withHiddenDocuments={false}
+                        allowRequireByAdmin={false}
+                        doc={loan}
+                        disabled={disabled}
+                        currentUser={currentUser}
+                        loan={loan}
+                        withAdditionalDocAdder={false}
+                        handleSuccess={({ Key }) =>
+                          setFileRoles
+                            .run({
+                              Key,
+                              roles: [FILE_ROLES.ADMIN],
+                              docId: loan._id,
+                              collection: loan._collection,
+                            })
+                            .then(() =>
+                              updateDocumentsCache.run({
+                                docId: loan._id,
+                                collection: loan._collection,
+                              }),
+                            )
+                        }
+                      />
+                    ),
+                  },
+                ]
+              : []),
           ]}
           variant="scrollable"
           scrollButtons="auto"
