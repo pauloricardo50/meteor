@@ -339,6 +339,8 @@ const makeDeployJob = ({ name, job }) => ({
     runCommand(
       'Deploy',
       `
+        export NODE_ENV="production"
+
         cd deploy
         ENVIRONMENT="staging"
 

@@ -914,6 +914,8 @@ jobs:
           name: Deploy
           command: |2-
 
+                    export NODE_ENV="production"
+
                     cd deploy
                     ENVIRONMENT="staging"
 
@@ -995,6 +997,8 @@ jobs:
           name: Deploy
           command: |2-
 
+                    export NODE_ENV="production"
+
                     cd deploy
                     ENVIRONMENT="staging"
 
@@ -1073,6 +1077,8 @@ jobs:
       - run:
           name: Deploy
           command: |2-
+
+                    export NODE_ENV="production"
 
                     cd deploy
                     ENVIRONMENT="staging"
@@ -1154,6 +1160,8 @@ jobs:
       - run:
           name: Deploy
           command: |2-
+
+                    export NODE_ENV="production"
 
                     cd deploy
                     ENVIRONMENT="staging"
