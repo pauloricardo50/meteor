@@ -274,13 +274,17 @@ loanSetStatus.setHandler((context, params) => {
 });
 
 sendLoanChecklist.setHandler(
-  ({ userId }, { loanId, address, emailParams, basicDocumentsOnly }) => {
+  (
+    { userId },
+    { loanId, address, emailParams, basicDocumentsOnly, attachmentKeys },
+  ) => {
     SecurityService.checkUserIsAdmin(userId);
     const {
       email: assigneeAddress,
       name: assigneeName,
     } = UserService.get(userId, { email: 1, name: 1 });
     const loan = LoanService.get(loanId, calculatorLoan());
+
     return sendEmailToAddress.serverRun({
       address,
       emailId: EMAIL_IDS.LOAN_CHECKLIST,
@@ -290,6 +294,7 @@ sendLoanChecklist.setHandler(
         assigneeAddress,
         assigneeName,
         basicDocumentsOnly,
+        attachments: attachmentKeys,
       },
     });
   },

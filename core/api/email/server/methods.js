@@ -7,7 +7,6 @@ import { Method } from '../../methods/methods';
 import SecurityService from '../../security';
 import UserService from '../../users/server/UserService';
 import {
-  getNewsletterStatus,
   subscribeToNewsletter,
   unsubscribeFromNewsletter,
   updateNewsletterProfile,
@@ -21,6 +20,7 @@ export const sendEmail = new Method({
     emailId: String,
     params: Object,
     userId: String,
+    attachmentKeys: Match.Maybe(Array),
   },
 });
 sendEmail.setHandler((context, params) => {
@@ -41,6 +41,7 @@ export const sendEmailToAddress = new Method({
     emailId: String,
     name: Match.Maybe(String),
     params: Object,
+    attachmentKeys: Match.Maybe(Array),
   },
 });
 sendEmailToAddress.setHandler((context, params) => {
