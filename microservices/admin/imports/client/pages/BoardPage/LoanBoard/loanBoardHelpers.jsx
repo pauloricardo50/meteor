@@ -288,7 +288,7 @@ export const additionalLoanBoardFields = [
 export const makeOptionsSelect = ({
   options,
   dispatch,
-  devAndAdmins,
+  admins,
   promotions,
   lenders,
   makeOnChange,
@@ -326,7 +326,7 @@ export const makeOptionsSelect = ({
   const assignedEmployeeOptions = [
     { id: null, label: 'Tous' },
     { id: undefined, label: 'Personne' },
-    ...devAndAdmins.map(admin => ({
+    ...admins.map(admin => ({
       id: admin._id,
       label: admin.firstName,
       hide: Roles.userIsInRole(admin, ROLES.DEV),

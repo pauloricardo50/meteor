@@ -132,7 +132,7 @@ export const groupData = ({ insuranceRequests, options, ...props }) => {
 export const makeOptionsSelect = ({
   options,
   dispatch,
-  devAndAdmins,
+  admins,
   organisations,
   makeOnChange,
 }) => {
@@ -157,7 +157,7 @@ export const makeOptionsSelect = ({
   const assignedEmployeeOptions = [
     { id: null, label: 'Tous' },
     { id: undefined, label: 'Personne' },
-    ...devAndAdmins.map(admin => ({
+    ...admins.map(admin => ({
       id: admin._id,
       label: admin.firstName,
       hide: admin.roles.includes(ROLES.DEV),

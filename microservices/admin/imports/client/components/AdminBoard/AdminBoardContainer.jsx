@@ -36,7 +36,7 @@ export default compose(
     return {
       devAndAdmins,
       admins,
-      devs: admins.filter(user => Roles.userIsInRole(user, ROLES.DEV)),
+      devs: devAndAdmins.filter(user => Roles.userIsInRole(user, ROLES.DEV)),
       currentUser,
     };
   }),
