@@ -13,9 +13,7 @@ const AdminBoardOptionsContent = ({
   dispatch,
   ...props
 }) => {
-  console.log('makeOptionsSelect:', makeOptionsSelect);
   const optionsSelect = makeOptionsSelect({ makeOnChange, dispatch, ...props });
-  console.log('optionsSelect:', optionsSelect);
 
   return (
     <>

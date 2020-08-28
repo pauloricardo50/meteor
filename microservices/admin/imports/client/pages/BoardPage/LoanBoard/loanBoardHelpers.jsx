@@ -31,7 +31,7 @@ import {
   NO_PROMOTION,
 } from './loanBoardConstants';
 
-export const makeSortColumns = ({ groupBy }, { promotions, admins }) => {
+const makeSortColumns = ({ groupBy }, { promotions, admins }) => {
   switch (groupBy) {
     case GROUP_BY.STATUS: {
       const statuses = LOAN_STATUS_ORDER;
@@ -163,12 +163,7 @@ export const makeFormatData = ({ groupBy }) => data => {
   return data;
 };
 
-export const makeFormatColumn = ({
-  groupedLoans,
-  sortBy,
-  sortOrder,
-  groupBy,
-}) => {
+const makeFormatColumn = ({ groupedLoans, sortBy, sortOrder, groupBy }) => {
   const formatData = makeFormatData({ groupBy });
   const sortColumnData = makeSortColumnData({ sortBy, sortOrder, groupBy });
 

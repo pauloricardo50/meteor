@@ -1,5 +1,4 @@
-import { Meteor } from 'meteor/meteor';
-
+import React from 'react';
 import get from 'lodash/get';
 import _groupBy from 'lodash/groupBy';
 import _orderBy from 'lodash/orderBy';
@@ -8,14 +7,15 @@ import {
   INSURANCE_REQUEST_STATUS,
   INSURANCE_REQUEST_STATUS_ORDER,
 } from 'core/api/insuranceRequests/insuranceRequestConstants';
-import { USER_STATUS } from 'core/api/users/userConstants';
+import { ROLES, USER_STATUS } from 'core/api/users/userConstants';
+import T from 'core/components/Translation';
 
 import {
   ACTIONS,
   GROUP_BY,
   SORT_BY,
   SORT_ORDER,
-} from './insuranceRequestBoardConstants';
+} from '../../../components/AdminBoard/AdminBoardConstants';
 
 const insuranceRequestBoardStatusOrder = [
   INSURANCE_REQUEST_STATUS.UNSUCCESSFUL,
@@ -56,7 +56,7 @@ const getMissingColumns = (groupBy, groups) => {
   }
 };
 
-const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
+const makeSortColumnData = ({ sortBy, sortOrder }) => {
   const sortOrders = [sortOrder];
   const sorters = [
     item => {
@@ -74,7 +74,7 @@ const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
   return data => _orderBy(data, sorters, sortOrders);
 };
 
-export const makeFormatColumn = ({
+const makeFormatColumn = ({
   groupedInsuranceRequests,
   sortBy,
   sortOrder,
@@ -91,7 +91,7 @@ export const makeFormatColumn = ({
   };
 };
 
-export const makeSortColumns = ({ groupBy }, { admins }) => {
+const makeSortColumns = ({ groupBy }, { admins }) => {
   switch (groupBy) {
     case GROUP_BY.STATUS: {
       const statuses = INSURANCE_REQUEST_STATUS_ORDER;
@@ -114,11 +114,7 @@ export const makeSortColumns = ({ groupBy }, { admins }) => {
   }
 };
 
-export const groupInsuranceRequests = ({
-  insuranceRequests,
-  options,
-  ...props
-}) => {
+export const groupData = ({ insuranceRequests, options, ...props }) => {
   const { groupBy, sortBy, sortOrder } = options;
   const groupedInsuranceRequests = _groupBy(insuranceRequests, groupBy);
   const groups = Object.keys(groupedInsuranceRequests);
@@ -133,53 +129,105 @@ export const groupInsuranceRequests = ({
   return formattedColumns.sort(makeSortColumns(options, props));
 };
 
-export const filterReducer = (state, { type, payload }) => {
-  switch (type) {
-    case ACTIONS.SET_FILTER: {
-      const { name, value } = payload;
-      return { ...state, [name]: value };
-    }
+export const makeOptionsSelect = ({
+  options,
+  dispatch,
+  devAndAdmins,
+  organisations,
+  makeOnChange,
+}) => {
+  const {
+    assignedEmployeeId,
+    groupBy,
+    status,
+    organisationId,
+    userStatus,
+  } = options;
+  const assignedEmployeeValue = assignedEmployeeId
+    ? assignedEmployeeId.$in
+    : [null];
+  const statusValue = status ? status.$in : [null];
+  const organisationIdValue = organisationId ? organisationId.$in : [null];
+  const userStatusValue = userStatus ? userStatus.$in : [null];
 
-    case ACTIONS.SET_COLUMN_SORT: {
-      const { sortOrder } = state;
-      if (state.sortBy === payload) {
-        return {
-          ...state,
-          sortOrder:
-            sortOrder === SORT_ORDER.ASC ? SORT_ORDER.DESC : SORT_ORDER.ASC,
-        };
-      }
-      return {
-        ...state,
-        sortBy: payload,
-        sortOrder: SORT_ORDER.ASC,
-      };
-    }
+  const groupByOptions = [
+    { id: GROUP_BY.STATUS, label: 'Par statut' },
+    { id: GROUP_BY.ADMIN, label: 'Par conseiller' },
+  ];
+  const assignedEmployeeOptions = [
+    { id: null, label: 'Tous' },
+    { id: undefined, label: 'Personne' },
+    ...devAndAdmins.map(admin => ({
+      id: admin._id,
+      label: admin.firstName,
+      hide: admin.roles.includes(ROLES.DEV),
+    })),
+  ];
+  const statusOptions = [
+    { id: null, label: 'Tous' },
+    ...INSURANCE_REQUEST_STATUS_ORDER.map(s => ({
+      id: s,
+      label: <T id={`Forms.status.${s}`} />,
+    })),
+  ];
 
-    case ACTIONS.SET_GROUP_BY: {
-      const newStatus = { ...state, groupBy: payload };
+  const organisationOptions = [
+    { id: null, label: 'Tous' },
+    ...organisations.map(({ _id, name }) => ({ id: _id, label: name })),
+  ];
 
-      if (payload === GROUP_BY.STATUS) {
-        return { ...newStatus, sortBy: SORT_BY.CREATED_AT };
-      }
-      return {
-        ...newStatus,
-        sortBy: SORT_BY.STATUS,
-        sortOrder: SORT_ORDER.DESC,
-      };
-    }
+  const userStatusOptions = [
+    { id: null, label: 'Tous' },
+    ...Object.values(USER_STATUS).map(s => ({
+      id: s,
+      label: <T id={`Forms.status.${s}`} />,
+    })),
+  ];
 
-    case ACTIONS.SET_INSURANCE_REQUEST_ID:
-      return { ...state, insuranceRequestId: payload };
-
-    case ACTIONS.RESET: {
-      if (payload) {
-        return payload;
-      }
-      return getInitialOptions({ currentUser: Meteor.user() });
-    }
-
-    default:
-      throw new Error('Unknown action type');
-  }
+  return [
+    {
+      label: 'Conseiller',
+      value: assignedEmployeeValue,
+      options: assignedEmployeeOptions,
+      onChange: next =>
+        makeOnChange('assignedEmployeeId', dispatch)(
+          assignedEmployeeValue,
+          next,
+        ),
+    },
+    {
+      label: 'Statut du dossier',
+      value: statusValue,
+      options: statusOptions,
+      onChange: next => makeOnChange('status', dispatch)(statusValue, next),
+    },
+    {
+      label: 'Statut du compte',
+      value: userStatusValue,
+      options: userStatusOptions,
+      onChange: next =>
+        makeOnChange('userStatus', dispatch)(userStatusValue, next),
+    },
+    {
+      label: 'Assureurs',
+      value: organisationIdValue,
+      options: organisationOptions,
+      onChange: next =>
+        makeOnChange('organisationId', dispatch)(organisationIdValue, next),
+    },
+    {
+      label: 'Affichage',
+      value: groupBy,
+      options: groupByOptions,
+      onChange: newValue =>
+        dispatch({ type: ACTIONS.SET_GROUP_BY, payload: newValue }),
+      multiple: false,
+    },
+  ];
 };
+
+export const columnHeaderOptions = [
+  { id: SORT_BY.CREATED_AT, label: "Date d'ajout" },
+  { id: SORT_BY.ASSIGNED_EMPLOYEE, label: 'Conseiller' },
+  { id: SORT_BY.STATUS, label: 'Statut' },
+];

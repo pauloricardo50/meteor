@@ -1,17 +1,30 @@
+import { useContext } from 'react';
+import { makeAdditionalActions } from 'imports/client/components/StatusModifier/StatusModifier';
 import merge from 'lodash/merge';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { LOANS_COLLECTION, LOAN_STATUS } from 'core/api/loans/loanConstants';
+import { loanSetStatus } from 'core/api/loans/methodDefinitions';
 import {
   ORGANISATIONS_COLLECTION,
   ORGANISATION_FEATURES,
 } from 'core/api/organisations/organisationConstants';
 import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { ModalManagerContext } from 'core/components/ModalManager';
 
 import AdminBoard from '../../../components/AdminBoard/AdminBoard';
 import SingleLoanPage from '../../SingleLoanPage';
-import LoanBoardCard from './LoanBoardCard/LoanBoardCard';
+import { additionalActionsConfig } from '../../SingleLoanPage/LoanStatusModifier/LoanStatusModifier';
+import LoanBoardCardBottom from './LoanBoardCard/LoanBoardCardBottom';
+import {
+  LoanBoardCardContent,
+  LoanBoardCardContentDescription,
+} from './LoanBoardCard/LoanBoardCardContent';
+import {
+  LoanBoardCardTopLeft,
+  LoanBoardCardTopRight,
+} from './LoanBoardCard/LoanBoardCardTop';
 import { LOAN_BOARD_GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import {
   additionalLoanBoardFields,
@@ -135,28 +148,51 @@ export default compose(
     dataName: 'lenders',
     refetchOnMethodCall: false,
   }),
-  withProps(({ promotions, lenders, options }) => ({
-    collection: LOANS_COLLECTION,
-    getQueryFilters,
-    getQueryBody,
-    makeClientSideFilter,
-    groupData,
-    makeOptionsSelect,
-    optionsSelectProps: { promotions, lenders },
-    columnHeaderProps: {
-      promotions,
-      columnHeaderOptions,
+  withProps(({ promotions, lenders, options }) => {
+    const { openModal } = useContext(ModalManagerContext);
+
+    return {
       collection: LOANS_COLLECTION,
-    },
-    columnItemProps: {
-      additionalFields: options.additionalFields,
-      boardCardContent: LoanBoardCard,
-    },
-    modalContent: SingleLoanPage,
-    getModalContentProps: ({ docId, currentUser }) => ({
-      loanId: docId,
-      currentUser,
-      enableTabRouting: false,
-    }),
-  })),
+      getQueryFilters,
+      getQueryBody,
+      makeClientSideFilter,
+      groupData,
+      makeOptionsSelect,
+      optionsSelectProps: { promotions, lenders },
+      columnHeaderProps: {
+        promotions,
+        columnHeaderOptions,
+        collection: LOANS_COLLECTION,
+      },
+      columnItemProps: {
+        additionalFields: options.additionalFields,
+        boardCardContent: {
+          top: {
+            left: LoanBoardCardTopLeft,
+            right: LoanBoardCardTopRight,
+            makeStatusLabelProps: ({ data: doc }) => ({
+              additionalActions: makeAdditionalActions({
+                doc,
+                openModal,
+                additionalActionsConfig,
+              }),
+              method: nextStatus =>
+                loanSetStatus.run({ loanId: doc?._id, status: nextStatus }),
+            }),
+          },
+          content: {
+            description: LoanBoardCardContentDescription,
+            content: LoanBoardCardContent,
+          },
+          bottom: LoanBoardCardBottom,
+        },
+      },
+      modalContent: SingleLoanPage,
+      getModalContentProps: ({ docId, currentUser }) => ({
+        loanId: docId,
+        currentUser,
+        enableTabRouting: false,
+      }),
+    };
+  }),
 )(AdminBoard);

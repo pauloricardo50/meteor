@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 
+import AdminBoardCardContent from './AdminBoardCardContent';
+import AdminBoardCardTop from './AdminBoardCardTop';
+
 const AdminBoardCard = ({
   setDocId,
-  boardCardContent: BoardCardContent,
+  boardCardContent: {
+    top: boardCardTopContent,
+    content: boardCardContent,
+    bottom: BoardCardBottom = () => null,
+  },
   style,
   data,
   ...props
@@ -17,9 +24,25 @@ const AdminBoardCard = ({
       onMouseEnter={() => setRenderComplex(true)}
       onMouseLeave={() => setRenderComplex(false)}
     >
-      <BoardCardContent data={data} renderComplex={renderComplex} {...props} />
+      <div className="card-header">
+        <AdminBoardCardTop
+          renderComplex={renderComplex}
+          data={data}
+          boardCardTopContent={boardCardTopContent}
+          {...props}
+        />
+      </div>
+      <div className="card-top">
+        <AdminBoardCardContent
+          data={data}
+          renderComplex={renderComplex}
+          boardCardContent={boardCardContent}
+          {...props}
+        />
+      </div>
+      <BoardCardBottom data={data} renderComplex={renderComplex} {...props} />
     </div>
   );
 };
 
-export default AdminBoardCard;
+export default React.memo(AdminBoardCard);

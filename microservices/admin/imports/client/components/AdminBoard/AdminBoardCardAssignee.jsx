@@ -3,10 +3,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import { employeesById } from 'core/arrays/epotekEmployees';
 
-const InsuranceRequestBoardCardAssignee = ({
-  renderComplex,
-  assigneeLinks,
-}) => {
+const AdminBoardCardAssignee = ({ renderComplex, assigneeLinks }) => {
   const mainAssignee = assigneeLinks.find(({ isMain }) => isMain);
   const assignee = employeesById[mainAssignee?._id];
   const img = assignee?.src || '/img/placeholder.png';
@@ -22,4 +19,4 @@ const InsuranceRequestBoardCardAssignee = ({
   return <img src={img} alt="" />;
 };
 
-export default InsuranceRequestBoardCardAssignee;
+export default AdminBoardCardAssignee;
