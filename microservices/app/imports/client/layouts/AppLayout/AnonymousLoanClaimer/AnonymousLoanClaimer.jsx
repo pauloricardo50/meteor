@@ -15,12 +15,14 @@ import APP_ROUTES from '../../../../startup/client/appRoutes';
 import { withAnonymousLoan } from '../../../pages/AppPage/AnonymousAppPage/AnonymousAppPageContainer';
 
 const AnonymousLoanClaimer = ({
-  anonymousLoan: { name, updatedAt, borrowers = [] } = {},
+  anonymousLoan,
   open,
   loading,
   claimLoan,
   removeAnonymousLoan,
 }) => {
+  // anonymousLoan can be null, don't destructure immediately
+  const { name, updatedAt, borrowers = [] } = anonymousLoan || {};
   const mostRecentDate = Math.max.apply(null, [
     updatedAt,
     ...borrowers.map(({ updatedAt: u }) => u),
