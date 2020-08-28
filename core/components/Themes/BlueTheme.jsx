@@ -28,6 +28,16 @@ const theme = {
         color: 'inherit',
       },
     },
+    MuiStepContent: {
+      root: {
+        borderColor: 'white',
+      },
+    },
+    MuiStepConnector: {
+      line: {
+        borderColor: 'white',
+      },
+    },
   },
   palette: {
     ...defaultTheme.palette,

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import { userLoanInsert } from 'core/api/loans/methodDefinitions';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
+import useCurrentUser from 'core/hooks/useCurrentUser';
 import useSearchParams from 'core/hooks/useSearchParams';
 import { createRoute } from 'core/utils/routerUtils';
 
@@ -24,16 +26,28 @@ const OnboardingWithoutLoan = ({ promotion, onStart }) => {
   const hasPropertyOrPromotion = promotion || propertyId || promotionId;
   const hasValidPropertyOrPromotion =
     hasPropertyOrPromotion && !hasInvalidQuery;
+  const currentUser = useCurrentUser();
 
   const handleInsert = pType => {
     if (!loading) {
       setLoading(true);
     }
 
-    return insertAnonymousLoan({
-      purchaseType: pType,
-      proPropertyId: propertyId,
-    }).then(loanId => {
+    let promise;
+
+    if (currentUser) {
+      promise = userLoanInsert.run({
+        proPropertyId: propertyId,
+        purchaseType: pType,
+      });
+    } else {
+      promise = insertAnonymousLoan({
+        purchaseType: pType,
+        proPropertyId: propertyId,
+      });
+    }
+
+    return promise.then(loanId => {
       setRedirect(createRoute(appRoutes.LOAN_ONBOARDING_PAGE.path, { loanId }));
     });
   };

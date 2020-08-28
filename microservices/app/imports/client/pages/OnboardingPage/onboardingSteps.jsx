@@ -9,6 +9,7 @@ import { faLightbulbDollar } from '@fortawesome/pro-duotone-svg-icons/faLightbul
 import { faSearchLocation } from '@fortawesome/pro-duotone-svg-icons/faSearchLocation';
 import { faUser } from '@fortawesome/pro-duotone-svg-icons/faUser';
 import { faUserFriends } from '@fortawesome/pro-duotone-svg-icons/faUserFriends';
+import { faUsers } from '@fortawesome/pro-duotone-svg-icons/faUsers';
 import SimpleSchema from 'simpl-schema';
 
 import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
@@ -120,7 +121,11 @@ export const steps = [
       choices: [
         { id: RESIDENCE_TYPE.MAIN_RESIDENCE, icon: faHomeLg },
         { id: RESIDENCE_TYPE.SECOND_RESIDENCE, icon: faHouseDay },
-        { id: RESIDENCE_TYPE.INVESTMENT, icon: faBuilding },
+        {
+          id: RESIDENCE_TYPE.INVESTMENT,
+          icon: faBuilding,
+          modalId: 'OnboardingChoice.investment',
+        },
       ],
     },
     condition: always,
@@ -140,6 +145,11 @@ export const steps = [
         { id: 'NE' },
         { id: 'VS' },
         { id: 'VD' },
+        {
+          id: 'other',
+          label: <T id="general.other" />,
+          modalId: 'OnboardingChoice.otherCanton',
+        },
       ],
     },
     isDone: loan => !!loan.properties?.[0]?.canton,
@@ -196,6 +206,12 @@ export const steps = [
       choices: [
         { id: 1, icon: faUser },
         { id: 2, icon: faUserFriends },
+        {
+          id: 'other',
+          label: <T id="general.other" />,
+          modalId: 'OnboardingChoice.manyBorrowers',
+          icon: faUsers,
+        },
       ],
     },
     condition: always,
