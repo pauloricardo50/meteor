@@ -5,6 +5,7 @@ const { formatMessage } = intl;
 
 export const BACKGROUND_INFO_TYPE = {
   TEMPLATE: 'TEMPLATE',
+  ADMIN_ANALYSIS: 'ADMIN_ANALYSIS',
   CUSTOM: 'CUSTOM',
 };
 
@@ -40,6 +41,7 @@ export const makeGenerateBackgroundInfo = loan => model => {
   const {
     borrowers = [],
     user: { assignedEmployee: { name: assigneeName = 'e-Potek' } = {} } = {},
+    adminAnalysis,
   } = loan;
   const {
     backgroundInfoType,
@@ -49,9 +51,15 @@ export const makeGenerateBackgroundInfo = loan => model => {
     askForMaxLoan,
   } = model;
   const isCustom = backgroundInfoType === BACKGROUND_INFO_TYPE.CUSTOM;
+  const isAdminAanlysis =
+    backgroundInfoType === BACKGROUND_INFO_TYPE.ADMIN_ANALYSIS;
 
   if (isCustom) {
     return customBackgroundInfo;
+  }
+
+  if (isAdminAanlysis) {
+    return adminAnalysis;
   }
 
   const singleBorrower = borrowers.length === 1;

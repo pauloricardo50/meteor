@@ -1,6 +1,10 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 
 import { OWN_FUNDS_TYPES } from '../../../../api/borrowers/borrowerConstants';
+import Icon from '../../../Icon';
+import LenderRulesRecap from '../../../LenderRulesRecap/LenderRulesRecap';
 import T from '../../../Translation';
 import FinancingSection, { FinmaRatio } from '../FinancingSection';
 import BorrowRatioStatus from '../FinancingSection/components/BorrowRatioStatus';
@@ -43,6 +47,21 @@ const FinancingResult = ({ error }) =>
         },
       ]}
       detailConfig={[
+        {
+          id: 'lender-rules',
+          label: "[ADMIN] Critères d'octroi",
+          condition: () => Meteor.microservice === 'admin',
+          Component: ({ loan, structureId }) => (
+            <span className="lender-rules">
+              <Icon
+                type="info"
+                tooltip={
+                  <LenderRulesRecap loan={loan} structureId={structureId} />
+                }
+              />
+            </span>
+          ),
+        },
         {
           id: 'cost-title',
           label: (

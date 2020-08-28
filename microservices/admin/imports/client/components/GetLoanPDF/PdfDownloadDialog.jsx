@@ -45,7 +45,11 @@ const makeSchema = loan =>
     },
     backgroundInfoType: {
       type: String,
-      allowedValues: Object.values(BACKGROUND_INFO_TYPE),
+      allowedValues: loan?.adminAnalysis
+        ? Object.values(BACKGROUND_INFO_TYPE)
+        : Object.values(BACKGROUND_INFO_TYPE).filter(
+            type => type !== BACKGROUND_INFO_TYPE.ADMIN_ANALYSIS,
+          ),
       defaultValue: BACKGROUND_INFO_TYPE.TEMPLATE,
       uniforms: {
         displayEmpty: false,
@@ -96,7 +100,7 @@ const makeSchema = loan =>
         label: <T id="Forms.backgroundInfo" />,
       },
       condition: ({ backgroundInfoType }) =>
-        backgroundInfoType === BACKGROUND_INFO_TYPE.TEMPLATE,
+        backgroundInfoType !== BACKGROUND_INFO_TYPE.CUSTOM,
       customAutoValue: makeGenerateBackgroundInfo(loan),
     },
   });

@@ -60,7 +60,7 @@ const fullLoanFragment = merge({}, calculatorLoan(), {
   },
   maxPropertyValue: 1,
   name: 1,
-  promotionOptions: { name: 1 },
+  promotionOptions: { name: 1, promotionLots: { attributedToLink: 1 } },
   promotions: {
     agreementDuration: 1,
     lenderOrganisationLink: 1,
@@ -78,6 +78,7 @@ const fullLoanFragment = merge({}, calculatorLoan(), {
   userCache: 1,
   userFormsEnabled: 1,
   insurancePotential: 1,
+  adminAnalysis: 1,
 });
 
 export default compose(

@@ -244,7 +244,7 @@ describe.skip('Public onboarding', () => {
 
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
     cy.contains('1 500 000').should('exist');
-    cy.get('.welcome-screen').contains('Login').click();
+    cy.get('.welcome-screen').contains('Se connecter').click();
     // cy.contains('.welcome-screen', 'Login').click(); // Why no work?
     cy.get('input[name="email"]').type(USER_EMAIL);
     cy.get('input[name="password"]').type(`${USER_PASSWORD}{enter}`);

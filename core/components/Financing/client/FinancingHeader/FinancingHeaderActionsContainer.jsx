@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import React from 'react';
 import { withProps } from 'recompose';
 
 import {
@@ -8,6 +9,7 @@ import {
   selectStructure,
   updateStructure,
 } from '../../../../api/loans/methodDefinitions';
+import T from '../../../Translation';
 
 export default withProps(
   ({ loanId, structureId, structure: { disabled }, selected }) => ({
@@ -24,8 +26,16 @@ export default withProps(
         label: 'Supprimer',
         onClick: () => removeStructure.run({ loanId, structureId }),
         dividerTop: true,
-        condition: !disabled,
-        disabled: selected,
+        disabled: disabled || selected,
+        secondary: disabled ? (
+          <div style={{ maxWidth: 200, whiteSpace: 'normal' }}>
+            <T id="FinancingHeaderActions.removeDescriptionDisabled" />
+          </div>
+        ) : selected ? (
+          <div style={{ maxWidth: 200, whiteSpace: 'normal' }}>
+            <T id="FinancingHeaderActions.removeDescriptionSelected" />
+          </div>
+        ) : null,
       },
       {
         label: disabled ? '[ADMIN] Déverrouiller' : '[ADMIN] Verrouiller',

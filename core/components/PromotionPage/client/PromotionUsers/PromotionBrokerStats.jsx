@@ -16,13 +16,9 @@ const getBrokerStats = ({ promotionOptions = [], userId, loading }) => {
   let loanIds = [];
 
   return promotionOptions
-    .filter(promotionOption => {
-      const invitedBy = promotionOption?.invitedBy;
-
-      return userId === invitedBy;
-    })
+    .filter(promotionOption => userId === promotionOption?.invitedBy)
     .reduce((stats, promotionOption) => {
-      const loanId = promotionOption?.loanCache?._id;
+      const loanId = promotionOption?.loanCache?.[0]?._id;
       const status = promotionOption?.status;
 
       const { loanCount = 0, reservedCount = 0, soldCount = 0 } = stats;
@@ -33,7 +29,7 @@ const getBrokerStats = ({ promotionOptions = [], userId, loading }) => {
       const isSold = status === PROMOTION_OPTION_STATUS.SOLD;
 
       return {
-        loanCount: !isLoanAlreadyCounted ? loanCount + 1 : loanCount,
+        loanCount: isLoanAlreadyCounted ? loanCount : loanCount + 1,
         reservedCount: isReserved || isSold ? reservedCount + 1 : reservedCount,
         soldCount: isSold ? soldCount + 1 : soldCount,
       };

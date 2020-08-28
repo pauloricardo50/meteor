@@ -16,7 +16,7 @@ const filterDocumentsForMicroservice = categories => category =>
     : categories[category].documentsToDisplay.length > 0;
 
 const UploaderCategories = props => {
-  const { categories } = props;
+  const { categories, withHiddenDocuments = true } = props;
   return Object.keys(categories)
     .filter(filterDocumentsForMicroservice(categories))
     .map(category => (
@@ -28,7 +28,7 @@ const UploaderCategories = props => {
           documentArray={categories[category].documentsToDisplay}
           {...props}
         />
-        {Meteor.microservice === 'admin' && (
+        {withHiddenDocuments && Meteor.microservice === 'admin' && (
           <HiddenDocuments
             documentArray={categories[category].documentsToHide}
             {...props}

@@ -4,6 +4,7 @@ import React from 'react';
 
 import IconButton from 'core/components/IconButton';
 
+import { employeesByEmail } from '../../../../../core/arrays/epotekEmployees';
 import { RichText } from '../prismic';
 
 const EMAIL = 'team@e-potek.ch';
@@ -50,9 +51,21 @@ const Team = ({ primary, fields }) => (
                   <IconButton size="small" type="mail" />
                 </a>
 
-                <a href={`tel:${field.phone || '+41225660110'}`}>
+                <a
+                  href={`tel:${field.phone || '+41225660110'}`}
+                  className="mr-4"
+                >
                   <IconButton size="small" type="phone" />
                 </a>
+                {employeesByEmail[field?.email]?.calendly && (
+                  <a
+                    href={employeesByEmail[field?.email]?.calendly}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <IconButton size="small" type="eventAvailable" />
+                  </a>
+                )}
               </div>
             </div>
           </div>

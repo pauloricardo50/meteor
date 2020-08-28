@@ -31,6 +31,10 @@
         flex-wrap: wrap;
       }
     }
+
+    .icon-link, .collection-icon-link-content {
+      max-width: unset;
+    }
   }
 
   &-sub-header {

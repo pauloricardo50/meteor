@@ -3,7 +3,7 @@ import merge from 'lodash/merge';
 import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '/home/circleci/app';
-const CACHE_VERSION = 'master_18'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const CACHE_VERSION = 'master_19'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 const STAGING_BRANCH = 'staging';
 const MASTER_BRANCH = 'master';
 
@@ -461,10 +461,12 @@ const makeConfig = () => ({
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
         { 'Pro - e2e tests': { requires: ['Prepare'] } },
-        { 'App - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        // FIXME: These deploys cause process.env.NODE_ENV to not be set to production
+        // when building. This causes our analytics tag to be unset
+        // { 'App - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        // { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        // { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        // { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
         { 'Www2 - deploy': { requires: [ 'Prepare' ], filters: deployBranchFilter } },
      ],
     },

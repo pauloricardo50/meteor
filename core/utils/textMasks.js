@@ -28,10 +28,19 @@ export const swissFrancNegativeMask = createNumberMask({
   allowNegative: true,
 });
 
-export const percentMask = createNumberMask({
+export const decimalPercentMask = createNumberMask({
   prefix: '',
   suffix: '%',
   allowDecimal: true,
+  decimalSymbol: '.',
+  allowLeadingZeroes: true,
+  allowNegative: true,
+});
+
+export const percentMask = createNumberMask({
+  prefix: '',
+  suffix: '%',
+  allowDecimal: false,
   decimalSymbol: '.',
   allowLeadingZeroes: true,
   allowNegative: true,
