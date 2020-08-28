@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { useState } from 'react';
+import React from 'react';
 
 import LoanBoardCardAdditionalInfo from './LoanBoardCardAdditionalInfo';
 import LoanBoardCardBottom from './LoanBoardCardBottom';
@@ -8,10 +8,8 @@ import LoanBoardCardDescription from './LoanBoardCardDescription';
 import LoanBoardCardTasks from './LoanBoardCardTasks';
 import LoanBoardCardTop from './LoanBoardCardTop';
 
-const LoanBoardCard = ({ data: loan, setLoanId, style, additionalFields }) => {
-  const [renderComplex, setRenderComplex] = useState(false);
+const LoanBoardCard = ({ data: loan, renderComplex, additionalFields }) => {
   const {
-    _id: loanId,
     adminNotes = [],
     category,
     customName,
@@ -28,13 +26,7 @@ const LoanBoardCard = ({ data: loan, setLoanId, style, additionalFields }) => {
   const adminNote = adminNotes[0] && adminNotes[0].note;
 
   return (
-    <div
-      className="loan-board-card card1 card-hover animated bounceIn"
-      style={style}
-      onClick={() => setLoanId(loanId)}
-      onMouseEnter={() => setRenderComplex(true)}
-      onMouseLeave={() => setRenderComplex(false)}
-    >
+    <>
       <div className="card-header">
         <LoanBoardCardTop renderComplex={renderComplex} loan={loan} />
       </div>
@@ -68,7 +60,7 @@ const LoanBoardCard = ({ data: loan, setLoanId, style, additionalFields }) => {
         renderComplex={renderComplex}
         purchaseType={purchaseType}
       />
-    </div>
+    </>
   );
 };
 

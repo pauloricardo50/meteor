@@ -6,7 +6,8 @@ import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
 import T from 'core/components/Translation';
 
-import LoanBoardOptionsSelect from '../../LoanBoard/LoanBoardOptions/LoanBoardOptionsSelect';
+// import LoanBoardOptionsSelect from '../../LoanBoard/LoanBoardOptions/LoanBoardOptionsSelect';
+import LoanBoardOptionsSelect from '../../../../components/AdminBoard/AdminBoardOptionsSelect';
 import { ACTIONS, GROUP_BY } from '../insuranceRequestBoardConstants';
 
 const makeOnChange = (filterName, dispatch) => (prev, next) => {

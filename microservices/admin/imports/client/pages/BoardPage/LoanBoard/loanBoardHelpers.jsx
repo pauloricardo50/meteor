@@ -1,4 +1,5 @@
-import { Meteor } from 'meteor/meteor';
+// import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 import get from 'lodash/get';
@@ -6,11 +7,29 @@ import _groupBy from 'lodash/groupBy';
 import _orderBy from 'lodash/orderBy';
 import moment from 'moment';
 
-import { LOAN_STATUS, LOAN_STATUS_ORDER } from 'core/api/loans/loanConstants';
-import { USER_STATUS } from 'core/api/users/userConstants';
+import {
+  LOAN_CATEGORIES,
+  LOAN_STATUS,
+  LOAN_STATUS_ORDER,
+  PURCHASE_TYPE,
+  STEP_ORDER,
+} from 'core/api/loans/loanConstants';
+import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
+import { ROLES, USER_STATUS } from 'core/api/users/userConstants';
+import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 
-import { ACTIONS, GROUP_BY, SORT_BY, SORT_ORDER } from './loanBoardConstants';
+import {
+  ACTIONS,
+  GROUP_BY,
+  SORT_BY,
+  SORT_ORDER,
+} from '../../../components/AdminBoard/AdminBoardConstants';
+import {
+  LOAN_BOARD_GROUP_BY,
+  LOAN_BOARD_SORT_BY,
+  NO_PROMOTION,
+} from './loanBoardConstants';
 
 export const makeSortColumns = ({ groupBy }, { promotions, admins }) => {
   switch (groupBy) {
@@ -19,7 +38,7 @@ export const makeSortColumns = ({ groupBy }, { promotions, admins }) => {
       return ({ id: statusA }, { id: statusB }) =>
         statuses.indexOf(statusA) - statuses.indexOf(statusB);
     }
-    case GROUP_BY.PROMOTION: {
+    case LOAN_BOARD_GROUP_BY.PROMOTION: {
       return ({ id: idA }, { id: idB }) => {
         const promotionA = promotions.find(({ _id }) => idA === _id);
         const nameA = promotionA ? promotionA.name : '';
@@ -82,7 +101,7 @@ const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
       if (sortBy === SORT_BY.STATUS) {
         return loanBoardStatusOrder.indexOf(value);
       }
-      if (sortBy === SORT_BY.DUE_AT) {
+      if (sortBy === LOAN_BOARD_SORT_BY.DUE_AT) {
         return item.nextDueTask && new Date(item.nextDueTask.dueAt);
       }
 
@@ -121,7 +140,7 @@ export const groupByFunc = groupBy => {
 };
 
 export const makeFormatData = ({ groupBy }) => data => {
-  if (groupBy === GROUP_BY.PROMOTION) {
+  if (groupBy === LOAN_BOARD_GROUP_BY.PROMOTION) {
     return data.map(item => {
       if (item.financedPromotion && item.financedPromotion._id) {
         return {
@@ -161,7 +180,7 @@ export const makeFormatColumn = ({
   };
 };
 
-export const groupLoans = ({ loans, options, ...props }) => {
+export const groupData = ({ loans, options, ...props }) => {
   const { groupBy, sortBy, sortOrder } = options;
   const groupedLoans = _groupBy(loans, groupByFunc(groupBy));
   const groups = Object.keys(groupedLoans);
@@ -177,70 +196,19 @@ export const groupLoans = ({ loans, options, ...props }) => {
 export const getInitialOptions = ({ currentUser }) => ({
   groupBy: GROUP_BY.STATUS,
   assignedEmployeeId: currentUser && { $in: [currentUser._id] },
-  sortBy: SORT_BY.DUE_AT,
+  sortBy: LOAN_BOARD_SORT_BY.DUE_AT,
   sortOrder: SORT_ORDER.ASC,
   step: undefined,
   category: undefined,
   status: undefined,
   promotionId: undefined,
   lenderId: undefined,
-  loanId: '',
+  docId: '',
   promotionStatus: undefined,
   additionalFields: [],
   purchaseType: undefined,
   userStatus: { $in: [USER_STATUS.QUALIFIED, USER_STATUS.LOST] },
 });
-
-export const filterReducer = (state, { type, payload }) => {
-  switch (type) {
-    case ACTIONS.SET_FILTER: {
-      const { name, value } = payload;
-      return { ...state, [name]: value };
-    }
-
-    case ACTIONS.SET_COLUMN_SORT: {
-      const { sortOrder } = state;
-      if (state.sortBy === payload) {
-        return {
-          ...state,
-          sortOrder:
-            sortOrder === SORT_ORDER.ASC ? SORT_ORDER.DESC : SORT_ORDER.ASC,
-        };
-      }
-      return {
-        ...state,
-        sortBy: payload,
-        sortOrder: SORT_ORDER.ASC,
-      };
-    }
-
-    case ACTIONS.SET_GROUP_BY: {
-      const newStatus = { ...state, groupBy: payload };
-
-      if (payload === GROUP_BY.STATUS) {
-        return { ...newStatus, sortBy: SORT_BY.CREATED_AT };
-      }
-      return {
-        ...newStatus,
-        sortBy: SORT_BY.STATUS,
-        sortOrder: SORT_ORDER.DESC,
-      };
-    }
-
-    case ACTIONS.SET_LOAN_ID:
-      return { ...state, loanId: payload };
-
-    case ACTIONS.RESET: {
-      if (payload) {
-        return payload;
-      }
-      return getInitialOptions({ currentUser: Meteor.user() });
-    }
-
-    default:
-      throw new Error('Unknown action type');
-  }
-};
 
 // This filter can't easily be done on the server, so we add a filtering layer
 // here on the client for convenience
@@ -320,4 +288,199 @@ export const additionalLoanBoardFields = [
       );
     },
   },
+];
+
+export const makeOptionsSelect = ({
+  options,
+  dispatch,
+  devAndAdmins,
+  promotions,
+  lenders,
+  makeOnChange,
+}) => {
+  const {
+    assignedEmployeeId,
+    step,
+    groupBy,
+    status,
+    promotionId,
+    lenderId,
+    category,
+    promotionStatus,
+    additionalFields,
+    purchaseType,
+    userStatus,
+  } = options;
+  const assignedEmployeeValue = assignedEmployeeId
+    ? assignedEmployeeId.$in
+    : [null];
+  const statusValue = status ? status.$in : [null];
+  const promotionStatusValue = promotionStatus ? promotionStatus.$in : [null];
+  const categoryValue = category ? category.$in : [null];
+  const stepValue = step ? step.$in : [null];
+  const promotionIdValue = promotionId ? promotionId.$in : [null];
+  const lenderIdValue = lenderId ? lenderId.$in : [null];
+  const purchaseTypeValue = purchaseType ? purchaseType.$in : [null];
+  const userStatusValue = userStatus ? userStatus.$in : [null];
+
+  const groupByOptions = [
+    { id: GROUP_BY.STATUS, label: 'Par statut' },
+    { id: LOAN_BOARD_GROUP_BY.PROMOTION, label: 'Par promo' },
+    { id: GROUP_BY.ADMIN, label: 'Par conseiller' },
+  ];
+  const assignedEmployeeOptions = [
+    { id: null, label: 'Tous' },
+    { id: undefined, label: 'Personne' },
+    ...devAndAdmins.map(admin => ({
+      id: admin._id,
+      label: admin.firstName,
+      hide: Roles.userIsInRole(admin, ROLES.DEV),
+    })),
+  ];
+  const statusOptions = [
+    { id: null, label: 'Tous' },
+    ...LOAN_STATUS_ORDER.map(s => ({
+      id: s,
+      label: <T id={`Forms.status.${s}`} />,
+    })),
+  ];
+  const categoryOptions = [
+    { id: null, label: 'Toutes' },
+    ...Object.keys(LOAN_CATEGORIES).map(c => ({
+      id: c,
+      label: <T id={`Forms.category.${c}`} />,
+    })),
+  ];
+  const stepOptions = [
+    { id: null, label: 'Tous' },
+    ...STEP_ORDER.map(s => ({
+      id: s,
+      label: <T id={`Forms.step.${s}`} />,
+    })),
+  ];
+  const promotionIdOptions = [
+    { id: null, label: 'Tous' },
+    { id: NO_PROMOTION, label: "N'a pas de promotion" },
+    ...promotions.map(({ _id, name }) => ({ id: _id, label: name })),
+  ];
+  const lenderOptions = [
+    { id: null, label: 'Tous' },
+    ...lenders.map(({ _id, name }) => ({ id: _id, label: name })),
+  ];
+  const promotionStatusOptions = [
+    { id: null, label: 'Tous' },
+    ...Object.values(PROMOTION_STATUS).map(s => ({
+      id: s,
+      label: <T id={`Forms.status.${s}`} />,
+    })),
+  ];
+  const additionalFieldOptions = additionalLoanBoardFields.map(
+    ({ id, label, labelId }) => ({ id, label: label || <T id={labelId} /> }),
+  );
+
+  const purchaseTypeOptions = [
+    { id: null, label: 'Tous' },
+    ...Object.values(PURCHASE_TYPE).map(s => ({
+      id: s,
+      label: <T id={`Forms.purchaseType.${s}`} />,
+    })),
+  ];
+
+  const userStatusOptions = [
+    { id: null, label: 'Tous' },
+    ...Object.values(USER_STATUS).map(s => ({
+      id: s,
+      label: <T id={`Forms.status.${s}`} />,
+    })),
+  ];
+
+  return [
+    {
+      label: 'Conseiller',
+      value: assignedEmployeeValue,
+      options: assignedEmployeeOptions,
+      onChange: next =>
+        makeOnChange('assignedEmployeeId', dispatch)(
+          assignedEmployeeValue,
+          next,
+        ),
+    },
+    {
+      label: 'Statut du dossier',
+      value: statusValue,
+      options: statusOptions,
+      onChange: next => makeOnChange('status', dispatch)(statusValue, next),
+    },
+    {
+      label: 'Statut du compte',
+      value: userStatusValue,
+      options: userStatusOptions,
+      onChange: next =>
+        makeOnChange('userStatus', dispatch)(userStatusValue, next),
+    },
+    {
+      label: 'Étape du dossier',
+      value: stepValue,
+      options: stepOptions,
+      onChange: next => makeOnChange('step', dispatch)(stepValue, next),
+    },
+    {
+      label: 'Catégorie',
+      value: categoryValue,
+      options: categoryOptions,
+      onChange: next => makeOnChange('category', dispatch)(categoryValue, next),
+    },
+    {
+      label: 'Type de prêt',
+      value: purchaseTypeValue,
+      options: purchaseTypeOptions,
+      onChange: next =>
+        makeOnChange('purchaseType', dispatch)(purchaseTypeValue, next),
+    },
+    {
+      label: 'Prêteurs',
+      value: lenderIdValue,
+      options: lenderOptions,
+      onChange: next => makeOnChange('lenderId', dispatch)(lenderIdValue, next),
+    },
+    {
+      label: 'Promotions',
+      value: promotionIdValue,
+      options: promotionIdOptions,
+      onChange: next =>
+        makeOnChange('promotionId', dispatch)(promotionIdValue, next),
+    },
+    {
+      label: 'Statut de la promotion',
+      value: promotionStatusValue,
+      options: promotionStatusOptions,
+      onChange: next =>
+        makeOnChange('promotionStatus', dispatch)(promotionStatusValue, next),
+    },
+    {
+      label: 'Infos supplémentaires',
+      value: additionalFields,
+      options: additionalFieldOptions,
+      onChange: next =>
+        dispatch({
+          type: ACTIONS.SET_FILTER,
+          payload: { name: 'additionalFields', value: next },
+        }),
+    },
+    {
+      label: 'Affichage',
+      value: groupBy,
+      options: groupByOptions,
+      onChange: newValue =>
+        dispatch({ type: ACTIONS.SET_GROUP_BY, payload: newValue }),
+      multiple: false,
+    },
+  ];
+};
+
+export const columnHeaderOptions = [
+  { id: LOAN_BOARD_SORT_BY.DUE_AT, label: 'Prochain événement' },
+  { id: SORT_BY.CREATED_AT, label: "Date d'ajout" },
+  { id: SORT_BY.ASSIGNED_EMPLOYEE, label: 'Conseiller' },
+  { id: SORT_BY.STATUS, label: 'Statut' },
 ];

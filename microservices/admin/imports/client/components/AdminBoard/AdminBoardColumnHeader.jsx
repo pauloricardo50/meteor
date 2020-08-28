@@ -1,26 +1,16 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { LOANS_COLLECTION } from 'core/api/loans/loanConstants';
 import DropdownMenu from 'core/components/DropdownMenu';
 import Icon from 'core/components/Icon';
-import { CollectionIconLink } from 'core/components/IconLink';
 import StatusLabel from 'core/components/StatusLabel';
 
-import { ACTIONS, GROUP_BY, SORT_BY, SORT_ORDER } from './loanBoardConstants';
+import { ACTIONS, GROUP_BY, SORT_ORDER } from './AdminBoardConstants';
 
-const getTitle = ({ id, groupBy, admins, promotions }) => {
+const getTitle = ({ id, groupBy, admins, collection }) => {
   switch (groupBy) {
     case GROUP_BY.STATUS:
-      return <StatusLabel status={id} collection={LOANS_COLLECTION} />;
-    case GROUP_BY.PROMOTION: {
-      const promotion = promotions.find(({ _id }) => id === _id);
-      return promotion ? (
-        <CollectionIconLink relatedDoc={promotion} />
-      ) : (
-        'Sans promo'
-      );
-    }
+      return <StatusLabel status={id} collection={collection} />;
     case GROUP_BY.ADMIN: {
       const admin = admins.find(({ _id }) => id === _id);
       return admin ? admin.firstName : 'Personne';
@@ -31,13 +21,8 @@ const getTitle = ({ id, groupBy, admins, promotions }) => {
   }
 };
 
-const getOptions = ({ sortBy, sortOrder }, dispatch) =>
-  [
-    { id: SORT_BY.DUE_AT, label: 'Prochain événement' },
-    { id: SORT_BY.CREATED_AT, label: "Date d'ajout" },
-    { id: SORT_BY.ASSIGNED_EMPLOYEE, label: 'Conseiller' },
-    { id: SORT_BY.STATUS, label: 'Statut' },
-  ].map(item => {
+const getOptions = (columnHeaderOptions, { sortBy, sortOrder }, dispatch) =>
+  columnHeaderOptions.map(item => {
     let { label } = item;
     if (item.id === sortBy) {
       label = (
@@ -59,29 +44,30 @@ const getOptions = ({ sortBy, sortOrder }, dispatch) =>
     };
   });
 
-const LoanBoardColumnHeader = ({
+const AdminBoardColumnHeader = ({
   id,
   options,
   dispatch,
   count,
   admins,
-  promotions,
+  collection,
+  columnHeaderOptions,
 }) => {
   const { groupBy } = options;
 
   return (
-    <div className="loan-board-column-header">
+    <div className="admin-board-column-header">
       <div className="flex align-center sb">
         <div className="title">
           <span className="mr-4">
-            {getTitle({ id, groupBy, admins, promotions })}
+            {getTitle({ id, groupBy, admins, collection })}
           </span>
           <span className="secondary">({count})</span>
         </div>
         <DropdownMenu
           iconType="sort"
           buttonProps={{ size: 'small' }}
-          options={getOptions(options, dispatch)}
+          options={getOptions(columnHeaderOptions, options, dispatch)}
           noWrapper
         />
       </div>
@@ -89,4 +75,4 @@ const LoanBoardColumnHeader = ({
   );
 };
 
-export default LoanBoardColumnHeader;
+export default AdminBoardColumnHeader;
