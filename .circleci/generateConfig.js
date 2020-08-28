@@ -459,10 +459,12 @@ const makeConfig = () => ({
         { 'App - e2e tests': { requires: ['Prepare'] } },
         { 'Admin - e2e tests': { requires: ['Prepare'] } },
         { 'Pro - e2e tests': { requires: ['Prepare'] } },
-        { 'App - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
-        { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        // FIXME: These deploys cause process.env.NODE_ENV to not be set to production
+        // when building. This causes our analytics tag to be unset
+        // { 'App - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        // { 'Admin - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        // { 'Pro - deploy': { requires: testJobs, filters: deployBranchFilter } },
+        // { 'Backend - deploy': { requires: testJobs, filters: deployBranchFilter } },
         { 'Www2 - deploy': { requires: [ 'Prepare' ], filters: deployBranchFilter } },
      ],
     },

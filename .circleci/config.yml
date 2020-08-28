@@ -1210,29 +1210,11 @@ workflows:
       - Pro - e2e tests:
           requires:
             - Prepare
-      - App - deploy:
-          requires: &ref_1
-            - App - unit tests
-            - Admin - unit tests
-            - Core - unit tests
-            - App - e2e tests
-            - Admin - e2e tests
-            - Pro - e2e tests
-          filters: &ref_2
+      - Www2 - deploy:
+          requires:
+            - Prepare
+          filters:
             branches:
               only:
                 - staging
                 - master
-      - Admin - deploy:
-          requires: *ref_1
-          filters: *ref_2
-      - Pro - deploy:
-          requires: *ref_1
-          filters: *ref_2
-      - Backend - deploy:
-          requires: *ref_1
-          filters: *ref_2
-      - Www2 - deploy:
-          requires:
-            - Prepare
-          filters: *ref_2
