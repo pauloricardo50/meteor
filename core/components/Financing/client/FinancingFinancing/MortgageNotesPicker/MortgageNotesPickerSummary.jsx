@@ -20,7 +20,7 @@ const MortgageNotesPickerSummary = ({
   if (allNotes.length === 0) {
     return (
       <div className="text-center">
-        <Button primary onClick={handleOpen} disabled={disabled}>
+        <Button primary onClick={handleOpen} disabled={disabled} fullWidth>
           <T id="general.choose" />
         </Button>
       </div>
