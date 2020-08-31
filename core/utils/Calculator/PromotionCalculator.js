@@ -149,6 +149,11 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         PROMOTION_OPTION_STATUS.RESERVED,
         PROMOTION_OPTION_STATUS.SOLD,
       ];
+
+      if (!promotionOptions.length) {
+        return;
+      }
+
       const sorted = promotionOptions.sort(sortByStatus(order));
       return sorted.slice(-1)[0];
     }

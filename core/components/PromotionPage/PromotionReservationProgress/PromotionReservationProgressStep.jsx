@@ -20,6 +20,7 @@ const StepIconComponent = ({
   secondaryColor,
   showDetailIcon,
   showTooltip,
+  subDescription,
 }) => {
   const component = (
     <div
@@ -60,7 +61,12 @@ const StepIconComponent = ({
     return (
       <Tooltip
         title={
-          <StepLabelContent id={id} description={description} date={date} />
+          <StepLabelContent
+            id={id}
+            description={description}
+            subDescription={subDescription}
+            date={date}
+          />
         }
       >
         {component}
@@ -71,7 +77,13 @@ const StepIconComponent = ({
   return component;
 };
 
-const StepLabelContent = ({ id, description, date, vertical }) => (
+const StepLabelContent = ({
+  id,
+  description,
+  subDescription,
+  date,
+  vertical,
+}) => (
   // TODO: Remove this styling:
   <div style={vertical ? { textAlign: 'left' } : {}}>
     <div className="secondary">
@@ -85,6 +97,14 @@ const StepLabelContent = ({ id, description, date, vertical }) => (
           <small>
             <IntlDate value={date} type="relative" style="long" />
           </small>
+        </>
+      )}
+      {subDescription && (
+        <>
+          <br />
+          <span className="secondary" style={{ fontWeight: 'normal' }}>
+            {subDescription}
+          </span>
         </>
       )}
     </div>

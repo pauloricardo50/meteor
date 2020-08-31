@@ -13,7 +13,15 @@ import {
 } from './statusDateFormDialogHelpers';
 
 export default withProps(
-  ({ promotionOptionId, loanId, id, status, openDialog, setOpenDialog }) => {
+  ({
+    promotionOptionId,
+    loanId,
+    id,
+    status,
+    conditions,
+    openDialog,
+    setOpenDialog,
+  }) => {
     const isBankStatus = id === 'bank';
     const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
     const [confirmDialogActions, setConfirmDialogActions] = useState({
@@ -36,6 +44,15 @@ export default withProps(
                   ).filter(s => s !== PROMOTION_OPTION_BANK_STATUS.WAITLIST),
                 },
                 date: { type: Date, optional: false },
+                conditions: {
+                  type: String,
+                  condition: ({ status: s }) =>
+                    s ===
+                    PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
+                  uniforms: {
+                    helperText: "Visible d'e-Potek et des Pros uniquement",
+                  },
+                },
               })
           : PromotionOptionSchema.getObjectSchema(id)
               .pick('date', 'status')
@@ -46,7 +63,7 @@ export default withProps(
     return {
       schema,
       title: <T id={`Forms.${id}`} />,
-      model: { status },
+      model: { status, conditions },
       open: openDialog,
       setOpen: setOpenDialog,
       layout: [
@@ -55,6 +72,7 @@ export default withProps(
           style: { gridTemplateColumns: '1fr 220px', width: '100%' },
           fields: ['status', 'date'],
         },
+        'conditions',
       ],
       description: (
         <div>
@@ -65,14 +83,15 @@ export default withProps(
           {getEmailsToBeSentWarning(emailsToBeSent)}
         </div>
       ),
-      onSubmit (values) {
+      onSubmit(values) {
         if ('date' in values && values.date instanceof Date) {
           // Uniforms is given the date string without a timezone so it is parsed in
           // the UTC timezone, even though it was in the local time zone
           // https://github.com/vazco/uniforms/issues/532
 
           // timezone offset is in minutes
-          const offsetInMilliseconds = values.date.getTimezoneOffset() * 60 * 1000;
+          const offsetInMilliseconds =
+            values.date.getTimezoneOffset() * 60 * 1000;
           values.date = new Date(values.date.getTime() + offsetInMilliseconds);
         }
 
@@ -100,7 +119,7 @@ export default withProps(
               setConfirmDialogProps,
               setConfirmDialogActions,
             }),
-          )
+          );
       },
       openConfirmDialog,
       confirmDialogActions,

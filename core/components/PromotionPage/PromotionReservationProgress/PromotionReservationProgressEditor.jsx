@@ -11,6 +11,7 @@ const isAdmin = Meteor.microservice === 'admin';
 const PromotionReservationProgressEditor = ({ promotionOption, loan }) => {
   const [dialogId, setDialogId] = useState();
   const status = promotionOption[dialogId]?.status;
+  const conditions = promotionOption[dialogId]?.conditions;
 
   return (
     <>
@@ -28,6 +29,7 @@ const PromotionReservationProgressEditor = ({ promotionOption, loan }) => {
           status={status}
           openDialog={!!dialogId}
           setOpenDialog={() => setDialogId()}
+          conditions={conditions}
         />
       )}
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import Badge from '@material-ui/core/Badge';
-import Tooltip from '@material-ui/core/Tooltip';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Add from '@material-ui/icons/Add';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
@@ -86,6 +85,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import PropTypes from 'prop-types';
 
 import colors from '../../config/colors';
+import Tooltip from '../Material/Tooltip';
 
 export const iconMap = {
   close: CloseIcon,

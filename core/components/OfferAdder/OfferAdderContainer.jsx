@@ -261,7 +261,7 @@ export default compose(
     smallLoader: true,
   }),
   withProps(({ lenders }) => {
-    const schema = useMemo(() => getSchema(lenders), []);
+    const schema = useMemo(() => getSchema(lenders), [lenders.length]);
     return { schema, insertOffer };
   }),
 );

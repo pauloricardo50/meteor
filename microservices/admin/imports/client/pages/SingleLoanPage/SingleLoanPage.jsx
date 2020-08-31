@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 import { USER_STATUS } from 'core/api/users/userConstants';
+import { getLoanLinkTitle } from 'core/components/IconLink/collectionIconLinkHelpers';
 
 import CollectionTasksDataTable from '../../components/TasksDataTable/CollectionTasksDataTable';
 import UnsuccessfulReasonModal from '../../components/UnsuccessfulReasonModal/UnsuccessfulReasonModal';
@@ -22,7 +23,7 @@ const SingleLoanPage = props => {
   return (
     <section className="single-loan-page">
       <Helmet>
-        <title>{loan.user ? loan.user.name : loan.name}</title>
+        <title>{getLoanLinkTitle(loan)}</title>
       </Helmet>
       <SingleLoanPageHeader loan={loan} />
       <div className="single-loan-page-sub-header">

@@ -77,6 +77,10 @@
     .impersonate-link {
       margin-right: 8px;
     }
+
+    .icon-link, .collection-icon-link-content {
+      max-width: unset;
+    }
   }
 
   &-sub-header {

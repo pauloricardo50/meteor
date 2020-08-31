@@ -203,6 +203,7 @@ export const sendLoanChecklist = new Method({
     loanId: String,
     address: String,
     emailParams: Object,
+    attachmentKeys: Match.Maybe(Array),
     basicDocumentsOnly: Match.Optional(Boolean),
   },
 });

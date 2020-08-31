@@ -23,7 +23,7 @@ describe('roles', () => {
 
   it('DEV should have ADMIN, PRO and USER roles', () => {
     const userId = UserService.createUser({
-      options: { email: 'test@test.com', password: '12345678' },
+      options: { email: 'test@test.com', password: '12345678abc' },
       role: ROLES.DEV,
     });
 
@@ -36,7 +36,7 @@ describe('roles', () => {
 
   it('OBSERVER should have ADMIN, PRO and USER roles', () => {
     const userId = UserService.createUser({
-      options: { email: 'test@test.com', password: '12345678' },
+      options: { email: 'test@test.com', password: '12345678abc' },
       role: ROLES.OBSERVER,
     });
 
@@ -49,7 +49,7 @@ describe('roles', () => {
 
   it('OBSERVER should have ADMIN, PRO and USER roles', () => {
     const userId = UserService.createUser({
-      options: { email: 'test@test.com', password: '12345678' },
+      options: { email: 'test@test.com', password: '12345678abc' },
       role: ROLES.ADVISOR,
     });
 
@@ -62,7 +62,7 @@ describe('roles', () => {
 
   it('PRO should have USER roles', () => {
     const userId = UserService.createUser({
-      options: { email: 'test@test.com', password: '12345678' },
+      options: { email: 'test@test.com', password: '12345678abc' },
       role: ROLES.PRO,
     });
 
@@ -75,7 +75,7 @@ describe('roles', () => {
 
   it('USER should only have USER roles', () => {
     const userId = UserService.createUser({
-      options: { email: 'test@test.com', password: '12345678' },
+      options: { email: 'test@test.com', password: '12345678abc' },
     });
 
     const { roles } = UserService.get(userId, { roles: 1 });

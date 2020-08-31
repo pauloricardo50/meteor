@@ -9,6 +9,7 @@ import SimpleSchema from 'simpl-schema';
 import AutoForm from '../AutoForm2/AutoForm';
 import Loading from '../Loading/Loading';
 import T from '../Translation';
+import PasswordCriteria from './PasswordCriteria';
 import PasswordResetPageContainer from './PasswordResetPageContainer';
 
 SimpleSchema.setDefaultMessages({
@@ -24,16 +25,30 @@ export const passwordSchema = {
   newPassword: {
     type: String,
     min: 8,
+    regEx: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
     uniforms: { type: 'password', placeholder: null },
   },
   newPassword2: {
     type: String,
     min: 8,
+    regEx: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
     uniforms: { type: 'password', placeholder: null },
     custom() {
       if (this.value !== this.field('newPassword').value) {
         return 'passwordMismatch';
       }
+    },
+  },
+  passwordCriteria: {
+    type: String,
+    optional: true,
+    uniforms: {
+      render: ({ model: { newPassword, newPassword2 } }) => (
+        <PasswordCriteria
+          newPassword={newPassword}
+          newPassword2={newPassword2}
+        />
+      ),
     },
   },
 };

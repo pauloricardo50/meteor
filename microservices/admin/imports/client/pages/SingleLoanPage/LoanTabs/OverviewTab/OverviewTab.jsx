@@ -16,6 +16,7 @@ import T from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
 import Calculator from 'core/utils/Calculator';
 
+import AdminAnalysis from '../../../../components/AdminAnalysis';
 import AdminTimeline from '../../../../components/AdminTimeline';
 import AssigneesManager from '../../../../components/AssigneesManager';
 import InsurancePotential from '../../../../components/InsurancePotential/InsurancePotential';
@@ -42,38 +43,62 @@ const OverviewTab = props => {
     <div className="overview-tab">
       <InsurancePotential loan={loan} hideWhenCompleted />
       <div className="admin-section card1">
-        <div className="card-top">
-          {status === LOAN_STATUS.UNSUCCESSFUL && (
+        <div
+          className="card-top"
+          style={{ flexWrap: 'nowrap', alignItems: 'flex-start' }}
+        >
+          <div className="flex sa">
+            {status === LOAN_STATUS.UNSUCCESSFUL && (
+              <UpdateField
+                doc={loan}
+                collection={Loans}
+                fields={['unsuccessfulReason']}
+                autosaveDelay={500}
+                className="mr-16"
+              />
+            )}
+            <Toggle
+              labelTop={<T id="Forms.userFormsEnabled" />}
+              labelLeft={<T id="general.no" />}
+              labelRight={<T id="general.yes" />}
+              toggled={userFormsEnabled}
+              onToggle={value =>
+                loanUpdate.run({ loanId, object: { userFormsEnabled: value } })
+              }
+              className="mr-16"
+            />
             <UpdateField
               doc={loan}
+              fields={['category']}
               collection={Loans}
-              fields={['unsuccessfulReason']}
-              autosaveDelay={500}
+              className="mr-16"
             />
-          )}
-          <Toggle
-            labelTop={<T id="Forms.userFormsEnabled" />}
-            labelLeft={<T id="general.no" />}
-            labelRight={<T id="general.yes" />}
-            toggled={userFormsEnabled}
-            onToggle={value =>
-              loanUpdate.run({ loanId, object: { userFormsEnabled: value } })
-            }
+            <UpdateField
+              doc={loan}
+              fields={['residenceType']}
+              collection={Loans}
+              className="mr-16"
+            />
+            <UpdateField
+              doc={loan}
+              fields={['purchaseType']}
+              collection={Loans}
+              className="mr-16"
+            />
+            <UpdateField
+              doc={loan}
+              fields={['applicationType']}
+              collection={Loans}
+              className="mr-16"
+            />
+            <LoanStepSetter loan={loan} className="mr-16" />
+            <LoanDisbursementDate loan={loan} className="mr-16" />
+            <AssigneesManager doc={loan} collection={LOANS_COLLECTION} />
+          </div>
+          <AdminAnalysis
+            loan={loan}
+            style={{ flexBasis: '25%', minWidth: '300px' }}
           />
-          <UpdateField doc={loan} fields={['category']} collection={Loans} />
-          <UpdateField
-            doc={loan}
-            fields={['residenceType']}
-            collection={Loans}
-          />
-          <UpdateField
-            doc={loan}
-            fields={['purchaseType']}
-            collection={Loans}
-          />
-          <LoanStepSetter loan={loan} />
-          <LoanDisbursementDate loan={loan} />
-          <AssigneesManager doc={loan} collection={LOANS_COLLECTION} />
         </div>
 
         <div className="card-bottom">

@@ -153,7 +153,7 @@ export default compose(
   })),
   withSmartQuery({
     query: PROMOTIONS_COLLECTION,
-    params: { name: 1 },
+    params: { name: 1, $options: { sort: { name: 1 } } },
     dataName: 'promotions',
     queryOptions: { shouldRefetch: () => false },
     refetchOnMethodCall: false,

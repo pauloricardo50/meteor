@@ -66,6 +66,13 @@ describe('www-pages', () => {
     });
   });
 
+  it('blog page works', () => {
+    burgerNavigate('Blog', '/blog');
+
+    cy.contains('Blog post A');
+    cy.contains('Blog post B');
+  });
+
   describe('Calculator', () => {
     it('calculates acquisitions correctly', () => {
       cy.get('header').contains('Calculateur').click();
@@ -96,7 +103,7 @@ describe('www-pages', () => {
       // Check status
       cy.contains('Tout est bon').should('exist');
       cy.get('.www-calculator-status')
-        .contains('Obtenir un prêt')
+        .contains('Continuer mon projet')
         .should('have.attr', 'href')
         .and('include', 'ACQUISITION');
 

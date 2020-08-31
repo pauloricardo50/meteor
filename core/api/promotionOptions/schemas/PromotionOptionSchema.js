@@ -17,7 +17,7 @@ import {
 } from '../promotionOptionConstants';
 
 const dateAutoValue = (triggerField = 'status') =>
-  function() {
+  function () {
     if (this.isInsert && !this.value) {
       return new Date();
     }
@@ -91,6 +91,10 @@ const PromotionOptionSchema = new SimpleSchema({
   'bank.date': {
     type: Date,
     autoValue: dateAutoValue(),
+    optional: true,
+  },
+  'bank.conditions': {
+    type: String,
     optional: true,
   },
   simpleVerification: { type: Object, defaultValue: {} },

@@ -3,7 +3,7 @@ import merge from 'lodash/merge';
 import writeYAML from '../scripts/writeYAML';
 
 const WORKING_DIRECTORY = '/home/circleci/app';
-const CACHE_VERSION = 'master_18'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
+const CACHE_VERSION = 'master_19'; // Use a different branch name if you're playing with the cache version outside of master, only use underscores here, no hyphens
 const STAGING_BRANCH = 'staging';
 const MASTER_BRANCH = 'master';
 
@@ -339,6 +339,8 @@ const makeDeployJob = ({ name, job }) => ({
     runCommand(
       'Deploy',
       `
+        export NODE_ENV="production"
+
         cd deploy
         ENVIRONMENT="staging"
 

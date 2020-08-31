@@ -3,7 +3,7 @@ import cx from 'classnames';
 import MaskedInput from 'react-text-mask';
 
 import { percentFormatters } from '../../utils/formHelpers';
-import { percentMask } from '../../utils/textMasks';
+import { decimalPercentMask } from '../../utils/textMasks';
 import FormControl from '../Material/FormControl';
 import FormHelperText from '../Material/FormHelperText';
 import Input from '../Material/Input';
@@ -14,7 +14,7 @@ const PercentInputComponent = ({ onChange, value, ...props }) => (
     onChange={event => onChange(percentFormatters.parse(event.target.value))}
     value={percentFormatters.format(value)}
     inputComponent={MaskedInput}
-    inputProps={{ mask: percentMask }}
+    inputProps={{ mask: decimalPercentMask }}
     type="tel"
     {...props}
   />
