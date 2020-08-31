@@ -104,7 +104,7 @@ const getQueryFilters = ({
     $or.push({ 'financedPromotionLink._id': { $exists: true } });
   }
 
-  if (promotionId) {
+  if (promotionId && !noPromotionIsChecked(promotionId)) {
     $or.push({ 'promotionLinks.0._id': promotionId });
     $or.push({ 'financedPromotionLink._id': promotionId });
   }
