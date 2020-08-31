@@ -7,6 +7,7 @@ import { LOANS_COLLECTION } from '../../../api/loans/loanConstants';
 import { sendLoanChecklist } from '../../../api/loans/methodDefinitions';
 import { taskInsert } from '../../../api/tasks/methodDefinitions';
 import { AutoFormDialog } from '../../AutoForm2';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../AutoForm2/autoFormConstants';
 
 const schema = new SimpleSchema({
   to: Array,
@@ -21,13 +22,19 @@ const schema = new SimpleSchema({
   customMessage: {
     type: String,
     optional: true,
-    uniforms: { multiline: true, rows: 15, rowsMax: 15 },
+    uniforms: { multiline: true, rows: 5, rowsMax: 15 },
   },
   addTask: {
     type: Boolean,
     defaultValue: false,
     uniforms: { label: 'Ajouter tâche de suivi pour dans 3 jours' },
   },
+  attachmentKeys: {
+    type: Array,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.FILE_UPLOAD },
+    defaultValue: [],
+  },
+  'attachmentKeys.$': String,
 });
 
 const LoanChecklistEmailSender = props => {
@@ -56,7 +63,13 @@ const LoanChecklistEmailSender = props => {
 };
 
 export default withProps(({ loan: { _id: loanId } }) => ({
-  onSubmit: ({ to, customMessage, addTask, basicDocumentsOnly }) => {
+  onSubmit: ({
+    to,
+    customMessage,
+    addTask,
+    basicDocumentsOnly,
+    attachmentKeys,
+  }) => {
     const [mainRecipient, ...otherRecipients] = to;
     const bccAddresses = otherRecipients
       .filter(({ bcc }) => bcc)
@@ -70,6 +83,7 @@ export default withProps(({ loan: { _id: loanId } }) => ({
         address: mainRecipient.email,
         loanId,
         basicDocumentsOnly,
+        attachmentKeys,
         emailParams: {
           customMessage: customMessage.replace(/(?:\r\n|\r|\n)/g, '<br>'),
           bccAddresses,
@@ -82,9 +96,7 @@ export default withProps(({ loan: { _id: loanId } }) => ({
           return taskInsert.run({
             object: {
               collection: LOANS_COLLECTION,
-              dueAt: moment()
-                .add(3, 'd')
-                .toDate(),
+              dueAt: moment().add(3, 'd').toDate(),
               docId: loanId,
               title: "Suivi de l'envoi de la checklist",
             },

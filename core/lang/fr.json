@@ -1,4 +1,5 @@
 {
+  "files.attachmentKeys": "Pièces jointes",
   "DashboardInfoTeamMember.calendlyTooltip": "Planifier un rendez-vous avec {name}",
   "PasswordResetPage.passwordCriterion.correctLength": "Au moins 8 caractères",
   "PasswordResetPage.passwordCriterion.atLeastOneLetter": "Au moins 1 lettre",
