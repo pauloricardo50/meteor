@@ -18,12 +18,12 @@ import { ACQUISITION_CHANNELS, USER_STATUS } from '../../users/userConstants';
 import { DRIP_ACTIONS, DRIP_TAGS } from '../dripConstants';
 
 const IS_TEST = Meteor.isTest;
-const IS_PRODUCTION = Meteor.isProduction;
+const IS_PRODUCTION = Meteor.isProduction && !Meteor.isStaging;
 
 const ENABLE_API = IS_PRODUCTION || IS_TEST;
 // const ENABLE_API = true;
 
-const { ACCOUNT_ID, TOKEN } = Meteor?.settings?.drip;
+const { ACCOUNT_ID, TOKEN } = Meteor?.settings?.drip || {};
 const DRIP_WEBHOOK_ANALYTICS_USER_ID = 'drip_webhook';
 
 const config = function () {
