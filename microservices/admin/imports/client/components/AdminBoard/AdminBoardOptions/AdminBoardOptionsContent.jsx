@@ -3,7 +3,7 @@ import React from 'react';
 import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
 
-import { ACTIONS } from './AdminBoardConstants';
+import { ACTIONS } from '../AdminBoardConstants';
 import AdminBoardOptionsSelect from './AdminBoardOptionsSelect';
 
 const AdminBoardOptionsContent = ({

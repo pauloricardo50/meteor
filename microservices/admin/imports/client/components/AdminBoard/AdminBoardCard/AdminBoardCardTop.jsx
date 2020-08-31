@@ -1,13 +1,11 @@
-import React from 'react';
-import { compose, lifecycle } from 'recompose';
+import React, { useEffect, useState } from 'react';
+import { compose } from 'recompose';
 
-import { loanSetStatus } from 'core/api/loans/methodDefinitions';
 import StatusLabel from 'core/components/StatusLabel';
 
 import AdminBoardCardAssignee from './AdminBoardCardAssignee';
 
 const AdminBoardCardTop = ({
-  hasRenderedComplexOnce,
   renderComplex,
   additionalActions,
   data,
@@ -15,9 +13,18 @@ const AdminBoardCardTop = ({
     left: BoardCardTopContentLeft = () => null,
     right: BoardCardTopContentRight = () => null,
     makeStatusLabelProps = () => {},
+    method = () => Promise.resolve(),
   } = {},
   ...props
 }) => {
+  const [hasRenderedComplexOnce, setHasRenderedComplexOnce] = useState();
+
+  useEffect(() => {
+    if (!hasRenderedComplexOnce && renderComplex) {
+      setHasRenderedComplexOnce(true);
+    }
+  }, [renderComplex]);
+
   const { _id: docId, status, assigneeLinks, _collection } = data;
 
   return (
@@ -30,9 +37,7 @@ const AdminBoardCardTop = ({
           allowModify={renderComplex}
           docId={docId}
           showTooltip={renderComplex}
-          method={nextStatus =>
-            loanSetStatus.run({ loanId, status: nextStatus })
-          }
+          method={method}
           additionalActions={additionalActions}
           {...makeStatusLabelProps({ data })}
         />
@@ -61,14 +66,4 @@ const AdminBoardCardTop = ({
   );
 };
 
-export default compose(
-  React.memo,
-  lifecycle({
-    UNSAFE_componentWillReceiveProps({ renderComplex: nextRenderComplex }) {
-      const { renderComplex } = this.props;
-      if (!renderComplex && nextRenderComplex) {
-        this.setState({ hasRenderedComplexOnce: true });
-      }
-    },
-  }),
-)(AdminBoardCardTop);
+export default React.memo(AdminBoardCardTop);

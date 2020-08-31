@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import useWindowScroll from 'react-use/lib/useWindowScroll';
 
-import { ACTIONS } from './AdminBoardConstants';
+import { ACTIONS } from '../AdminBoardConstants';
 import AdminBoardOptionsContent from './AdminBoardOptionsContent';
 
 const makeOnChange = (filterName, dispatch) => (prev, next) => {

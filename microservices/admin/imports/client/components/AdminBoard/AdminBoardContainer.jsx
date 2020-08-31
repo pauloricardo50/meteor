@@ -1,8 +1,6 @@
 import { Roles } from 'meteor/alanning:roles';
 
-import React from 'react';
-import omit from 'lodash/omit';
-import { compose, mapProps, withProps } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { ROLES } from 'core/api/users/userConstants';
@@ -22,29 +20,29 @@ export default compose(
     deps: ({ options }) => Object.values(options),
   }),
   withProps(
-    ({ collection, makeClientSideFilter = () => () => true, ...props }) => {
-      const data = props[collection];
+    ({
+      collection,
+      makeClientSideFilter = () => () => true,
+      groupData,
+      ...rest
+    }) => {
+      const { all: devAndAdmins, advisors: admins } = useAdmins();
+      const currentUser = useCurrentUser();
+      const devs = devAndAdmins?.filter(user =>
+        Roles.userIsInRole(user, ROLES.DEV),
+      );
+
+      const props = { devAndAdmins, admins, devs, currentUser, ...rest };
+
+      const data = groupData({
+        [collection]: props[collection].filter(makeClientSideFilter(props)),
+        ...props,
+      });
+
       return {
-        [collection]: data.filter(makeClientSideFilter(props)),
+        data,
+        ...props,
       };
     },
   ),
-  withProps(({ collection, ...props }) => {
-    const { all: devAndAdmins, advisors: admins } = useAdmins();
-    const currentUser = useCurrentUser();
-
-    return {
-      devAndAdmins,
-      admins,
-      devs: devAndAdmins.filter(user => Roles.userIsInRole(user, ROLES.DEV)),
-      currentUser,
-    };
-  }),
-  mapProps(({ groupData, collection, ...props }) => {
-    const filteredProps = omit(props, [collection]);
-    return {
-      data: groupData({ [collection]: props[collection], ...filteredProps }),
-      ...filteredProps,
-    };
-  }),
 );

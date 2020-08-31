@@ -1,12 +1,12 @@
 import React from 'react';
 
-import Board from '../Board';
-import AdminBoardCard from './AdminBoardCard';
+import AdminBoardCard from './AdminBoardCard/AdminBoardCard';
 import AdminBoardColumnHeader from './AdminBoardColumnHeader';
 import { ACTIONS } from './AdminBoardConstants';
 import AdminBoardContainer from './AdminBoardContainer';
 import AdminBoardModal from './AdminBoardModal';
-import AdminBoardOptions from './AdminBoardOptions';
+import AdminBoardOptions from './AdminBoardOptions/AdminBoardOptions';
+import Board from './Board';
 
 const AdminBoard = ({
   data,

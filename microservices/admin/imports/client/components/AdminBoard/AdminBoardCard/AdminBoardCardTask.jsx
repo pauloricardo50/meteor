@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { taskComplete } from 'core/api/tasks/methodDefinitions';
 import IconButton from 'core/components/IconButton';
 
-import TaskSnoozer from '../TasksDataTable/TaskSnoozer';
+import TaskSnoozer from '../../TasksDataTable/TaskSnoozer';
 
 const AdminBoardCardTask = ({ title = 'Tâche sans titre', _id }) => {
   const [showButtons, setShowButtons] = useState(false);
