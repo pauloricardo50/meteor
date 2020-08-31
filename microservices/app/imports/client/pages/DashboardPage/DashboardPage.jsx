@@ -1,24 +1,38 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
+import useCurrentUser from 'core/hooks/useCurrentUser';
+import { createRoute } from 'core/utils/routerUtils';
+
+import appRoutes from '../../../startup/client/appRoutes';
 import PageApp from '../../components/PageApp';
 import DashboardInfo from './DashboardInfo';
-import DashboardPageContainer from './DashboardPageContainer';
 import DashboardProgress from './DashboardProgress';
 import DashboardRecap from './DashboardRecap';
 
-const DashboardPage = props => (
-  <PageApp id="DashboardPage" fullWidth>
-    <DashboardProgress {...props} />
-    <DashboardRecap {...props} />
-    <DashboardInfo {...props} />
-  </PageApp>
-);
+const DashboardPage = props => {
+  const { loan } = props;
+  const currentUser = useCurrentUser();
+  const hasTodoOnboarding =
+    currentUser === null || !loan.hasCompletedOnboarding;
 
-DashboardPage.propTypes = {
-  loan: PropTypes.objectOf(PropTypes.any).isRequired,
+  if (hasTodoOnboarding) {
+    return (
+      <Redirect
+        to={createRoute(appRoutes.LOAN_ONBOARDING_PAGE.path, {
+          loanId: loan._id,
+        })}
+      />
+    );
+  }
+
+  return (
+    <PageApp id="DashboardPage" fullWidth>
+      <DashboardProgress {...props} />
+      <DashboardRecap {...props} />
+      <DashboardInfo {...props} />
+    </PageApp>
+  );
 };
 
-DashboardPage.defaultProps = {};
-
-export default DashboardPageContainer(DashboardPage);
+export default DashboardPage;

@@ -8,6 +8,7 @@ import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
 import { PROMOTION_STATUS } from '../promotionConstants';
 import {
+  anonymousPromotion,
   appPromotion,
   proPromotionUsers,
   proPromotions,
@@ -28,7 +29,7 @@ exposeQuery({
         filters.status = PROMOTION_STATUS.OPEN;
       };
     },
-    validateParams: { promotionId: String, loanId: String },
+    validateParams: { promotionId: String },
   },
 });
 
@@ -167,4 +168,18 @@ exposeQuery({
     },
     validateParams: { canton: Match.Maybe(Array) },
   },
+});
+
+exposeQuery({
+  query: anonymousPromotion,
+  overrides: {
+    firewall(userId, { _id }) {
+      if (!_id) {
+        SecurityService.handleUnauthorized(
+          'Missing _id in query "anonymousPromotion"',
+        );
+      }
+    },
+  },
+  options: { allowFilterById: true },
 });

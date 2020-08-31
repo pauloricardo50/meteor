@@ -13,13 +13,13 @@
 
   transition: background-color 300ms $bezier, color 300ms $bezier;
 
-  background-color: #fff;
+  background-color: $primary;
 }
 
 .side-nav-user .scrollable {
   display: flex;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  // overflow-x: hidden;
+  // overflow-y: scroll;
   align-items: center;
   flex-direction: column;
   flex-shrink: 0;
@@ -48,11 +48,11 @@
   width: 100%;
   height: 64px;
 
-  border-bottom: 1px solid $border-grey;
+  border-bottom: 1px solid $border-grey-light;
 }
 
 .side-nav-user .top-bar {
-  border-bottom: 1px solid $border-grey;
+  // border-bottom: 1px solid $border-grey-light;
 }
 
 .side-nav-user .top-bar img,
@@ -88,7 +88,11 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: space-around;
-    color: $body-text;
+    color: white;
+  }
+
+  svg {
+    color: white;
   }
 
   .progress {
@@ -112,7 +116,7 @@
   width: 100%;
   padding: 0 8px;
 
-  border-bottom: 1px solid $border-grey;
+  // border-bottom: 1px solid $border-grey-light;
 
   .drawer-toggle {
     position: absolute;

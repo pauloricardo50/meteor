@@ -38,11 +38,12 @@ export const getLabel = ({
   name,
   field: { uniforms },
   overrideLabel,
-  intlId,
-  intlPrefix,
+  // intlId,
+  // intlPrefix,
   label,
   isListField,
-  parent,
+  // parent,
+  schema,
 }) => {
   if (label === null) {
     return null;
@@ -55,8 +56,11 @@ export const getLabel = ({
   return flowProps([
     overrideLabel,
     label,
-    uniforms && uniforms.label,
-    <T id={formatStringId({ intlPrefix, intlId, name, parent })} />,
+    uniforms?.label,
+    schema.label(name),
+    // <T
+    //   id={(formatStringId({ intlPrefix, intlId, name, parent }))}
+    // />,
   ]);
 };
 

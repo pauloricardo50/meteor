@@ -12,7 +12,6 @@ import BorrowerService from '../../api/borrowers/server/BorrowerService';
 import Contacts from '../../api/contacts';
 import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
 import {
-  APPLICATION_TYPES,
   PURCHASE_TYPE,
   STEPS,
   STEP_ORDER,
@@ -289,7 +288,6 @@ Meteor.methods({
         purchaseType: isRefinancing
           ? PURCHASE_TYPE.REFINANCING
           : PURCHASE_TYPE.ACQUISITION,
-        applicationType: APPLICATION_TYPES.FULL,
         customName: 'Ma maison à la plage',
       },
       userId,

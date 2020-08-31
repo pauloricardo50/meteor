@@ -1,30 +1,31 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import { APPLICATION_TYPES } from 'core/api/loans/loanConstants';
-
-export const { Consumer, Provider } = React.createContext();
+export const SideNavContext = React.createContext();
 
 const exactRoutesWithoutSidenav = ['/'];
-const routesWithoutSidenav = ['/enroll-account', '/reset-password', '/signup'];
+const routesWithoutSidenav = [
+  { route: '/enroll-account', func: 'startsWith' },
+  { route: '/reset-password', func: 'startsWith' },
+  { route: '/signup', func: 'startsWith' },
+  // This avoids writing a path matching algorithm for /onboarding and
+  // /loans/:loanId/onboarding
+  { route: '/onboarding', func: 'startsWith' },
+  { route: '/onboarding', func: 'endsWith' },
+  { route: '/properties', func: 'startsWith' },
+  { route: '/promotions', func: 'startsWith' },
+];
 
-const getShowSideNav = ({ location }, { applicationType }) =>
+const getShowSideNav = ({ location }) =>
   exactRoutesWithoutSidenav.indexOf(location.pathname) === -1 &&
-  routesWithoutSidenav.every(route => !location.pathname.startsWith(route)) &&
-  applicationType !== APPLICATION_TYPES.SIMPLE;
-
-export const withSideNavContextProvider = Component => props => {
-  const { history, loan } = props;
-  return (
-    <Provider value={getShowSideNav(history, loan)}>
-      <Component {...props} />
-    </Provider>
+  routesWithoutSidenav.every(
+    ({ route, func }) => !location.pathname[func](route),
   );
-};
 
-export const withSideNavContext = Component => props => (
-  <Consumer>
-    {shouldShowSideNav => (
-      <Component {...props} shouldShowSideNav={shouldShowSideNav} />
-    )}
-  </Consumer>
+export const withSideNavContextProvider = Component => props => (
+  <SideNavContext.Provider value={getShowSideNav(useHistory())}>
+    <Component {...props} />
+  </SideNavContext.Provider>
 );
+
+export const useSideNavContext = () => useContext(SideNavContext);

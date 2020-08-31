@@ -1,0 +1,16 @@
+.page-app {
+  display: flex;
+  flex-direction: column;
+
+  &-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    max-width: $xwide;
+  }
+}

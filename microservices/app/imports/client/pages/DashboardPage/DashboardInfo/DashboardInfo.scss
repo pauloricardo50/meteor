@@ -2,39 +2,50 @@
 
 .dashboard-info {
   display: flex;
-  align-items: center;
   flex-direction: column;
 
   .cards {
     display: flex;
-    align-items: flex-start;
+    align-items: stretch;
     flex-wrap: wrap;
 
     width: 100%;
+
+    @include screen(large) {
+      flex-direction: column;
+    }
   }
 
   .cards > * {
-    flex-basis: 0;
+    flex-basis: calc(50% - 16px);
     flex-grow: 1;
 
-    max-width: 50%;
-    margin: 8px;
-  }
-}
-
-.dashboard-info-team {
-  display: flex;
-  flex-direction: column;
-
-  .card-top {
-    flex-grow: 1;
+    @include screen(large) {
+      margin: 0;
+      margin-bottom: 16px;
+    }
   }
 
-  .card-bottom {
+  @include screen(large, min) {
+    &-team {
+      margin-right: 16px;
+    }
+  }
+
+  &-team, &-interests {
     display: flex;
-    align-items: center;
     flex-direction: column;
-    flex-grow: 0;
+  
+    .card-top {
+      flex-grow: 1;
+    }
+  
+    .card-bottom {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      flex-grow: 0;
+    }
   }
 }
 

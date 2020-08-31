@@ -50,6 +50,7 @@ export const AutoFormDialog = props => {
     title,
     triggerComponent,
     deleteKeyword,
+    submitFieldProps,
     ...otherProps
   } = props;
   // Never recompute this because it's really heavy
@@ -121,6 +122,7 @@ export const AutoFormDialog = props => {
             disableActions={disableActions}
             onDelete={onDelete}
             deleteKeyword={deleteKeyword}
+            submitFieldProps={submitFieldProps}
           />
         </AutoForm>
       </MuiDialog>

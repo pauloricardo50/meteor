@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Router } from 'react-router-dom';
 
-import { InjectCurrentUser } from '../../containers/CurrentUserContext';
+import { CurrentUserProvider } from '../../containers/CurrentUserContext';
 import history from '../../utils/history';
 import DisconnectNotification from '../DisconnectNotification';
 import ErrorBoundary from '../ErrorBoundary';
@@ -12,13 +12,10 @@ import LoginPage from '../LoginPage/loadable';
 import MicroserviceHead from '../MicroserviceHead';
 import ModalManager from '../ModalManager/loadable';
 import ScrollToTop from '../ScrollToTop';
-import GrapherPage from './GrapherPageLoadable';
 import HistoryWatcher from './HistoryWatcher';
 import LibraryWrappers from './LibraryWrappers';
 import Route from './Route';
 import Switch from './Switch';
-
-const isDev = process.env.NODE_ENV === 'development';
 
 const loginWithToken = ({
   match: {
@@ -42,7 +39,7 @@ const BaseRouter = ({
   WrapperComponent,
   hasLogin,
   routes,
-  currentUser,
+  currentUserConfig,
   loginPageProps,
 }) => {
   useEffect(() => {
@@ -54,7 +51,7 @@ const BaseRouter = ({
   return (
     <ErrorBoundary helper="root">
       <MicroserviceHead />
-      <InjectCurrentUser {...currentUser}>
+      <CurrentUserProvider {...currentUserConfig}>
         <LibraryWrappers
           i18n={{ locale, messages, formats }}
           WrapperComponent={WrapperComponent}
@@ -92,9 +89,7 @@ const BaseRouter = ({
                           {...loginPageProps}
                         />
                       )}
-                      {isDev && (
-                        <Route exact path="/grapher" component={GrapherPage} />
-                      )}
+
                       <Route
                         path="/"
                         render={childProps =>
@@ -108,7 +103,7 @@ const BaseRouter = ({
             </Router>
           </ErrorBoundary>
         </LibraryWrappers>
-      </InjectCurrentUser>
+      </CurrentUserProvider>
     </ErrorBoundary>
   );
 };

@@ -1,5 +1,5 @@
-import { withRouter } from 'react-router-dom';
-import { compose, withProps } from 'recompose';
+import { useHistory } from 'react-router-dom';
+import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
@@ -19,9 +19,10 @@ export const userSchema = new SimpleSchema({
   phoneNumber: { type: String, optional: true },
 });
 
-export default compose(
-  withRouter,
-  withProps(({ history, omitValues = [], ctaId }) => ({
+export default withProps(({ omitValues = [], ctaId }) => {
+  const history = useHistory();
+
+  return {
     schema: userSchema.omit(...omitValues),
     onSubmit: values => {
       const loanId = localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
@@ -52,5 +53,5 @@ export default compose(
           }
         });
     },
-  })),
-);
+  };
+});

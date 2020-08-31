@@ -1,32 +1,29 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { APPLICATION_TYPES } from '../../loans/loanConstants';
 import Loans from '../../loans/loans';
 
 export const up = () => {
-  const allLoans = Loans.find({}).fetch();
-
-  return Promise.all(
-    allLoans.map(({ _id }) =>
-      Loans.rawCollection().update(
-        { _id },
-        { $set: { applicationType: APPLICATION_TYPES.FULL } },
-      ),
-    ),
-  );
+  // const allLoans = Loans.find({}).fetch();
+  // return Promise.all(
+  //   allLoans.map(({ _id }) =>
+  //     Loans.rawCollection().update(
+  //       { _id },
+  //       { $set: { applicationType: APPLICATION_TYPES.FULL } },
+  //     ),
+  //   ),
+  // );
 };
 
 export const down = () => {
-  const allLoans = Loans.find({}).fetch();
-
-  return Promise.all(
-    allLoans.map(({ _id }) =>
-      Loans.rawCollection().update(
-        { _id },
-        { $unset: { applicationType: true } },
-      ),
-    ),
-  );
+  // const allLoans = Loans.find({}).fetch();
+  // return Promise.all(
+  //   allLoans.map(({ _id }) =>
+  //     Loans.rawCollection().update(
+  //       { _id },
+  //       { $unset: { applicationType: true } },
+  //     ),
+  //   ),
+  // );
 };
 
 Migrations.add({

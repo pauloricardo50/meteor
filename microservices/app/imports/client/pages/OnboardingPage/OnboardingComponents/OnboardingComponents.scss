@@ -1,0 +1,142 @@
+.onboarding-result {
+  display: flex;
+  flex-direction: column;
+
+  &-offers {
+    text-align: center;
+
+    .offers {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .offer {
+      width: 150px;
+      margin: 8px;
+      padding: 16px;
+      border: 1px solid $border-grey;
+      border-radius: 4px;
+      text-align: center;
+    }
+  }
+
+  .logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  &-signup {
+    img {
+      margin: 16px auto;
+      width: 300px;
+
+      @include screen(med) {
+        width: 200px;
+      }
+    }
+  }
+
+  &-max-property-value {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .toggle-content {
+      display: flex;
+    }
+
+    .recap-value {
+      font-size: 5em;
+      line-height: 1;
+
+      @include screen(large) {
+        font-size: 4em;
+      }
+    }
+
+    .balance-sheet,
+    .sums {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .show-recap-button {
+      margin-top: 16px;
+    }
+  }
+}
+
+.onboarding-choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  max-width: 800px;
+
+  @media screen and (max-width: $med) {
+    justify-content: center;
+  }
+
+  > * {
+    border: 1px solid transparent;
+    padding: 32px;
+    margin: 8px;
+    transition: border 200ms $bezier, transform 200ms $bezier;
+    width: 250px;
+    background-color: white;
+    transform: scale(1);
+
+    @media screen and (max-width: $med) {
+      width: 200px;
+    }
+
+    &:hover {
+      border: 1px solid $primary;
+      transform: scale(1.05);
+    }
+  }
+}
+
+.onboarding-form {
+  max-width: 400px;
+  margin-top: 32px;
+
+  &.wide-form {
+    max-width: 800px;
+  }
+
+  button[type='submit'] {
+    margin-top: 40px;
+    display: flex;
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+
+.onboarding-miniature {
+  border: 1px solid $border-grey;
+  border-radius: $border-radius;
+  height: 140px;
+  color: $body-text;
+
+  .img {
+    width: 140px;
+    height: 140px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: $border-radius;
+    background-size: cover;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    border-color: $primary;
+  }
+
+  .miniature-icon {
+    padding: 16px;
+    svg {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}

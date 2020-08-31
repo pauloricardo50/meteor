@@ -28,27 +28,29 @@ const MaxPropertyValueResults = ({
   recalculate,
   cantonOptions,
   showSecondButton = true,
+  hideTitle,
 }) => {
   const {
-    maxPropertyValue: { main, second, borrowerHash, canton },
+    maxPropertyValue: { borrowerHash, canton },
     hasProProperty,
     hasPromotion,
     shareSolvency,
     _id: loanId,
     purchaseType,
   } = loan;
-  const previousLoan = Calculator.getPreviousLoanValue({ loan });
   const hash = Calculator.getMaxPropertyValueHash({ loan });
   const shouldRecalculate = borrowerHash != hash;
 
   return (
     <div className="max-property-value-results animated fadeIn">
       <div className="top">
-        <div>
-          <h2>
-            <T id="MaxPropertyValue.title" values={{ purchaseType }} />
-          </h2>
-        </div>
+        {!hideTitle && (
+          <div>
+            <h2>
+              <T id="MaxPropertyValue.title" values={{ purchaseType }} />
+            </h2>
+          </div>
+        )}
         <div className="max-property-value-results-selects">
           {lockCanton ? (
             <p className="secondary locked-canton">
@@ -82,13 +84,7 @@ const MaxPropertyValueResults = ({
         </div>
       </div>
       <div className="max-property-value-results-table">
-        <MaxPropertyValueResultsTable
-          {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
-          residenceType={residenceType}
-          canton={canton}
-          purchaseType={purchaseType}
-          previousLoan={previousLoan}
-        />
+        <MaxPropertyValueResultsTable loan={loan} />
       </div>
       <MaxPropertyValueCertificate
         loan={loan}

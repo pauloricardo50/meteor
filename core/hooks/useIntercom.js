@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { TRACKING_COOKIE } from '../api/analytics/analyticsConstants';
 import { analyticsOpenedIntercom } from '../api/analytics/methodDefinitions';
 import {
   getIntercomSettings,

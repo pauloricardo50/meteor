@@ -34,11 +34,14 @@
 }
 
 .dashboard-recap-property-empty.dashboard-recap-property-empty {
-  // align-self: center;	
   max-width: 332px;
   padding: 16px;
 
   white-space: normal;
+
+  @include screen(wide) {
+    max-width: unset;
+  }
 }
 
 .dashboard-recap-property-title {

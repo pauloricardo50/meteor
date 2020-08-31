@@ -4,7 +4,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { getRedirect } from '../AppLayoutContainer';
+import { getRedirect } from '../appLayoutHelpers';
 
 describe('AppLayout', () => {
   describe('getRedirect', () => {

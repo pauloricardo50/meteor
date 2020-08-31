@@ -1,5 +1,3 @@
-import omit from 'lodash/omit';
-
 import {
   proLoanWithRevenues,
   proLoans as proLoansFragments,
@@ -10,7 +8,7 @@ import Loans from '.';
 
 export const anonymousLoan = Loans.createQuery(
   LOAN_QUERIES.ANONYMOUS_LOAN,
-  { ...omit(userLoan(), ['maxPropertyValue']), maxPropertyValueExists: 1 },
+  userLoan(),
   { scoped: true },
 );
 
@@ -43,9 +41,6 @@ export const proPropertyLoans = Loans.createQuery(
 
 export const userLoans = Loans.createQuery(
   LOAN_QUERIES.USER_LOANS,
-  {
-    ...userLoan({ withSort: true, withFilteredPromotions: true }),
-    maxPropertyValueExists: 1,
-  },
+  userLoan({ withSort: true, withFilteredPromotions: true }),
   { scoped: true },
 );
