@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Button from '../Button';
 import T from '../Translation';
 import AutoFormDateInput from './AutoFormDateInput';
+import AutoFormPercentInput from './AutoFormPercentInput';
 import AutoFormSelectFieldInput from './AutoFormSelectFieldInput';
 import AutoFormTextInput from './AutoFormTextInput';
 import ValidIcon from './ValidIcon';
@@ -108,6 +109,10 @@ class ArrayInput extends Component {
 
       if (type === 'custom') {
         return <CustomComponent {...childProps} />;
+      }
+
+      if (type === 'percent') {
+        return <AutoFormPercentInput {...childProps} />;
       }
     };
 
