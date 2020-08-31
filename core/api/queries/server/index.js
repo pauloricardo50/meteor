@@ -8,7 +8,6 @@ import '../../insuranceRequests/server/exposures';
 import '../../insurances/server/exposures';
 import '../../interestRates/server/exposures';
 import '../../lenderRules/server/exposures';
-import '../../liveSync/server/exposures';
 import '../../loans/server/exposures';
 import '../../lots/server/exposures';
 import '../../monitoring/server/exposures';
