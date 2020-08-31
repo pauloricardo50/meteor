@@ -44,7 +44,11 @@ const getRefinancingFormArray = () => [
           );
         },
       },
-      { id: 'rate', type: 'textInput', percent: true },
+      {
+        id: 'rate',
+        type: 'percent',
+        decimalPercent: true,
+      },
       {
         id: 'duration',
         type: 'textInput',
