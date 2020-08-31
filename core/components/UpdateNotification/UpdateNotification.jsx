@@ -1,9 +1,12 @@
+/* global Reload */
 import React, { useEffect, useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import cx from 'classnames';
+import { Meteor } from 'meteor/meteor';
+import { Autoupdate } from 'meteor/autoupdate';
 import Icon from '../Icon';
 import Button from '../Button';
 
@@ -28,29 +31,59 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const isDev = Meteor.isDevelopment;
+
 const UpdateNotification = () => {
   const classes = useStyles();
   const [reload, setReload] = useState(null);
-  const [reloadRequested, setReloadRequested] = useState(false);
+  const [reloading, setReloading] = useState(isDev);
+  const [remainingSeconds, setRemainingSeconds] = useState(30);
 
-  const updateAvailable = useTracker(() => {
-    return Autoupdate.newClientAvailable();
-  }, []);
+  const updateAvailable = useTracker(() => Autoupdate.newClientAvailable(), []);
 
   useEffect(() => {
     // We can't remove _onMigrate callbacks,
     // but we can prevent them from blocking a reload.
     let disposed = false;
-    Reload._onMigrate((reload) => {
-      setReload(reload);
+    let reloadRequested = false;
 
-      return [disposed || reloadRequested];
+    Reload._onMigrate(_reload => {
+      // If a function is passed to setReload it is treated as an
+      // update function, so we have to wrap it to set
+      setReload(() => () => {
+        setReloading(true);
+        reloadRequested = true;
+        _reload();
+      });
+
+      // The first item in the array is if we are ready for the page to reload
+      // Once all onMigrate callbacks say they are ready, it reloads
+      return [isDev || disposed || reloadRequested];
     });
 
     return function () {
       disposed = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (updateAvailable) {
+      const interval = setInterval(() => {
+        setRemainingSeconds(current => {
+          const next = Math.max(0, current - 1);
+
+          if (next === 0) {
+            reload();
+            clearInterval(interval);
+          }
+
+          return next;
+        });
+      }, 1000);
+
+      return () => clearInterval(interval);
     }
-  }, [reloadRequested])
+  }, [updateAvailable, reload]);
 
   if (!updateAvailable) {
     return null;
@@ -58,21 +91,21 @@ const UpdateNotification = () => {
 
   return (
     <Snackbar
-      open={true}
+      open
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       autoHideDuration={null}
     >
       <SnackbarContent
         className={classes.infoSnackbar}
         message={
-          <div
-            className={cx(classes.message, 'update-notification-message')}
-          >
+          <div className={cx(classes.message, 'update-notification-message')}>
             <Icon
               type="info"
               className={cx(classes.icon, classes.iconVariant)}
             />
-            <span>Update available</span>
+            <span>
+              Update available! Reloading in {remainingSeconds} seconds
+            </span>
           </div>
         }
         action={
@@ -80,14 +113,14 @@ const UpdateNotification = () => {
             variant="outlined"
             size="small"
             className={classes.button}
-            onClick={() => { setReloadRequested(true); reload(); }}
+            onClick={() => reload()}
           >
-            Reload
+            {reloading ? 'Reloading...' : 'Reload Now'}
           </Button>
         }
       />
     </Snackbar>
-  )
-}
+  );
+};
 
 export default UpdateNotification;
