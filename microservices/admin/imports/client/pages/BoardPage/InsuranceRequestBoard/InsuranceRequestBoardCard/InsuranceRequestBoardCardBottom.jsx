@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InsuranceRequestBoardCardBottom = ({ customName }) => {
+const InsuranceRequestBoardCardBottom = ({ data: { customName } }) => {
   let content = null;
   if (customName) {
     content = customName;

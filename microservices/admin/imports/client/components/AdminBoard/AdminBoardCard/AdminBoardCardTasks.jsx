@@ -6,7 +6,7 @@ import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import StickyPopover from 'core/components/StickyPopover';
 import Timeline from 'core/components/Timeline';
 
-import InsuranceRequestBoardCardTask from './InsuranceRequestBoardCardTask';
+import AdminBoardCardTask from './AdminBoardCardTask';
 
 const sortTasks = ({ dueAt: dueA }, { dueAt: dueB }) => {
   if (!dueA) {
@@ -19,12 +19,8 @@ const sortTasks = ({ dueAt: dueA }, { dueAt: dueB }) => {
   return dueA - dueB;
 };
 
-const InsuranceRequestBoardCardTasks = ({
-  nextDueTask,
-  tasks,
-  renderComplex,
-}) => {
-  if (!nextDueTask._id) {
+const AdminBoardCardTasks = ({ nextDueTask, tasks, renderComplex }) => {
+  if (!nextDueTask?._id) {
     return null;
   }
 
@@ -32,17 +28,14 @@ const InsuranceRequestBoardCardTasks = ({
   const isLate = nextDueTask.noDueDate || dueAtMoment < moment();
 
   const task = (
-    <div className="loan-board-card-tasks font-size-body">
+    <h5 className="admin-board-card-tasks font-size-body">
       <small
         className={cx('date mr-4', { 'error-box': isLate, secondary: !isLate })}
       >
         {nextDueTask.noDueDate ? 'Maintenant' : dueAtMoment.fromNow()}
       </small>
-      <InsuranceRequestBoardCardTask
-        title={nextDueTask.title}
-        _id={nextDueTask._id}
-      />
-    </div>
+      <AdminBoardCardTask title={nextDueTask.title} _id={nextDueTask._id} />
+    </h5>
   );
   const activeTasks = tasks.filter(
     ({ status }) => status === TASK_STATUS.ACTIVE,
@@ -65,9 +58,7 @@ const InsuranceRequestBoardCardTasks = ({
                 ) : (
                   <span className="secondary">{moment(dueAt).fromNow()}</span>
                 ),
-                mainLabel: (
-                  <InsuranceRequestBoardCardTask title={title} _id={_id} />
-                ),
+                mainLabel: <AdminBoardCardTask title={title} _id={_id} />,
               }))}
             />
           }
@@ -81,4 +72,4 @@ const InsuranceRequestBoardCardTasks = ({
   );
 };
 
-export default React.memo(InsuranceRequestBoardCardTasks);
+export default React.memo(AdminBoardCardTasks);
