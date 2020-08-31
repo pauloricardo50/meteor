@@ -29,6 +29,7 @@ import { LOAN_BOARD_GROUP_BY, NO_PROMOTION } from './loanBoardConstants';
 import {
   additionalLoanBoardFields,
   columnHeaderOptions,
+  getAdditionalColumnHeaderTitle,
   groupData,
   makeClientSideFilter,
   makeOptionsSelect,
@@ -163,6 +164,7 @@ export default compose(
         promotions,
         columnHeaderOptions,
         collection: LOANS_COLLECTION,
+        getAdditionalTitle: getAdditionalColumnHeaderTitle,
       },
       columnItemProps: {
         additionalFields: options.additionalFields,

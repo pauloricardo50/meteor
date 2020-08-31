@@ -29,7 +29,7 @@ export default compose(
       };
     },
   ),
-  withProps(() => {
+  withProps(({ collection, ...props }) => {
     const { all: devAndAdmins, advisors: admins } = useAdmins();
     const currentUser = useCurrentUser();
 

@@ -16,6 +16,7 @@ import {
 } from 'core/api/loans/loanConstants';
 import { PROMOTION_STATUS } from 'core/api/promotions/promotionConstants';
 import { ROLES, USER_STATUS } from 'core/api/users/userConstants';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 
@@ -110,7 +111,7 @@ const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
     item => get(item, 'user.lastName'),
   ];
 
-  if (groupBy === GROUP_BY.PROMOTION) {
+  if (groupBy === LOAN_BOARD_GROUP_BY.PROMOTION) {
     // Keep the promotionLoan at the top of the column
     sorters = [
       item => {
@@ -129,7 +130,7 @@ const makeSortColumnData = ({ sortBy, sortOrder, groupBy }) => {
 };
 
 export const groupByFunc = groupBy => {
-  if (groupBy === GROUP_BY.PROMOTION) {
+  if (groupBy === LOAN_BOARD_GROUP_BY.PROMOTION) {
     // When grouping by promotion, also group promotionLoan
     return loan =>
       get(loan, groupBy) ||
@@ -479,3 +480,16 @@ export const columnHeaderOptions = [
   { id: SORT_BY.ASSIGNED_EMPLOYEE, label: 'Conseiller' },
   { id: SORT_BY.STATUS, label: 'Statut' },
 ];
+
+export const getAdditionalColumnHeaderTitle = ({ id, groupBy, promotions }) => {
+  if (groupBy === LOAN_BOARD_GROUP_BY.PROMOTION) {
+    const promotion = promotions.find(({ _id }) => id === _id);
+    return promotion ? (
+      <CollectionIconLink relatedDoc={promotion} />
+    ) : (
+      'Sans promo'
+    );
+  }
+
+  return undefined;
+};

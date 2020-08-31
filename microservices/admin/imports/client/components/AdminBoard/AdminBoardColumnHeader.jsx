@@ -52,6 +52,8 @@ const AdminBoardColumnHeader = ({
   admins,
   collection,
   columnHeaderOptions,
+  getAdditionalTitle,
+  ...props
 }) => {
   const { groupBy } = options;
 
@@ -60,7 +62,8 @@ const AdminBoardColumnHeader = ({
       <div className="flex align-center sb">
         <div className="title">
           <span className="mr-4">
-            {getTitle({ id, groupBy, admins, collection })}
+            {getTitle({ id, groupBy, admins, collection, ...props }) ||
+              getAdditionalTitle({ id, groupBy, admins, collection, ...props })}
           </span>
           <span className="secondary">({count})</span>
         </div>
