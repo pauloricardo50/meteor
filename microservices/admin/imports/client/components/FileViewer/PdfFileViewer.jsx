@@ -1,7 +1,6 @@
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 
-import pdfComponents from 'core/api/pdf/react-pdf/pdfComponents';
 import Loadable from 'core/utils/loadable';
 
 import messagesFR from '../../../../lang/fr.json';
@@ -11,6 +10,9 @@ const PDFViewer = Loadable({
 });
 
 const PdfFileViewer = ({ pdfType, pdfProps }) => {
+  // eslint-disable-next-line import/order
+  import pdfComponents from 'core/api/pdf/react-pdf/pdfComponents';
+
   const PdfComponent = pdfComponents[pdfType];
 
   return (
