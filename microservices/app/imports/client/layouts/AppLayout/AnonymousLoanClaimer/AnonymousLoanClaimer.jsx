@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 
 import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
@@ -7,7 +6,7 @@ import { assignLoanToUser } from 'core/api/loans/methodDefinitions';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import Dialog from 'core/components/Material/Dialog';
-import T from 'core/components/Translation';
+import T, { IntlDate } from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
 
 import APP_ROUTES from '../../../../startup/client/appRoutes';
@@ -73,15 +72,19 @@ const AnonymousLoanClaimer = ({ currentUser }) => {
       open={open}
       title={<T id="AnonymousLoanClaimer.title" />}
     >
-      <div className="with-loan-start">
+      <div className="anonymous-loan-claimer">
         <Icon type="dollarSign" className="icon" />
         <h2>
-          <T id="AnonymousAppPage.withLoanTitle" values={{ name }} />
+          <T id="AnonymousLoanClaimer.withLoanTitle" values={{ name }} />
         </h2>
         <span className="secondary">
           <T
-            id="AnonymousAppPage.lastModifiedAt"
-            values={{ date: moment(mostRecentDate).fromNow() }}
+            id="AnonymousLoanClaimer.lastModifiedAt"
+            values={{
+              date: (
+                <IntlDate value={mostRecentDate} type="relative" style="long" />
+              ),
+            }}
           />
         </span>
       </div>

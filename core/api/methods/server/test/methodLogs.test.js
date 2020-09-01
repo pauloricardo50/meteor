@@ -16,6 +16,7 @@ const storeMethodLog = ({ name, userId, params, result, error }) => {
     params: JSON.stringify(params),
     result: JSON.stringify(result),
     error: JSON.stringify(error),
+    createdAt: new Date(),
   });
 };
 
@@ -36,7 +37,7 @@ export const getMethodLogs = query => {
 
 Meteor.methods({
   getMethodLogs(query) {
-    getMethodLogs(query);
+    return getMethodLogs(query);
   },
 });
 

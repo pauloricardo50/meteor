@@ -26,5 +26,5 @@ analyticsOnboardingStep.setHandler(() => {});
 analyticsStartedOnboarding.setHandler((context, { loanId }) => {
   const { userId } = context;
   SecurityService.loans.isAllowedToUpdate(loanId, userId);
-  LoanService.startedOnboarding({ loanId });
+  return LoanService.startedOnboarding({ loanId });
 });

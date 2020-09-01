@@ -3,10 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import {
   loanLinkProperty,
-  loanUpdate,
   userLoanInsert,
 } from 'core/api/loans/methodDefinitions';
 import { anonymousProperty } from 'core/api/properties/queries';
@@ -55,14 +53,6 @@ const getCta = ({ propertyId, currentUser, history, anonymousLoan }) => {
         onClick: () =>
           loanLinkProperty
             .run({ loanId: compatibleLoan._id, propertyId })
-            .then(() =>
-              // Route straight to onboarding after this, instead of potentially
-              // showing the initial screen again
-              loanUpdate.run({
-                loanId: compatibleLoan._id,
-                object: { hasStartedOnboarding: true },
-              }),
-            )
             .then(() => routeToLoan(compatibleLoan._id)),
       };
     }
@@ -108,7 +98,6 @@ const AppProPropertyPage = ({ property }) => {
     hasPromotion: 1,
   });
   const history = useHistory();
-  console.log('property:', property);
 
   if (loading) {
     return null;
@@ -145,7 +134,7 @@ const AppProPropertyPage = ({ property }) => {
           loading={buttonLoading}
           onClick={() => {
             setButtonLoading(true);
-            Promise.resovle(onClick()).catch(() => setButtonLoading(false));
+            Promise.resolve(onClick()).catch(() => setButtonLoading(false));
           }}
           size="large"
         >

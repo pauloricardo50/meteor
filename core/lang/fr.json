@@ -1,4 +1,6 @@
 {
+  "AnonymousLoanClaimer.withLoanTitle":"Dossier anonyme",
+  "AnonymousLoanClaimer.lastModifiedAt":"Dernière modification {date} depuis cet appareil",
   "OnboardingChoice.manyBorrowers.title": "Contactez nous",
   "OnboardingChoice.manyBorrowers.description": "Notre calculateur ne pourra pas vous donner un résultat précis pour votre cas particulier. Nous vous suggérons de prendre contact avec un conseiller pour en discuter et/ou de créer votre compte pour avancer sur votre dossier.",
   "OnboardingChoice.otherCanton.title": "Nous ne sommes pas encore actifs dans ce canton",

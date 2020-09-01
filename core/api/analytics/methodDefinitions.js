@@ -72,9 +72,5 @@ export const analyticsOnboardingStep = new Method({
 
 export const analyticsStartedOnboarding = new Method({
   name: 'analyticsStartedOnboarding',
-  params: {
-    loanId: String,
-    activeStep: String,
-    previousStep: Match.Maybe(String),
-  },
+  params: { loanId: String },
 });

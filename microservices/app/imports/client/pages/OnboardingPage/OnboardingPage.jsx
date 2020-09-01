@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { analyticsStartedOnboarding } from 'core/api/analytics/methodDefinitions';
 import { loanUpdate } from 'core/api/loans/methodDefinitions';
 
 import OnboardingWithLoan from './OnboardingWithLoan';
 import OnboardingWithoutLoan from './OnboardingWithoutLoan';
 
 const OnboardingPage = ({ loan }) => {
-  const [hasSeenInitialScreen, setHasSeenInitialScreen] = useState(false);
+  const [hasSeenInitialScreen, setHasSeenInitialScreen] = useState(
+    !!loan?.hasStartedOnboarding,
+  );
+
+  useEffect(() => {
+    if (loan && !loan.hasStartedOnboarding) {
+      analyticsStartedOnboarding.run({ loanId: loan._id });
+    }
+  }, []);
 
   if (!loan) {
     return <OnboardingWithoutLoan />;
   }
 
-  if (!loan.hasStartedOnboarding && !hasSeenInitialScreen) {
+  if (!hasSeenInitialScreen) {
     return (
       <OnboardingWithoutLoan
         promotion={loan.promotions[0]}

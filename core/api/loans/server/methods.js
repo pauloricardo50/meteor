@@ -104,9 +104,9 @@ userLoanInsert.setHandler(
     return LoanService.fullLoanInsert({
       userId,
       loan: {
-        hasStartedOnboarding: true,
         status: test ? LOAN_STATUS.TEST : LOAN_STATUS.LEAD,
         purchaseType,
+        hasStartedOnboarding: true,
       },
     });
   },
@@ -218,6 +218,11 @@ anonymousLoanInsert.setHandler((context, params) => {
   }
 
   if (existingAnonymousLoanId) {
+    SecurityService.loans.isAllowedToUpdate(
+      existingAnonymousLoanId,
+      context.userId,
+    );
+
     // If an anonymous loan exists on the client, don't add another one
     // If a new property is requested on it, add it to the existing loan
     if (proPropertyId) {

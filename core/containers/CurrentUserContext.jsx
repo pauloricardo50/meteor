@@ -33,6 +33,7 @@ export const CurrentUserProvider = ({ query, params, deps = [], children }) => {
   );
 
   const currentUser = loading ? undefined : data || null;
+  window.currentUser = currentUser; // Useful in E2E tests
 
   return (
     <CurrentUserContext.Provider value={formatCurrentUser(currentUser)}>

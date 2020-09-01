@@ -45,7 +45,8 @@ export const isProFlow = loan => loan.hasPromotion || loan.hasProProperty;
 export const isRefinancing = loan =>
   loan.purchaseType === PURCHASE_TYPE.REFINANCING;
 const knowsProperty = loan =>
-  loan.projectStatus && loan.projectStatus !== ACQUISITION_STATUS.SEARCHING;
+  loan.acquisitionStatus &&
+  loan.acquisitionStatus !== ACQUISITION_STATUS.SEARCHING;
 
 const updateBorrowers = (loan, borrower1, borrower2) => {
   const promises = [];
