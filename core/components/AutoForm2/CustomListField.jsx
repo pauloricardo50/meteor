@@ -29,7 +29,7 @@ const List = ({
       {...filterDOMProps(props)}
     >
       {children
-        ? value.map((item, index) =>
+        ? value?.map?.((item, index) =>
             Children.map(children, child =>
               React.cloneElement(child, {
                 key: index,
@@ -41,7 +41,7 @@ const List = ({
               }),
             ),
           )
-        : value.map((item, index) => (
+        : value?.map?.((item, index) => (
             <ListItemField
               key={index}
               label={null}

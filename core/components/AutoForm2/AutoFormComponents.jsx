@@ -123,16 +123,16 @@ const determineComponentFromProps = ({
     return { Component: CustomNestField, type: COMPONENT_TYPES.ARRAY };
   }
 
-  if (fieldType === Boolean) {
-    return { Component: OptimizedBoolField };
-  }
-
   if (uniforms && uniforms.render) {
     return {
       Component: uniforms.render,
       type: COMPONENT_TYPES.RENDER,
       props: { placeholder: null },
     };
+  }
+
+  if (fieldType === Boolean) {
+    return { Component: OptimizedBoolField };
   }
 
   return {
