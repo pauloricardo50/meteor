@@ -1,5 +1,3 @@
-/* eslint-env mocha */
-
 import React from 'react';
 import { expect } from 'chai';
 import { Autoupdate } from 'meteor/autoupdate';
@@ -18,13 +16,13 @@ describe('UpdateNotification', () => {
   it('should render nothing by default', () => {
     const { queryByText } = render(<UpdateNotification />);
 
-    expect(queryByText('Update')).to.equal(null);
+    expect(queryByText('Update available!', { exact: false })).to.equal(null);
   });
 
   it('should show notification when update is available', async () => {
     Autoupdate.newClientAvailable = () => true;
 
     const { findByText } = render(<UpdateNotification />);
-    await findByText('Update available!', { exact: false });
+    await findByText('Update available! Reloading in', { exact: false });
   });
 });
