@@ -2,6 +2,7 @@ import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import cx from 'classnames';
 import { withRouter } from 'react-router-dom';
+import useWindowScroll from 'react-use/lib/useWindowScroll';
 
 import IconButton from 'core/components/IconButton';
 import TopNavButtons from 'core/components/TopNav/TopNavButtons';
@@ -32,9 +33,10 @@ const renderButtons = ({ location: { pathname, search } }) => {
 const AppTopNav = ({ toggleDrawer, shouldShowSideNav, history, children }) => {
   const currentUser = useCurrentUser();
   const isMobile = useMedia({ maxWidth: 768 });
+  const { y } = useWindowScroll();
 
   return (
-    <Toolbar className="top-nav">
+    <Toolbar className={cx('top-nav', { scrolling: y > 0 })}>
       <div className={cx('top-nav-content', { mobile: isMobile })}>
         {shouldShowSideNav && isMobile && (
           <IconButton onClick={toggleDrawer} type="menu" />

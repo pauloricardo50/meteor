@@ -69,7 +69,10 @@
 .top-nav {
   background-color: $background-color;
   border: none;
-  border-bottom: 1px solid $border-grey-light;
+
+  &.scrolling {
+    border-bottom: 1px solid $border-grey-light;
+  }
 }
 
 .layout-error {
