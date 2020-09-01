@@ -27,7 +27,10 @@ module.exports = {
   parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 6,
-    ecmaFeatures: { jsx: true },
+    ecmaFeatures: {
+      jsx: true,
+    },
+    allowImportExportEverywhere: true
   },
   extends: [
     'airbnb',
