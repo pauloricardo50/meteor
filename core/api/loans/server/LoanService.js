@@ -35,6 +35,7 @@ import {
   updateProNote,
 } from '../../helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
+import { INTEREST_RATES } from '../../interestRates/interestRatesConstants';
 import LenderRulesService from '../../lenderRules/server/LenderRulesService';
 import { ORGANISATION_FEATURES } from '../../organisations/organisationConstants';
 import OrganisationService from '../../organisations/server/OrganisationService';
@@ -49,7 +50,6 @@ import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenues/revenueConstants';
 import { TASK_STATUS } from '../../tasks/taskConstants';
 import UserService from '../../users/server/UserService';
 import {
-  APPLICATION_TYPES,
   CANTONS,
   LOANS_COLLECTION,
   LOAN_STATUS,
@@ -260,10 +260,21 @@ class LoanService extends CollectionService {
 
   addStructure = ({ loanId, structure, atIndex }) => {
     const newStructureId = Random.id();
+
+    let { loanTranches } = structure;
+
+    if (!loanTranches?.length) {
+      loanTranches = [
+        { type: INTEREST_RATES.YEARS_10, value: structure.wantedLoan || 0 },
+      ];
+    }
+
     Loans.update(loanId, {
       $push: {
         structures: {
-          $each: [{ ...structure, id: newStructureId, disabled: false }],
+          $each: [
+            { ...structure, loanTranches, id: newStructureId, disabled: false },
+          ],
           $position: atIndex,
         },
       },
