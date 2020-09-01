@@ -4,35 +4,44 @@ import { borrowerDelete } from 'core/api/borrowers/methodDefinitions';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import T from 'core/components/Translation';
 
-const BorrowerFormHeader = ({ index, borrowerId, loanId }) => (
+const BorrowerFormHeader = ({ index, borrowerId, loanId, borrowerCount }) => (
   <div className="flex center-align">
     <h3 className="mr-8">
       <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
     </h3>
 
-    <ConfirmMethod
-      buttonProps={{
-        error: true,
-        size: 'small',
-        label: <T id="general.delete" />,
-      }}
-      method={() => borrowerDelete.run({ borrowerId, loanId })}
-    />
+    {borrowerCount >= 2 && (
+      <ConfirmMethod
+        buttonProps={{
+          error: true,
+          size: 'small',
+          label: <T id="general.delete" />,
+        }}
+        method={() => borrowerDelete.run({ borrowerId, loanId })}
+      />
+    )}
   </div>
 );
 
-export const makeBorrowerFormHeader = index => ({
+export const makeBorrowerFormHeader = ({
+  index,
+  borrowerCount,
+  loanId,
+  borrowerIds,
+}) => ({
   type: String,
   optional: true,
+  maxCount: borrowerCount,
   uniforms: {
-    render: ({ model: { _id: loanId, borrowers = [] } }) => (
+    render: ({ maxCount }) => (
       <BorrowerFormHeader
+        key={borrowerCount}
         index={index}
-        borrowerId={borrowers[index]?._id}
+        borrowerId={borrowerIds[index]}
         loanId={loanId}
+        borrowerCount={maxCount} // Weird hack to make this component reset
       />
     ),
   },
 });
-
 export default BorrowerFormHeader;

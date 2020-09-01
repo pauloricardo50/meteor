@@ -34,10 +34,16 @@ const OnboardingBorrowersForm = ({
 
   const layout = twoBorrowers ? borrowerFormLayout2 : borrowerFormLayout1;
   const className = twoBorrowers ? 'wide-form' : '';
-  const schema = useMemo(() => {
-    const sch = getBorrowersFormSchema(loan.borrowers.length, borrowerSchema);
-    return sch;
-  }, [loan]);
+  const schema = useMemo(
+    () =>
+      getBorrowersFormSchema({
+        borrowerCount: loan.borrowers.length,
+        schema: borrowerSchema,
+        loanId: loan._id,
+        borrowerIds: loan.borrowers.map(({ _id }) => _id),
+      }),
+    [loan, loan.borrowers.length],
+  );
 
   return (
     <OnboardingForm
@@ -46,17 +52,6 @@ const OnboardingBorrowersForm = ({
       schema={schema}
       model={getModel(loan, borrowerSchema)}
       onSubmit={onSubmit}
-      // autoFormProps={{
-      //   transformIntlId: id => {
-      //     // Remove nested borrower1 or borrower2 from intlIds
-      //     if (id.includes('borrower1') || id.includes('borrower2')) {
-      //       const [part1, borr, ...rest] = id.split('.');
-      //       return [part1, ...rest].join('.');
-      //     }
-
-      //     return id;
-      //   },
-      // }}
       {...props}
     />
   );

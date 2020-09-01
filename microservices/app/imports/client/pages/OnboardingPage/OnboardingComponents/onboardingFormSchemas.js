@@ -7,23 +7,33 @@ import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConsta
 
 import { makeBorrowerFormHeader } from './BorrowerFormHeader';
 
-const getBorrowerSchema = index => ({
-  header: makeBorrowerFormHeader(index),
+const getBorrowerSchema = args => ({
+  header: makeBorrowerFormHeader(args),
 });
 
-const header0 = getBorrowerSchema(0);
-const header1 = getBorrowerSchema(1);
+export const getBorrowersFormSchema = ({
+  borrowerCount,
+  schema,
+  borrowerIds,
+  loanId,
+}) => {
+  const borrowerSchemaProps = { borrowerCount, borrowerIds, loanId };
 
-export const getBorrowersFormSchema = (borrowerCount, schema) => {
   if (borrowerCount > 1) {
     return new SimpleSchema({
       borrower1: {
-        type: new SimpleSchema({ ...header0, ...schema }),
+        type: new SimpleSchema({
+          ...getBorrowerSchema({ index: 0, ...borrowerSchemaProps }),
+          ...schema,
+        }),
         uniforms: { label: null },
         ignoreParentInLabel: true,
       },
       borrower2: {
-        type: new SimpleSchema({ ...header1, ...schema }),
+        type: new SimpleSchema({
+          ...getBorrowerSchema({ index: 1, ...borrowerSchemaProps }),
+          ...schema,
+        }),
         uniforms: { label: null },
         ignoreParentInLabel: true,
       },
@@ -32,7 +42,10 @@ export const getBorrowersFormSchema = (borrowerCount, schema) => {
 
   return new SimpleSchema({
     borrower1: {
-      type: new SimpleSchema({ ...header0, ...schema }),
+      type: new SimpleSchema({
+        ...getBorrowerSchema({ index: 0, ...borrowerSchemaProps }),
+        ...schema,
+      }),
       uniforms: { label: null },
       ignoreParentInLabel: true,
     },
