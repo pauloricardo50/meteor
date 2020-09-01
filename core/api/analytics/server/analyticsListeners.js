@@ -206,6 +206,12 @@ addAnalyticsListener({
   method: analyticsLogin,
   func: ({ analytics, params, context }) => {
     const { userId } = context;
+
+    if (!userId) {
+      // Sometimes this happens..
+      return;
+    }
+
     const {
       name: userName,
       email: userEmail,
