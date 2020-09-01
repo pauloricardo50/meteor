@@ -6,8 +6,8 @@ import moment from 'moment';
 
 import {
   checkEmails,
-  resetDatabase,
   createClock,
+  resetDatabase,
 } from '../../../../utils/testHelpers';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import generator from '../../../factories/server';
@@ -1477,6 +1477,58 @@ describe('PromotionOptionService', function () {
       expect(promotionOption.simpleVerification.date.getTime()).to.equal(
         updatedDate.getTime(),
       );
+    });
+
+    it('saves conditions to bank if status is VALIDATED_WITH_CONDITIONS', () => {
+      const startDate = new Date();
+      generator({
+        promotionOptions: {
+          _id: 'id',
+          bank: {
+            status: PROMOTION_OPTION_BANK_STATUS.INCOMPLETE,
+            date: startDate,
+          },
+        },
+      });
+
+      PromotionOptionService.setProgress({
+        promotionOptionId: 'id',
+        id: 'bank',
+        object: {
+          status: PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
+          conditions: 'Do stuff',
+        },
+      });
+
+      const { bank } = PromotionOptionService.get('id', { bank: 1 });
+
+      expect(bank.status).to.equal(
+        PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
+      );
+      expect(bank.conditions).to.equal('Do stuff');
+    });
+
+    it('unsets conditions on bank if status is not VALIDATED_WITH_CONDITIONS', () => {
+      const startDate = new Date();
+      generator({
+        promotionOptions: {
+          _id: 'id',
+          bank: {
+            status: PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
+            date: startDate,
+            conditions: 'Yoo',
+          },
+        },
+      });
+
+      PromotionOptionService.setProgress({
+        promotionOptionId: 'id',
+        id: 'bank',
+        object: { status: PROMOTION_OPTION_BANK_STATUS.VALIDATED },
+      });
+
+      const { bank } = PromotionOptionService.get('id', { bank: 1 });
+      expect(bank.conditions).to.equal(undefined);
     });
 
     describe('emails', () => {

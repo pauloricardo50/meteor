@@ -30,10 +30,12 @@ const schema = OrganisationSchema.omit(
         firstName: 1,
         office: 1,
       },
+      allowNull: true,
     },
     uniforms: {
-      transform: ({ firstName }) => firstName,
+      transform: assignee => assignee?.firstName || 'Personne',
       label: 'Conseiller par défaut des referrals',
+      placeholder: 'Personne',
       grouping: {
         groupBy: 'office',
         format: office => <T id={`Forms.office.${office}`} />,

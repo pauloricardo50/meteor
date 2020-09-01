@@ -13,15 +13,19 @@ const PurchaseTypeIcon = ({ isRefinancing }) =>
     <AcquisitionIcon className="acquisition-icon" />
   );
 
-const LoanBoardCardBottom = ({
-  category,
-  promotions,
-  properties,
-  customName,
-  structure,
-  renderComplex,
-  purchaseType,
-}) => {
+const LoanBoardCardBottom = ({ data: loan, renderComplex }) => {
+  const {
+    category,
+    customName,
+    promotions = [],
+    properties = [],
+    selectedStructure,
+    structures = [],
+    purchaseType,
+  } = loan;
+
+  const structure = structures.find(({ id }) => id === selectedStructure);
+
   const promotion = promotions[0] && promotions[0].name;
   const showPremium = category === LOAN_CATEGORIES.PREMIUM;
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;

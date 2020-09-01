@@ -8,13 +8,10 @@ import InsuranceRequestBoard from './InsuranceRequestBoard/InsuranceRequestBoard
 import LoanBoard from './LoanBoard/LoanBoard';
 
 const BoardPage = ({
-  currentUser,
   loanBoardOptions,
   loanBoardDispatch,
   insuranceRequestBoardOptions,
   insuranceRequestBoardDispatch,
-  activateLoanBoardSync,
-  setActivateLoanBoardSync,
   board,
   setBoard,
 }) => (
@@ -28,20 +25,11 @@ const BoardPage = ({
       value={board}
     />
     {board === 'loans' ? (
-      <LoanBoard
-        currentUser={currentUser}
-        options={loanBoardOptions}
-        dispatch={loanBoardDispatch}
-        activateLoanBoardSync={activateLoanBoardSync}
-        setActivateLoanBoardSync={setActivateLoanBoardSync}
-      />
+      <LoanBoard options={loanBoardOptions} dispatch={loanBoardDispatch} />
     ) : (
       <InsuranceRequestBoard
-        currentUser={currentUser}
         options={insuranceRequestBoardOptions}
         dispatch={insuranceRequestBoardDispatch}
-        activateLoanBoardSync={activateLoanBoardSync}
-        setActivateLoanBoardSync={setActivateLoanBoardSync}
       />
     )}
   </>

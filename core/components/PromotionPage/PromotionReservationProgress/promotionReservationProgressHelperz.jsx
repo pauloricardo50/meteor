@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle';
 import { faCheckCircle } from '@fortawesome/pro-duotone-svg-icons/faCheckCircle';
@@ -160,7 +162,7 @@ export const PROMOTION_OPTION_ICONS = {
         return {};
     }
   },
-  bank: ({ bank: { status, date }, fullVerification }) => {
+  bank: ({ bank: { status, date, conditions }, fullVerification }) => {
     const base = {
       detailIcon: faUniversity,
       isActive:
@@ -171,6 +173,7 @@ export const PROMOTION_OPTION_ICONS = {
         PROMOTION_OPTION_BANK_STATUS.VALIDATED_WITH_CONDITIONS,
       ].includes(status),
       description: <T id={`Forms.status.${status}`} />,
+      subDescription: Meteor.microservice !== 'app' && conditions,
       date,
     };
 

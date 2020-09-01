@@ -34,8 +34,8 @@ describe('FinancingResultErrors', () => {
       loan: {
         properties: [property],
         structures: [structure],
-        offers: [offer],
         borrowers: [borrower],
+        lenders: [{ organisation: { name: 'Org' }, offers: [offer] }],
       },
       Calculator,
       structureId,

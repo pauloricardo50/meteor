@@ -1,4 +1,5 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
 
 import Chip from '../Material/Chip';
@@ -28,6 +29,13 @@ const makeRenderValue = ({ multiple, options }) => {
   );
 };
 
+const useStyles = makeStyles({
+  multiple: {
+    paddingTop: 4.5,
+    paddingBottom: 4.5,
+  },
+});
+
 const Select = ({
   value,
   onChange,
@@ -47,6 +55,7 @@ const Select = ({
   grouping,
   ...otherProps
 }) => {
+  const classes = useStyles();
   const handleChange = e => onChange(e.target.value, id);
   const formattedOptions = mapSelectOptions(options, grouping);
 
@@ -61,6 +70,7 @@ const Select = ({
         renderValue,
         displayEmpty:
           typeof displayEmpty === 'boolean' ? displayEmpty : !!placeholder,
+        classes: { root: multiple ? classes.multiple : undefined },
         ...SelectProps,
       }}
       value={value}

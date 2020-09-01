@@ -1,6 +1,5 @@
 import React from 'react';
 import Badge from '@material-ui/core/Badge';
-import Tooltip from '@material-ui/core/Tooltip';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Add from '@material-ui/icons/Add';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
@@ -27,6 +26,7 @@ import DragHandle from '@material-ui/icons/DragHandle';
 import Edit from '@material-ui/icons/Edit';
 import ErrorIcon from '@material-ui/icons/Error';
 import Event from '@material-ui/icons/Event';
+import EventAvailable from '@material-ui/icons/EventAvailable';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FaceIcon from '@material-ui/icons/Face';
@@ -85,6 +85,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import PropTypes from 'prop-types';
 
 import colors from '../../config/colors';
+import Tooltip from '../Material/Tooltip';
 
 export const iconMap = {
   close: CloseIcon,
@@ -169,6 +170,7 @@ export const iconMap = {
   meetingRoom: MeetingRoom,
   security: Security,
   opacity: Opacity,
+  eventAvailable: EventAvailable,
 };
 
 const getColorStyle = color => ({ color: colors[color], fill: colors[color] });

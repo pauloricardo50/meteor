@@ -120,6 +120,8 @@ describe('Admin promotion', () => {
     it('can change roles, remove a promotion Pro, and add one', () => {
       cy.routeTo('/promotions/promotionId/users');
 
+      cy.wait(1000);
+
       cy.contains('visitor1@e-potek.ch')
         .parents('tr')
         .find(`[aria-label="Modifier rôles"]`)

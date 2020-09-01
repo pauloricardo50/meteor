@@ -10,28 +10,23 @@ import {
 import { withFileViewer } from 'core/containers/FileViewerContext';
 import useCurrentUser from 'core/hooks/useCurrentUser';
 
+import { makeFilterReducer } from '../../components/AdminBoard/AdminBoardHelpers';
 import { AdminsProvider } from '../../components/AdminsContext/AdminsContext';
-import {
-  filterReducer as insuranceRequestsFilterReducer,
-  getInitialOptions as insuranceRequestsGetInitialOptions,
-} from '../../pages/BoardPage/InsuranceRequestBoard/insuranceRequestBoardHelpers';
-import {
-  filterReducer as loansFilterReducer,
-  getInitialOptions as loansGetInitialOptions,
-} from '../../pages/BoardPage/LoanBoard/loanBoardHelpers';
+import { getInitialOptions as insuranceRequestsGetInitialOptions } from '../../pages/BoardPage/InsuranceRequestBoard/insuranceRequestBoardHelpers';
+import { getInitialOptions as loansGetInitialOptions } from '../../pages/BoardPage/LoanBoard/loanBoardHelpers';
 
 const loanBoardContainer = compose(
   withState('activateLoanBoardSync', 'setActivateLoanBoardSync', false),
   withReducer(
     'loanBoardOptions',
     'loanBoardDispatch',
-    loansFilterReducer,
+    makeFilterReducer(loansGetInitialOptions),
     loansGetInitialOptions,
   ),
   withReducer(
     'insuranceRequestBoardOptions',
     'insuranceRequestBoardDispatch',
-    insuranceRequestsFilterReducer,
+    makeFilterReducer(insuranceRequestsGetInitialOptions),
     insuranceRequestsGetInitialOptions,
   ),
 );

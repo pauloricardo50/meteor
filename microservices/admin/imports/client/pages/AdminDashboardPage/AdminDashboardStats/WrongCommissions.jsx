@@ -104,7 +104,7 @@ const WrongCommissions = ({ showAll }) => {
                         <Percent value={commissionRate} /> au lieu de{' '}
                         <Percent value={organisation.commissionRate} />
                       </div>
-                      <CollectionIconLink relatedDoc={loan} />
+                      <CollectionIconLink relatedDoc={insuranceRequest} />
                     </div>
                   );
                 }

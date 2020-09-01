@@ -69,15 +69,21 @@ export default class Table extends Component {
 
   handleSort = (newOrderBy, changeOrder) => {
     const { data, orderBy, order } = this.state;
-    this.setState(
-      sortData({
-        data,
-        orderBy,
-        order,
-        newOrderBy,
-        changeOrder,
-      }),
-    );
+    const { sortable } = this.props;
+
+    if (!sortable) {
+      this.setState({ data });
+    } else {
+      this.setState(
+        sortData({
+          data,
+          orderBy,
+          order,
+          newOrderBy,
+          changeOrder,
+        }),
+      );
+    }
   };
 
   handleSelect = rowId => {
