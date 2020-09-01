@@ -11,6 +11,9 @@ const getBorrowerSchema = args => ({
   header: makeBorrowerFormHeader(args),
 });
 
+const getSchema = (schema, index) =>
+  typeof schema === 'function' ? schema(index) : schema;
+
 export const getBorrowersFormSchema = ({
   borrowerCount,
   schema,
@@ -24,7 +27,7 @@ export const getBorrowersFormSchema = ({
       borrower1: {
         type: new SimpleSchema({
           ...getBorrowerSchema({ index: 0, ...borrowerSchemaProps }),
-          ...schema,
+          ...getSchema(schema, 0),
         }),
         uniforms: { label: null },
         ignoreParentInLabel: true,
@@ -32,7 +35,7 @@ export const getBorrowersFormSchema = ({
       borrower2: {
         type: new SimpleSchema({
           ...getBorrowerSchema({ index: 1, ...borrowerSchemaProps }),
-          ...schema,
+          ...getSchema(schema, 1),
         }),
         uniforms: { label: null },
         ignoreParentInLabel: true,
@@ -44,7 +47,7 @@ export const getBorrowersFormSchema = ({
     borrower1: {
       type: new SimpleSchema({
         ...getBorrowerSchema({ index: 0, ...borrowerSchemaProps }),
-        ...schema,
+        ...getSchema(schema, 0),
       }),
       uniforms: { label: null },
       ignoreParentInLabel: true,
@@ -60,10 +63,30 @@ export const birthDateSchema = {
   },
 };
 
-export const incomeSchema = {
+export const incomeSchema = index => ({
   salary: { ...borrowerSchemaObject.salary, optional: false },
   netSalary: borrowerSchemaObject.netSalary,
-};
+  ...Object.keys(borrowerSchemaObject)
+    .filter(key => key.startsWith('bonus') && !key.endsWith('5')) // Avoid 2015
+    .reduce(
+      (obj, key) => ({
+        ...obj,
+        [key]: {
+          ...borrowerSchemaObject[key],
+          condition: key.startsWith('bonus20')
+            ? model => model[`borrower${index + 1}`]?.bonusExists
+            : undefined,
+        },
+      }),
+      {},
+    ),
+  ...Object.keys(borrowerSchemaObject)
+    .filter(key => key.startsWith('otherIncome') && !key.endsWith('comment'))
+    .reduce((obj, key) => ({ ...obj, [key]: borrowerSchemaObject[key] }), {}),
+  ...Object.keys(borrowerSchemaObject)
+    .filter(key => key.startsWith('expenses') && !key.endsWith('comment'))
+    .reduce((obj, key) => ({ ...obj, [key]: borrowerSchemaObject[key] }), {}),
+});
 
 export const ownFundsSchema = Object.values(OWN_FUNDS_TYPES).reduce(
   (obj, key) => ({
