@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
 import DialogSimple from 'core/components/DialogSimple';
+import Icon from 'core/components/Icon';
 import FaIcon from 'core/components/Icon/FaIcon';
 import T from 'core/components/Translation';
 import colors from 'core/config/colors';
@@ -9,7 +10,7 @@ import colors from 'core/config/colors';
 import { useOnboarding } from '../OnboardingContext';
 import OnboardingStep from './OnboardingStep';
 
-const OnboardingButton = ({ label, onClick, iconComponent, icon }) => (
+const OnboardingButton = ({ label, onClick, iconComponent, icon, loading }) => (
   <ButtonBase onClick={onClick} className="flex-col center-align" focusRipple>
     {iconComponent ||
       (icon ? (
@@ -22,6 +23,12 @@ const OnboardingButton = ({ label, onClick, iconComponent, icon }) => (
       ) : null)}
 
     {label}
+
+    {loading && (
+      <div className="onboarding-choices-loader animated fadeIn delays-200">
+        <Icon type="loop-spin" color="borderGrey" />
+      </div>
+    )}
   </ButtonBase>
 );
 
@@ -71,14 +78,15 @@ const OnboardingChoice = ({ id, choices, onSubmit }) => {
                     return;
                   }
 
-                  setLoading(true);
+                  setLoading(choiceId);
                   onSubmit(choiceId)
                     .then(() => handleNextStep())
-                    .finally(() => setLoading(false));
+                    .catch(() => setLoading(false));
                 }}
                 icon={icon}
                 iconComponent={iconComponent}
                 label={label}
+                loading={choiceId === loading}
               />
             );
           },
