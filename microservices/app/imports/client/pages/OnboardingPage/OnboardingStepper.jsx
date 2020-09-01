@@ -14,6 +14,7 @@ import { useOnboarding } from './OnboardingContext';
 
 const useStyles = makeStyles({
   root: { backgroundColor: 'unset' },
+  active: { color: `${colors.primaryDark} !important` },
   completed: { color: `${colors.success} !important` },
   labelContainer: { textAlign: 'left' },
   stepRoot: { maxWidth: 200 },
@@ -66,7 +67,12 @@ const OnboardingStepper = () => {
           >
             <StepButton onClick={() => setActiveStep(id)}>
               <StepLabel
-                StepIconProps={{ classes: { completed: classes.completed } }}
+                StepIconProps={{
+                  classes: {
+                    active: classes.active,
+                    completed: classes.completed,
+                  },
+                }}
                 classes={{ labelContainer: classes.labelContainer }}
               >
                 <T id={`OnboardingStepper.${id}`} />

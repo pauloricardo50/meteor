@@ -4,6 +4,7 @@ const colors = {
   primary: '#2e7eff',
   primaryArray: [46, 126, 255],
   primaryLight: '#5bb5ff',
+  primaryDark: '#0048bb',
   primaryGradient: 'linear-gradient(to left, #5bb5ff, #2e7eff)',
   primaryGradientDark: 'linear-gradient(to left, #5bb5ff, #0048bb)',
   backgroundLight: '#dbeeff',
