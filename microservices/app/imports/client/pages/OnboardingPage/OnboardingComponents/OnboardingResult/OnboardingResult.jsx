@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import MaxPropertyValueResultsTable from 'core/components/MaxPropertyValue/MaxPropertyValueResultsTable';
 import T from 'core/components/Translation';
@@ -9,18 +9,8 @@ import OnboardingResultEmpty from './OnboardingResultEmpty';
 import OnboardingResultOffers from './OnboardingResultOffers';
 
 const OnboardingResult = () => {
-  const { loan, steps, resetPosition } = useOnboarding();
+  const { loan } = useOnboarding();
   const { maxPropertyValue } = loan;
-
-  const allAreDone = steps.every(({ done }) => done);
-
-  useEffect(() => {
-    // Automatically route to any step that needs to be done if you reach
-    // the result step before, somehow
-    if (!allAreDone) {
-      // resetPosition();
-    }
-  }, [allAreDone]);
 
   if (!maxPropertyValue?.date) {
     return <OnboardingResultEmpty />;

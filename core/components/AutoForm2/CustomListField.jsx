@@ -10,7 +10,7 @@ import CustomListAddField from './CustomListAddField';
 import ListItemField from './CustomListItemField';
 
 const useStyles = makeStyles({
-  subheaderRoot: { paddingLeft: 0 },
+  subheader: { paddingLeft: 0 },
 });
 
 const List = ({
@@ -33,10 +33,7 @@ const List = ({
         dense={dense}
         subheader={
           label ? (
-            <ListSubheader
-              disableSticky
-              classes={{ root: classes.subheaderRoot }}
-            >
+            <ListSubheader disableSticky classes={{ root: classes.subheader }}>
               {label}
             </ListSubheader>
           ) : undefined

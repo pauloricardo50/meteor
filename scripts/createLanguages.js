@@ -101,6 +101,7 @@ const config = {
         'BorrowersPage',
         'BorrowersSummary',
         'CalendlyModal',
+        'cities',
         'collections',
         'ConditionsButton',
         'ConfirmMethod',

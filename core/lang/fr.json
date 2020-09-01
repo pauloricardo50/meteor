@@ -1,4 +1,6 @@
 {
+  "cities.geneva": "Genève",
+  "cities.lausanne": "Lausanne",
   "AnonymousLoanClaimer.withLoanTitle":"Dossier anonyme",
   "AnonymousLoanClaimer.lastModifiedAt":"Dernière modification {date} depuis cet appareil",
   "OnboardingChoice.manyBorrowers.title": "Contactez nous",

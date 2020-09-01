@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
+import CalendlyModal from 'core/components/Calendly/CalendlyModal';
 import DialogSimple from 'core/components/DialogSimple';
 import Icon from 'core/components/Icon';
 import FaIcon from 'core/components/Icon/FaIcon';
@@ -64,6 +65,17 @@ const OnboardingChoice = ({ id, choices, onSubmit }) => {
                   closeOnly
                 >
                   <T id={`${modalId}.description`} />
+
+                  <div className="text-center">
+                    <CalendlyModal
+                      buttonProps={{
+                        raised: true,
+                        primary: true,
+                        label: <T id="OnboardingResultCtas.calendly" />,
+                        className: 'mt-32',
+                      }}
+                    />
+                  </div>
                 </DialogSimple>
               );
             }

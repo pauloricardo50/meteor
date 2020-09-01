@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { loanUpdate } from 'core/api/loans/methodDefinitions';
-import { employeesById } from 'core/arrays/epotekEmployees';
 import Button from 'core/components/Button';
 import CalendlyModal from 'core/components/Calendly/CalendlyModal';
 import T from 'core/components/Translation';
@@ -16,7 +15,6 @@ import { useOnboarding } from '../../OnboardingContext';
 const OnboardingResultCtas = () => {
   const history = useHistory();
   const currentUser = useCurrentUser();
-  const [openCalendly, setOpenCalendly] = useState(false);
   const {
     loan: { _id: loanId, hasCompletedOnboarding },
   } = useOnboarding();
@@ -28,24 +26,16 @@ const OnboardingResultCtas = () => {
   }, hasCompletedOnboarding);
 
   if (currentUser) {
-    const { assignedEmployee: { _id: assigneeId } = {} } = currentUser;
-    const calendlyLink = employeesById[assigneeId]?.calendly;
-
     return (
       <div className="flex mt-40">
         <CalendlyModal
-          link={calendlyLink}
-          open={openCalendly}
-          onClose={() => setOpenCalendly(false)}
+          buttonProps={{
+            raised: true,
+            primary: true,
+            className: 'mr-16',
+            label: <T id="OnboardingResultCtas.calendly" />,
+          }}
         />
-        <Button
-          raised
-          primary
-          className="mr-16"
-          onClick={() => setOpenCalendly(true)}
-        >
-          <T id="OnboardingResultCtas.calendly" />
-        </Button>
 
         <Button
           raised
@@ -62,6 +52,15 @@ const OnboardingResultCtas = () => {
 
   return (
     <div className="flex mt-40">
+      <CalendlyModal
+        buttonProps={{
+          raised: true,
+          primary: true,
+          className: 'mr-16',
+          label: <T id="OnboardingResultCtas.calendly" />,
+        }}
+      />
+
       <UserCreatorForm
         omitValues={['firstName', 'lastName', 'phoneNumber']}
         dialog
