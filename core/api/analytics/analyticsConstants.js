@@ -10,7 +10,7 @@ export const CTA_ID = {
   ACCOUNT_CREATION_RESULT_SCREEN: 'Account creation result screen',
   ACCOUNT_CREATION_RESULT_SCREEN_TOP: 'Account creation result screen top',
   LOGIN_NAVBAR: 'Login navbar',
-  CALENDLY_TYPE_STEP: 'Calendy type step',
+  CALENDLY_RESIDENCE_TYPE_STEP: 'Calendy residence type step',
   CALENDLY_BORROWERS_STEP: 'Calendy borrowers step',
   CALENDLY_CANTON_STEP: 'Calendy canton step',
   CALENDLY_RESULT_SCREEN: 'Calendy result screen',
