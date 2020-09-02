@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import pick from 'lodash/pick';
 
 import { useOnboarding } from '../OnboardingContext';
@@ -30,6 +30,14 @@ const OnboardingBorrowersForm = ({
   ...props
 }) => {
   const { loan } = useOnboarding();
+
+  // Only get model initially, to avoid race-conditions
+  const [initialModel] = useState(
+    getModel(
+      loan,
+      typeof borrowerSchema === 'function' ? borrowerSchema() : borrowerSchema,
+    ),
+  );
   const twoBorrowers = loan.borrowers.length >= 2;
 
   const layout = twoBorrowers ? borrowerFormLayout2 : borrowerFormLayout1;
@@ -50,7 +58,7 @@ const OnboardingBorrowersForm = ({
       className={className}
       layout={layout}
       schema={schema}
-      model={getModel(loan, borrowerSchema)}
+      model={initialModel}
       onSubmit={onSubmit}
       {...props}
     />
