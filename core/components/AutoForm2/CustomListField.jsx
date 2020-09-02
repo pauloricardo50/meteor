@@ -9,9 +9,7 @@ import { FIELDS_TO_IGNORE } from './autoFormConstants';
 import CustomListAddField from './CustomListAddField';
 import ListItemField from './CustomListItemField';
 
-const useStyles = makeStyles({
-  subheader: { paddingLeft: 0 },
-});
+const useStyles = makeStyles({ subheader: { paddingLeft: 0 } });
 
 const List = ({
   addIcon,
@@ -42,7 +40,7 @@ const List = ({
         {...filterDOMProps(props)}
       >
         {children
-          ? value.map((item, index) =>
+          ? value?.map?.((item, index) =>
               Children.map(children, child =>
                 React.cloneElement(child, {
                   key: index,
@@ -54,7 +52,7 @@ const List = ({
                 }),
               ),
             )
-          : value.map((item, index) => (
+          : value?.map?.((item, index) => (
               <ListItemField
                 key={index}
                 label={null}
@@ -71,6 +69,7 @@ const List = ({
     </div>
   );
 };
+
 List.defaultProps = {
   dense: true,
 };

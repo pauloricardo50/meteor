@@ -32,7 +32,7 @@ const handleClick = ({ onChange, value, id, selected, multiple }) => {
   }
 };
 
-const LoanBoardOptionsSelect = ({
+const AdminBoardOptionsSelect = ({
   label,
   options,
   value,
@@ -83,4 +83,4 @@ const LoanBoardOptionsSelect = ({
   );
 };
 
-export default LoanBoardOptionsSelect;
+export default AdminBoardOptionsSelect;

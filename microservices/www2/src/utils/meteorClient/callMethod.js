@@ -5,7 +5,7 @@ import { meteorClient } from './meteorClient';
 
 const callMethod = (method, params) =>
   meteorClient.call(method, params, {
-    trackingId: () => getCookie(TRACKING_COOKIE),
+    trackingId: getCookie(TRACKING_COOKIE),
     location: window
       ? {
           href: window.location.href,

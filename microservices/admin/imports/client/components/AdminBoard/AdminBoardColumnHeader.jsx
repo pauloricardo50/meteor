@@ -1,24 +1,16 @@
 import React from 'react';
 import cx from 'classnames';
 
-import { INSURANCE_REQUESTS_COLLECTION } from 'core/api/insuranceRequests/insuranceRequestConstants';
 import DropdownMenu from 'core/components/DropdownMenu';
 import Icon from 'core/components/Icon';
 import StatusLabel from 'core/components/StatusLabel';
 
-import {
-  ACTIONS,
-  GROUP_BY,
-  SORT_BY,
-  SORT_ORDER,
-} from './insuranceRequestBoardConstants';
+import { ACTIONS, GROUP_BY, SORT_ORDER } from './AdminBoardConstants';
 
-const getTitle = ({ id, groupBy, admins }) => {
+const getTitle = ({ id, groupBy, admins, collection }) => {
   switch (groupBy) {
     case GROUP_BY.STATUS:
-      return (
-        <StatusLabel status={id} collection={INSURANCE_REQUESTS_COLLECTION} />
-      );
+      return <StatusLabel status={id} collection={collection} />;
     case GROUP_BY.ADMIN: {
       const admin = admins.find(({ _id }) => id === _id);
       return admin ? admin.firstName : 'Personne';
@@ -29,13 +21,8 @@ const getTitle = ({ id, groupBy, admins }) => {
   }
 };
 
-const getOptions = ({ sortBy, sortOrder }, dispatch) =>
-  [
-    { id: SORT_BY.DUE_AT, label: 'Prochain événement' },
-    { id: SORT_BY.CREATED_AT, label: "Date d'ajout" },
-    { id: SORT_BY.ASSIGNED_EMPLOYEE, label: 'Conseiller' },
-    { id: SORT_BY.STATUS, label: 'Statut' },
-  ].map(item => {
+const getOptions = (columnHeaderOptions, { sortBy, sortOrder }, dispatch) =>
+  columnHeaderOptions.map(item => {
     let { label } = item;
     if (item.id === sortBy) {
       label = (
@@ -57,26 +44,33 @@ const getOptions = ({ sortBy, sortOrder }, dispatch) =>
     };
   });
 
-const InsuranceRequestBoardColumnHeader = ({
+const AdminBoardColumnHeader = ({
   id,
   options,
   dispatch,
   count,
   admins,
+  collection,
+  columnHeaderOptions,
+  getAdditionalTitle,
+  ...props
 }) => {
   const { groupBy } = options;
 
   return (
-    <div className="loan-board-column-header">
+    <div className="admin-board-column-header">
       <div className="flex align-center sb">
         <div className="title">
-          <span className="mr-4">{getTitle({ id, groupBy, admins })}</span>
+          <span className="mr-4">
+            {getTitle({ id, groupBy, admins, collection, ...props }) ||
+              getAdditionalTitle({ id, groupBy, admins, collection, ...props })}
+          </span>
           <span className="secondary">({count})</span>
         </div>
         <DropdownMenu
           iconType="sort"
           buttonProps={{ size: 'small' }}
-          options={getOptions(options, dispatch)}
+          options={getOptions(columnHeaderOptions, options, dispatch)}
           noWrapper
         />
       </div>
@@ -84,4 +78,4 @@ const InsuranceRequestBoardColumnHeader = ({
   );
 };
 
-export default InsuranceRequestBoardColumnHeader;
+export default AdminBoardColumnHeader;

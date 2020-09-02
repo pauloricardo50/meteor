@@ -1501,16 +1501,19 @@ describe('UserService', function () {
         _id: 'u1',
         createdAt: moment().subtract(22, 'days').toDate(),
         status: USER_STATUS.PROSPECT,
+        roles: [{ _id: ROLES.USER }],
       });
       await UserService.rawCollection.insert({
         _id: 'u2',
         createdAt: moment().subtract(20, 'days').toDate(),
         status: USER_STATUS.PROSPECT,
+        roles: [{ _id: ROLES.USER }],
       });
       await UserService.rawCollection.insert({
         _id: 'u3',
         createdAt: moment().subtract(22, 'days').toDate(),
         status: USER_STATUS.QUALIFIED,
+        roles: [{ _id: ROLES.USER }],
       });
 
       const users = UserService.getUsersProspectForTooLong();
@@ -1526,16 +1529,19 @@ describe('UserService', function () {
         status: USER_STATUS.PROSPECT,
         firstName: 'Bob',
         lastName: 'Dylan',
+        roles: [{ _id: ROLES.USER }],
       });
       await UserService.rawCollection.insert({
         _id: 'u2',
         createdAt: moment().subtract(20, 'days').toDate(),
         status: USER_STATUS.PROSPECT,
+        roles: [{ _id: ROLES.USER }],
       });
       await UserService.rawCollection.insert({
         _id: 'u3',
         createdAt: moment().subtract(22, 'days').toDate(),
         status: USER_STATUS.QUALIFIED,
+        roles: [{ _id: ROLES.USER }],
       });
       await UserService.rawCollection.insert({
         _id: 'u4',
@@ -1543,6 +1549,7 @@ describe('UserService', function () {
         status: USER_STATUS.PROSPECT,
         firstName: 'Mickey',
         lastName: 'Mouse',
+        roles: [{ _id: ROLES.USER }],
       });
 
       await notifyDigitalWithUsersProspectForTooLong.serverRun({});

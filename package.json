@@ -63,7 +63,7 @@
     "lodash": "^4.17.19",
     "mup": "^1.5.2-beta.7",
     "mup-deploy-notifications": "^0.6.0",
-    "mup-netdata": "^0.4.0",
+    "mup-netdata": "^0.4.1",
     "node-cmd": "^3.0.0",
     "plop": "^2.7.4",
     "prettier": "^2.0.5",
