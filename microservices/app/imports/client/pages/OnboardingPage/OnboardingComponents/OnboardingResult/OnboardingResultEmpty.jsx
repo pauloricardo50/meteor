@@ -25,11 +25,16 @@ const getCanton = loan => {
   return loan.properties[0]?.canton;
 };
 
+export const calculateMaxPropertyValue = loan =>
+  setMaxPropertyValueOrBorrowRatio.run({
+    canton: getCanton(loan),
+    loanId: loan._id,
+  });
+
 const OnboardingResultEmpty = () => {
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
   const { loan } = useOnboarding();
-  const canton = getCanton(loan);
 
   return (
     <div className="animated fadeIn">
@@ -47,16 +52,10 @@ const OnboardingResultEmpty = () => {
         onClick={() => {
           setLoading(true);
           setError(null);
-          setMaxPropertyValueOrBorrowRatio
-            .run({ canton, loanId: loan._id })
-            .then(() => {
-              // Keep loading forever if it succeeds, the UI transition will
-              // happen on its own
-            })
-            .catch(err => {
-              setError(err);
-              setLoading(false);
-            });
+          calculateMaxPropertyValue(loan).catch(err => {
+            setError(err);
+            setLoading(false);
+          });
         }}
         loading={loading}
         icon={<Icon type="check" />}

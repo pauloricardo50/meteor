@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react';
 
-import MaxPropertyValueCertificate from 'core/components/MaxPropertyValue/MaxPropertyValueCertificate';
-import MaxPropertyValueResultsTable from 'core/components/MaxPropertyValue/MaxPropertyValueResultsTable';
 import { parseMaxPropertyValue } from 'core/components/MaxPropertyValue/MaxPropertyValueResultsTable/maxPropertyValueHelpers';
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
@@ -12,6 +10,7 @@ import OnboardingResultCtas, {
   OnboardingResultCtaDefault,
 } from './OnboardingResultCtas';
 import OnboardingResultEmpty from './OnboardingResultEmpty';
+import OnboardingResultMaxPropertyValue from './OnboardingResultMaxPropertyValue';
 import OnboardingResultOffers from './OnboardingResultOffers';
 import OnboardingResultUnfinished from './OnboardingResultUnfinished';
 
@@ -76,16 +75,7 @@ const OnboardingResult = () => {
         <T id={`OnboardingResult.subtitle.${titleId}`} />
       </p>
 
-      <div className="onboarding-result-max-property-value max-property-value-results-table">
-        <MaxPropertyValueResultsTable
-          loan={loan}
-          showMoreProps={{ primary: true }}
-        />
-        <MaxPropertyValueCertificate
-          loan={loan}
-          buttonProps={{ className: 'mt-16' }}
-        />
-      </div>
+      <OnboardingResultMaxPropertyValue loan={loan} />
 
       {!loan.hasPromotion && (
         <h2>
