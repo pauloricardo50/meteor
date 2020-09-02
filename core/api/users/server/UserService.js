@@ -803,7 +803,7 @@ export class UserServiceClass extends CollectionService {
       $filters: {
         createdAt: { $lt: twentyOneDaysAgo.toDate() },
         status: USER_STATUS.PROSPECT,
-        'roles._id': ROLES.USER,
+        roles: { $elemMatch: { _id: ROLES.USER, assigned: true } },
       },
       name: 1,
       email: 1,
