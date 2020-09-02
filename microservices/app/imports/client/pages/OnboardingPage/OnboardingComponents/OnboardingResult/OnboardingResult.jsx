@@ -7,10 +7,15 @@ import { useOnboarding } from '../../OnboardingContext';
 import OnboardingResultCtas from './OnboardingResultCtas';
 import OnboardingResultEmpty from './OnboardingResultEmpty';
 import OnboardingResultOffers from './OnboardingResultOffers';
+import OnboardingResultUnfinished from './OnboardingResultUnfinished';
 
 const OnboardingResult = () => {
-  const { loan } = useOnboarding();
+  const { loan, steps } = useOnboarding();
   const { maxPropertyValue } = loan;
+
+  if (steps.filter(({ id }) => id !== 'result').some(({ done }) => !done)) {
+    return <OnboardingResultUnfinished />;
+  }
 
   if (!maxPropertyValue?.date) {
     return <OnboardingResultEmpty />;

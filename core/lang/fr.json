@@ -1,4 +1,7 @@
 {
+  "OnboardingResultUnfinished.title": "Il manque des informations",
+  "OnboardingResultUnfinished.description": "Vous n'avez pas saisi toutes les informations dont nous avons besoin pour calculer au mieux votre capacité d'achat. Retournez en arrière dans le processus pour continuer.",
+  "OnboardingResultUnfinished.cta": "Compléter les infos manquantes",
   "cities.geneva": "Genève",
   "cities.lausanne": "Lausanne",
   "AnonymousLoanClaimer.withLoanTitle":"Dossier anonyme",
