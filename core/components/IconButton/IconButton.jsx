@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
 import MuiIconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import { capitalize } from '@material-ui/core/utils';
 import cx from 'classnames';
