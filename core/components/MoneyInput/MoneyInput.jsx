@@ -31,6 +31,7 @@ const MoneyInput = ({
   className,
   value,
   error,
+  type, // Don't override type="tel"
   ...props
 }) => {
   const [maskedValue, setMaskedValue] = useState(value);
