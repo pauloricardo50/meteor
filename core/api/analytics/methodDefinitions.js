@@ -35,10 +35,9 @@ export const analyticsVerifyEmail = new Method({
 export const analyticsCTA = new Method({
   name: 'analyticsCTA',
   params: {
-    cookies: Object,
     name: String,
     path: String,
-    route: String,
+    route: Match.Maybe(String),
     toPath: Match.Maybe(String),
   },
   doNotRefetchQueries: true,

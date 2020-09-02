@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { CTA_ID } from 'core/api/analytics/analyticsConstants';
 import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import Button from 'core/components/Button';
 import CalendlyModal from 'core/components/Calendly/CalendlyModal';
@@ -34,6 +35,7 @@ const OnboardingResultCtas = () => {
             primary: true,
             className: 'mr-16',
             label: <T id="OnboardingResultCtas.calendly" />,
+            ctaId: CTA_ID.CALENDLY_RESULT_SCREEN,
           }}
         />
 
@@ -43,6 +45,7 @@ const OnboardingResultCtas = () => {
           onClick={() =>
             loanUpdate.run({ loanId, object: { hasCompletedOnboarding: true } })
           }
+          ctaId={CTA_ID.GET_STARTED_RESULT_SCREEN}
         >
           <T id="OnboardingResultCtas.goToDashboard" />
         </Button>
@@ -58,6 +61,7 @@ const OnboardingResultCtas = () => {
           primary: true,
           className: 'mr-16',
           label: <T id="OnboardingResultCtas.calendly" />,
+          ctaId: CTA_ID.CALENDLY_RESULT_SCREEN,
         }}
       />
 
@@ -72,6 +76,7 @@ const OnboardingResultCtas = () => {
           raised: true,
           secondary: true,
           label: <T id="OnboardingResultCtas.signup" />,
+          ctaId: CTA_ID.ACCOUNT_CREATION_RESULT_SCREEN,
         }}
         description={
           <div className="flex-col onboarding-result-signup">
