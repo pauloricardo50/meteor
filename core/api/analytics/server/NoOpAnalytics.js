@@ -9,7 +9,9 @@ export default class {
 
   page() {}
 
-  track() {}
+  track(...args) {
+    console.log(...args);
+  }
 
   alias() {}
 
