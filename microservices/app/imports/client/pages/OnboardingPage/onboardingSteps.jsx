@@ -27,7 +27,7 @@ import { propertyUpdate } from 'core/api/properties/methodDefinitions';
 import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import AcquisitionIcon from 'core/components/Icon/AcquisitionIcon';
 import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
-import { refinancingPropertySchema } from 'core/components/PropertyForm/PropertyAdderDialog';
+import refinancingPropertySchema from 'core/components/PropertyForm/refinancingPropertySchema';
 import T, { Money } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import { not, or } from 'core/utils/functional';
