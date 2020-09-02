@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
+import { BoolField } from 'uniforms-material';
 
 import { offerSendFeedback } from '../../api/offers/methodDefinitions';
 import Calculator from '../../utils/Calculator';
@@ -12,7 +13,34 @@ import {
   makeFeedback,
 } from './feedbackHelpers';
 
-const getSchema = ({ offer, formatMessage, loan }) =>
+const replaceHtmlTags = str => {
+  const replaceMap = [
+    {
+      tags: ['<br/>'],
+      replaceWith: '\n',
+    },
+    {
+      tags: ['<b>', '</b>', '<ul>', '</ul>', '</li>'],
+      replaceWith: '',
+    },
+    {
+      tags: ['<li>'],
+      replaceWith: '-',
+    },
+  ];
+
+  let res = str;
+
+  replaceMap.forEach(({ tags, replaceWith }) => {
+    tags.forEach(tag => {
+      res = res.replaceAll(tag, replaceWith);
+    });
+  });
+
+  return res;
+};
+
+const getSchema = ({ offer, formatMessage, loan, setModel }) =>
   new SimpleSchema({
     option: {
       type: String,
@@ -52,13 +80,45 @@ const getSchema = ({ offer, formatMessage, loan }) =>
       customAutoValue: model =>
         makeFeedback({ model, offer, loan, formatMessage }),
     },
+    modifyFeedback: {
+      type: Boolean,
+      optional: true,
+      condition: ({ option }) => option && option !== FEEDBACK_OPTIONS.CUSTOM,
+      uniforms: {
+        label: 'Réutiliser le modèle',
+        render: ({ model, ...props }) => {
+          setModel({
+            ...model,
+            option: model.modifyFeedback
+              ? FEEDBACK_OPTIONS.CUSTOM
+              : model.option,
+            customFeedback: model.modifyFeedback
+              ? replaceHtmlTags(
+                  makeFeedback({
+                    model,
+                    offer,
+                    loan,
+                    formatMessage,
+                  }),
+                )
+              : undefined,
+            modifyFeedback:
+              model.modifyFeedback === true ? false : model.modifyFeedback,
+          });
+
+          return <BoolField {...props} model={model} />;
+        },
+      },
+    },
   });
 
 export default withProps(({ offer, loan }) => {
   const { formatMessage } = useIntl();
-  const schema = useMemo(() => getSchema({ offer, formatMessage, loan }), [
-    loan,
-  ]);
+  const [model, setModel] = useState({});
+  const schema = useMemo(
+    () => getSchema({ offer, formatMessage, loan, setModel }),
+    [loan, model.modifyFeedback],
+  );
   const { _id: offerId, feedback = {} } = offer;
   const { contact } = Calculator.selectLenderForOfferId({
     loan,
@@ -69,6 +129,7 @@ export default withProps(({ offer, loan }) => {
 
   return {
     schema,
+    model,
     onSubmit: object => {
       if (message) {
         return Promise.resolve();

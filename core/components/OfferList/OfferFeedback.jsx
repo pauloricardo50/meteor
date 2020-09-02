@@ -69,7 +69,7 @@ const getButtonOtherProps = ({ offer, loan }) => {
   return otherProps;
 };
 
-const OfferFeedback = ({ onSubmit, schema, offer, loan }) => {
+const OfferFeedback = ({ onSubmit, schema, offer, loan, model }) => {
   const { feedback = {} } = offer;
   const { message, date } = feedback;
 
@@ -77,7 +77,7 @@ const OfferFeedback = ({ onSubmit, schema, offer, loan }) => {
     <AutoFormDialog
       onSubmit={onSubmit}
       schema={schema}
-      model={offer}
+      model={{ ...offer, ...model }}
       buttonProps={{
         label: 'Feedback',
         raised: true,
