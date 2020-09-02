@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import MuiIconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { capitalize } from '@material-ui/core/utils';
