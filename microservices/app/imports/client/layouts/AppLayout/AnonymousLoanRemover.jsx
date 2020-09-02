@@ -4,10 +4,7 @@ import { LOCAL_STORAGE_ANONYMOUS_LOAN } from 'core/api/loans/loanConstants';
 
 let AnonymousLoanRemover = () => null;
 
-console.log('remove anon loan??', process.env.NODE_ENV !== 'production');
 if (process.env.NODE_ENV !== 'production') {
-  console.log('remove anon loan: is not production');
-
   AnonymousLoanRemover = () => {
     const loanId = localStorage.getItem(LOCAL_STORAGE_ANONYMOUS_LOAN);
 

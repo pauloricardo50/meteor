@@ -1,4 +1,4 @@
-@import "./OnboardingComponents/OnboardingComponents.scss";
+@import './OnboardingComponents/OnboardingComponents.scss';
 
 .onboarding {
   display: flex;
@@ -31,7 +31,11 @@
         align-self: flex-start;
       }
     }
-    
+
+    @media screen and (max-width: $med) {
+      padding: 0;
+    }
+
     @media screen and (min-width: $large) {
       padding: 40px;
     }
@@ -67,7 +71,6 @@
     padding: 16px;
   }
 
-
   img {
     width: 400px;
     height: 400px;
@@ -80,7 +83,6 @@
   &-ctas {
     margin-top: 40px;
   }
-
 
   @include screen(med) {
     flex-direction: column-reverse;
@@ -96,7 +98,7 @@
 .onboarding-side-nav {
   background-color: $primary;
   height: 100%;
-  
+
   &.fixed {
     position: fixed;
     top: 0;

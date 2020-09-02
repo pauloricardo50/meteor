@@ -73,6 +73,7 @@ const OnboardingChoice = ({ id, choices, onSubmit }) => {
                         primary: true,
                         label: <T id="OnboardingResultCtas.calendly" />,
                         className: 'mt-32',
+                        icon: <Icon type="event" />,
                       }}
                     />
                   </div>
