@@ -3,10 +3,12 @@ import React, { useEffect } from 'react';
 import { anonymousPromotion } from 'core/api/promotions/queries';
 import T from 'core/components/Translation';
 import useMeteorData from 'core/hooks/useMeteorData';
+import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
 
 import appRoutes from '../../../../startup/client/appRoutes';
 import OnboardingMiniature from './OnboardingMiniature';
+import OnboardingPromotionReservation from './OnboardingPromotionReservation';
 
 export const PromotionMiniature = ({ promotion, loan = {} }) => {
   const {
@@ -47,6 +49,11 @@ export const PromotionMiniature = ({ promotion, loan = {} }) => {
       }
       imageUrl={images?.[0]?.url}
       link={link}
+      content={
+        Calculator.hasActivePromotionOption({ loan }) && (
+          <OnboardingPromotionReservation loan={loan} />
+        )
+      }
     />
   );
 };

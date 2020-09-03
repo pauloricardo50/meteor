@@ -44,13 +44,7 @@ const getTabs = ({
       label: tab.label || <T id={`PromotionPageTabs.${tab.id}`} />,
     }));
 
-const PromotionPage = ({
-  promotion,
-  route,
-  ctaTop = () => null,
-  ctaBottom = () => null,
-  ...props
-}) => {
+const PromotionPage = ({ promotion, route, ctaTop, ctaBottom, ...props }) => {
   const { name } = promotion;
   const { permissions } = usePromotion();
   const tabs = getTabs({ permissions, promotion });
