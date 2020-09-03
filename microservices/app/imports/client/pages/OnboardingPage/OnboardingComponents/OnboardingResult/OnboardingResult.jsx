@@ -78,12 +78,14 @@ const OnboardingResult = () => {
       <OnboardingResultMaxPropertyValue loan={loan} />
 
       {!loan.hasPromotion && (
-        <h2>
-          <T id="OnboardingResultOffers.title" />
-        </h2>
-      )}
+        <>
+          <h2>
+            <T id="OnboardingResultOffers.title" />
+          </h2>
 
-      <OnboardingResultOffers />
+          <OnboardingResultOffers />
+        </>
+      )}
 
       <OnboardingResultCtas />
     </div>

@@ -3,12 +3,14 @@ import React, { useEffect } from 'react';
 import { anonymousPromotion } from 'core/api/promotions/queries';
 import T from 'core/components/Translation';
 import useMeteorData from 'core/hooks/useMeteorData';
+import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
 
 import appRoutes from '../../../../startup/client/appRoutes';
 import OnboardingMiniature from './OnboardingMiniature';
+import OnboardingPromotionReservation from './OnboardingPromotionReservation';
 
-export const PromotionMiniature = ({ promotion }) => {
+export const PromotionMiniature = ({ promotion, loan = {} }) => {
   const {
     name,
     city,
@@ -17,6 +19,16 @@ export const PromotionMiniature = ({ promotion }) => {
     documents: { promotionImage: images } = {},
     _id: promotionId,
   } = promotion || {};
+  const { _id: loanId, anonymous } = loan;
+
+  const link =
+    loanId && !anonymous
+      ? createRoute(appRoutes.APP_PROMOTION_PAGE.path, {
+          promotionId,
+          loanId,
+          tabId: 'overview',
+        })
+      : createRoute(appRoutes.PROMOTION_PAGE.path, { promotionId });
 
   return (
     <OnboardingMiniature
@@ -36,7 +48,12 @@ export const PromotionMiniature = ({ promotion }) => {
         />
       }
       imageUrl={images?.[0]?.url}
-      link={createRoute(appRoutes.PROMOTION_PAGE.path, { promotionId })}
+      link={link}
+      content={
+        Calculator.hasActivePromotionOption({ loan }) && (
+          <OnboardingPromotionReservation loan={loan} />
+        )
+      }
     />
   );
 };
