@@ -114,6 +114,8 @@
       svg {
         --fa-primary-color: #{$primary} !important;
         --fa-secondary-color: #{$primary} !important;
+        color: $primary;
+        fill: $primary;
       }
     }
 
