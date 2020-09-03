@@ -7,6 +7,7 @@ import MaxPropertyValueResultsTable from 'core/components/MaxPropertyValue/MaxPr
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 
+import { useOnboarding } from '../../OnboardingContext';
 import { calculateMaxPropertyValue } from './OnboardingResultEmpty';
 
 const OnboardingResultMaxPropertyValue = ({ loan }) => {
@@ -15,7 +16,11 @@ const OnboardingResultMaxPropertyValue = ({ loan }) => {
     () => Calculator.getBorrowerFormHash({ loan }),
     [],
   );
-  const shouldRecalculate = borrowerHash != loan.maxPropertyValue.borrowerHash;
+  const { steps } = useOnboarding();
+  const canton = steps.find(({ id }) => id === 'canton')?.value;
+  const shouldRecalculate =
+    borrowerHash != loan.maxPropertyValue.borrowerHash ||
+    (canton ? canton !== loan.maxPropertyValue.canton : false);
 
   const recalculate = () => {
     setLoading(true);
