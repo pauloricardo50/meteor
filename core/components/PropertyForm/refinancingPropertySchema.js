@@ -32,6 +32,7 @@ const refinancingPropertySchema = new SimpleSchema({
         return 'loanValueTooHigh';
       }
     },
+    minCount: 1,
   },
 });
 
