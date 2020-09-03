@@ -13,10 +13,9 @@ const PermanentSideNav = ({ open, closeDrawer, ...props }) => {
       open={open}
       onClose={closeDrawer}
       variant={isMobile ? 'temporary' : 'permanent'}
+      style={{ width: 250 }}
     >
-      <div style={{ width: 250 }}>
-        <SideNavUser closeDrawer={closeDrawer} {...props} fixed />
-      </div>
+      <SideNavUser closeDrawer={closeDrawer} {...props} fixed />
     </Drawer>
   );
 };

@@ -108,6 +108,7 @@ const withOnboardingContext = Component => ({ loan }) => {
         showDrawer,
         setShowDrawer,
         flow: getOnBoardingFlow(loan),
+        isWaitingForStepDone: !!waitForStepDone,
       }}
     >
       <Component />

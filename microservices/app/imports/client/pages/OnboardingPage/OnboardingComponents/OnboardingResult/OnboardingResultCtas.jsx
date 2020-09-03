@@ -91,12 +91,12 @@ const OnboardingResultCtas = () => {
   }, hasCompletedOnboarding);
 
   return (
-    <div className={cx('flex mt-40', { 'flex-col start-align': isMobile })}>
+    <div className={cx('flex mt-40', { 'flex-col': isMobile })}>
       <CalendlyModal
         buttonProps={{
           raised: true,
           primary: true,
-          className: 'mr-8 mb-8',
+          className: cx('mb-8', { 'mr-8': !isMobile }),
           label: <T id="OnboardingResultCtas.calendly" />,
           ctaId: CTA_ID.CALENDLY_RESULT_SCREEN,
           size: buttonSize,

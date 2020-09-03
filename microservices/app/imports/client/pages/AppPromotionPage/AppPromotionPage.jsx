@@ -54,14 +54,18 @@ const getInvitedByUser = ({ promotion, promotionId, loan }) => {
   return users.find(({ _id }) => _id === invitedBy);
 };
 
-const ContinueButton = () => {
+const ContinueButton = ({ loanId }) => {
   const history = useHistory();
+  const toRoute = loanId
+    ? createRoute(appRoutes.LOAN_ONBOARDING_PAGE.path, { loanId })
+    : '/';
+
   return (
     <Button
       raised
       secondary
       label={<T id="general.continue" />}
-      onClick={() => history.push('/')}
+      onClick={() => history.push(toRoute)}
       size="large"
     />
   );
@@ -83,12 +87,12 @@ export const AppPromotionPageContainer = compose(
     }),
     ctaTop: (
       <div className="flex mb-16" style={{ justifyContent: 'flex-end' }}>
-        <ContinueButton />
+        <ContinueButton loanId={loan?._id} />
       </div>
     ),
     ctaBottom: (
-      <div className="flex center mt-16">
-        <ContinueButton />
+      <div className="flex mt-16" style={{ justifyContent: 'flex-end' }}>
+        <ContinueButton loanId={loan?._id} />
       </div>
     ),
   })),

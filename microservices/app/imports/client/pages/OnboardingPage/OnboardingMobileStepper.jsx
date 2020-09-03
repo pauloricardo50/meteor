@@ -21,9 +21,11 @@ const OnboardingMobileStepper = () => {
     setShowDrawer,
     currentTodoStep,
     resetPosition,
+    isWaitingForStepDone,
   } = useOnboarding();
   const activeStepIndex = stepIds.findIndex(id => id === activeStep);
   const isOnLatestStep = activeStep === currentTodoStep;
+  const showResetButton = !isOnLatestStep && !isWaitingForStepDone;
 
   if (isMobile) {
     return (
@@ -35,9 +37,7 @@ const OnboardingMobileStepper = () => {
           position="static"
           activeStep={activeStepIndex}
           nextButton={
-            isOnLatestStep ? (
-              <div />
-            ) : (
+            showResetButton ? (
               <Button
                 primary
                 raised
@@ -52,6 +52,8 @@ const OnboardingMobileStepper = () => {
               >
                 <T id="OnboardingMobileStepper.resetPosition" />
               </Button>
+            ) : (
+              <div />
             )
           }
           backButton={<div />}
