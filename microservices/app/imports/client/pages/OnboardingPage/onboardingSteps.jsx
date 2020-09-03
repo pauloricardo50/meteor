@@ -175,6 +175,7 @@ export const steps = [
     condition: or(isRefinancing, knowsProperty),
     props: {
       schema: new SimpleSchema({ value: { ...moneyField, optional: false } }),
+      getModel: loan => ({ value: loan.properties?.[0]?.value }),
     },
     isDone: loan => !!loan.properties?.[0]?.value,
     onSubmit: loan => values =>
@@ -191,6 +192,7 @@ export const steps = [
     condition: isRefinancing,
     props: {
       schema: refinancingPropertySchema.pick('previousLoanTranches'),
+      getModel: loan => ({ previousLoanTranches: loan.previousLoanTranches }),
     },
     isDone: loan => loan.previousLoanTranches?.length > 0,
     onSubmit: loan => values =>

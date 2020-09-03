@@ -58,7 +58,7 @@ const OnboardingBorrowersForm = ({
       className={className}
       layout={layout}
       schema={schema}
-      model={initialModel}
+      getModel={() => initialModel}
       onSubmit={onSubmit}
       {...props}
     />
