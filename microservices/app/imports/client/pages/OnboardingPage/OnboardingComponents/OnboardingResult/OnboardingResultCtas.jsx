@@ -16,6 +16,7 @@ import { useOnboarding } from '../../OnboardingContext';
 
 export const OnboardingResultCtaDefault = ({ loanId, buttonSize }) => {
   const currentUser = useCurrentUser();
+  const { isMobile } = useOnboarding();
 
   if (currentUser) {
     return (
@@ -45,7 +46,11 @@ export const OnboardingResultCtaDefault = ({ loanId, buttonSize }) => {
       buttonProps={{
         raised: true,
         secondary: true,
-        label: <T id="OnboardingResultCtas.signup" />,
+        label: isMobile ? (
+          <T id="OnboardingResultCtas.mobileSignup" />
+        ) : (
+          <T id="OnboardingResultCtas.signup" />
+        ),
         className: 'mb-8',
         size: buttonSize,
         ctaId: CTA_ID.GET_STARTED_RESULT_SCREEN,
@@ -86,7 +91,7 @@ const OnboardingResultCtas = () => {
   }, hasCompletedOnboarding);
 
   return (
-    <div className={cx('flex mt-40', { fe: isMobile })}>
+    <div className={cx('flex mt-40', { 'flex-col start-align': isMobile })}>
       <CalendlyModal
         buttonProps={{
           raised: true,

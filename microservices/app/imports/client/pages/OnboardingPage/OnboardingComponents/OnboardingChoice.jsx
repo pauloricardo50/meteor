@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import cx from 'classnames';
 
 import CalendlyModal from 'core/components/Calendly/CalendlyModal';
 import DialogSimple from 'core/components/DialogSimple';
@@ -12,7 +13,13 @@ import { useOnboarding } from '../OnboardingContext';
 import OnboardingStep from './OnboardingStep';
 
 const OnboardingButton = ({ label, onClick, iconComponent, icon, loading }) => (
-  <ButtonBase onClick={onClick} className="flex-col center-align" focusRipple>
+  <ButtonBase
+    onClick={onClick}
+    className={cx('flex-col center-align', {
+      'no-icon': !iconComponent && !icon,
+    })}
+    focusRipple
+  >
     {iconComponent ||
       (icon ? (
         <FaIcon

@@ -1,4 +1,5 @@
 {
+  "general.next": "Suivant",
   "OnboardingResultEmpty.calculateTitle": "Déterminez votre capacité d'achat",
   "OnboardingResultEmpty.calculateCta": "Calculer",
   "OnboardingResultEmpty.calculating": "Nous parcourons l'ensemble de nos partenaires prêteurs...",
@@ -45,6 +46,7 @@
   "OnboardingResultCtas.calendly": "Planifier un rendez-vous",
   "OnboardingResultCtas.goToDashboard": "Obtenir mon prêt",
   "OnboardingResultCtas.signup": "Sauvegarder mon progrès et obtenir mon prêt",
+  "OnboardingResultCtas.mobileSignup": "Obtenir mon prêt",
   "OnboardingResultOffers.from": "dès",
   "OnboardingResultOffers.title": "Vos offres",
   "OnboardingResult.title": "Résultat",
