@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
+import BlueTheme from 'core/components/Themes/BlueTheme';
 import useCurrentUser from 'core/hooks/useCurrentUser';
 
 import LoanSelector from './LoanSelector';
@@ -13,13 +14,15 @@ const SideNavUser = ({ style, fixed, closeDrawer, loan }) => {
   const history = useHistory();
   const currentUser = useCurrentUser();
 
+  const emptySideNav = (
+    <nav className="side-nav-user">
+      <SideNavHeader />
+    </nav>
+  );
+
   // Return an empty side nav if there is no loan
   if (!currentUser) {
-    return (
-      <nav className="side-nav-user">
-        <SideNavHeader />
-      </nav>
-    );
+    return emptySideNav;
   }
   const { loans } = currentUser;
 
@@ -38,23 +41,35 @@ const SideNavUser = ({ style, fixed, closeDrawer, loan }) => {
     currentLoan = loans.find(r => r._id === loanId);
   }
 
+  if (loan && !loan.hasCompletedOnboarding) {
+    // This avoids a race condition, where the user has not yet been redirected
+    // to the onboarding page, so it briefly shows the full side nav, which is bad
+    return emptySideNav;
+  }
+
   return (
-    <nav className={classnames({ 'side-nav-user': true, fixed })} style={style}>
-      <SideNavHeader closeDrawer={closeDrawer} />
-      <div className="scrollable">
-        {!!(loans && loans.length > 0) && (
-          <LoanSelector
-            history={history}
-            currentUser={currentUser}
-            value={loanId}
-            closeDrawer={closeDrawer}
-          />
-        )}
-        {loanId && currentLoan && (
-          <LoanSideNav closeDrawer={closeDrawer} loan={loan} />
-        )}
-      </div>
-    </nav>
+    <BlueTheme>
+      <nav
+        className={classnames({ 'side-nav-user': true, fixed })}
+        style={style}
+      >
+        <SideNavHeader closeDrawer={closeDrawer} />
+        <div className="scrollable">
+          {!!(loans && loans.length > 0) && (
+            <LoanSelector
+              history={history}
+              currentUser={currentUser}
+              value={loanId}
+              closeDrawer={closeDrawer}
+            />
+          )}
+          {/* Don't show the full side nav if onboarding still needs to be done */}
+          {loanId && currentLoan && (
+            <LoanSideNav closeDrawer={closeDrawer} loan={loan} />
+          )}
+        </div>
+      </nav>
+    </BlueTheme>
   );
 };
 

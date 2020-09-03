@@ -30,6 +30,8 @@ const MoneyInput = ({
   required,
   className,
   value,
+  error,
+  type, // Don't override type="tel"
   ...props
 }) => {
   const [maskedValue, setMaskedValue] = useState(value);
@@ -64,13 +66,15 @@ const MoneyInput = ({
     onChange(parse(event.target.value));
   };
 
+  const finalHelperText = helperText || error?.message;
+
   return (
     <FormControl
       className={cx('money-input', className)}
       required={required}
       fullWidth={fullWidth}
       margin={margin}
-      size="small"
+      error={!!error}
     >
       {label && <InputLabel ref={inputLabelRef}>{label}</InputLabel>}
       <Input
@@ -83,7 +87,7 @@ const MoneyInput = ({
         value={maskedValue}
         {...props}
       />
-      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      {finalHelperText && <FormHelperText>{finalHelperText}</FormHelperText>}
     </FormControl>
   );
 };

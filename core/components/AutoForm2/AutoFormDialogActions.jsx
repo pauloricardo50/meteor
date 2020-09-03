@@ -19,6 +19,7 @@ const AutoFormDialogActions = (
     onDelete,
     deleteKeyword,
     noCancel,
+    submitFieldProps,
   },
   {
     uniforms: {
@@ -61,6 +62,8 @@ const AutoFormDialogActions = (
       <CustomSubmitField
         setDisableActions={setDisableActions}
         disableActions={disableActions}
+        keepLoading
+        {...submitFieldProps}
       />
     </DialogActions>
   );

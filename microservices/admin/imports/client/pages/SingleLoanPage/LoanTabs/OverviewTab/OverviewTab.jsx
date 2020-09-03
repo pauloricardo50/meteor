@@ -87,7 +87,7 @@ const OverviewTab = props => {
             />
             <UpdateField
               doc={loan}
-              fields={['applicationType']}
+              fields={['acquisitionStatus']}
               collection={Loans}
               className="mr-16"
             />

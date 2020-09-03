@@ -28,11 +28,6 @@ Loans.addReducers({
     reduce: ({ properties = [] }) =>
       properties.some(({ category }) => category === PROPERTY_CATEGORY.PRO),
   },
-  maxPropertyValueExists: {
-    body: { maxPropertyValue: { date: 1 }, user: { _id: 1 } },
-    reduce: ({ maxPropertyValue, user }) =>
-      !!(!user && maxPropertyValue && maxPropertyValue.date),
-  },
   nextDueTask: {
     body: { tasksCache: 1 },
     reduce: nextDueTaskReducer,

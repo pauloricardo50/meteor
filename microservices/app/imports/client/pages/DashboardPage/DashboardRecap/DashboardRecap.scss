@@ -7,10 +7,6 @@
   flex-direction: column;
   flex-wrap: wrap;
 
-  h2 {
-    align-self: center;
-  }
-
   .validator {
     max-width: unset;
   }
@@ -22,11 +18,19 @@
 
   white-space: nowrap;
 
-  @include screen(med) {
-    flex-wrap: wrap;
+
+  @include screen(wide) {
+    flex-direction: column;
+    align-items: stretch;
+
+    .dashboard-recap-finance {
+      margin-bottom: 16px;
+    }
   }
 
-  & > * {
-    margin: 8px;
+  @include screen(wide, min) {
+    .dashboard-recap-finance {
+      margin-right: 16px;
+    }
   }
 }

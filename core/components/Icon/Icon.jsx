@@ -82,6 +82,7 @@ import ViewWeek from '@material-ui/icons/ViewWeek';
 import Eye from '@material-ui/icons/Visibility';
 import EyeCrossed from '@material-ui/icons/VisibilityOff';
 import WarningIcon from '@material-ui/icons/Warning';
+import cx from 'classnames';
 import PropTypes from 'prop-types';
 
 import colors from '../../config/colors';
@@ -208,7 +209,14 @@ const Icon = React.forwardRef(
       if (!MyIcon) {
         throw new Error(`invalid icon type: ${type}`);
       } else if (MyIcon.component) {
-        icon = <MyIcon.component {...MyIcon.props} {...props} {...iconStyle} />;
+        icon = (
+          <MyIcon.component
+            {...MyIcon.props}
+            {...props}
+            className={cx(props.className, MyIcon.props?.className)}
+            style={iconStyle}
+          />
+        );
       } else {
         icon = <MyIcon ref={ref} style={iconStyle} {...props} />;
       }

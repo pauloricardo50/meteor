@@ -83,6 +83,8 @@ Cypress.Commands.add('meteorLogout', () => {
           .catch(reject);
       }),
   );
+  // Make sure currentUser becomes falsy
+  cy.window().should('have.property', 'currentUser', null);
 });
 
 Cypress.Commands.add(
@@ -97,12 +99,9 @@ Cypress.Commands.add(
       let promise;
 
       if (Meteor.userId()) {
-        console.log('logging out');
-
         // Logout first if the user is already logged in
         promise = cy.meteorLogout();
       } else {
-        console.log('not logged in');
         promise = Promise.resolve();
       }
 
@@ -122,6 +121,10 @@ Cypress.Commands.add(
             });
           }),
       );
+    });
+    cy.window().should(win => {
+      // Make sure currentUser is truthy
+      expect(!!win.currentUser).to.equal(true);
     });
   },
 );

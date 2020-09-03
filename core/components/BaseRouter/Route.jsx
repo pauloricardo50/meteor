@@ -1,8 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Route as RRRoute } from 'react-router-dom';
 
-const Route = ({ exact, path, render, component: MyComponent, ...rest }) => (
+const Route = ({
+  exact,
+  path,
+  render,
+  component: MyComponent,
+  routeName,
+  ...rest
+}) => (
   <RRRoute
     exact={exact}
     path={path}
@@ -13,7 +19,6 @@ const Route = ({ exact, path, render, component: MyComponent, ...rest }) => (
     }
   />
 );
-
 Route.propTypes = {};
 
 export default Route;

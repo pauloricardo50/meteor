@@ -7,7 +7,6 @@ import FormattedMessage from 'core/components/Translation/FormattedMessage';
 const CantonFilter = ({ canton, availableCantons = [], setCanton }) => (
   <TextField
     select
-    variant="outlined"
     inputProps={{ notched: true }}
     label="Canton"
     value={canton}

@@ -19,10 +19,23 @@ export const addAnalyticsListener = ({
   method,
   func,
   analyticsProps = () => undefined,
+  type = 'after',
 }) => {
-  ServerEventService.addAfterMethodListener(method, props => {
-    props.context.unblock();
-    const analytics = new Analytics(analyticsProps(props) || props.context);
-    func({ ...props, analytics });
-  });
+  if (type === 'after') {
+    ServerEventService.addAfterMethodListener(method, props => {
+      props.context.unblock();
+      const analytics = new Analytics(analyticsProps(props) || props.context);
+      func({ ...props, analytics });
+    });
+  } else if (type === 'before') {
+    ServerEventService.addBeforeMethodListener(method, props => {
+      props.context.unblock();
+      const analytics = new Analytics(analyticsProps(props) || props.context);
+      func({ ...props, analytics });
+    });
+  } else {
+    throw new Error(
+      `Unknown analytics listener type "${type}". Allowed types: "after", "before"`,
+    );
+  }
 };

@@ -14,7 +14,7 @@ const ProRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     routes={PRO_ROUTES}
-    currentUser={{
+    currentUserConfig={{
       query: proUser,
       params: {
         $body: {

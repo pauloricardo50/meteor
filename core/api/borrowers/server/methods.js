@@ -32,6 +32,7 @@ borrowerDelete.setHandler((context, params) => {
   }
   return BorrowerService.remove(params);
 });
+borrowerDelete.setRateLimit({ limit: 2, timeRange: 10000 }); // Twice every 10sec
 
 pushBorrowerValue.setHandler((context, params) => {
   SecurityService.borrowers.isAllowedToUpdate(params.borrowerId);

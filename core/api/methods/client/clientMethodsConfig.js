@@ -15,6 +15,12 @@ const handleError = ({ config, params, result, error }) => {
   if (shouldLogErrorsToConsole) {
     console.error('Meteor Method error:', error);
   }
+
+  if (Meteor.isTest) {
+    // Avoid running logError in client-side tests on front-end microservices
+    return;
+  }
+
   logError.run({
     error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
     additionalData: [
