@@ -50,10 +50,9 @@ const OnboardingResult = () => {
           <p className="secondary mt-0">
             <T id="OnboardingResultOffers.subtitle" />
           </p>
+          <OnboardingResultOffers />
         </>
       )}
-
-      <OnboardingResultOffers />
 
       <OnboardingResultCtas />
     </div>
