@@ -16,6 +16,11 @@
 
     grid-gap: 8px;
     grid-template-columns: repeat(auto-fit, 400px);
+
+    @include screen(small) {
+      grid-template-columns: repeat(auto-fit, 250px);
+      font-size: 12px;
+    }
   }
 
   .promotion-lots-manager {
