@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { faCalculator } from '@fortawesome/pro-duotone-svg-icons/faCalculator';
 
 import { setMaxPropertyValueOrBorrowRatio } from 'core/api/loans/methodDefinitions';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
+import FaIcon from 'core/components/Icon/FaIcon';
 import T from 'core/components/Translation';
+import colors from 'core/config/colors';
 
 import { useOnboarding } from '../../OnboardingContext';
 
@@ -38,10 +41,13 @@ const OnboardingResultEmpty = () => {
 
   return (
     <div className="animated fadeIn">
+      <FaIcon icon={faCalculator} size="3x" color={colors.duotoneIconColor} />
+
       <h1>
         <T id="OnboardingResultEmpty.title" />
       </h1>
-      <p className="secondary">
+
+      <p className="description secondary">
         <T id="OnboardingResultEmpty.description" />
       </p>
 
@@ -58,7 +64,9 @@ const OnboardingResultEmpty = () => {
           });
         }}
         loading={loading}
-        icon={<Icon type="check" />}
+        icon={<Icon type="right" />}
+        className="mt-40"
+        iconAfter
       >
         <T id="OnboardingResultEmpty.cta" />
       </Button>
