@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { faCalculator } from '@fortawesome/pro-duotone-svg-icons/faCalculator';
+import React, { useEffect, useState } from 'react';
+import { faEngineWarning } from '@fortawesome/pro-duotone-svg-icons/faEngineWarning';
 
 import { setMaxPropertyValueOrBorrowRatio } from 'core/api/loans/methodDefinitions';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
@@ -10,6 +10,7 @@ import T from 'core/components/Translation';
 import colors from 'core/config/colors';
 
 import { useOnboarding } from '../../OnboardingContext';
+import OnboardingResultAnimation from './OnboardingResultAnimation';
 
 const getCanton = loan => {
   if (loan.hasPromotion) {
@@ -35,40 +36,97 @@ export const calculateMaxPropertyValue = loan =>
   });
 
 const OnboardingResultEmpty = () => {
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const { loan } = useOnboarding();
+  const { loan, setActiveStep } = useOnboarding();
 
+  const handleCalculate = () => {
+    setLoading(true);
+    setError(null);
+    calculateMaxPropertyValue(loan).catch(err => {
+      setError(err);
+      setLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    // Immediately calculate when this screen appears
+    handleCalculate();
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <h3 className="secondary mt-0">
+          <T id="OnboardingResultEmpty.calculating" />
+        </h3>
+        <p>
+          <T id="OnboardingResultEmpty.calculatingDescription" />
+        </p>
+        <div className="flex center animated fadeIn">
+          <OnboardingResultAnimation />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <FaIcon
+          icon={faEngineWarning}
+          size="3x"
+          color={colors.duotoneIconColor}
+        />
+
+        <h1>
+          <T id="OnboardingResultEmpty.errorTitle" />
+        </h1>
+        <p className="description">
+          <T id="OnboardingResultEmpty.errorDescription" />
+        </p>
+
+        <div className="flex">
+          <Button
+            raised
+            primary
+            onClick={() => setActiveStep('income')}
+            className="mb-8 mr-8"
+            size="large"
+          >
+            <T id="OnboardingResultEmpty.errorIncome" />
+          </Button>
+
+          <Button
+            raised
+            primary
+            onClick={() => setActiveStep('ownFunds')}
+            className="mb-8"
+            size="large"
+          >
+            <T id="OnboardingResultEmpty.errorOwnFunds" />
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // This screen should never exist, but let's keep it here just in case
   return (
     <div className="animated fadeIn">
-      <FaIcon icon={faCalculator} size="3x" color={colors.duotoneIconColor} />
-
       <h1>
-        <T id="OnboardingResultEmpty.title" />
+        <T id="OnboardingResultEmpty.calculateTitle" />
       </h1>
 
-      <p className="description secondary">
-        <T id="OnboardingResultEmpty.description" />
-      </p>
-
       <Button
-        size="large"
         raised
         secondary
-        onClick={() => {
-          setLoading(true);
-          setError(null);
-          calculateMaxPropertyValue(loan).catch(err => {
-            setError(err);
-            setLoading(false);
-          });
-        }}
-        loading={loading}
+        onClick={handleCalculate}
         icon={<Icon type="right" />}
-        className="mt-40"
         iconAfter
+        size="large"
       >
-        <T id="OnboardingResultEmpty.cta" />
+        <T id="OnboardingResultEmpty.calculateCta" />
       </Button>
     </div>
   );
