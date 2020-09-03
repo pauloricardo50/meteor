@@ -16,6 +16,7 @@ const OnboardingForm = ({
   model,
   autoFormProps,
 }) => {
+  const memoModel = useMemo(() => model, []);
   const { handleNextStep, loan } = useOnboarding();
   const finalSchema = useMemo(
     () => (typeof schema === 'function' ? schema(loan) : schema),
@@ -36,7 +37,7 @@ const OnboardingForm = ({
         <div className={cx('onboarding-form', className)}>
           <AutoForm
             schema={finalSchema}
-            model={model || loan}
+            model={memoModel || loan}
             onSubmit={onSubmit}
             onSubmitSuccess={handleNextStep}
             submitFieldProps={{

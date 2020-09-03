@@ -32,7 +32,7 @@ const OnboardingBorrowersForm = ({
   const { loan } = useOnboarding();
 
   // Only get model initially, to avoid race-conditions
-  const [initialModel] = useState(
+  const [initialModel] = useState(() =>
     getModel(
       loan,
       typeof borrowerSchema === 'function' ? borrowerSchema() : borrowerSchema,
