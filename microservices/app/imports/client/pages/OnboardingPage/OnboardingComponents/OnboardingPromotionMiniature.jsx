@@ -8,7 +8,7 @@ import { createRoute } from 'core/utils/routerUtils';
 import appRoutes from '../../../../startup/client/appRoutes';
 import OnboardingMiniature from './OnboardingMiniature';
 
-export const PromotionMiniature = ({ promotion }) => {
+export const PromotionMiniature = ({ promotion, loan = {} }) => {
   const {
     name,
     city,
@@ -17,6 +17,16 @@ export const PromotionMiniature = ({ promotion }) => {
     documents: { promotionImage: images } = {},
     _id: promotionId,
   } = promotion || {};
+  const { _id: loanId, anonymous } = loan;
+
+  const link =
+    loanId && !anonymous
+      ? createRoute(appRoutes.APP_PROMOTION_PAGE.path, {
+          promotionId,
+          loanId,
+          tabId: 'overview',
+        })
+      : createRoute(appRoutes.PROMOTION_PAGE.path, { promotionId });
 
   return (
     <OnboardingMiniature
@@ -36,7 +46,7 @@ export const PromotionMiniature = ({ promotion }) => {
         />
       }
       imageUrl={images?.[0]?.url}
-      link={createRoute(appRoutes.PROMOTION_PAGE.path, { promotionId })}
+      link={link}
     />
   );
 };
