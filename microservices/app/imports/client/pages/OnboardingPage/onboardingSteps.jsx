@@ -174,7 +174,16 @@ export const steps = [
     component: 'OnboardingForm',
     condition: or(isRefinancing, knowsProperty),
     props: {
-      schema: new SimpleSchema({ value: { ...moneyField, optional: false } }),
+      schema: new SimpleSchema({
+        value: {
+          ...moneyField,
+          optional: false,
+          uniforms: {
+            ...moneyField.uniforms,
+            label: <T id="Forms.value" />,
+          },
+        },
+      }),
       getModel: loan => ({ value: loan.properties?.[0]?.value }),
     },
     isDone: loan => !!loan.properties?.[0]?.value,
