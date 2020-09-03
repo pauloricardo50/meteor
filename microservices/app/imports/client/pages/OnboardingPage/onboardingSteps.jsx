@@ -92,9 +92,8 @@ export const steps = [
     isDone: loan => !!loan.purchaseType,
     onSubmit: loan => purchaseType =>
       loanUpdate.run({ loanId: loan._id, object: { purchaseType } }),
-    renderValue: loan => (
-      <T id={`OnboardingWithoutLoan.${loan.purchaseType}`} />
-    ),
+    getValue: loan => loan.purchaseType,
+    renderValue: value => <T id={`OnboardingWithoutLoan.${value}`} />,
   },
   {
     id: 'acquisitionStatus',
@@ -112,9 +111,8 @@ export const steps = [
     isDone: loan => !!loan.acquisitionStatus,
     onSubmit: loan => acquisitionStatus =>
       loanUpdate.run({ loanId: loan._id, object: { acquisitionStatus } }),
-    renderValue: loan => (
-      <T id={`Forms.acquisitionStatus.${loan.acquisitionStatus}`} />
-    ),
+    getValue: loan => loan.acquisitionStatus,
+    renderValue: value => <T id={`Forms.acquisitionStatus.${value}`} />,
   },
   {
     id: 'residenceType',
@@ -135,7 +133,8 @@ export const steps = [
     isDone: loan => !!loan.residenceType,
     onSubmit: loan => residenceType =>
       loanUpdate.run({ loanId: loan._id, object: { residenceType } }),
-    renderValue: loan => <T id={`Forms.residenceType.${loan.residenceType}`} />,
+    getValue: loan => loan.residenceType,
+    renderValue: value => <T id={`Forms.residenceType.${value}`} />,
   },
   {
     id: 'canton',
@@ -165,12 +164,10 @@ export const steps = [
         });
       }
 
-      return upsertUserProperty.run({
-        loanId: loan._id,
-        property: { canton },
-      });
+      return upsertUserProperty.run({ loanId: loan._id, property: { canton } });
     },
-    renderValue: loan => <T id={`Forms.canton.${loan.properties[0].canton}`} />,
+    getValue: loan => loan.properties?.[0]?.canton,
+    renderValue: value => <T id={`Forms.canton.${value}`} />,
   },
   {
     id: 'propertyValue',
@@ -185,7 +182,8 @@ export const steps = [
         propertyId: loan.properties[0]._id,
         object: values,
       }),
-    renderValue: loan => <Money value={loan.properties[0].value} />,
+    getValue: loan => loan.properties?.[0]?.value,
+    renderValue: value => <Money value={value} />,
   },
   {
     id: 'refinancing',
@@ -197,11 +195,9 @@ export const steps = [
     isDone: loan => loan.previousLoanTranches?.length > 0,
     onSubmit: loan => values =>
       loanUpdate.run({ loanId: loan._id, object: values }),
-    renderValue: loan => (
-      <Money
-        value={loan.previousLoanTranches.reduce((t, { value }) => t + value, 0)}
-      />
-    ),
+    getValue: loan =>
+      loan.previousLoanTranches?.reduce((t, { value }) => t + value, 0),
+    renderValue: value => <Money value={value} />,
   },
   {
     id: 'borrowerCount',
@@ -223,9 +219,8 @@ export const steps = [
     isDone: loan => loan.borrowers?.length > 0,
     onSubmit: loan => amount =>
       loanSetBorrowers.run({ loanId: loan._id, amount }),
-    renderValue: loan => (
-      <T id={`Forms.borrowerCount.${loan.borrowers.length}`} />
-    ),
+    getValue: loan => loan.borrowers?.length,
+    renderValue: value => <T id={`Forms.borrowerCount.${value}`} />,
   },
   {
     id: 'birthDate',
@@ -237,10 +232,11 @@ export const steps = [
       loan.borrowers?.every(({ birthDate }) => !!birthDate),
     onSubmit: loan => ({ borrower1, borrower2 }) =>
       updateBorrowers(loan, borrower1, borrower2),
-    renderValue: loan => (
+    getValue: loan => loan.borrowers?.map(({ age }) => age),
+    renderValue: value => (
       <T
         id="OnboardingStep.birthDate.value"
-        values={{ value: loan.borrowers.map(({ age }) => age).join(', ') }}
+        values={{ value: value.join(', ') }}
       />
     ),
   },
@@ -252,7 +248,8 @@ export const steps = [
     isDone: loan => loan.borrowers?.some(({ salary }) => salary > 0),
     onSubmit: loan => ({ borrower1, borrower2 }) =>
       updateBorrowers(loan, borrower1, borrower2),
-    renderValue: loan => <Money value={Calculator.getTotalIncome({ loan })} />,
+    getValue: loan => Calculator.getTotalIncome({ loan }),
+    renderValue: value => <Money value={value} />,
   },
   {
     id: 'ownFunds',
@@ -276,7 +273,8 @@ export const steps = [
         complexifyBorrowerOwnFunds(borrower1),
         complexifyBorrowerOwnFunds(borrower2),
       ),
-    renderValue: loan => <Money value={Calculator.getTotalFunds({ loan })} />,
+    getValue: loan => Calculator.getTotalFunds({ loan }),
+    renderValue: value => <Money value={value} />,
   },
 
   {

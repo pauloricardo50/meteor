@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import cx from 'classnames';
 
+import ValidIcon from 'core/components/AutoForm/ValidIcon';
+import { STATUS } from 'core/components/AutoForm/ValidIcon/ValidIconContainer';
 import CalendlyModal from 'core/components/Calendly/CalendlyModal';
 import DialogSimple from 'core/components/DialogSimple';
 import Icon from 'core/components/Icon';
@@ -12,7 +14,14 @@ import colors from 'core/config/colors';
 import { useOnboarding } from '../OnboardingContext';
 import OnboardingStep from './OnboardingStep';
 
-const OnboardingButton = ({ label, onClick, iconComponent, icon, loading }) => (
+const OnboardingButton = ({
+  label,
+  onClick,
+  iconComponent,
+  icon,
+  loading,
+  chosen,
+}) => (
   <ButtonBase
     onClick={onClick}
     className={cx('flex-col center-align', {
@@ -37,12 +46,20 @@ const OnboardingButton = ({ label, onClick, iconComponent, icon, loading }) => (
         <Icon type="loop-spin" color="borderGrey" />
       </div>
     )}
+
+    {chosen && (
+      <ValidIcon
+        style={{ position: 'absolute', top: 0, right: 0 }}
+        status={STATUS.SUCCESS}
+      />
+    )}
   </ButtonBase>
 );
 
 const OnboardingChoice = ({ id, choices, onSubmit }) => {
-  const { handleNextStep } = useOnboarding();
+  const { handleNextStep, steps } = useOnboarding();
   const [loading, setLoading] = useState(false);
+  const currentValue = steps.find(({ id: stepId }) => stepId === id).value;
 
   return (
     <OnboardingStep>
@@ -109,6 +126,7 @@ const OnboardingChoice = ({ id, choices, onSubmit }) => {
                 iconComponent={iconComponent}
                 label={label}
                 loading={choiceId === loading}
+                chosen={choiceId === currentValue}
               />
             );
           },

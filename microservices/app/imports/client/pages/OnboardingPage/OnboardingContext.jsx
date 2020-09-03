@@ -29,6 +29,7 @@ const getPreviousStep = (steps, activeStep) => {
 const withOnboardingContext = Component => ({ loan }) => {
   const steps = getSteps(loan).map(step => ({
     ...step,
+    value: step.getValue?.(loan),
     done: step.isDone(loan),
   }));
   const stepIds = steps.map(({ id }) => id);

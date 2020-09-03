@@ -37,7 +37,6 @@ const OnboardingStepper = ({ closeDrawer }) => {
     stepIds,
     setActiveStep,
     currentTodoStep,
-    loan,
   } = useOnboarding();
   const activeStepIndex = stepIds.findIndex(id => id === activeStep);
 
@@ -53,7 +52,7 @@ const OnboardingStepper = ({ closeDrawer }) => {
         />
       }
     >
-      {steps.map(({ id, done, renderValue }) => {
+      {steps.map(({ id, done, renderValue, value }) => {
         const isActive = done || activeStep === id;
         const isDisabled = isStepDisabled(done, currentTodoStep, id);
 
@@ -89,7 +88,7 @@ const OnboardingStepper = ({ closeDrawer }) => {
             {/* https://github.com/mui-org/material-ui/issues/22167 */}
             <StepContent>
               {done && renderValue ? (
-                <small className="secondary">{renderValue(loan)}</small>
+                <small className="secondary">{renderValue(value)}</small>
               ) : null}
             </StepContent>
           </Step>
