@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { faEngineWarning } from '@fortawesome/pro-duotone-svg-icons/faEngineWarning';
+import cx from 'classnames';
 
 import { setMaxPropertyValueOrBorrowRatio } from 'core/api/loans/methodDefinitions';
 import { PROPERTY_CATEGORY } from 'core/api/properties/propertyConstants';
@@ -38,7 +39,7 @@ export const calculateMaxPropertyValue = loan =>
 const OnboardingResultEmpty = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const { loan, setActiveStep } = useOnboarding();
+  const { loan, setActiveStep, isMobile } = useOnboarding();
 
   const handleCalculate = () => {
     setLoading(true);
@@ -63,7 +64,7 @@ const OnboardingResultEmpty = () => {
         <p>
           <T id="OnboardingResultEmpty.calculatingDescription" />
         </p>
-        <div className="flex center animated fadeIn">
+        <div className={cx('flex animated fadeIn', { center: isMobile })}>
           <OnboardingResultAnimation />
         </div>
       </div>
