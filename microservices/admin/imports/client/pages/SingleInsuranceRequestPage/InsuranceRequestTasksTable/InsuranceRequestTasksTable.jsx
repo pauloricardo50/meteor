@@ -5,30 +5,19 @@ import Select from 'core/components/Select';
 import CollectionTasksDataTable from '../../../components/TasksDataTable/CollectionTasksDataTable';
 import InsuranceRequestTaskInserter from './InsuranceRequestTaskInserter';
 
-const getFilters = ({ insuranceRequest, assignee, status, docId }) => {
-  const { _id: insuranceRequestId } = insuranceRequest;
-
-  let filters = { 'assigneeLink._id': assignee, status };
-
+const getFilters = ({ insuranceRequestId, docId }) => {
   if (docId === 'ALL') {
-    filters = {
-      ...filters,
-      'insuranceRequestLink._id': insuranceRequestId,
-    };
-  } else if (docId === insuranceRequestId) {
-    filters = {
-      ...filters,
+    return { 'insuranceRequestLink._id': insuranceRequestId };
+  }
+
+  if (docId === insuranceRequestId) {
+    return {
       'insuranceRequestLink._id': insuranceRequestId,
       insuranceLink: { $exists: false },
     };
-  } else {
-    filters = {
-      ...filters,
-      'insuranceLink._id': docId,
-    };
   }
 
-  return filters;
+  return { 'insuranceLink._id': docId };
 };
 
 const InsuranceRequestTasksTable = ({ insuranceRequest, ...rest }) => {
@@ -37,7 +26,7 @@ const InsuranceRequestTasksTable = ({ insuranceRequest, ...rest }) => {
 
   return (
     <CollectionTasksDataTable
-      filters={getFilters({ docId, insuranceRequest })}
+      filters={getFilters({ docId, insuranceRequestId })}
       TaskInserter={props => (
         <InsuranceRequestTaskInserter
           {...props}
