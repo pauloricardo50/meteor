@@ -81,6 +81,13 @@
       margin-top: 16px;
     }
   }
+
+  h1 {
+    @include screen(med) {
+      font-size: 2em;
+      line-height: 1.3em;
+    }
+  }
 }
 
 .onboarding-choices {
