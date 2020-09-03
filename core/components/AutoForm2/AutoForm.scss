@@ -28,7 +28,8 @@
 
 .list-del-field {
   margin-left: 4px;
-  color: $error;
+  background-color: $error;
+  color: white;
 }
 
 .list-add-field {
