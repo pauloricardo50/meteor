@@ -69,7 +69,7 @@ const OnboardingWithoutLoan = ({ promotion, onStart }) => {
   }
 
   return (
-    <div className="animated fadeIn">
+    <div className="flex-col animated fadeIn">
       <OnboardingMarketing />
 
       <div className="onboarding-without-loan">

@@ -209,6 +209,12 @@ addAnalyticsListener({
   method: analyticsLogin,
   func: ({ analytics, params, context }) => {
     const { userId } = context;
+
+    if (!userId) {
+      // Sometimes this happens..
+      return;
+    }
+
     const {
       name: userName,
       email: userEmail,
@@ -949,69 +955,83 @@ addAnalyticsListener({
   },
 });
 
-addAnalyticsListener({
-  method: analyticsStartedOnboarding,
-  type: 'before',
-  func: ({
-    analytics,
-    context: { userId },
-    params: { loanId, activeStep, previousStep },
-  }) => {
-    const {
-      hasStartedOnboarding,
-      anonymous,
-      purchaseType,
-      properties = [],
-      promotions = [],
-      name: loanName,
-    } = LoanService.get(loanId, {
-      anonymous: 1,
-      purchaseType: 1,
-      properties: { _id: 1 },
-      promotions: { name: 1 },
+const trackOnboardingStart = ({ analytics, loanId, userId }) => {
+  const {
+    anonymous,
+    purchaseType,
+    properties = [],
+    promotions = [],
+    name: loanName,
+  } = LoanService.get(loanId, {
+    anonymous: 1,
+    purchaseType: 1,
+    properties: { _id: 1 },
+    promotions: { name: 1 },
+    name: 1,
+  });
+
+  let params = {
+    loanId,
+    loanName,
+    propertyId: properties?.[0]?._id,
+    promotionId: promotions?.[0]?._id,
+    promotionName: promotions?.[0]?.name,
+    purchaseType,
+    anonymous,
+  };
+
+  if (userId) {
+    const user = UserService.get(userId, {
       name: 1,
-      hasStartedOnboarding: 1,
+      email: 1,
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+      assignedEmployee: { intercomId: 1, name: 1 },
     });
 
-    if (hasStartedOnboarding) {
+    params = {
+      ...params,
+      userId: user?._id,
+      userName: user?.name,
+      userEmail: user?.email,
+      referringUserId: user?.referredByUser?._id,
+      referringUserName: user?.referredByUser?.name,
+      referringOrganisationId: user?.referredByOrganisation?._id,
+      referringOrganisationName: user?.referredByOrganisation?.name,
+      assigneeId: user?.assignedEmployee?._id,
+      assigneeName: user?.assignedEmployee?.name,
+    };
+  }
+
+  console.log('started onboarding!!!');
+
+  analytics.track(EVENTS.STARTED_ONBOARDING, params);
+};
+
+addAnalyticsListener({
+  method: analyticsStartedOnboarding,
+  func: ({ analytics, context: { userId }, params: { loanId } }) => {
+    trackOnboardingStart({ analytics, loanId, userId });
+  },
+});
+
+addAnalyticsListener({
+  method: anonymousLoanInsert,
+  func: ({
+    analytics,
+    result: loanId,
+    params: { existingAnonymousLoanId },
+  }) => {
+    if (existingAnonymousLoanId) {
       return;
     }
+    trackOnboardingStart({ analytics, loanId, userId: null });
+  },
+});
 
-    let params = {
-      loanId,
-      loanName,
-      propertyId: properties?.[0]?._id,
-      promotionId: promotions?.[0]?._id,
-      promotionName: promotions?.[0]?.name,
-      purchaseType,
-      anonymous,
-      currentStep: activeStep,
-      previousStep,
-    };
-
-    if (userId) {
-      const user = UserService.get(userId, {
-        name: 1,
-        email: 1,
-        referredByUser: { name: 1 },
-        referredByOrganisation: { name: 1 },
-        assignedEmployee: { intercomId: 1, name: 1 },
-      });
-
-      params = {
-        ...params,
-        userId: user?._id,
-        userName: user?.name,
-        userEmail: user?.email,
-        referringUserId: user?.referredByUser?._id,
-        referringUserName: user?.referredByUser?.name,
-        referringOrganisationId: user?.referredByOrganisation?._id,
-        referringOrganisationName: user?.referredByOrganisation?.name,
-        assigneeId: user?.assignedEmployee?._id,
-        assigneeName: user?.assignedEmployee?.name,
-      };
-    }
-
-    analytics.track(EVENTS.STARTED_ONBOARDING, params);
+addAnalyticsListener({
+  method: userLoanInsert,
+  func: ({ analytics, result: loanId, context: { userId } }) => {
+    trackOnboardingStart({ analytics, loanId, userId });
   },
 });

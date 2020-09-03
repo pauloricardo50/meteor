@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // import T from '../Translation';
-import Button from '../Button';
 import DevError from './DevError';
 
 // Don't user Translation here, because Loadable depends on it...
@@ -20,13 +19,11 @@ const LayoutError = ({ style, error }) => (
     </div>
     <DevError error={error} />
     <div className="flex center">
-      <Button raised color="primary" onClick={() => location.reload()}>
+      <button type="button" onClick={() => location.reload()}>
         Recharger la page
-      </Button>
+      </button>
       <a href="/" className="home-link">
-        <Button raised color="secondary">
-          Page d'accueil
-        </Button>
+        Page d'accueil
       </a>
     </div>
   </div>

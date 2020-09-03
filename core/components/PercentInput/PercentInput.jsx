@@ -9,7 +9,7 @@ import FormHelperText from '../Material/FormHelperText';
 import Input from '../Material/Input';
 import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
 
-const PercentInputComponent = ({ onChange, value, ...props }) => (
+const PercentInputComponent = ({ onChange, value, type, ...props }) => (
   <Input
     onChange={event => onChange(percentFormatters.parse(event.target.value))}
     value={percentFormatters.format(value)}

@@ -2,7 +2,9 @@ import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import cx from 'classnames';
 import { withRouter } from 'react-router-dom';
+import useWindowScroll from 'react-use/lib/useWindowScroll';
 
+import { CTA_ID } from 'core/api/analytics/analyticsConstants';
 import IconButton from 'core/components/IconButton';
 import TopNavButtons from 'core/components/TopNav/TopNavButtons';
 import TopNavlogo from 'core/components/TopNav/TopNavLogo';
@@ -32,9 +34,10 @@ const renderButtons = ({ location: { pathname, search } }) => {
 const AppTopNav = ({ toggleDrawer, shouldShowSideNav, history, children }) => {
   const currentUser = useCurrentUser();
   const isMobile = useMedia({ maxWidth: 768 });
+  const { y } = useWindowScroll();
 
   return (
-    <Toolbar className="top-nav">
+    <Toolbar className={cx('top-nav', { scrolling: y > 0 })}>
       <div className={cx('top-nav-content', { mobile: isMobile })}>
         {shouldShowSideNav && isMobile && (
           <IconButton onClick={toggleDrawer} type="menu" />
@@ -52,8 +55,9 @@ const AppTopNav = ({ toggleDrawer, shouldShowSideNav, history, children }) => {
                   primary: true,
                   label: 'Créez votre compte',
                   className: 'mr-8',
+                  ctaId: CTA_ID.ACCOUNT_CREATION_NAVBAR,
                 }}
-                ctaId="topNav"
+                ctaId={CTA_ID.ACCOUNT_CREATION_NAVBAR}
               />
             )}
             <TopNavButtons>{children}</TopNavButtons>

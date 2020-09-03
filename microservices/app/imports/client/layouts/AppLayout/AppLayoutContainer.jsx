@@ -42,6 +42,7 @@ const loanFragment = merge({}, calculatorLoan(), {
     name: 1,
     status: 1,
     users: { name: 1, organisations: { name: 1 } },
+    lotsCount: 1,
   },
   properties: {
     address: 1,

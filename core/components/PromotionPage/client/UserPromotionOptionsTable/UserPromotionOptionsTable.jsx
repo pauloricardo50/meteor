@@ -76,6 +76,7 @@ const UserPromotionOptionsTable = ({
           {
             accessor: 'totalValue',
             Header: <T id="PromotionPage.lots.totalValue" />,
+            align: 'right',
             Cell: ({
               row: {
                 original: { promotionLots },

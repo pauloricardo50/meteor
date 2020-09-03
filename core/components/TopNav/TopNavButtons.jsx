@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
+import { CTA_ID } from '../../api/analytics/analyticsConstants';
 import useCurrentUser from '../../hooks/useCurrentUser';
 import useMedia from '../../hooks/useMedia';
 import { getMainOrganisation } from '../../utils/userFunctions';
@@ -32,6 +33,7 @@ const TopNavButtons = ({ children, history }) => {
           label={<T id="TopNav.login" />}
           primary
           onClick={() => history.push('/login')}
+          ctaId={CTA_ID.LOGIN_NAVBAR}
         />
       )}
     </div>

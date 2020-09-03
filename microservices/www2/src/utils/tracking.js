@@ -59,9 +59,8 @@ export const useTracking = pageTrackingId => {
 };
 
 export const trackCTA = ({ buttonTrackingId, toPath, pageTrackingId }) => {
-  const { cookies, path } = getCurrentBrowserPosition();
+  const { path } = getCurrentBrowserPosition();
   callMethod('analyticsCTA', {
-    cookies,
     name: buttonTrackingId,
     path,
     route: pageTrackingId,

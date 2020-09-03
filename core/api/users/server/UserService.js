@@ -781,7 +781,7 @@ export class UserServiceClass extends CollectionService {
   setStatus({ userId, status, source }) {
     const { status: prevStatus } = this.get(userId, { status: 1 });
 
-    if (status === prevStatus) {
+    if (status === prevStatus && source !== 'drip') {
       throw new Meteor.Error(
         'Vous devez choisir un statut différent du précédent',
       );
@@ -803,6 +803,7 @@ export class UserServiceClass extends CollectionService {
       $filters: {
         createdAt: { $lt: twentyOneDaysAgo.toDate() },
         status: USER_STATUS.PROSPECT,
+        roles: { $elemMatch: { _id: ROLES.USER, assigned: true } },
       },
       name: 1,
       email: 1,

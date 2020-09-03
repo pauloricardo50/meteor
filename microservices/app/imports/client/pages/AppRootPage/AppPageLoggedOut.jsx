@@ -61,17 +61,17 @@ const AppPageLoggedOut = () => {
     return <Loading />;
   }
 
-  if (searchParams['property-id']) {
-    return (
-      <Redirect
-        to={createRoute(appRoutes.APP_PRO_PROPERTY_PAGE.path, {
-          propertyId: searchParams['property-id'],
-        })}
-      />
-    );
-  }
-
   if (anonymousLoan) {
+    if (searchParams['property-id']) {
+      return (
+        <Redirect
+          to={createRoute(appRoutes.APP_PRO_PROPERTY_PAGE.path, {
+            propertyId: searchParams['property-id'],
+          })}
+        />
+      );
+    }
+
     return (
       <Redirect
         to={createRoute(appRoutes.LOAN_ONBOARDING_PAGE.path, {

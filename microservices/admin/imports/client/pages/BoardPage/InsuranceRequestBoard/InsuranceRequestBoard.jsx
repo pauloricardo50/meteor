@@ -1,59 +1,134 @@
-import React from 'react';
+import { compose, withProps } from 'recompose';
 
-import Board from '../../../components/Board';
-import InsuranceRequestBoardCard from './InsuranceRequestBoardCard/InsuranceRequestBoardCard';
-import InsuranceRequestBoardColumnHeader from './InsuranceRequestBoardColumnHeader';
-import { ACTIONS } from './insuranceRequestBoardConstants';
-import InsuranceRequestBoardContainer from './InsuranceRequestBoardContainer';
-import InsuranceRequestBoardOptions from './InsuranceRequestBoardOptions/InsuranceRequestBoardOptions';
-import InsuranceRequestModal from './InsuranceRequestModal';
+import { withSmartQuery } from 'core/api/containerToolkit';
+import {
+  INSURANCE_REQUESTS_COLLECTION,
+  INSURANCE_REQUEST_STATUS,
+} from 'core/api/insuranceRequests/insuranceRequestConstants';
+import { insuranceRequestUpdateStatus } from 'core/api/insuranceRequests/methodDefinitions';
+import {
+  ORGANISATIONS_COLLECTION,
+  ORGANISATION_FEATURES,
+} from 'core/api/organisations/organisationConstants';
 
-const InsuranceRequestBoard = props => {
-  const {
-    options,
-    dispatch,
-    admins,
-    devAndAdmins,
-    refetchInsuranceRequests,
-    data,
-    currentUser,
-    organisations,
-  } = props;
+import AdminBoard from '../../../components/AdminBoard';
+import SingleInsuranceRequestPage from '../../SingleInsuranceRequestPage';
+import InsuranceRequestBoardCardBottom from './InsuranceRequestBoardCard/InsuranceRequestBoardCardBottom';
+import {
+  InsuranceRequestBoardCardContent,
+  InsuranceRequestBoardCardDescription,
+} from './InsuranceRequestBoardCard/InsuranceRequestBoardCardContent';
+import {
+  InsuranceRequestBoardCardTopLeft,
+  InsuranceRequestBoardCardTopRight,
+} from './InsuranceRequestBoardCard/InsuranceRequestBoardCardTop';
+import {
+  columnHeaderOptions,
+  groupData,
+  makeOptionsSelect,
+} from './insuranceRequestBoardHelpers';
 
-  return (
-    <>
-      <div className="loan-board">
-        <InsuranceRequestBoardOptions
-          options={options}
-          dispatch={dispatch}
-          admins={admins}
-          devAndAdmins={devAndAdmins}
-          refetchInsuranceRequests={refetchInsuranceRequests}
-          organisations={organisations}
-        />
-        <Board
-          data={data}
-          columnHeader={InsuranceRequestBoardColumnHeader}
-          columnHeaderProps={{ options, dispatch, admins }}
-          columnItem={InsuranceRequestBoardCard}
-          columnItemProps={{
-            setInsuranceRequestId: insuranceRequestId =>
-              dispatch({
-                type: ACTIONS.SET_INSURANCE_REQUEST_ID,
-                payload: insuranceRequestId,
-              }),
-          }}
-        />
-        <InsuranceRequestModal
-          insuranceRequestId={options.insuranceRequestId}
-          closeModal={() =>
-            dispatch({ type: ACTIONS.SET_INSURANCE_REQUEST_ID, payload: '' })
-          }
-          currentUser={currentUser}
-        />
-      </div>
-    </>
-  );
+const defaultBody = {
+  name: 1,
+  customName: 1,
+  status: 1,
+  assigneeLinks: 1,
+  insurances: {
+    name: 1,
+    status: 1,
+    organisation: { logo: 1 },
+    insuranceProduct: { name: 1 },
+    insuranceRequest: { name: 1, user: { name: 1 } },
+    borrower: { name: 1 },
+  },
+  mainAssigneeLink: 1,
+  user: { name: 1, status: 1 },
+  nextDueTask: 1,
+  tasksCache: 1,
+  adminNotes: 1,
 };
 
-export default InsuranceRequestBoardContainer(InsuranceRequestBoard);
+const getStatusFilter = status => {
+  const { $in = [] } = status || {};
+  const toIgnore = [
+    INSURANCE_REQUEST_STATUS.TEST,
+    INSURANCE_REQUEST_STATUS.UNSUCCESSFUL,
+    INSURANCE_REQUEST_STATUS.FINALIZED,
+  ];
+
+  return {
+    $nin: toIgnore.filter(s => !$in.includes(s)),
+    ...status,
+  };
+};
+
+const getQueryFilters = ({
+  assignedEmployeeId,
+  status,
+  organisationId,
+  userStatus,
+}) => ({
+  assigneeLinks: { $elemMatch: { _id: assignedEmployeeId } },
+  status: getStatusFilter(status),
+  ...(organisationId
+    ? {
+        insurancesCache: {
+          $elemMatch: { 'organisationLink._id': organisationId },
+        },
+      }
+    : {}),
+  'userCache.status': userStatus,
+});
+
+export default compose(
+  withSmartQuery({
+    query: ORGANISATIONS_COLLECTION,
+    params: {
+      $filters: { features: ORGANISATION_FEATURES.INSURANCE },
+      name: 1,
+      $options: { sort: { name: 1 } },
+    },
+    dataName: 'organisations',
+    queryOptions: { shouldRefetch: () => false },
+    refetchOnMethodCall: false,
+  }),
+  withProps(({ organisations }) => ({
+    collection: INSURANCE_REQUESTS_COLLECTION,
+    getQueryFilters,
+    getQueryBody: () => defaultBody,
+    groupData,
+    makeOptionsSelect,
+    optionsSelectProps: { organisations },
+    columnHeaderProps: {
+      organisations,
+      columnHeaderOptions,
+      collection: INSURANCE_REQUESTS_COLLECTION,
+    },
+    columnItemProps: {
+      boardCardContent: {
+        top: {
+          left: InsuranceRequestBoardCardTopLeft,
+          right: InsuranceRequestBoardCardTopRight,
+          makeStatusLabelProps: ({ data }) => ({
+            method: nextStatus =>
+              insuranceRequestUpdateStatus.run({
+                insuranceRequestId: data?._id,
+                status: nextStatus,
+              }),
+          }),
+        },
+        content: {
+          description: InsuranceRequestBoardCardDescription,
+          content: InsuranceRequestBoardCardContent,
+        },
+        bottom: InsuranceRequestBoardCardBottom,
+      },
+    },
+    modalContent: SingleInsuranceRequestPage,
+    getModalContentProps: ({ docId, currentUser }) => ({
+      insuranceRequestId: docId,
+      currentUser,
+      enableTabRouting: false,
+    }),
+  })),
+)(AdminBoard);

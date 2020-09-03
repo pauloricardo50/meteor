@@ -12,6 +12,7 @@ import { faUserFriends } from '@fortawesome/pro-duotone-svg-icons/faUserFriends'
 import { faUsers } from '@fortawesome/pro-duotone-svg-icons/faUsers';
 import SimpleSchema from 'simpl-schema';
 
+import { CTA_ID } from 'core/api/analytics/analyticsConstants';
 import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
 import { moneyField } from 'core/api/helpers/sharedSchemas';
 import {
@@ -27,7 +28,7 @@ import { propertyUpdate } from 'core/api/properties/methodDefinitions';
 import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import AcquisitionIcon from 'core/components/Icon/AcquisitionIcon';
 import RefinancingIcon from 'core/components/Icon/RefinancingIcon';
-import { refinancingPropertySchema } from 'core/components/PropertyForm/PropertyAdderDialog';
+import refinancingPropertySchema from 'core/components/PropertyForm/refinancingPropertySchema';
 import T, { Money } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import { not, or } from 'core/utils/functional';
@@ -45,7 +46,8 @@ export const isProFlow = loan => loan.hasPromotion || loan.hasProProperty;
 export const isRefinancing = loan =>
   loan.purchaseType === PURCHASE_TYPE.REFINANCING;
 const knowsProperty = loan =>
-  loan.projectStatus && loan.projectStatus !== ACQUISITION_STATUS.SEARCHING;
+  loan.acquisitionStatus &&
+  loan.acquisitionStatus !== ACQUISITION_STATUS.SEARCHING;
 
 const updateBorrowers = (loan, borrower1, borrower2) => {
   const promises = [];
@@ -125,6 +127,7 @@ export const steps = [
           id: RESIDENCE_TYPE.INVESTMENT,
           icon: faBuilding,
           modalId: 'OnboardingChoice.investment',
+          ctaId: CTA_ID.CALENDLY_RESIDENCE_TYPE_STEP,
         },
       ],
     },
@@ -149,6 +152,7 @@ export const steps = [
           id: 'other',
           label: <T id="general.other" />,
           modalId: 'OnboardingChoice.otherCanton',
+          ctaId: CTA_ID.CALENDLY_CANTON_STEP,
         },
       ],
     },
@@ -210,6 +214,7 @@ export const steps = [
           id: 'other',
           label: <T id="general.other" />,
           modalId: 'OnboardingChoice.manyBorrowers',
+          ctaId: CTA_ID.CALENDLY_BORROWERS_STEP,
           icon: faUsers,
         },
       ],

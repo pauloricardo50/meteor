@@ -312,6 +312,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
               filters._id = loanId;
             },
           },
+          lotsCount: 1,
         },
       }
     : {}),
@@ -681,6 +682,7 @@ export const basePromotion = () => ({
   signingDate: 1,
   country: 1,
   promotionLotGroups: 1,
+  lotsCount: 1,
 });
 
 export const proPromotion = ({ withFilteredLoan } = {}) => ({

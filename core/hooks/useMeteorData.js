@@ -1,6 +1,6 @@
 import { useTracker } from 'meteor/react-meteor-data';
 
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import ClientEventService from '../api/events/ClientEventService';
 import {
@@ -137,6 +137,7 @@ export const useReactiveMeteorData = (
   { query, params, type = 'many' },
   deps = [],
 ) => {
+  const [error, setError] = useState(undefined);
   const finalQuery = getQuery(query, params);
 
   const { loading, subscribedQuery } = useTracker(() => {
@@ -144,7 +145,16 @@ export const useReactiveMeteorData = (
       return { loading: false };
     }
 
-    const handle = finalQuery[getSubscriptionFunction(type)]();
+    const handle = finalQuery[getSubscriptionFunction(type)]({
+      onStop(err) {
+        if (err) {
+          setError(err);
+        }
+      },
+      onReady() {
+        setError(undefined);
+      },
+    });
     const isReady = handle.ready();
 
     return { loading: !isReady, subscribedQuery: finalQuery };
@@ -158,7 +168,7 @@ export const useReactiveMeteorData = (
     return null;
   }, deps);
 
-  return { loading, data };
+  return { loading: loading && !error, data, error };
 };
 
 const useMeteorData = (args, deps) => {

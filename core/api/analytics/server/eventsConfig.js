@@ -152,8 +152,8 @@ export const EVENTS_CONFIG = {
     properties: [
       'name',
       'path',
-      'route',
       'url',
+      { name: 'route', optional: true },
       { name: 'referrer', optional: true },
       { name: 'toPath', optional: true },
     ],

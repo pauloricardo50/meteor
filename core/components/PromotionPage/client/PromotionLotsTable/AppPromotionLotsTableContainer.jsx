@@ -7,7 +7,6 @@ import { PROMOTION_STATUS } from '../../../../api/promotions/promotionConstants'
 import StatusLabel from '../../../StatusLabel';
 import T, { Money } from '../../../Translation';
 import { getPromotionLotValue } from '../PromotionManagement/helpers';
-import LotChip from './LotChip';
 import PromotionLotGroupChip from './PromotionLotGroupChip';
 import PromotionLotSelector from './PromotionLotSelector';
 
@@ -70,18 +69,6 @@ const getAppColumns = ({ loan = {}, promotion }) => {
           </span>
         );
       },
-    },
-    {
-      Header: <T id="PromotionPage.lots.lots" />,
-      accessor: 'lots',
-      Cell: ({ value: lots = [] }) => (
-        <div className="lot-chips">
-          {lots.map(lot => (
-            <LotChip lot={lot} key={lot._id} />
-          ))}
-        </div>
-      ),
-      disableSortBy: true,
     },
     loan?._id && {
       Header: <T id="PromotionPage.lots.interested" />,
@@ -146,7 +133,6 @@ const AppPromotionLotsTableContainer = withProps(({ promotion, loan = {} }) => {
         promotionLotGroupIds: 1,
         reducedStatus: 1,
         value: 1,
-        lots: { type: 1, name: 1, value: 1 },
       },
     },
   };

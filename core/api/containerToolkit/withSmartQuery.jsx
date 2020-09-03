@@ -29,10 +29,13 @@ const makeRenderMissingDocIfNoData = (render = false, { single }) => {
 // error should be thrown and catched by our errorboundaries anyways
 // or displayed by an alert
 const makeMapProps = dataName =>
-  mapProps(({ data, isLoading, error, uniqueQueryName, ...rest }) => ({
-    [dataName]: data,
-    ...rest,
-  }));
+  mapProps(({ data, isLoading, error, uniqueQueryName, ...rest }) => {
+    const name = typeof dataName === 'function' ? dataName(rest) : dataName;
+    return {
+      [name]: data,
+      ...rest,
+    };
+  });
 
 const getFinalValue = (func, props) =>
   typeof func === 'function' ? func(props) : func;

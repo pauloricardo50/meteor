@@ -39,7 +39,7 @@
     .increment {
       top: unset;
       bottom: 8px;
-      left: 72px;
+      left: 56px;
     }
 
     &-top {
@@ -53,10 +53,16 @@
 
       border-radius: 4px;
       background-color: rgba($color: #000, $alpha: 0.4);
+
+
     }
 
     &-title {
       margin: 12px 0;
+
+      @include screen(med) {
+        margin: 0;
+      }
     }
 
     &-actions {

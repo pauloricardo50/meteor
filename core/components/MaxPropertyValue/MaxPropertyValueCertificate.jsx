@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { useMemo } from 'react';
-import { MuiThemeProvider } from '@material-ui/core/styles';
 import fileSaver from 'file-saver';
 import { useIntl } from 'react-intl';
 import SimpleSchema from 'simpl-schema';
@@ -11,7 +10,6 @@ import { PURCHASE_TYPE } from '../../api/loans/loanConstants';
 import { loanUpdate } from '../../api/loans/methodDefinitions';
 import { getSimpleFinancingCertificate } from '../../api/pdf/methodDefinitions';
 import { RESIDENCE_TYPE } from '../../api/properties/propertyConstants';
-import createTheme from '../../config/muiCustom';
 import useCurrentUser from '../../hooks/useCurrentUser';
 import { base64ToBlob } from '../../utils/base64-to-blob';
 import { AutoFormDialog } from '../AutoForm2';
@@ -95,6 +93,7 @@ const MaxPropertyValueCertificate = ({
   loan,
   shouldRecalculate,
   recalculate,
+  buttonProps,
 }) => {
   const { formatMessage } = useIntl();
   const currentUser = useCurrentUser();
@@ -108,55 +107,54 @@ const MaxPropertyValueCertificate = ({
   }
 
   return (
-    <MuiThemeProvider theme={createTheme()}>
-      <AutoFormDialog
-        model={{
-          residenceType,
-          firstName1: borrowers?.[0]?.firstName,
-          lastName1: borrowers?.[0]?.lastName,
-          firstName2: borrowers?.[1]?.firstName,
-          lastName2: borrowers?.[1]?.lastName,
-        }}
-        schema={schema}
-        buttonProps={{
-          icon: <Icon type="download" />,
-          label: shouldRecalculate ? (
-            <T id="MaxPropertyValueCertificate.recalculateDownload" />
-          ) : (
-            <T id="MaxPropertyValueCertificate.download" />
-          ),
-          raised: true,
-          disabled,
-          tooltip: disabled ? (
-            <T id="MaxPropertyValueCertificate.disabledTooltip" />
-          ) : null,
-          fullWidth: true,
-        }}
-        onSubmit={makeHandleSubmit({
-          loan,
-          formatMessage,
-          recalculate,
-          shouldRecalculate,
-        })}
-        title={<T id="MaxPropertyValueCertificate.download" />}
-        description={<T id="MaxPropertyValueCertificate.description" />}
-        layout={[
-          {
-            fields: ['firstName1', 'lastName1'],
-            className: 'grid-2 mb-16',
-            Component: Box,
-            title: <T id="general.borrowerWithIndex" values={{ index: '1' }} />,
-          },
-          has2Borrowers && {
-            fields: ['firstName2', 'lastName2'],
-            className: 'grid-2',
-            Component: Box,
-            title: <T id="general.borrowerWithIndex" values={{ index: '2' }} />,
-          },
-          'residenceType',
-        ].filter(x => x)}
-      />
-    </MuiThemeProvider>
+    <AutoFormDialog
+      model={{
+        residenceType,
+        firstName1: borrowers?.[0]?.firstName,
+        lastName1: borrowers?.[0]?.lastName,
+        firstName2: borrowers?.[1]?.firstName,
+        lastName2: borrowers?.[1]?.lastName,
+      }}
+      schema={schema}
+      buttonProps={{
+        icon: <Icon type="download" />,
+        label: shouldRecalculate ? (
+          <T id="MaxPropertyValueCertificate.recalculateDownload" />
+        ) : (
+          <T id="MaxPropertyValueCertificate.download" />
+        ),
+        raised: true,
+        disabled,
+        tooltip: disabled ? (
+          <T id="MaxPropertyValueCertificate.disabledTooltip" />
+        ) : null,
+        fullWidth: true,
+        ...buttonProps,
+      }}
+      onSubmit={makeHandleSubmit({
+        loan,
+        formatMessage,
+        recalculate,
+        shouldRecalculate,
+      })}
+      title={<T id="MaxPropertyValueCertificate.download" />}
+      description={<T id="MaxPropertyValueCertificate.description" />}
+      layout={[
+        {
+          fields: ['firstName1', 'lastName1'],
+          className: 'grid-2 mb-16',
+          Component: Box,
+          title: <T id="general.borrowerWithIndex" values={{ index: '1' }} />,
+        },
+        has2Borrowers && {
+          fields: ['firstName2', 'lastName2'],
+          className: 'grid-2',
+          Component: Box,
+          title: <T id="general.borrowerWithIndex" values={{ index: '2' }} />,
+        },
+        'residenceType',
+      ].filter(x => x)}
+    />
   );
 };
 

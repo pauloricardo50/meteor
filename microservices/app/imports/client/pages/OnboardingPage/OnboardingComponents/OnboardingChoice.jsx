@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import cx from 'classnames';
 
+import CalendlyModal from 'core/components/Calendly/CalendlyModal';
 import DialogSimple from 'core/components/DialogSimple';
+import Icon from 'core/components/Icon';
 import FaIcon from 'core/components/Icon/FaIcon';
 import T from 'core/components/Translation';
 import colors from 'core/config/colors';
@@ -9,8 +12,14 @@ import colors from 'core/config/colors';
 import { useOnboarding } from '../OnboardingContext';
 import OnboardingStep from './OnboardingStep';
 
-const OnboardingButton = ({ label, onClick, iconComponent, icon }) => (
-  <ButtonBase onClick={onClick} className="flex-col center-align" focusRipple>
+const OnboardingButton = ({ label, onClick, iconComponent, icon, loading }) => (
+  <ButtonBase
+    onClick={onClick}
+    className={cx('flex-col center-align', {
+      'no-icon': !iconComponent && !icon,
+    })}
+    focusRipple
+  >
     {iconComponent ||
       (icon ? (
         <FaIcon
@@ -22,6 +31,12 @@ const OnboardingButton = ({ label, onClick, iconComponent, icon }) => (
       ) : null)}
 
     {label}
+
+    {loading && (
+      <div className="onboarding-choices-loader animated fadeIn delays-200">
+        <Icon type="loop-spin" color="borderGrey" />
+      </div>
+    )}
   </ButtonBase>
 );
 
@@ -39,6 +54,7 @@ const OnboardingChoice = ({ id, choices, onSubmit }) => {
             iconComponent,
             modalId,
             label = <T id={`Forms.${id}.${choiceId}`} />,
+            ctaId,
           }) => {
             if (modalId) {
               return (
@@ -57,6 +73,19 @@ const OnboardingChoice = ({ id, choices, onSubmit }) => {
                   closeOnly
                 >
                   <T id={`${modalId}.description`} />
+
+                  <div className="text-center">
+                    <CalendlyModal
+                      buttonProps={{
+                        raised: true,
+                        primary: true,
+                        label: <T id="OnboardingResultCtas.calendly" />,
+                        className: 'mt-32',
+                        icon: <Icon type="event" />,
+                        ctaId,
+                      }}
+                    />
+                  </div>
                 </DialogSimple>
               );
             }
@@ -71,14 +100,15 @@ const OnboardingChoice = ({ id, choices, onSubmit }) => {
                     return;
                   }
 
-                  setLoading(true);
+                  setLoading(choiceId);
                   onSubmit(choiceId)
                     .then(() => handleNextStep())
-                    .finally(() => setLoading(false));
+                    .catch(() => setLoading(false));
                 }}
                 icon={icon}
                 iconComponent={iconComponent}
                 label={label}
+                loading={choiceId === loading}
               />
             );
           },

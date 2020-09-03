@@ -10,7 +10,7 @@ import {
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
-describe('App onboarding', () => {
+describe.only('App onboarding', () => {
   before(() => {
     cy.startTest();
     cy.meteorLogout();
@@ -363,5 +363,131 @@ describe('App onboarding', () => {
     cy.contains('Ajouter ce bien').click();
     cy.url().should('include', '/loans/');
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
+  });
+
+  it('should call analytics properly', () => {
+    cy.callMethod('resetDatabase'); // Make sure DB is very clean for this test
+    cy.callMethod('generateScenario', {
+      scenario: {
+        organisations: {
+          features: [ORGANISATION_FEATURES.LENDER],
+          lenderRules: {},
+        },
+      },
+    });
+
+    cy.url().should('include', '/onboarding');
+
+    cy.contains('button', 'Acheter un nouveau bien').click();
+
+    cy.url().should('include', 'loans');
+    cy.contains('button', "J'ai fait une offre").click();
+    cy.contains('button', 'Résidence principale').click();
+    cy.contains('button', 'Genève').click();
+    cy.contains('button', 'Un emprunteur').click();
+
+    cy.get('input[name="borrower1.birthDate"]').type('1990-01-01');
+    cy.get('form').submit();
+
+    cy.get('input[name="borrower1.salary"]').type('180000');
+    cy.get('form').submit();
+
+    cy.get('input[name="borrower1.bankFortune"]').type('250000');
+    cy.get('form').submit();
+
+    cy.contains('button', 'Calculer').click();
+
+    cy.url().should('include', 'step=result');
+    cy.contains('CHF 1 023 000');
+
+    cy.callMethod('getMethodLogs', {
+      $filters: { name: 'analyticsStartedOnboarding' },
+      params: 1,
+    }).then(result => {
+      expect(result.length).to.equal(0);
+    });
+
+    cy.callMethod('getMethodLogs', {
+      $filters: { name: 'analyticsOnboardingStep' },
+      $options: { sort: { createdAt: 1 } },
+      params: 1,
+    }).then(result => {
+      expect(result.length).to.equal(8);
+    });
+
+    // Check refreshing doesn't call analytics again
+    cy.visit('/');
+    cy.contains('Résultat');
+    cy.wait(1000);
+
+    cy.callMethod('getMethodLogs', {
+      $filters: { name: 'analyticsStartedOnboarding' },
+      $options: { sort: { createdAt: 1 } },
+      params: 1,
+      result: 1,
+    }).then(result => {
+      console.log('result:', result);
+      expect(result.length).to.equal(0);
+    });
+  });
+
+  describe('logged in', () => {
+    it('Works for users without loan', () => {
+      cy.callMethod('generateScenario', {
+        scenario: {
+          organisations: {
+            features: [ORGANISATION_FEATURES.LENDER],
+            lenderRules: {},
+          },
+          users: {
+            _id: 'user1',
+            emails: [{ address: USER_EMAIL, verified: true }],
+          },
+        },
+      });
+      cy.callMethod('setPassword', {
+        userId: 'user1',
+        password: USER_PASSWORD,
+      });
+      cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
+      cy.url().should('include', 'onboarding');
+      cy.url().should('not.include', 'loans');
+
+      cy.contains('button', 'Acheter un nouveau bien').click();
+      cy.url().should('include', 'loans');
+      cy.contains(
+        'button',
+        "Je pense signer bientôt une promesse d'achat",
+      ).click();
+    });
+
+    it('Works for users with a loan', () => {
+      cy.callMethod('generateScenario', {
+        scenario: {
+          organisations: {
+            features: [ORGANISATION_FEATURES.LENDER],
+            lenderRules: {},
+          },
+          users: {
+            _id: 'user1',
+            emails: [{ address: USER_EMAIL, verified: true }],
+            loans: {},
+          },
+        },
+      });
+      cy.callMethod('setPassword', {
+        userId: 'user1',
+        password: USER_PASSWORD,
+      });
+      cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
+      cy.routeTo('/'); // Make sure the user goes to the AppRootPage
+
+      cy.contains('button', 'Acheter un nouveau bien').click();
+      cy.url().should('include', 'loans');
+      cy.contains(
+        'button',
+        "Je pense signer bientôt une promesse d'achat",
+      ).click();
+    });
   });
 });

@@ -23,6 +23,7 @@ const SideNavHeader = ({ closeDrawer }) => {
           className="logo logo-home"
         />
       </Link>
+      <span className="epotek font-size-3 ml-8 mr-16">e-Potek</span>
     </div>
   );
 };

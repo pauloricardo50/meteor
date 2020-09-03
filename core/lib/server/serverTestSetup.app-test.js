@@ -7,6 +7,7 @@ import '../../api/email/server/test/setupEmailTests';
 import '../../api/queries/test/collection-app-test';
 import '../../api/queries/test/server/serverQueries-app-test';
 import '../../api/methods/server/test/serverMethods-app-test';
+import '../../api/methods/server/test/methodLogs.test';
 
 import { Meteor } from 'meteor/meteor';
 

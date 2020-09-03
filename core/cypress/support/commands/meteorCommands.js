@@ -83,6 +83,8 @@ Cypress.Commands.add('meteorLogout', () => {
           .catch(reject);
       }),
   );
+  // Make sure currentUser becomes falsy
+  cy.window().should('have.property', 'currentUser', null);
 });
 
 Cypress.Commands.add(
@@ -119,6 +121,10 @@ Cypress.Commands.add(
             });
           }),
       );
+    });
+    cy.window().should(win => {
+      // Make sure currentUser is truthy
+      expect(!!win.currentUser).to.equal(true);
     });
   },
 );

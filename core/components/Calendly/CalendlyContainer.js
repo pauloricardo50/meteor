@@ -20,10 +20,12 @@ export default withProps(({ onEventScheduled = () => ({}) }) => {
   const [scriptLoaded, setScriptLoaded] = useState(
     !!document.querySelector(`script[src="${SCRIPT_SOURCE}"]`),
   );
+
   useEffect(() => {
-    const callback = makeOnEventScheduled(onEventScheduled);
-    window.addEventListener('message', callback);
-    return () => window.removeEventListener('message', callback);
+    const onEventScheduledCallback = makeOnEventScheduled(onEventScheduled);
+    window.addEventListener('message', onEventScheduledCallback);
+    return () =>
+      window.removeEventListener('message', onEventScheduledCallback);
   });
   const currentUser = useCurrentUser();
 
@@ -37,5 +39,14 @@ export default withProps(({ onEventScheduled = () => ({}) }) => {
     },
     scriptLoaded,
     prefill: { name: currentUser?.name, email: currentUser?.email },
+    styles: {
+      zIndex: 2,
+      minWidth: '320px',
+      height: '630px',
+      width: '100%',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    },
   };
 });

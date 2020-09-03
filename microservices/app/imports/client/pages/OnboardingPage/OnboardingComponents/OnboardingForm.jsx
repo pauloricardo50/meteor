@@ -3,6 +3,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import cx from 'classnames';
 
 import AutoForm from 'core/components/AutoForm2';
+import T from 'core/components/Translation';
 
 import { useOnboarding } from '../OnboardingContext';
 import OnboardingStep from './OnboardingStep';
@@ -10,12 +11,12 @@ import OnboardingStep from './OnboardingStep';
 const OnboardingForm = ({
   schema,
   onSubmit,
-  submitLabel,
   className,
   layout,
   model,
   autoFormProps,
 }) => {
+  const memoModel = useMemo(() => model, []);
   const { handleNextStep, loan } = useOnboarding();
   const finalSchema = useMemo(
     () => (typeof schema === 'function' ? schema(loan) : schema),
@@ -36,11 +37,11 @@ const OnboardingForm = ({
         <div className={cx('onboarding-form', className)}>
           <AutoForm
             schema={finalSchema}
-            model={model || loan}
+            model={memoModel || loan}
             onSubmit={onSubmit}
             onSubmitSuccess={handleNextStep}
             submitFieldProps={{
-              label: submitLabel,
+              label: <T id="general.next" />,
               size: 'large',
               secondary: true,
               keepLoading: true,

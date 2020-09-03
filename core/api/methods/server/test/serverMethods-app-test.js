@@ -8,20 +8,15 @@ import {
 rateLimitedMethod.setHandler(() => true);
 
 rateLimitedMethod.setRateLimit(
-  {
-    limit: 1,
-    timeRange: 1000,
-  },
+  { limit: 1, timeRange: 1000 },
   { testRateLimit: true },
 );
 
 rateLimitedErrorMethod.setHandler(() => {
   throw new Meteor.Error('Error thrown');
 });
+
 rateLimitedErrorMethod.setRateLimit(
-  {
-    limit: 1,
-    timeRange: 1000,
-  },
+  { limit: 1, timeRange: 1000 },
   { testRateLimit: true },
 );
