@@ -18,7 +18,14 @@ const MiniatureImage = ({ url }) => {
   );
 };
 
-const OnboardingMiniature = ({ loading, title, subtitle, imageUrl, link }) => {
+const OnboardingMiniature = ({
+  loading,
+  title,
+  subtitle,
+  imageUrl,
+  link,
+  content,
+}) => {
   if (loading) {
     return (
       <div className="onboarding-miniature">
@@ -28,14 +35,17 @@ const OnboardingMiniature = ({ loading, title, subtitle, imageUrl, link }) => {
   }
 
   return (
-    <Link to={link} className="onboarding-miniature flex nowrap">
-      <MiniatureImage url={imageUrl} />
+    <Link to={link} className="onboarding-miniature flex-col card1">
+      <div className="flex nowrap">
+        <MiniatureImage url={imageUrl} />
 
-      <div className="flex-col nowrap sa p-16">
-        <h4 className="m-0">{title}</h4>
+        <div className="flex-col nowrap sa p-16">
+          <h4 className="m-0">{title}</h4>
 
-        <span className="secondary font-size-5">{subtitle}</span>
+          <span className="secondary font-size-5">{subtitle}</span>
+        </div>
       </div>
+      {content}
     </Link>
   );
 };

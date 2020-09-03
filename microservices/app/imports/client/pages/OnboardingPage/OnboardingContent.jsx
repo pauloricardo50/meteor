@@ -49,7 +49,7 @@ const OnboardingContent = () => {
       ) : null}
 
       {loan.hasPromotion ? (
-        <PromotionMiniature promotion={loan.promotions[0]} />
+        <PromotionMiniature promotion={loan.promotions[0]} loan={loan} />
       ) : null}
     </div>
   );
