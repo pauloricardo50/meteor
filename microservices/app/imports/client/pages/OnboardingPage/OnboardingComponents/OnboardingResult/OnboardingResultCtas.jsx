@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import cx from 'classnames';
 import { useHistory } from 'react-router-dom';
 
+import { CTA_ID } from 'core/api/analytics/analyticsConstants';
 import { loanUpdate } from 'core/api/loans/methodDefinitions';
 import Button from 'core/components/Button';
 import CalendlyModal from 'core/components/Calendly/CalendlyModal';
@@ -26,6 +27,7 @@ export const OnboardingResultCtaDefault = ({ loanId, buttonSize }) => {
         }
         className="mb-8"
         size={buttonSize}
+        ctaId={CTA_ID.GET_STARTED_RESULT_SCREEN}
       >
         <T id="OnboardingResultCtas.goToDashboard" />
       </Button>
@@ -46,6 +48,7 @@ export const OnboardingResultCtaDefault = ({ loanId, buttonSize }) => {
         label: <T id="OnboardingResultCtas.signup" />,
         className: 'mb-8',
         size: buttonSize,
+        ctaId: CTA_ID.GET_STARTED_RESULT_SCREEN,
       }}
       description={
         <div className="flex-col onboarding-result-signup">
@@ -90,6 +93,7 @@ const OnboardingResultCtas = () => {
           primary: true,
           className: 'mr-8 mb-8',
           label: <T id="OnboardingResultCtas.calendly" />,
+          ctaId: CTA_ID.CALENDLY_RESULT_SCREEN,
           size: buttonSize,
         }}
       />

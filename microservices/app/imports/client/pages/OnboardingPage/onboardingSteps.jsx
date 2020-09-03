@@ -12,6 +12,7 @@ import { faUserFriends } from '@fortawesome/pro-duotone-svg-icons/faUserFriends'
 import { faUsers } from '@fortawesome/pro-duotone-svg-icons/faUsers';
 import SimpleSchema from 'simpl-schema';
 
+import { CTA_ID } from 'core/api/analytics/analyticsConstants';
 import { borrowerUpdate } from 'core/api/borrowers/methodDefinitions';
 import { moneyField } from 'core/api/helpers/sharedSchemas';
 import {
@@ -126,6 +127,7 @@ export const steps = [
           id: RESIDENCE_TYPE.INVESTMENT,
           icon: faBuilding,
           modalId: 'OnboardingChoice.investment',
+          ctaId: CTA_ID.CALENDLY_RESIDENCE_TYPE_STEP,
         },
       ],
     },
@@ -150,6 +152,7 @@ export const steps = [
           id: 'other',
           label: <T id="general.other" />,
           modalId: 'OnboardingChoice.otherCanton',
+          ctaId: CTA_ID.CALENDLY_CANTON_STEP,
         },
       ],
     },
@@ -211,6 +214,7 @@ export const steps = [
           id: 'other',
           label: <T id="general.other" />,
           modalId: 'OnboardingChoice.manyBorrowers',
+          ctaId: CTA_ID.CALENDLY_BORROWERS_STEP,
           icon: faUsers,
         },
       ],

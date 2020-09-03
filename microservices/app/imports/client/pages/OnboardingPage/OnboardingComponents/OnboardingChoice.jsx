@@ -47,6 +47,7 @@ const OnboardingChoice = ({ id, choices, onSubmit }) => {
             iconComponent,
             modalId,
             label = <T id={`Forms.${id}.${choiceId}`} />,
+            ctaId,
           }) => {
             if (modalId) {
               return (
@@ -74,6 +75,7 @@ const OnboardingChoice = ({ id, choices, onSubmit }) => {
                         label: <T id="OnboardingResultCtas.calendly" />,
                         className: 'mt-32',
                         icon: <Icon type="event" />,
+                        ctaId,
                       }}
                     />
                   </div>
