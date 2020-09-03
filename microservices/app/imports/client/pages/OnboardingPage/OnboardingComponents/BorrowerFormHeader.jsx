@@ -6,7 +6,7 @@ import T from 'core/components/Translation';
 
 const BorrowerFormHeader = ({ index, borrowerId, loanId, borrowerCount }) => (
   <div className="flex center-align">
-    <h3 className="mr-8">
+    <h3 className="mt-0 mb-0 mr-8">
       <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
     </h3>
 

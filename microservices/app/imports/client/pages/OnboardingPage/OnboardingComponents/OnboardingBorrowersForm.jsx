@@ -12,8 +12,8 @@ const borrowerFormLayout1 = {
 
 const borrowerFormLayout2 = {
   layout: [
-    { fields: 'borrower1', className: 'p-8' },
-    { fields: 'borrower2', className: 'p-8' },
+    { fields: 'borrower1', className: 'pl-8 pr-8' },
+    { fields: 'borrower2', className: 'pl-8 pr-8' },
   ],
   className: 'flex grow',
 };
@@ -32,7 +32,7 @@ const OnboardingBorrowersForm = ({
   const { loan } = useOnboarding();
 
   // Only get model initially, to avoid race-conditions
-  const [initialModel] = useState(
+  const [initialModel] = useState(() =>
     getModel(
       loan,
       typeof borrowerSchema === 'function' ? borrowerSchema() : borrowerSchema,

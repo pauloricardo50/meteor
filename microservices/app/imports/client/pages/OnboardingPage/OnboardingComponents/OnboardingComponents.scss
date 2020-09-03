@@ -17,6 +17,11 @@
       border: 1px solid $border-grey;
       border-radius: 4px;
       text-align: center;
+
+      @include screen(small) {
+        width: 100px;
+        padding: 8px;
+      }
     }
   }
 
@@ -52,6 +57,10 @@
       @include screen(large) {
         font-size: 4em;
       }
+
+      @include screen(med) {
+        font-size: 3em;
+      }
     }
 
     .balance-sheet,
@@ -72,12 +81,12 @@
   align-items: stretch;
   max-width: 800px;
 
-  @media screen and (max-width: $med) {
+  @include screen(med) {
     justify-content: center;
   }
 
   > * {
-    position:relative;
+    position: relative;
     border: 1px solid transparent;
     padding: 32px;
     margin: 8px;
@@ -85,11 +94,7 @@
     width: 250px;
     background-color: white;
     transform: scale(1);
-    
-    @media screen and (max-width: $med) {
-      width: 200px;
-    }
-    
+
     path {
       transition: fill 200ms $bezier;
     }
@@ -103,6 +108,21 @@
         --fa-secondary-color: #{$primary} !important;
       }
     }
+
+    @include screen(med) {
+      width: calc(50% - 16px);
+      padding: 12px;
+      font-size: 0.9em;
+    }
+
+    @include screen(small) {
+      padding: 8px;
+    }
+
+    &.no-icon {
+      padding: 32px 16px;
+      font-size: 1em;
+    }
   }
 
   &-loader {
@@ -114,7 +134,6 @@
 
 .onboarding-form {
   max-width: 400px;
-  margin-top: 32px;
 
   &.wide-form {
     max-width: 800px;
@@ -123,8 +142,13 @@
   button[type='submit'] {
     margin-top: 40px;
     display: flex;
-    margin-left: auto;
-    margin-right: 0;
+    margin-left: 8px;
+  }
+
+  @include screen(med) {
+    h3 {
+      font-size: 1.4em;
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-@import "./OnboardingComponents/OnboardingComponents.scss";
+@import './OnboardingComponents/OnboardingComponents.scss';
 
 .onboarding {
   display: flex;
@@ -31,8 +31,17 @@
         align-self: flex-start;
       }
     }
-    
-    @media screen and (min-width: $large) {
+
+    @include screen(med) {
+      padding: 0;
+      
+      h2 {
+        font-size: 1.6em;
+        line-height: 1.2em;
+      }
+    }
+
+    @include screen(large, min) {
       padding: 40px;
     }
   }
@@ -42,6 +51,10 @@
     flex-wrap: wrap;
     justify-content: space-around;
     margin-bottom: 32px;
+
+    @include screen(large) {
+      order: 1;
+    }
 
     > * {
       max-width: 240px;
@@ -59,14 +72,14 @@
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 16px;
   box-sizing: border-box;
   justify-content: center;
+  align-items: center;
 
   > * {
-    padding: 16px;
+    margin-bottom: 16px;
+    padding: 8px;
   }
-
 
   img {
     width: 400px;
@@ -79,30 +92,49 @@
 
   &-ctas {
     margin-top: 40px;
-  }
 
+    @include screen(med) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 24px;
+    }
+  }
 
   @include screen(med) {
     flex-direction: column-reverse;
     align-items: center;
 
     img {
-      width: 300px;
-      height: 300px;
+      width: 200px;
+      height: 200px;
+    }
+  }
+
+  @include screen(small) {
+    img {
+      width: 150px;
+      height: 150px;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 2em;
     }
   }
 }
 
 .onboarding-side-nav {
   background-color: $primary;
-  height: 100%;
-  
+  flex-grow: 1;
+
   &.fixed {
     position: fixed;
     top: 0;
     left: 0;
     z-index: 101;
     width: 250px;
+    min-height: 100%;
   }
 
   &-header {

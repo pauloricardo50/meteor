@@ -8,7 +8,7 @@ import TopNavLogo from 'core/components/TopNav/TopNavLogo';
 import { useOnboarding } from './OnboardingContext';
 import OnboardingStepper from './OnboardingStepper';
 
-const SideNav = ({ fixed }) => (
+const SideNav = ({ fixed, closeDrawer }) => (
   <BlueTheme>
     <div
       className={cx('onboarding-side-nav', {
@@ -21,7 +21,7 @@ const SideNav = ({ fixed }) => (
         <span className="epotek font-size-3 ml-8 mr-16">e-Potek</span>
       </div>
 
-      <OnboardingStepper />
+      <OnboardingStepper closeDrawer={closeDrawer} />
     </div>
   </BlueTheme>
 );
@@ -30,9 +30,10 @@ const OnboardingSideNav = () => {
   const { isMobile, showDrawer, setShowDrawer } = useOnboarding();
 
   if (isMobile) {
+    const closeDrawer = () => setShowDrawer(false);
     return (
-      <Drawer open={showDrawer} onClose={() => setShowDrawer(false)}>
-        <SideNav />
+      <Drawer open={showDrawer} onClose={closeDrawer}>
+        <SideNav closeDrawer={closeDrawer} />
       </Drawer>
     );
   }
