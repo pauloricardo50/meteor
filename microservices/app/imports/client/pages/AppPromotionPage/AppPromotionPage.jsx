@@ -7,6 +7,7 @@ import { appPromotion } from 'core/api/promotions/queries';
 import Button from 'core/components/Button';
 import PromotionPage from 'core/components/PromotionPage/client';
 import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
+import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'core/utils/routerUtils';
 
@@ -59,7 +60,7 @@ const ContinueButton = () => {
     <Button
       raised
       secondary
-      label="Continuer"
+      label={<T id="general.continue" />}
       onClick={() => history.push('/')}
       size="large"
     />
