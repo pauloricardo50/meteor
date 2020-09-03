@@ -61,12 +61,14 @@ const OnboardingResultEmpty = () => {
         <h3 className="secondary mt-0">
           <T id="OnboardingResultEmpty.calculating" />
         </h3>
-        <p>
-          <T id="OnboardingResultEmpty.calculatingDescription" />
-        </p>
+
         <div className={cx('flex animated fadeIn', { center: isMobile })}>
           <OnboardingResultAnimation />
         </div>
+
+        <p>
+          <T id="OnboardingResultEmpty.calculatingDescription" />
+        </p>
       </div>
     );
   }

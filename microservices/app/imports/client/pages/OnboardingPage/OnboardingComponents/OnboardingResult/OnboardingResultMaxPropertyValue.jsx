@@ -13,7 +13,7 @@ import { calculateMaxPropertyValue } from './OnboardingResultEmpty';
 const OnboardingResultMaxPropertyValue = ({ loan }) => {
   const [loading, setLoading] = useState(false);
   const borrowerHash = useMemo(
-    () => Calculator.getBorrowerFormHash({ loan }),
+    () => Calculator.getMaxPropertyValueHash({ loan }),
     [],
   );
   const { steps } = useOnboarding();

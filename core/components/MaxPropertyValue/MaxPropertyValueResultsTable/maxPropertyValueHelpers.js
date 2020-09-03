@@ -51,7 +51,7 @@ export const parseMaxPropertyValue = (loan, showBest) => {
   const raise = loan - previousLoan;
 
   const valueToDisplay =
-    purchaseType === PURCHASE_TYPE.REFINANCING ? loan : propertyValue;
+    purchaseType === PURCHASE_TYPE.REFINANCING ? loanValue : propertyValue;
 
   return {
     loanValue,

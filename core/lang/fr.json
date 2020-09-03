@@ -3,7 +3,7 @@
   "OnboardingResultEmpty.calculateTitle": "Déterminez votre capacité d'achat",
   "OnboardingResultEmpty.calculateCta": "Calculer",
   "OnboardingResultEmpty.calculating": "Nous parcourons l'ensemble de nos partenaires prêteurs...",
-  "OnboardingResultEmpty.calculatingDescription": "Ça peut prendre une douzaine de secondes.",
+  "OnboardingResultEmpty.calculatingDescription": "Cela peut prendre une douzaine de secondes.",
   "OnboardingResultEmpty.errorTitle": "Une erreur est survenue",
   "OnboardingResultEmpty.errorIncome": "Modifier mes revenus",
   "OnboardingResultEmpty.errorOwnFunds": "Modifier mes fonds propres",
