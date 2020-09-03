@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import Loading from '../Loading';
 import CalendlyContainer from './CalendlyContainer';
 
 const defaultStyles = {
@@ -24,10 +25,27 @@ const CalendlyInline = ({ url, scriptLoaded, loadScript, styles, prefill }) => {
 
   return (
     <div
-      style={styles || defaultStyles}
-      data-url={url}
-      ref={parentContainerRef}
-    />
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '630px',
+        minWidth: '320px',
+      }}
+    >
+      <div
+        style={styles || defaultStyles}
+        data-url={url}
+        ref={parentContainerRef}
+      />
+      <Loading
+        style={{
+          position: 'absolute',
+          top: 'calc(50% - 50px)',
+          left: 'calc(50% - 50px)',
+          zIndex: 1,
+        }}
+      />
+    </div>
   );
 };
 
