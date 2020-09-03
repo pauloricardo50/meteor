@@ -29,7 +29,7 @@ const isStepDisabled = (done, currentTodoStep, stepId) => {
   return currentTodoStep !== stepId;
 };
 
-const OnboardingStepper = () => {
+const OnboardingStepper = ({ closeDrawer }) => {
   const classes = useStyles();
   const {
     activeStep,
@@ -65,7 +65,14 @@ const OnboardingStepper = () => {
             disabled={isDisabled}
             classes={{ root: classes.stepRoot }}
           >
-            <StepButton onClick={() => setActiveStep(id)}>
+            <StepButton
+              onClick={() => {
+                if (closeDrawer) {
+                  closeDrawer();
+                }
+                setActiveStep(id);
+              }}
+            >
               <StepLabel
                 StepIconProps={{
                   classes: {
