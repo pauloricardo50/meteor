@@ -10,16 +10,7 @@
   flex-grow: 1;
 
   width: 100%;
-  min-width: 1200px;
   height: 100%;
-
-  @include screen(med) {
-    min-width: 800px;
-  }
-
-  &.mobile {
-    min-width: unset;
-  }
 }
 
 .app-layout {
@@ -38,48 +29,52 @@
   @include screen(med) {
     padding-left: 16px;
   }
+
+  @include screen(large, min) {
+    padding: 32px;
+    padding-top: 96px;
+    padding-bottom: 32px;
+    padding-left: 282px; /* side-nav width + 32px  */
+  }
+
+  &.no-nav {
+    padding-left: 16px;
+  }
+
+  &.always-side-nav {
+    padding-left: 266px;
+  }
+
+  .wrapper {
+    display: flex;
+    align-items: stretch;
+    align-self: stretch;
+    flex-direction: column;
+    flex-grow: 1;
+
+    // Intercom spacing
+    margin-bottom: 80px;
+
+    .page {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+
+      &.full-width {
+        box-sizing: border-box;
+        max-width: 100%;
+      }
+    }
+  }
 }
 
-.app-layout.no-nav {
-  padding-left: 16px;
-}
+.top-nav {
+  background-color: $background-color;
+  border: none;
 
-.app-layout.always-side-nav {
-  padding-left: 266px;
-}
-
-.app-layout .wrapper {
-  display: flex;
-  align-items: stretch;
-  align-self: stretch;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.app-layout .wrapper .page {
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.app-layout .wrapper .page.full-width {
-  box-sizing: border-box;
-  max-width: 100%;
-}
-
-.app-layout .transition-wrapper {
-  position: absolute;
-
-  width: calc(100% - 32px);
-  margin: auto;
-}
-
-.app-layout .transition-wrapper {
-  width: calc(100% - 250px - 32px);
-
-  @include screen(med) {
-    width: calc(100% - 32px);
+  &.scrolling {
+    border-bottom: 1px solid $border-grey-light;
   }
 }
 
@@ -122,5 +117,36 @@
   .title,
   p {
     max-width: 400px;
+  }
+}
+
+.anonymous-loan-claimer {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  flex-direction: column;
+
+  margin-bottom: 40px;
+  padding: 40px;
+
+  text-align: center;
+
+  @include screen(small) {
+    padding: 24px;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  .cta {
+    margin-top: 32px;
+  }
+
+  .icon {
+    width: 120px;
+    height: 120px;
+    padding: 16px;
+    padding-bottom: 64px;
   }
 }

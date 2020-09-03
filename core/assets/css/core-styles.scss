@@ -201,12 +201,20 @@ p.description,
     justify-content: flex-start;
   }
 
+  &.fe {
+    justify-content: flex-end;
+  }
+
   &.end-align {
     align-items: flex-end;
   }
 
   &.nowrap {
     flex-wrap: nowrap;
+  }
+
+  &.grow > * {
+    flex-grow: 1;
   }
 }
 
@@ -529,4 +537,19 @@ p.description,
   overflow: auto;
   position: absolute;
   width: auto;
+}
+
+@keyframes fa-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Somehow the css class is not always present
+.fa-spin {
+  animation: fa-spin 2s infinite linear;
 }

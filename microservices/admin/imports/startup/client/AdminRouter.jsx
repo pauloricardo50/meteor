@@ -28,9 +28,9 @@ const AdminRouter = () => {
       messages={messagesFR}
       formats={getFormats()}
       routes={ADMIN_ROUTES}
-      currentUser={{
+      currentUserConfig={{
         query: userId && USERS_COLLECTION,
-        params: () => ({
+        params: {
           $filters: { _id: userId },
           email: 1,
           emails: 1,
@@ -38,7 +38,7 @@ const AdminRouter = () => {
           organisations: { name: 1 },
           roles: 1,
           defaultBoardId: 1,
-        }),
+        },
         deps: [userId],
       }}
     >

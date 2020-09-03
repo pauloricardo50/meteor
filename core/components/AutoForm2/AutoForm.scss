@@ -11,27 +11,35 @@
   }
 }
 
-.list-add-field {
-  flex: 0 0 auto;
-  align-items: center;
-  align-self: center;
 
+.list-add-field,
+.list-del-field {
   width: 24px;
   height: 24px;
 
-  > span {
+  > span:first-of-type {
+    height: 18px;
+    width: 18px;
     display: block;
     line-height: 17px;
+    font-size: 16px;
   }
 }
 
 .list-del-field {
-  width: 24px;
-  height: 24px;
   margin-left: 4px;
+  background-color: $error;
+  color: white;
+}
 
-  > span {
-    display: block;
-    line-height: 17px;
+.list-add-field {
+  flex: 0 0 auto;
+  align-items: center;
+  align-self: center;
+  background-color: $primary;
+  color: white;
+
+  &:hover {
+    background-color: $secondary;
   }
 }

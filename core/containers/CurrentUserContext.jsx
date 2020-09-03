@@ -1,10 +1,9 @@
 import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
-import { compose, mapProps } from 'recompose';
 
-import withSmartQuery from '../api/containerToolkit/withSmartQuery';
 import { ROLES } from '../api/users/userConstants';
+import useMeteorData from '../hooks/useMeteorData';
 
 const formatCurrentUser = user => {
   if (user) {
@@ -17,30 +16,30 @@ const formatCurrentUser = user => {
     };
   }
 
-  return null;
+  return user;
 };
 
 export const CurrentUserContext = React.createContext();
 
-export const queryContainer = compose(
-  withSmartQuery({
-    query: ({ query }) => query,
-    params: ({ params, ...props }) =>
-      typeof params === 'function' ? params(props) : params,
-    queryOptions: { reactive: true, single: true },
-    dataName: 'currentUser',
-    renderMissingDoc: false,
-    deps: ({ deps }) => deps,
-  }),
-  mapProps(({ query, params, ...rest }) => rest),
-);
+export const CurrentUserProvider = ({ query, params, deps = [], children }) => {
+  const { data, loading } = useMeteorData(
+    {
+      query,
+      params,
+      reactive: true,
+      type: 'single',
+    },
+    deps,
+  );
 
-const ContextProvider = ({ currentUser, children }) => (
-  <CurrentUserContext.Provider value={formatCurrentUser(currentUser)}>
-    {children}
-  </CurrentUserContext.Provider>
-);
+  const currentUser = loading ? undefined : data || null;
+  window.currentUser = currentUser; // Useful in E2E tests
 
-export const InjectCurrentUser = queryContainer(ContextProvider);
+  return (
+    <CurrentUserContext.Provider value={formatCurrentUser(currentUser)}>
+      {children}
+    </CurrentUserContext.Provider>
+  );
+};
 
 export default CurrentUserContext;

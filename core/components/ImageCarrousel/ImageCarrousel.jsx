@@ -48,6 +48,7 @@ const ImageCarrousel = ({ images, className, children }) => {
             className="decrement"
             onClick={() => dispatch({ type: 'decrement' })}
             color="primary"
+            size="small"
           >
             <Icon type="left" />
           </Fab>
@@ -55,6 +56,7 @@ const ImageCarrousel = ({ images, className, children }) => {
             className="increment"
             onClick={() => dispatch({ type: 'increment' })}
             color="primary"
+            size="small"
           >
             <Icon type="right" />
           </Fab>

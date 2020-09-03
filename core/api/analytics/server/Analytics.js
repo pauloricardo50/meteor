@@ -262,23 +262,18 @@ class Analytics {
   }
 
   cta(params) {
-    const { name, cookies, route, path, toPath } = params;
+    const { name, route, path, toPath } = params;
 
-    const trackingId = this.userId ? undefined : cookies[TRACKING_COOKIE];
-    const formattedRoute = this.formatRouteName(route);
+    const formattedRoute = route && this.formatRouteName(route);
 
-    this.track(
-      EVENTS.CTA_CLICKED,
-      {
-        name,
-        path,
-        route: formattedRoute,
-        url: `${this.host}${path === '/' ? '' : path}`,
-        referrer: this.referrer,
-        toPath,
-      },
-      trackingId,
-    );
+    this.track(EVENTS.CTA_CLICKED, {
+      name,
+      path,
+      route: formattedRoute,
+      url: `${this.host}${path === '/' ? '' : path}`,
+      referrer: this.referrer,
+      toPath,
+    });
   }
 
   page(params) {

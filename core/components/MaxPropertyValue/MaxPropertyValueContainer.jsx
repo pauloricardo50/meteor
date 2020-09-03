@@ -17,12 +17,12 @@ export const STATE = {
 };
 
 const getState = ({ loan }) => {
-  const { maxPropertyValue, maxPropertyValueExists } = loan;
+  const { maxPropertyValue } = loan;
   if (!Calculator.canCalculateSolvency({ loan })) {
     return STATE.MISSING_INFOS;
   }
 
-  if (!maxPropertyValue && !maxPropertyValueExists) {
+  if (!maxPropertyValue?.date) {
     return STATE.EMPTY;
   }
 

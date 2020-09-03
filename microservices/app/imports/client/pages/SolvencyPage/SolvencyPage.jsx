@@ -7,7 +7,7 @@ import PageApp from '../../components/PageApp';
 const SolvencyPage = props => (
   <PageApp id="SolvencyPage">
     <div className="solvency-page">
-      <MaxPropertyValue {...props} />
+      <MaxPropertyValue {...props} hideTitle />
     </div>
   </PageApp>
 );

@@ -7,11 +7,10 @@ import { PROMOTION_STATUS } from '../../../../api/promotions/promotionConstants'
 import StatusLabel from '../../../StatusLabel';
 import T, { Money } from '../../../Translation';
 import { getPromotionLotValue } from '../PromotionManagement/helpers';
-import LotChip from './LotChip';
 import PromotionLotGroupChip from './PromotionLotGroupChip';
 import PromotionLotSelector from './PromotionLotSelector';
 
-const getAppColumns = ({ loan, promotion }) => {
+const getAppColumns = ({ loan = {}, promotion }) => {
   const { _id: loanId, promotionOptions = [] } = loan;
   const { _id: promotionId, promotionLotGroups = [] } = promotion;
 
@@ -71,19 +70,7 @@ const getAppColumns = ({ loan, promotion }) => {
         );
       },
     },
-    {
-      Header: <T id="PromotionPage.lots.lots" />,
-      accessor: 'lots',
-      Cell: ({ value: lots = [] }) => (
-        <div className="lot-chips">
-          {lots.map(lot => (
-            <LotChip lot={lot} key={lot._id} />
-          ))}
-        </div>
-      ),
-      disableSortBy: true,
-    },
-    {
+    loan?._id && {
       Header: <T id="PromotionPage.lots.interested" />,
       accessor: '_id',
       Cell: ({ row: { original: promotionLot } }) => (
@@ -97,67 +84,74 @@ const getAppColumns = ({ loan, promotion }) => {
         </div>
       ),
     },
-  ];
+  ].filter(x => x);
 };
 
-const AppPromotionLotsTableContainer = withProps(
-  ({
-    promotion: {
-      _id: promotionId,
-      status: promotionStatus,
-      promotionLotGroups = [],
-    },
-    loan = {},
-  }) => {
-    const { promotions = [], promotionOptions = [] } = loan;
+const getShowAllLots = loan => {
+  if (!loan?._id) {
+    return true;
+  }
 
-    const [promotion] = promotions || [];
-    const { $metadata: { showAllLots = false } = {} } = promotion;
-    promotion.promotionLotGroups = promotionLotGroups;
-    const promotionLotIds = useMemo(
-      () =>
-        promotionOptions.reduce((ids, promotionOption) => {
-          const { promotionLots = [] } = promotionOption;
-          return [...ids, ...promotionLots.map(({ _id }) => _id)];
-        }, []),
-      { promotionOptions },
-    );
+  const { promotions = [] } = loan;
 
-    const [promotionLotGroupId, setPromotionLotGroupId] = useState();
+  const [promotion] = promotions || [];
+  const { $metadata: { showAllLots = false } = {} } = promotion;
 
-    const queryConfig = {
-      query: appPromotionLots,
-      params: {
-        promotionId,
-        showAllLots,
-        promotionLotIds,
-        promotionLotGroupId,
-        $body: {
-          name: 1,
-          promotionLotGroupIds: 1,
-          reducedStatus: 1,
-          value: 1,
-          lots: { type: 1, name: 1, value: 1 },
-        },
-      },
-    };
+  return showAllLots;
+};
 
-    const queryDeps = [promotionLotIds, showAllLots, promotionLotGroupId];
-    const columns = getAppColumns({ loan, promotion });
-    const initialHiddenColumns = [
-      promotionStatus !== PROMOTION_STATUS.OPEN && '_id',
-      promotionLotGroups.length === 0 && 'promotionLotGroupIds',
-    ].filter(x => x);
+const AppPromotionLotsTableContainer = withProps(({ promotion, loan = {} }) => {
+  const {
+    _id: promotionId,
+    status: promotionStatus,
+    promotionLotGroups = [],
+  } = promotion;
+  const { promotionOptions = [] } = loan;
 
-    return {
+  const showAllLots = getShowAllLots(loan);
+
+  const promotionLotIds = useMemo(
+    () =>
+      promotionOptions.reduce((ids, promotionOption) => {
+        const { promotionLots = [] } = promotionOption;
+        return [...ids, ...promotionLots.map(({ _id }) => _id)];
+      }, []),
+    { promotionOptions },
+  );
+
+  const [promotionLotGroupId, setPromotionLotGroupId] = useState();
+
+  const queryConfig = {
+    query: appPromotionLots,
+    params: {
+      promotionId,
+      showAllLots,
+      promotionLotIds,
       promotionLotGroupId,
-      setPromotionLotGroupId,
-      queryConfig,
-      queryDeps,
-      columns,
-      initialHiddenColumns,
-    };
-  },
-);
+      $body: {
+        name: 1,
+        promotionLotGroupIds: 1,
+        reducedStatus: 1,
+        value: 1,
+      },
+    },
+  };
+
+  const queryDeps = [promotionLotIds, showAllLots, promotionLotGroupId];
+  const columns = getAppColumns({ loan, promotion });
+  const initialHiddenColumns = [
+    promotionStatus !== PROMOTION_STATUS.OPEN && '_id',
+    promotionLotGroups.length === 0 && 'promotionLotGroupIds',
+  ].filter(x => x);
+
+  return {
+    promotionLotGroupId,
+    setPromotionLotGroupId,
+    queryConfig,
+    queryDeps,
+    columns,
+    initialHiddenColumns,
+  };
+});
 
 export default AppPromotionLotsTableContainer;

@@ -4,17 +4,7 @@ import intl from '../intl';
 
 const { formatMessage } = intl;
 
-const translate = ({ key }) => {
-  // Turns a key called "expenses.0.value" into "expenses.value"
-  const keyWithoutNumbers = key
-    .split('.')
-    .filter(subKey => subKey.length !== 1)
-    .join('.');
-  return formatMessage({
-    id: `Forms.${keyWithoutNumbers}`,
-    messages: window.intlMessages,
-  });
-};
+const translate = ({ label }) => label;
 
 const translateSimpleSchema = () => {
   SimpleSchema.setDefaultMessages({
@@ -22,7 +12,11 @@ const translateSimpleSchema = () => {
     messages: {
       fr: {
         // Can also use "name"
-        required: args => `${translate(args)} est requis`,
+        required: args => {
+          console.log('args:', args);
+
+          return `${translate(args)} est requis`;
+        },
         minString: args =>
           `${translate(args)} doit faire au minimum ${args.min} caractères`,
         maxString: args =>

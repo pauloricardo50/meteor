@@ -1,6 +1,6 @@
 import { useTracker } from 'meteor/react-meteor-data';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import ClientEventService from '../api/events/ClientEventService';
 import {
@@ -35,14 +35,15 @@ let count = 0;
 
 // Automatically refetch a query on method calls, making everything seem
 // reactive
-const useQueryRefetcher = ({ query, refetch, refetchOnMethodCall, params }) => {
+const useQueryRefetcher = ({ query, refetch, refetchOnMethodCall }) => {
   // Make sure there are no clashes between multiple queries with the
   // same name
-  const [queryName] = useState(
-    () => `${(query && query.queryName) || query}-hook-${count++}`,
-  );
+  const qString = query?.queryName || query;
+  const queryName = useMemo(() => `${qString}-hook-${count++}`, [qString]);
+
   useEffect(() => {
-    if (refetchOnMethodCall) {
+    // Don't unnecessarily refetch if the query is falsy, like when it's conditional
+    if (qString && refetchOnMethodCall) {
       // Remove any existing listeners when this useEffect is ran again
       ClientEventService.removeAllListeners(queryName);
       removeQueryToRefetch(queryName);
@@ -55,7 +56,7 @@ const useQueryRefetcher = ({ query, refetch, refetchOnMethodCall, params }) => {
         removeQueryToRefetch(queryName);
       };
     }
-  }, [query, refetch, refetchOnMethodCall]);
+  }, [queryName, refetch, refetchOnMethodCall]);
 };
 
 export const useStaticMeteorData = (
@@ -136,6 +137,7 @@ export const useReactiveMeteorData = (
   { query, params, type = 'many' },
   deps = [],
 ) => {
+  const [error, setError] = useState(undefined);
   const finalQuery = getQuery(query, params);
 
   const { loading, subscribedQuery } = useTracker(() => {
@@ -143,7 +145,16 @@ export const useReactiveMeteorData = (
       return { loading: false };
     }
 
-    const handle = finalQuery[getSubscriptionFunction(type)]();
+    const handle = finalQuery[getSubscriptionFunction(type)]({
+      onStop(err) {
+        if (err) {
+          setError(err);
+        }
+      },
+      onReady() {
+        setError(undefined);
+      },
+    });
     const isReady = handle.ready();
 
     return { loading: !isReady, subscribedQuery: finalQuery };
@@ -157,7 +168,7 @@ export const useReactiveMeteorData = (
     return null;
   }, deps);
 
-  return { loading, data };
+  return { loading: loading && !error, data, error };
 };
 
 const useMeteorData = (args, deps) => {

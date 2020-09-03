@@ -35,10 +35,9 @@ export const analyticsVerifyEmail = new Method({
 export const analyticsCTA = new Method({
   name: 'analyticsCTA',
   params: {
-    cookies: Object,
     name: String,
     path: String,
-    route: String,
+    route: Match.Maybe(String),
     toPath: Match.Maybe(String),
   },
   doNotRefetchQueries: true,
@@ -53,4 +52,24 @@ export const analyticsOpenedIntercom = new Method({
     lastPageMicroservice: Match.Maybe(String),
   },
   doNotRefetchQueries: true,
+});
+
+// Triggered when a user lands on a step
+export const analyticsOnboardingStep = new Method({
+  name: 'analyticsOnboardingStep',
+  params: {
+    loanId: String,
+    activeStep: String,
+    // If undefined, it means that:
+    // - It is the very first step
+    // - User came back to continue its onboarding in a new session
+    latestStep: Match.Maybe(String),
+    currentTodoStep: String,
+    previousStep: Match.Maybe(String),
+  },
+});
+
+export const analyticsStartedOnboarding = new Method({
+  name: 'analyticsStartedOnboarding',
+  params: { loanId: String },
 });

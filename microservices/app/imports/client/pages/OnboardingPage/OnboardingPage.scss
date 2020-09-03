@@ -1,0 +1,151 @@
+@import './OnboardingComponents/OnboardingComponents.scss';
+
+.onboarding {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  @include screen(med, min) {
+    padding-left: 250px;
+  }
+
+  &-content {
+    flex-grow: 1;
+    padding: 16px;
+    display: flex;
+
+    > :first-child {
+      flex-grow: 1;
+    }
+
+    .onboarding-miniature {
+      margin-left: 16px;
+    }
+
+    @media screen and (max-width: $xwide) {
+      flex-direction: column;
+
+      .onboarding-miniature {
+        margin-left: 0;
+        margin-top: 32px;
+        align-self: flex-start;
+      }
+    }
+
+    @include screen(med) {
+      padding: 0;
+
+      h2 {
+        font-size: 1.6em;
+        line-height: 1.2em;
+      }
+    }
+
+    @include screen(large, min) {
+      padding: 40px;
+    }
+  }
+
+  &-marketing {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-bottom: 32px;
+
+    @include screen(large) {
+      order: 1;
+    }
+
+    > * {
+      max-width: 240px;
+      padding: 8px;
+
+      p {
+        font-size: 0.8em;
+      }
+    }
+  }
+}
+
+.onboarding-without-loan {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+
+  > * {
+    margin-bottom: 16px;
+    padding: 8px;
+  }
+
+  img {
+    width: 400px;
+    height: 400px;
+  }
+
+  p {
+    max-width: 500px;
+  }
+
+  &-ctas {
+    margin-top: 40px;
+
+    @include screen(med) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 24px;
+    }
+  }
+
+  @include screen(med) {
+    flex-direction: column-reverse;
+    align-items: center;
+
+    img {
+      width: 200px;
+      height: 200px;
+    }
+  }
+
+  @include screen(small) {
+    img {
+      width: 150px;
+      height: 150px;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 2em;
+    }
+  }
+}
+
+.onboarding-side-nav {
+  background-color: $primary;
+  flex-grow: 1;
+
+  &.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 101;
+    width: 250px;
+    min-height: 100%;
+  }
+
+  &-header {
+    height: $top-nav-height;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .epotek {
+    color: white;
+  }
+}

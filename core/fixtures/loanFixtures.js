@@ -4,7 +4,6 @@ import { OWN_FUNDS_TYPES } from '../api/borrowers/borrowerConstants';
 import BorrowerService from '../api/borrowers/server/BorrowerService';
 import { INTEREST_RATES } from '../api/interestRates/interestRatesConstants';
 import {
-  APPLICATION_TYPES,
   OWN_FUNDS_USAGE_TYPES,
   PURCHASE_TYPE,
   STEPS,
@@ -150,13 +149,9 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
     case STEPS.OFFERS:
       loan.step = STEPS.OFFERS;
       loan.loanTranches = [{ value: 750000, type: 'interest10' }];
-      loan.applicationType = APPLICATION_TYPES.FULL;
-      loan.displayWelcomeScreen = false;
       break;
     case STEPS.REQUEST:
       loan.step = STEPS.REQUEST;
-      loan.applicationType = APPLICATION_TYPES.FULL;
-      loan.displayWelcomeScreen = false;
       break;
     default:
       loan.step = STEPS.SOLVENCY;

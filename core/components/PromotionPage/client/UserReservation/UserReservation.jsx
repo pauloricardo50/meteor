@@ -1,6 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 
+import useMedia from 'core/hooks/useMedia';
+
 import { PROMOTION_OPTION_STATUS } from '../../../../api/promotionOptions/promotionOptionConstants';
 import T from '../../../Translation';
 import PromotionReservationProgress from '../../PromotionReservationProgress';
@@ -17,6 +19,8 @@ const UserReservation = ({
     status,
     name,
   } = promotionOption;
+  const isSmallMobile = useMedia({ maxWidth: 768 });
+
   return (
     <div className={cx('user-reservation', className)}>
       <h3>
@@ -40,11 +44,11 @@ const UserReservation = ({
         ].includes(status) && (
           <PromotionReservationProgress
             promotionOption={promotionOption}
-            variant={progressVariant}
             loan={loan}
             showLoanProgress
-            showLabels={progressVariant === 'text'}
-            showDetailIcon
+            showLabels={progressVariant === 'text' || isSmallMobile}
+            showDetailIcon={!isSmallMobile}
+            vertical={isSmallMobile}
           />
         )}
       </div>

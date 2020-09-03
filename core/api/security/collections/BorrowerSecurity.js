@@ -1,6 +1,6 @@
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import Security from '../Security';
-import { LoanSecurity } from '.';
+import LoanSecurity from './LoanSecurity';
 
 class BorrowerSecurity {
   static isAllowedToInsert() {
@@ -23,7 +23,7 @@ class BorrowerSecurity {
 
     if (borrower.userId) {
       Security.checkOwnership(borrower, userId);
-    } else if (borrower.loans.length === 1 && borrower.loans[0].anonymous) {
+    } else if (borrower.loans?.length === 1 && borrower.loans[0].anonymous) {
       LoanSecurity.checkAnonymousLoan(borrower.loans[0]._id);
     } else {
       Security.handleUnauthorized('borrowerUpdate not allowed');

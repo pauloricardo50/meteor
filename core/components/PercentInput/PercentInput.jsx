@@ -9,7 +9,7 @@ import FormHelperText from '../Material/FormHelperText';
 import Input from '../Material/Input';
 import InputLabel, { useInputLabelWidth } from '../Material/InputLabel';
 
-const PercentInputComponent = ({ onChange, value, ...props }) => (
+const PercentInputComponent = ({ onChange, value, type, ...props }) => (
   <Input
     onChange={event => onChange(percentFormatters.parse(event.target.value))}
     value={percentFormatters.format(value)}
@@ -31,9 +31,12 @@ const PercentInput = ({
   margin,
   className,
   shrink,
+  error,
   ...props
 }) => {
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
+
+  const finalHelperText = helperText || error?.message;
 
   return (
     <FormControl
@@ -41,7 +44,7 @@ const PercentInput = ({
       required={required}
       fullWidth={fullWidth}
       margin={margin}
-      size="small"
+      error={!!error}
     >
       <InputLabel
         ref={inputLabelRef}
@@ -54,7 +57,7 @@ const PercentInput = ({
         notched={shouldShrinkLabel(props.value)}
         {...props}
       />
-      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      {finalHelperText && <FormHelperText>{finalHelperText}</FormHelperText>}
     </FormControl>
   );
 };

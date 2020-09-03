@@ -13,11 +13,22 @@ const breakpoints = createBreakpoints({});
 const defaultTheme = fontSize => ({
   props: {
     MuiTextField: {
+      size: 'small',
       variant: 'outlined',
     },
     MuiTooltip: {
       arrow: true,
     },
+    MuiFormControl: {
+      size: 'small',
+      variant: 'outlined',
+    },
+    // MuiFormHelperText: {
+    //   variant: 'outlined',
+    // },
+    // MuiSelect: {
+    //   variant: 'outlined',
+    // },
   },
   overrides: {
     MuiToolbar: {
@@ -26,9 +37,6 @@ const defaultTheme = fontSize => ({
       },
     },
     MuiButton: {
-      root: {
-        borderRadius: 4,
-      },
       contained: {
         backgroundColor: 'white',
         color: colors.primary,
@@ -207,6 +215,21 @@ const defaultTheme = fontSize => ({
           // https://github.com/mui-org/material-ui/issues/21894
           paddingTop: 8,
         },
+      },
+    },
+    MuiButtonBase: {
+      root: {
+        borderRadius: 4,
+      },
+    },
+    MuiStepIcon: {
+      root: {
+        transition: 'color 200ms ease',
+      },
+    },
+    MuiMobileStepper: {
+      dot: {
+        transition: 'background-color 200ms ease',
       },
     },
   },

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const DevError = ({ error }) =>
   Meteor.isDevelopment || Meteor.isTest ? (
-    <div className="error" style={{ margin: 40 }}>
+    <div className="error" style={{ margin: 40, whiteSpace: 'pre' }}>
       <span style={{ display: 'flex', alignItems: 'center' }}>
         <h4>{error.name}</h4>:
         <h3 style={{ marginLeft: 16 }}>{error.message}</h3>

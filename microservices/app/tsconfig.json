@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "es6",
+    "baseUrl": ".",
+    "paths": {
+      "core/*": [
+        "../../core/*"
+      ]
+    },
+    "allowJs": true,
+    "outDir": "dist"
+  },
+  "include": ["imports"],
+  "exclude": ["imports/core"]
+}
