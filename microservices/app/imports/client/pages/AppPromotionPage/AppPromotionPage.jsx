@@ -1,7 +1,10 @@
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { appPromotion } from 'core/api/promotions/queries';
+import Button from 'core/components/Button';
 import PromotionPage from 'core/components/PromotionPage/client';
 import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
 import withMatchParam from 'core/containers/withMatchParam';
@@ -50,6 +53,19 @@ const getInvitedByUser = ({ promotion, promotionId, loan }) => {
   return users.find(({ _id }) => _id === invitedBy);
 };
 
+const ContinueButton = () => {
+  const history = useHistory();
+  return (
+    <Button
+      raised
+      secondary
+      label="Continuer"
+      onClick={() => history.push('/')}
+      size="large"
+    />
+  );
+};
+
 export const AppPromotionPageContainer = compose(
   withMatchParam('promotionId'),
   withSmartQuery({
@@ -64,6 +80,16 @@ export const AppPromotionPageContainer = compose(
     route: createRoute(appRoutes.APP_PROMOTION_PAGE.path, {
       loanId: loan?._id,
     }),
+    ctaTop: (
+      <div className="flex mb-16" style={{ justifyContent: 'flex-end' }}>
+        <ContinueButton />
+      </div>
+    ),
+    ctaBottom: (
+      <div className="flex center mt-16">
+        <ContinueButton />
+      </div>
+    ),
   })),
 );
 

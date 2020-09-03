@@ -44,7 +44,13 @@ const getTabs = ({
       label: tab.label || <T id={`PromotionPageTabs.${tab.id}`} />,
     }));
 
-const PromotionPage = ({ promotion, route, ...props }) => {
+const PromotionPage = ({
+  promotion,
+  route,
+  ctaTop = () => null,
+  ctaBottom = () => null,
+  ...props
+}) => {
   const { name } = promotion;
   const { permissions } = usePromotion();
   const tabs = getTabs({ permissions, promotion });
@@ -54,6 +60,7 @@ const PromotionPage = ({ promotion, route, ...props }) => {
       <Helmet>
         <title>{name}</title>
       </Helmet>
+      {ctaTop}
       <PromotionPageHeader promotion={promotion} />
       <PromotionPageTabs promotion={promotion} route={route} tabs={tabs} />
       <PromotionPageContent
@@ -62,6 +69,7 @@ const PromotionPage = ({ promotion, route, ...props }) => {
         tabs={tabs}
         {...props}
       />
+      {ctaBottom}
     </div>
   );
 };
