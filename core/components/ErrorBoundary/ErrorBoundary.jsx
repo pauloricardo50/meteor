@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { compose, withProps } from 'recompose';
@@ -95,6 +97,11 @@ export default compose(
     onCatch: (error, info) => {
       console.error(error);
       sendToMonti(error);
+
+      if (Meteor.isTest) {
+        return;
+      }
+
       logError.run({
         error: JSON.parse(
           JSON.stringify(error, Object.getOwnPropertyNames(error)),

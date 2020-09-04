@@ -15,10 +15,7 @@ import {
   render,
 } from 'core/utils/testHelpers/testing-library';
 
-import withOnboardingContext, {
-  getNextStepId,
-  useOnboarding,
-} from '../OnboardingContext';
+import withOnboardingContext, { useOnboarding } from '../OnboardingContext';
 
 const ComponentA = withOnboardingContext(() => {
   const {
@@ -117,14 +114,20 @@ describe('Onboarding State', () => {
       expect(!!residenceTypeTodo).to.equal(true);
     });
 
-    it('goes to the next step', async () => {
+    it('goes to the next step when data updates', async () => {
       const loan = {};
-      const { getByText, findByText } = render(<Component loan={loan} />);
+      const { getByText, findByText, rerender } = render(
+        <Component loan={loan} />,
+      );
 
       const purchaseType = getByText('activeStep: purchaseType');
       expect(!!purchaseType).to.equal(true);
 
       fireEvent.click(getByText('Next'));
+
+      rerender(
+        <Component loan={{ purchaseType: PURCHASE_TYPE.ACQUISITION }} />,
+      );
 
       const acquisitionStatus = await findByText(
         'activeStep: acquisitionStatus',
@@ -157,74 +160,6 @@ describe('Onboarding State', () => {
 
       const refinancing = getByText('activeStep: refinancing');
       expect(!!refinancing).to.equal(true);
-    });
-  });
-
-  describe.only('getNextStepId', () => {
-    it('returns the next step', () => {
-      const steps = [
-        { id: 'a', done: false },
-        { id: 'b', done: false },
-        { id: 'c', done: false },
-      ];
-      const activeStep = 'a';
-
-      expect(getNextStepId(steps, activeStep)).to.equal('b');
-    });
-
-    it('returns the first step to be done', () => {
-      const steps = [
-        { id: 'a', done: true },
-        { id: 'b', done: false },
-        { id: 'c', done: false },
-      ];
-      const activeStep = 'a';
-
-      expect(getNextStepId(steps, activeStep)).to.equal('b');
-    });
-
-    it('returns the first step to be done', () => {
-      const steps = [
-        { id: 'a', done: true },
-        { id: 'b', done: true },
-        { id: 'c', done: false },
-      ];
-      const activeStep = 'a';
-
-      expect(getNextStepId(steps, activeStep)).to.equal('c');
-    });
-
-    it('returns the first step to be done', () => {
-      const steps = [
-        { id: 'a', done: false },
-        { id: 'b', done: true },
-        { id: 'c', done: false },
-      ];
-      const activeStep = 'a';
-
-      expect(getNextStepId(steps, activeStep)).to.equal('c');
-    });
-
-    it('returns the steps in the past if necessary', () => {
-      const steps = [
-        { id: 'a', done: false },
-        { id: 'b', done: true },
-        { id: 'c', done: false },
-      ];
-      const activeStep = 'b';
-
-      expect(getNextStepId(steps, activeStep)).to.equal('a');
-    });
-
-    it('returns result if all are done', () => {
-      const steps = [
-        { id: 'a', done: true },
-        { id: 'b', done: true },
-        { id: 'c', done: true },
-      ];
-      const activeStep = 'b';
-
-      expect(getNextStepId(steps, activeStep)).to.equal('result');
     });
   });
 });

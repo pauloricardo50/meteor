@@ -18,6 +18,7 @@ export const getNextStepId = steps => {
 
   return nextStep?.id || 'result';
 };
+
 const getPreviousStep = (steps, activeStep) => {
   const previousSteps = [...steps].splice(
     0,

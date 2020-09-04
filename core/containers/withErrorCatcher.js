@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import { lifecycle } from 'recompose';
 
 import { logError } from '../api/errorLogger/methodDefinitions';
@@ -16,6 +18,10 @@ const defaultHandleError = (error, additionalData) => {
     Monti.trackError('react', error.message, {
       stacks: error.stack.toString(),
     });
+  }
+
+  if (Meteor.isTest) {
+    return;
   }
 
   logError.run({
