@@ -1,5 +1,6 @@
 import React from 'react';
 import { faBuilding } from '@fortawesome/pro-duotone-svg-icons/faBuilding';
+import { faCommentCheck } from '@fortawesome/pro-duotone-svg-icons/faCommentCheck';
 import { faCommentDollar } from '@fortawesome/pro-duotone-svg-icons/faCommentDollar';
 import { faEnvelopeOpenDollar } from '@fortawesome/pro-duotone-svg-icons/faEnvelopeOpenDollar';
 import { faFileSignature } from '@fortawesome/pro-duotone-svg-icons/faFileSignature';
@@ -47,7 +48,9 @@ export const isRefinancing = loan =>
   loan.purchaseType === PURCHASE_TYPE.REFINANCING;
 const knowsProperty = loan =>
   loan.acquisitionStatus &&
-  loan.acquisitionStatus !== ACQUISITION_STATUS.SEARCHING;
+  ![ACQUISITION_STATUS.BEGINNER, ACQUISITION_STATUS.SEARCHING].includes(
+    loan.acquisitionStatus,
+  );
 
 const updateBorrowers = (loan, borrower1, borrower2) => {
   const promises = [];
@@ -100,11 +103,12 @@ export const steps = [
     component: 'OnboardingChoice',
     props: {
       choices: [
+        { id: ACQUISITION_STATUS.BEGINNER, icon: faLightbulbDollar },
         { id: ACQUISITION_STATUS.SEARCHING, icon: faSearchLocation },
-        { id: ACQUISITION_STATUS.PROPERTY_IDENTIFIED, icon: faLightbulbDollar },
-        { id: ACQUISITION_STATUS.OFFER_MADE, icon: faCommentDollar },
-        { id: ACQUISITION_STATUS.PROMISE_INCOMING, icon: faEnvelopeOpenDollar },
-        { id: ACQUISITION_STATUS.PROMISE_SIGNED, icon: faFileSignature },
+        { id: ACQUISITION_STATUS.PROPERTY_IDENTIFIED, icon: faCommentDollar },
+        { id: ACQUISITION_STATUS.OFFER_ACCEPTED, icon: faCommentCheck },
+        { id: ACQUISITION_STATUS.NOTARY_INCOMING, icon: faEnvelopeOpenDollar },
+        { id: ACQUISITION_STATUS.NOTARY_SIGNED, icon: faFileSignature },
       ],
     },
     condition: not(or(isProFlow, isRefinancing)),
