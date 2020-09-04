@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
+
+import useImpersonatedSession from '../../hooks/useImpersonatedSession';
 
 const formatTitle = (name = '') =>
   `e-Potek | ${name.charAt(0).toUpperCase() + name.slice(1)}`;
@@ -17,11 +19,24 @@ export const defaultOgTags = {
 };
 
 const MicroserviceHead = ({ addOgTags }) => {
+  const [isRed, setIsRed] = useState(false);
   const title = formatTitle(Meteor.microservice);
   const allowScale = Meteor.microservice !== 'app';
   const addFacebookData =
     addOgTags === undefined ? Meteor.microservice !== 'admin' : addOgTags;
   const rootUrl = Meteor.settings.public.subdomains[Meteor.microservice] || '';
+
+  if (Meteor.microservice === 'app') {
+    const [session] = useImpersonatedSession();
+    useEffect(() => {
+      if (session?.isImpersonate && !isRed) {
+        setIsRed(true);
+      }
+      if (!session?.isImpersonate && isRed) {
+        setIsRed(false);
+      }
+    }, [session?.isImpersonate]);
+  }
 
   return (
     <Helmet>
@@ -81,31 +96,31 @@ const MicroserviceHead = ({ addOgTags }) => {
       <link
         rel="icon"
         type="image/png"
-        href="/icons/favicon-196x196.png?v=3"
+        href={`/icons/favicon${isRed ? '-red' : ''}-196x196.png?v=3`}
         sizes="196x196"
       />
       <link
         rel="icon"
         type="image/png"
-        href="/icons/favicon-96x96.png?v=3"
+        href={`/icons/favicon${isRed ? '-red' : ''}-96x96.png?v=3`}
         sizes="96x96"
       />
       <link
         rel="icon"
         type="image/png"
-        href="/icons/favicon-32x32.png?v=3"
+        href={`/icons/favicon${isRed ? '-red' : ''}-32x32.png?v=3`}
         sizes="32x32"
       />
       <link
         rel="icon"
         type="image/png"
-        href="/icons/favicon-16x16.png?v=3"
+        href={`/icons/favicon${isRed ? '-red' : ''}-16x16.png?v=3`}
         sizes="16x16"
       />
       <link
         rel="icon"
         type="image/png"
-        href="/icons/favicon-128.png?v=3"
+        href={`/icons/favicon${isRed ? '-red' : ''}-128.png?v=3`}
         sizes="128x128"
       />
       <meta name="application-name" content="&nbsp;" />

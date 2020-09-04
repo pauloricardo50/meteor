@@ -14,6 +14,7 @@ import {
   CUSTOM_AUTOFIELD_TYPES,
   FIELDS_TO_IGNORE,
 } from './autoFormConstants';
+import { useAutoFormContext } from './AutoFormContext';
 import { getLabel, getPlaceholder } from './autoFormHelpers';
 import CustomBooleanRadioField from './CustomBooleanRadioField';
 import { OptimizedListField } from './CustomListField';
@@ -123,16 +124,16 @@ const determineComponentFromProps = ({
     return { Component: CustomNestField, type: COMPONENT_TYPES.ARRAY };
   }
 
-  if (fieldType === Boolean) {
-    return { Component: OptimizedBoolField };
-  }
-
   if (uniforms && uniforms.render) {
     return {
       Component: uniforms.render,
       type: COMPONENT_TYPES.RENDER,
       props: { placeholder: null },
     };
+  }
+
+  if (fieldType === Boolean) {
+    return { Component: OptimizedBoolField };
   }
 
   return {
@@ -143,18 +144,15 @@ const determineComponentFromProps = ({
 };
 
 export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
-  const CustomAutoField = (
-    props,
-    {
-      uniforms: {
-        schema,
-        model,
-        state: { submitting },
-      },
-    },
-  ) => {
+  const CustomAutoField = (props, { uniforms, ...args }) => {
+    const {
+      schema,
+      model,
+      state: { submitting },
+    } = uniforms;
     const intl = useIntl();
-    const { allowedValues, field, fieldType, margin = 'normal' } = props;
+    const { transformIntlId } = useAutoFormContext();
+    const { allowedValues, field, fieldType, margin = 'normal', name } = props;
 
     const { condition, customAllowedValues, customAutoValue } = schema.getField(
       props.name,
@@ -185,8 +183,10 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
         getLabel({
           ...props,
           ...additionalProps,
-          intlPrefix,
+          // intlPrefix,
           label: labels[props.name],
+          schema: schema.schema,
+          name,
         }),
       [],
     );
@@ -233,4 +233,4 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
   )(CustomAutoField, { includeInChain: false, includeParent: true });
 };
 
-export const CustomAutoField = makeCustomAutoField({});
+export const CustomAutoField = makeCustomAutoField();

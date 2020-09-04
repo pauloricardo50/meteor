@@ -15,7 +15,7 @@ import {
 import { RESIDENCE_TYPE } from '../../properties/propertyConstants';
 import { initialDocuments } from '../loanAdditionalDocuments';
 import {
-  APPLICATION_TYPES,
+  ACQUISITION_STATUS,
   CANTONS,
   INSURANCE_POTENTIAL,
   LOAN_CATEGORIES,
@@ -86,12 +86,6 @@ const LoanSchema = new SimpleSchema({
   },
   enableOffers: { type: Boolean, optional: true, defaultValue: false },
   customName: { type: String, optional: true },
-  applicationType: {
-    type: String,
-    allowedValues: Object.values(APPLICATION_TYPES),
-    defaultValue: APPLICATION_TYPES.SIMPLE,
-    uniforms: { placeholder: null },
-  },
   previousLender: { type: String, optional: true },
   previousLoanAmortization: moneyField,
   ...contactsSchema,
@@ -102,11 +96,6 @@ const LoanSchema = new SimpleSchema({
     defaultValue: STEPS.SOLVENCY,
     allowedValues: Object.values(STEPS),
     uniforms: { placeholder: '' },
-  },
-  displayWelcomeScreen: {
-    type: Boolean,
-    defaultValue: true,
-    optional: true,
   },
   ...maxPropertyValueSchema,
   shareSolvency: { type: Boolean, optional: true },
@@ -127,6 +116,15 @@ const LoanSchema = new SimpleSchema({
   },
   disbursementDate: { type: Date, optional: true },
   frontTagId: { type: String, optional: true },
+  acquisitionStatus: {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(ACQUISITION_STATUS),
+  },
+  hasCompletedOnboarding: {
+    type: Boolean,
+    optional: true,
+  },
 
   // Link storage fields
   ...promotionSchema,
@@ -207,6 +205,12 @@ const LoanSchema = new SimpleSchema({
   'closingChecklistLinks.$': Object,
   'closingChecklistLinks.$._id': String,
   showClosingChecklists: { type: Boolean, defaultValue: false },
+  hasStartedOnboarding: { type: Boolean, defaultValue: false },
+  adminAnalysis: {
+    type: String,
+    optional: true,
+    uniforms: { multiline: true, rows: 5, label: 'Analyse', placeholder: ' ' },
+  },
 });
 
 export default LoanSchema;

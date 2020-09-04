@@ -26,11 +26,14 @@ import EVENTS from '../events';
 import {
   analyticsCTA,
   analyticsLogin,
+  analyticsOnboardingStep,
   analyticsOpenedIntercom,
   analyticsPage,
+  analyticsStartedOnboarding,
   analyticsVerifyEmail,
 } from '../methodDefinitions';
 import { addAnalyticsListener } from './analyticsHelpers';
+import { getOnboardingStepProperties } from './onboardingStepAnalyticsHelpers';
 
 addAnalyticsListener({
   method: [proInviteUser, proInviteUserToOrganisation, adminCreateUser],
@@ -206,6 +209,12 @@ addAnalyticsListener({
   method: analyticsLogin,
   func: ({ analytics, params, context }) => {
     const { userId } = context;
+
+    if (!userId) {
+      // Sometimes this happens..
+      return;
+    }
+
     const {
       name: userName,
       email: userEmail,
@@ -486,17 +495,39 @@ addAnalyticsListener({
 });
 
 addAnalyticsListener({
-  method: [anonymousLoanInsert, userLoanInsert, adminLoanInsert],
-  func: ({
-    analytics,
-    params: { proPropertyId, referralId },
-    result: loanId,
-  }) => {
+  method: [anonymousLoanInsert, userLoanInsert, adminLoanInsert, proInviteUser],
+  analyticsProps: ({ result, params }) => {
+    const userId = result?.userId || params?.userId;
+    if (userId) {
+      return { userId };
+    }
+
+    return undefined;
+  },
+  func: ({ analytics, params: { referralId }, result }) => {
+    let loanId;
+    if (typeof result === 'object') {
+      // Lets assume that only one loan is created.
+      // The case where many loans are created happens when
+      // a pro invites a user to multiple promotions, which
+      // should not occur
+      const { loanIds = [], loanId: resultLoanId } = result;
+      loanId = resultLoanId || loanIds?.[0];
+    } else {
+      loanId = result;
+    }
+
+    if (!loanId) {
+      return;
+    }
+
     const {
       name: loanName,
       purchaseType,
       user = {},
       promotions = [],
+      properties = [],
+      anonymous,
     } = LoanService.get(loanId, {
       name: 1,
       purchaseType: 1,
@@ -508,9 +539,12 @@ addAnalyticsListener({
         assignedEmployee: { name: 1 },
       },
       promotions: { name: 1 },
+      properties: { _id: 1 },
+      anonymous: 1,
     });
 
     const [promotion] = promotions;
+    const proPropertyId = properties?.[0]?._id;
 
     const {
       _id: userId,
@@ -523,11 +557,12 @@ addAnalyticsListener({
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
     } = user;
+
     analytics.track(EVENTS.LOAN_CREATED, {
       loanId,
       propertyId: proPropertyId,
       referralId,
-      anonymous: true,
+      anonymous,
       loanName,
       purchaseType,
       userId,
@@ -542,6 +577,38 @@ addAnalyticsListener({
       promotionId: promotion?._id,
       promotionName: promotion?.name,
     });
+  },
+});
+
+addAnalyticsListener({
+  method: anonymousLoanInsert,
+  func: ({ analytics, result: loanId }) => {
+    const {
+      anonymous,
+      purchaseType,
+      properties = [],
+      promotions = [],
+      name: loanName,
+    } = LoanService.get(loanId, {
+      anonymous: 1,
+      purchaseType: 1,
+      properties: { _id: 1 },
+      promotions: { name: 1 },
+      name: 1,
+      hasStartedOnboarding: 1,
+    });
+
+    const params = {
+      loanId,
+      loanName,
+      propertyId: properties?.[0]?._id,
+      promotionId: promotions?.[0]?._id,
+      promotionName: promotions?.[0]?.name,
+      purchaseType,
+      anonymous,
+    };
+
+    analytics.track(EVENTS.STARTED_ONBOARDING, params);
   },
 });
 
@@ -864,5 +931,112 @@ addAnalyticsListener({
         statusChangeReason: reason,
       });
     }
+  },
+});
+
+addAnalyticsListener({
+  method: analyticsOnboardingStep,
+  func: ({ analytics, context, params }) => {
+    const { latestStep, activeStep, currentTodoStep } = params;
+    // User landed on the very first step, or came back to continue on a new session
+    // No progress is made, therefore we should not track this step
+    if (!latestStep) {
+      return;
+    }
+
+    // User went to a different step that the one he needs to complete in the flow
+    if (activeStep !== currentTodoStep) {
+      return;
+    }
+
+    const properties = getOnboardingStepProperties({ context, params });
+
+    analytics.track(EVENTS.COMPLETED_ONBOARDING_STEP, properties);
+  },
+});
+
+const trackOnboardingStart = ({ analytics, loanId, userId, stopIfTracked }) => {
+  const {
+    anonymous,
+    purchaseType,
+    properties = [],
+    promotions = [],
+    name: loanName,
+    hasStartedOnboarding,
+  } = LoanService.get(loanId, {
+    anonymous: 1,
+    purchaseType: 1,
+    properties: { _id: 1 },
+    promotions: { name: 1 },
+    name: 1,
+    hasStartedOnboarding: 1,
+  });
+
+  if (stopIfTracked && hasStartedOnboarding) {
+    return;
+  }
+
+  let params = {
+    loanId,
+    loanName,
+    propertyId: properties?.[0]?._id,
+    promotionId: promotions?.[0]?._id,
+    promotionName: promotions?.[0]?.name,
+    purchaseType,
+    anonymous,
+  };
+
+  if (userId) {
+    const user = UserService.get(userId, {
+      name: 1,
+      email: 1,
+      referredByUser: { name: 1 },
+      referredByOrganisation: { name: 1 },
+      assignedEmployee: { intercomId: 1, name: 1 },
+    });
+
+    params = {
+      ...params,
+      userId: user?._id,
+      userName: user?.name,
+      userEmail: user?.email,
+      referringUserId: user?.referredByUser?._id,
+      referringUserName: user?.referredByUser?.name,
+      referringOrganisationId: user?.referredByOrganisation?._id,
+      referringOrganisationName: user?.referredByOrganisation?.name,
+      assigneeId: user?.assignedEmployee?._id,
+      assigneeName: user?.assignedEmployee?.name,
+    };
+  }
+
+  analytics.track(EVENTS.STARTED_ONBOARDING, params);
+};
+
+addAnalyticsListener({
+  method: analyticsStartedOnboarding,
+  type: 'before',
+  func: ({ analytics, context: { userId }, params: { loanId } }) => {
+    trackOnboardingStart({ analytics, loanId, userId, stopIfTracked: true });
+  },
+});
+
+addAnalyticsListener({
+  method: anonymousLoanInsert,
+  func: ({
+    analytics,
+    result: loanId,
+    params: { existingAnonymousLoanId },
+  }) => {
+    if (existingAnonymousLoanId) {
+      return;
+    }
+    trackOnboardingStart({ analytics, loanId, userId: null });
+  },
+});
+
+addAnalyticsListener({
+  method: userLoanInsert,
+  func: ({ analytics, result: loanId, context: { userId } }) => {
+    trackOnboardingStart({ analytics, loanId, userId });
   },
 });

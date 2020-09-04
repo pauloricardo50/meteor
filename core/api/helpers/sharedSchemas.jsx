@@ -109,7 +109,14 @@ export const address = {
     allowedValues: Object.keys(CANTONS),
     optional: true,
     autoValue() {
-      return zipcodes(this.field('zipCode').value);
+      const zipCode = this.field('zipCode').value;
+      if (zipCode) {
+        return zipcodes(zipCode);
+      }
+
+      if (this.value) {
+        return this.value;
+      }
     },
     uniforms: { placeholder: null },
   },

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Route as RRDRoute } from 'react-router-dom';
+import { QueryParamProvider } from 'use-query-params';
 
 import { appUser } from 'core/api/users/queries';
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
@@ -15,7 +17,7 @@ const AppRouter = () => (
     messages={messagesFR}
     formats={getFormats()}
     routes={APP_ROUTES}
-    currentUser={{
+    currentUserConfig={{
       query: appUser,
       params: {
         $body: {
@@ -26,10 +28,12 @@ const AppRouter = () => (
           firstName: 1,
           lastName: 1,
           loans: {
-            name: 1,
+            createdAt: 1,
             customName: 1,
-            purchaseType: 1,
+            name: 1,
+            promotionLinks: 1,
             propertyIds: 1,
+            purchaseType: 1,
           },
           name: 1,
           organisations: { name: 1 },
@@ -50,13 +54,15 @@ const AppRouter = () => (
       },
     }}
   >
-    <AppLayout>
-      <Switch>
-        {Object.keys(APP_ROUTES).map(route => (
-          <Route {...APP_ROUTES[route]} key={route} />
-        ))}
-      </Switch>
-    </AppLayout>
+    <QueryParamProvider ReactRouterRoute={RRDRoute}>
+      <AppLayout>
+        <Switch>
+          {Object.keys(APP_ROUTES).map(route => (
+            <Route {...APP_ROUTES[route]} key={route} />
+          ))}
+        </Switch>
+      </AppLayout>
+    </QueryParamProvider>
   </BaseRouter>
 );
 

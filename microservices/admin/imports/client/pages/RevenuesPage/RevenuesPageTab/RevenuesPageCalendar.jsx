@@ -138,7 +138,11 @@ const RevenuesPageCalendar = props => {
     loading: orgLoading,
   } = useStaticMeteorData({
     query: ORGANISATIONS_COLLECTION,
-    params: { $filters: { referredUsersCount: { $gte: 1 } }, name: 1 },
+    params: {
+      $filters: { referredUsersCount: { $gte: 1 } },
+      name: 1,
+      $options: { sort: { name: 1 } },
+    },
   });
 
   const {
@@ -146,7 +150,12 @@ const RevenuesPageCalendar = props => {
     loading: sourceOrgLoading,
   } = useStaticMeteorData({
     query: ORGANISATIONS_COLLECTION,
-    params: { $filters: { revenuesCount: { $gte: 1 } }, name: 1, features: 1 },
+    params: {
+      $filters: { revenuesCount: { $gte: 1 } },
+      name: 1,
+      features: 1,
+      $options: { sort: { name: 1 } },
+    },
   });
 
   return (

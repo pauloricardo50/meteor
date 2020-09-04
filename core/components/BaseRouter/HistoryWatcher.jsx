@@ -6,6 +6,7 @@ import { TRACKING_COOKIE } from '../../api/analytics/analyticsConstants';
 import { getMatchingPath } from '../../api/analytics/helpers';
 import { analyticsPage } from '../../api/analytics/methodDefinitions';
 import { getCookie, parseCookies, setCookie } from '../../utils/cookiesHelpers';
+import { uuidv4 } from '../../utils/general';
 import { impersonate } from '../Impersonate/ImpersonatePage/ImpersonatePage';
 
 export default class HistoryWatcher extends Component {
@@ -35,9 +36,7 @@ export default class HistoryWatcher extends Component {
   generateTrackingId() {
     const trackingId = getCookie(TRACKING_COOKIE);
     if (!trackingId) {
-      const randomId =
-        Math.random().toString(36).substr(2) +
-        Math.random().toString(36).substr(2);
+      const randomId = uuidv4();
       setCookie(TRACKING_COOKIE, randomId);
     }
   }

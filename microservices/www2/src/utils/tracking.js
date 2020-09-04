@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { TRACKING_COOKIE } from 'core/api/analytics/analyticsConstants';
 import { getCookie, parseCookies, setCookie } from 'core/utils/cookiesHelpers';
 
+import { uuidv4 } from '../../../../core/utils/general';
 import callMethod from './meteorClient/callMethod';
 
 const getCurrentBrowserPosition = () => {
@@ -39,9 +40,7 @@ const trackPage = pageTrackingId => {
 const initTracking = () => {
   const trackingId = getCookie(TRACKING_COOKIE);
   if (!trackingId) {
-    const randomId =
-      Math.random().toString(36).substr(2) +
-      Math.random().toString(36).substr(2);
+    const randomId = uuidv4();
     setCookie(TRACKING_COOKIE, randomId);
   }
 };
@@ -59,9 +58,8 @@ export const useTracking = pageTrackingId => {
 };
 
 export const trackCTA = ({ buttonTrackingId, toPath, pageTrackingId }) => {
-  const { cookies, path } = getCurrentBrowserPosition();
+  const { path } = getCurrentBrowserPosition();
   callMethod('analyticsCTA', {
-    cookies,
     name: buttonTrackingId,
     path,
     route: pageTrackingId,

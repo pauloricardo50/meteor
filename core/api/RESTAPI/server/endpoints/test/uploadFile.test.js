@@ -1,5 +1,4 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 import { expect } from 'chai';
@@ -36,10 +35,10 @@ api.addEndpoint('/files', 'POST', uploadFileAPI, {
   },
 });
 
-describe('REST: uploadFile', function() {
+describe('REST: uploadFile', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     makeFileUploadDir();
     flushFileUploadDir();
     api.start();
@@ -235,7 +234,7 @@ describe('REST: uploadFile', function() {
       category: PROPERTY_DOCUMENTS.PROPERTY_PICTURES,
     });
     expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
-    expect(message).to.include('Property ID is required');
+    expect(message).to.include('propertyId is required');
   });
 
   it('fails when category is wrong', async () => {

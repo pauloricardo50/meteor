@@ -226,13 +226,14 @@ export const formLoan = () => ({
 
 export const loan = () => ({
   ...formLoan(),
-  applicationType: 1,
+  acquisitionStatus: 1,
   assignees: { name: 1, phoneNumber: 1, email: 1 },
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
   createdAt: 1,
   customName: 1,
   enableOffers: 1,
+  hasCompletedOnboarding: 1,
   hasProProperty: 1,
   hasPromotion: 1,
   name: 1,
@@ -270,7 +271,6 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   promotionOptions: loanPromotionOption(),
   borrowers: loanBorrower({ withSort }),
   contacts: 1,
-  displayWelcomeScreen: 1,
   lenders: {
     organisation: { name: 1, logo: 1 },
     offers: {
@@ -285,6 +285,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   user: appUser(),
   userFormsEnabled: 1,
   maxPropertyValue: userMaxPropertyValue,
+  hasStartedOnboarding: 1,
   ...(withFilteredPromotions
     ? {
         promotions: {
@@ -311,6 +312,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
               filters._id = loanId;
             },
           },
+          lotsCount: 1,
         },
       }
     : {}),
@@ -680,6 +682,7 @@ export const basePromotion = () => ({
   signingDate: 1,
   country: 1,
   promotionLotGroups: 1,
+  lotsCount: 1,
 });
 
 export const proPromotion = ({ withFilteredLoan } = {}) => ({
@@ -893,6 +896,7 @@ export const appUser = () => ({
     hasProProperty: 1,
     name: 1,
     promotions: { address: 1, name: 1, documents: 1 },
+    promotionLinks: 1,
     properties: { address: 1, documents: 1 },
     propertyIds: 1, // Keep this one after properties
     purchaseType: 1,

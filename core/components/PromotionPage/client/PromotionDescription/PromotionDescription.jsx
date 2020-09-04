@@ -15,9 +15,12 @@ const PromotionDescription = ({
           </div>
         )}
         {description && (
-          <div className="card1 flex-col p-16" style={{ flexGrow: 1 }}>
+          <div
+            className="card1 flex-col center-align"
+            style={{ flexGrow: 1, padding: '16px 0', width: '100%' }}
+          >
             <h2 className="mt-0">Description</h2>
-            <p>{description}</p>
+            <p className="description">{description}</p>
           </div>
         )}
       </div>

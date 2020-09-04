@@ -8,7 +8,7 @@ import T from 'core/components/Translation';
 
 import AllLoansTable from './AllLoansTable';
 
-const LoansPage = props => (
+const LoansPage = () => (
   <section className="card1 card-top loans-page">
     <Helmet>
       <title>Hypothèques</title>

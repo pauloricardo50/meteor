@@ -272,7 +272,7 @@ export class IntercomService {
     if (
       !visitorIsFound ||
       !trackingId ||
-      !!visitor?.custom_attributes?.epotek_trackingid
+      !!visitor?.custom_attributes?.epotek_trackingid_v2
     ) {
       return;
     }
@@ -280,13 +280,13 @@ export class IntercomService {
     if (visitorType === 'visitor') {
       return this.updateVisitor({
         visitorId: userId,
-        custom_attributes: { epotek_trackingid: trackingId },
+        custom_attributes: { epotek_trackingid_v2: trackingId },
       });
     }
     if (visitorType === 'contact') {
       return this.updateContact({
         contactId: visitor.id,
-        custom_attributes: { epotek_trackingid: trackingId },
+        custom_attributes: { epotek_trackingid_v2: trackingId },
       });
     }
   }
@@ -332,7 +332,7 @@ export class IntercomService {
   }
 
   async trackEvent({ event, contact, email, additionalProperties = {} }) {
-    const trackingId = contact?.custom_attributes?.epotek_trackingid;
+    const trackingId = contact?.custom_attributes?.epotek_trackingid_v2;
 
     if (!trackingId) {
       return;

@@ -72,6 +72,7 @@ function setWallabyConfig(name, overrides = {}) {
           ).window;
           global.document = document;
           global.window = document.defaultView;
+          global.window.matchMedia = () => {};
           global.navigator = { userAgent: 'node.js', platform: 'MacIntel' };
 
           // Do this for react-use, which uses the global variable "history"

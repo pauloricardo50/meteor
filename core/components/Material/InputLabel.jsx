@@ -2,7 +2,7 @@ import React from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 
 export default React.forwardRef((props, ref) => (
-  <InputLabel variant="outlined" ref={ref} {...props} />
+  <InputLabel ref={ref} {...props} />
 ));
 
 export const useInputLabelWidth = () => {

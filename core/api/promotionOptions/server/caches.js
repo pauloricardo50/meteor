@@ -21,5 +21,5 @@ PromotionOptionService.cache(
     referenceField: 'promotionLotLinks:_id',
     cacheField: 'promotionLotCache',
   },
-  { 'promotionLotCache.0.propertyCache': { $exists: false } },
+  // { 'promotionLotCache.0.propertyCache': { $exists: false } },
 );

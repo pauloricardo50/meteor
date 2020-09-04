@@ -1,0 +1,199 @@
+.onboarding-result {
+  display: flex;
+  flex-direction: column;
+
+  &-offers {
+    text-align: center;
+
+    .offers {
+      display: flex;
+      flex-wrap: wrap;
+
+      @include screen(small) {
+        justify-content: center;
+      }
+    }
+
+    .offer {
+      width: 150px;
+      margin: 8px;
+      padding: 16px;
+      border: 1px solid $border-grey;
+      border-radius: 4px;
+      text-align: center;
+
+      @include screen(small) {
+        width: 100px;
+        padding: 8px;
+      }
+    }
+  }
+
+  .logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  &-signup {
+    img {
+      margin: 16px auto;
+      width: 300px;
+
+      @include screen(med) {
+        width: 100px;
+      }
+    }
+  }
+
+  &-max-property-value {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    @include screen(med) {
+      align-self: center;
+    }
+
+    .toggle-content {
+      display: flex;
+    }
+
+    .recap-value {
+      font-size: 5em;
+      line-height: 1;
+
+      @include screen(large) {
+        font-size: 4em;
+      }
+
+      @include screen(med) {
+        font-size: 3em;
+      }
+    }
+
+    .balance-sheet,
+    .sums {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .show-recap-button {
+      margin-top: 16px;
+    }
+  }
+
+  h1 {
+    @include screen(med) {
+      font-size: 2em;
+      line-height: 1.3em;
+    }
+  }
+}
+
+.onboarding-choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  max-width: 800px;
+
+  @include screen(med) {
+    justify-content: center;
+  }
+
+  > * {
+    position: relative;
+    border: 1px solid transparent;
+    padding: 32px;
+    margin: 8px;
+    transition: border 200ms $bezier, transform 200ms $bezier;
+    width: 250px;
+    background-color: white;
+    transform: scale(1);
+
+    path {
+      transition: fill 200ms $bezier;
+    }
+
+    &:hover {
+      border: 1px solid $primary;
+      transform: scale(1.05);
+
+      svg {
+        --fa-primary-color: #{$primary} !important;
+        --fa-secondary-color: #{$primary} !important;
+        color: $primary;
+        fill: $primary;
+      }
+    }
+
+    @include screen(med) {
+      width: calc(50% - 16px);
+      padding: 12px;
+      font-size: 0.9em;
+    }
+
+    @include screen(small) {
+      padding: 8px;
+    }
+
+    &.no-icon {
+      padding: 32px 16px;
+      font-size: 1em;
+    }
+  }
+
+  &-loader {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+}
+
+.onboarding-form {
+  max-width: 400px;
+
+  &.wide-form {
+    max-width: 800px;
+  }
+
+  button[type='submit'] {
+    margin-top: 40px;
+    display: flex;
+    margin-left: 8px;
+  }
+
+  @include screen(med) {
+    h3 {
+      font-size: 1.4em;
+    }
+  }
+}
+
+.onboarding-miniature {
+  border-radius: $border-radius;
+  height: 100%;
+  min-height: 140px;
+  color: $body-text;
+
+  .img {
+    width: 140px;
+    height: 140px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: $border-radius;
+    background-size: cover;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    border-color: $primary;
+  }
+
+  .miniature-icon {
+    padding: 16px;
+    svg {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}

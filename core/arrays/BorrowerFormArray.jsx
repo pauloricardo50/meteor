@@ -215,6 +215,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       type: 'percent',
       id: 'jobActivityRate',
       condition: isSalaried,
+      decimalPercent: false,
     },
     {
       id: 'job',
@@ -325,7 +326,12 @@ export const getBorrowerIncomeArray = ({ borrower }) => [
         type: 'arrayInput',
         inputs: [
           { id: 'description', type: 'textInput' },
-          { id: 'ownership', type: 'textInput', percent: true },
+          {
+            id: 'ownership',
+            type: 'textInput',
+            percent: true,
+            decimalPercent: true,
+          },
           {
             id: 'netIncome2019',
             type: 'textInput',

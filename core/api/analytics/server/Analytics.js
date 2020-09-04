@@ -142,10 +142,9 @@ class Analytics {
   }
 
   identify(trackingId = getClientTrackingId()) {
-    this.alias(trackingId);
-
     this.analytics.identify({
       userId: this.userId,
+      anonymousId: trackingId,
       traits: {
         firstName: this.user?.firstName,
         lastName: this.user?.lastName,
@@ -262,23 +261,18 @@ class Analytics {
   }
 
   cta(params) {
-    const { name, cookies, route, path, toPath } = params;
+    const { name, route, path, toPath } = params;
 
-    const trackingId = this.userId ? undefined : cookies[TRACKING_COOKIE];
-    const formattedRoute = this.formatRouteName(route);
+    const formattedRoute = route && this.formatRouteName(route);
 
-    this.track(
-      EVENTS.CTA_CLICKED,
-      {
-        name,
-        path,
-        route: formattedRoute,
-        url: `${this.host}${path === '/' ? '' : path}`,
-        referrer: this.referrer,
-        toPath,
-      },
-      trackingId,
-    );
+    this.track(EVENTS.CTA_CLICKED, {
+      name,
+      path,
+      route: formattedRoute,
+      url: `${this.host}${path === '/' ? '' : path}`,
+      referrer: this.referrer,
+      toPath,
+    });
   }
 
   page(params) {

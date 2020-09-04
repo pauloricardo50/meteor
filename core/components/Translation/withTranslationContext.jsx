@@ -2,7 +2,7 @@ import React from 'react';
 
 export const { Consumer, Provider } = React.createContext();
 
-export default translationValues => Component => props => (
+const withTranslationContext = translationValues => Component => props => (
   <Consumer>
     {(translationContext = {}) => (
       <Provider value={{ ...translationContext, ...translationValues(props) }}>
@@ -11,3 +11,5 @@ export default translationValues => Component => props => (
     )}
   </Consumer>
 );
+
+export default withTranslationContext;

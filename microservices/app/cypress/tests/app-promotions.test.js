@@ -1,3 +1,4 @@
+import { ORGANISATION_FEATURES } from '../../imports/core/api/organisations/organisationConstants';
 import { PROMOTION_STATUS } from '../../imports/core/api/promotions/promotionConstants';
 import { ROLES } from '../../imports/core/api/users/userConstants';
 import {
@@ -5,7 +6,7 @@ import {
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
-describe.skip('App Promotions', () => {
+describe('App Promotions', () => {
   before(() => {
     cy.startTest();
     cy.meteorLogout();
@@ -13,6 +14,10 @@ describe.skip('App Promotions', () => {
     cy.callMethod('resetDatabase');
     cy.callMethod('generateScenario', {
       scenario: {
+        organisations: {
+          features: [ORGANISATION_FEATURES.LENDER],
+          lenderRules: {},
+        },
         users: [
           {
             _id: 'user1',
@@ -38,7 +43,11 @@ describe.skip('App Promotions', () => {
               organisations: { _id: 'org1', $metadata: { isMain: true } },
             },
           ],
-          loans: { user: { _id: 'user1' }, $metadata: { invitedBy: 'pro1' } },
+          loans: {
+            user: { _id: 'user1' },
+            $metadata: { invitedBy: 'pro1' },
+            residenceType: null,
+          },
         },
       },
     });
@@ -51,15 +60,19 @@ describe.skip('App Promotions', () => {
   });
 
   it('should add promotionOptions and start a reservation', () => {
-    cy.contains('Démarrer').click();
+    cy.contains('Bienvenue sur e-Potek').should('exist');
+    cy.contains('Test promotion').should('exist');
+    cy.contains('button', 'Calculer').click();
+    cy.contains('button', 'Résidence principale').click();
+
     cy.contains('Test promotion').click();
-    cy.setSelect('residenceType', 1);
 
     cy.get('.promotion-lots-table tbody tr').should('have.length', 2);
 
     cy.get('.promotion-lots-table input[type=checkbox]').first().check();
 
     cy.get('.promotion-options-table tbody tr').should('have.length', 1);
+    cy.wait(1000);
 
     cy.get('.promotion-lots-table input[type=checkbox]:checked')
       .first()
@@ -70,9 +83,27 @@ describe.skip('App Promotions', () => {
     cy.get('.promotion-lots-table input[type=checkbox]:not(:checked)').check();
 
     cy.get('.promotion-options-table tbody tr').should('have.length', 2);
+    cy.wait(1000);
 
     cy.contains('button', 'Réserver').first().click();
     cy.contains('Confirmer').click();
     cy.contains('Réservation en cours').should('exist');
+
+    cy.contains('button', 'Continuer').click();
+    cy.url().should('include', 'onboarding');
+    cy.contains('Lot A1').should('exist');
+
+    cy.contains('button', 'Un emprunteur').click();
+
+    cy.get('input[name="borrower1.birthDate"]').type('1990-01-01');
+    cy.get('form').submit();
+
+    cy.get('input[name="borrower1.salary"]').type('180000');
+    cy.get('form').submit();
+
+    cy.get('input[name="borrower1.bankFortune"]').type('250000');
+    cy.get('form').submit();
+
+    cy.contains('Découvrez votre capacité de financement').should('exist');
   });
 });

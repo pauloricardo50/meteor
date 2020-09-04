@@ -1,7 +1,7 @@
 accounts-base@1.7.0
 accounts-password@1.6.2
-alanning:roles@2.1.0
-aldeed:collection2@3.0.6
+alanning:roles@2.1.1
+aldeed:collection2@3.1.0
 aldeed:collection2-core@2.1.2
 aldeed:schema-deny@3.0.0
 aldeed:schema-index@3.0.0
@@ -40,7 +40,7 @@ ecmascript-runtime-server@0.10.0
 edgee:slingshot@0.7.1
 ejson@1.1.1
 email@2.0.0
-epotek:accounts-ui@1.5.4
+epotek:accounts-ui@1.5.6
 epotek:google-maps@2.0.2
 es5-shim@4.8.0
 fetch@0.1.1

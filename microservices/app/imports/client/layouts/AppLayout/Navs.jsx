@@ -1,45 +1,40 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import AppTopNav from './AppTopNav';
 import PermanentSideNav from './PermanentSideNav';
 
-export default class Navs extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { open: false };
-  }
+const Navs = props => {
+  const { shouldShowSideNav } = props;
+  const [open, setOpen] = useState(false);
 
-  handleToggle = nextState =>
+  const handleToggle = nextState =>
     typeof nextState === 'boolean'
-      ? this.setState({ open: nextState })
-      : this.setState(prev => ({ open: !prev.open }));
+      ? setOpen(nextState)
+      : setOpen(prev => !prev);
 
-  render() {
-    const { open } = this.state;
-    const { shouldShowSideNav } = this.props;
+  return (
+    <div className="navs">
+      <AppTopNav
+        shouldShowSideNav={shouldShowSideNav}
+        toggleDrawer={handleToggle}
+      />
 
-    return (
-      <div className="navs">
-        <AppTopNav
-          shouldShowSideNav={shouldShowSideNav}
-          toggleDrawer={this.handleToggle}
-        />
-
-        <div className="permanent-side-nav">
-          {shouldShowSideNav && (
-            <PermanentSideNav
-              open={open}
-              closeDrawer={() => this.handleToggle(false)}
-              {...this.props}
-            />
-          )}
-        </div>
+      <div className="permanent-side-nav">
+        {shouldShowSideNav && (
+          <PermanentSideNav
+            open={open}
+            closeDrawer={() => handleToggle(false)}
+            {...props}
+          />
+        )}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 Navs.propTypes = {
   shouldShowSideNav: PropTypes.bool.isRequired,
 };
+
+export default Navs;

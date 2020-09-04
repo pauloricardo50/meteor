@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 
 const API_ROOT = `https://${process.env.PRISMIC_REPO}.cdn.prismic.io/api/v2`;
-const CONTENT_VERSION = 'XzZEvhAAACMAhKmf';
 const PAGE_SIZE = 100;
 
 const query = '[[at(document.type, "post")]]';
@@ -41,7 +40,7 @@ const graphQuery = `{
 }`;
 
 const searchParams = new URLSearchParams({
-  ref: CONTENT_VERSION,
+  ref: '',
   access_token: process.env.PRISMIC_API_KEY,
   q: query,
   graphQuery,

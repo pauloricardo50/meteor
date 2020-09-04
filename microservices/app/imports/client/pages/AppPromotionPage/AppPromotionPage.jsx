@@ -1,14 +1,17 @@
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api/containerToolkit';
 import { appPromotion } from 'core/api/promotions/queries';
+import Button from 'core/components/Button';
 import PromotionPage from 'core/components/PromotionPage/client';
 import { withPromotionPageContext } from 'core/components/PromotionPage/client/PromotionPageContext';
+import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'core/utils/routerUtils';
 
 import appRoutes from '../../../startup/client/appRoutes';
-import withSimpleAppPage from '../../components/SimpleAppPage/SimpleAppPage';
 
 const promotionFragment = {
   address: 1,
@@ -39,6 +42,10 @@ const promotionFragment = {
 };
 
 const getInvitedByUser = ({ promotion, promotionId, loan }) => {
+  if (!loan) {
+    return;
+  }
+
   const { promotions = [] } = loan;
   const { $metadata = {} } =
     promotions.find(({ _id }) => _id === promotionId) || {};
@@ -47,24 +54,48 @@ const getInvitedByUser = ({ promotion, promotionId, loan }) => {
   return users.find(({ _id }) => _id === invitedBy);
 };
 
-const AppPromotionPageContainer = compose(
+const ContinueButton = ({ loanId }) => {
+  const history = useHistory();
+  const toRoute = loanId
+    ? createRoute(appRoutes.LOAN_ONBOARDING_PAGE.path, { loanId })
+    : '/';
+
+  return (
+    <Button
+      raised
+      secondary
+      label={<T id="general.continue" />}
+      onClick={() => history.push(toRoute)}
+      size="large"
+    />
+  );
+};
+
+export const AppPromotionPageContainer = compose(
   withMatchParam('promotionId'),
   withSmartQuery({
     query: appPromotion,
-    params: ({ promotionId, loan: { _id: loanId } }) => ({
-      promotionId,
-      loanId,
-      $body: promotionFragment,
-    }),
+    params: ({ promotionId }) => ({ promotionId, $body: promotionFragment }),
     queryOptions: { single: true },
     dataName: 'promotion',
   }),
   withPromotionPageContext(),
   withProps(({ promotion, promotionId, loan }) => ({
     invitedByUser: getInvitedByUser({ promotion, promotionId, loan }),
-    route: createRoute(appRoutes.APP_PROMOTION_PAGE.path, { loanId: loan._id }),
+    route: createRoute(appRoutes.APP_PROMOTION_PAGE.path, {
+      loanId: loan?._id,
+    }),
+    ctaTop: (
+      <div className="flex mb-16" style={{ justifyContent: 'flex-end' }}>
+        <ContinueButton loanId={loan?._id} />
+      </div>
+    ),
+    ctaBottom: (
+      <div className="flex mt-16" style={{ justifyContent: 'flex-end' }}>
+        <ContinueButton loanId={loan?._id} />
+      </div>
+    ),
   })),
-  withSimpleAppPage,
 );
 
 export default AppPromotionPageContainer(PromotionPage);

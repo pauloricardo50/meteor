@@ -30,7 +30,7 @@ const withInterestRates = withSmartQuery({
 
 const fullLoanFragment = merge({}, calculatorLoan(), {
   adminNotes: 1,
-  applicationType: 1,
+  acquisitionStatus: 1,
   assigneeLinks: 1,
   borrowers: { age: 1, name: 1, $options: { sort: { createdAt: 1 } } },
   category: 1,
@@ -60,7 +60,7 @@ const fullLoanFragment = merge({}, calculatorLoan(), {
   },
   maxPropertyValue: 1,
   name: 1,
-  promotionOptions: { name: 1 },
+  promotionOptions: { name: 1, promotionLots: { attributedToLink: 1 } },
   promotions: {
     agreementDuration: 1,
     lenderOrganisationLink: 1,
@@ -78,6 +78,7 @@ const fullLoanFragment = merge({}, calculatorLoan(), {
   userCache: 1,
   userFormsEnabled: 1,
   insurancePotential: 1,
+  adminAnalysis: 1,
 });
 
 export default compose(

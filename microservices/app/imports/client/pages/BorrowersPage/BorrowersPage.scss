@@ -1,4 +1,10 @@
 .borrower-page {
+  min-width: 600px;
+
+  &.two-borrowers {
+    min-width: 700px;
+  }
+
   .core-tabs-top {
     display: flex;
     align-content: stretch;

@@ -2,83 +2,52 @@ import { Meteor } from 'meteor/meteor';
 
 import React, { useEffect, useRef, useState } from 'react';
 import CountUp from 'react-countup';
-import { withState } from 'recompose';
 
 import { PURCHASE_TYPE } from '../../../api/loans/loanConstants';
 import useMedia from '../../../hooks/useMedia';
-import Calculator from '../../../utils/Calculator';
 import Button from '../../Button';
 import T, { Money } from '../../Translation';
+import { parseMaxPropertyValue } from './maxPropertyValueHelpers';
 import MaxPropertyValueResultsTableAcquisition from './MaxPropertyValueResultsTableAcquisition';
 import MaxPropertyValueResultsTableRefinancing from './MaxPropertyValueResultsTableRefinancing';
 import MaxPropertyValueResultsToggle from './MaxPropertyValueResultsToggle';
 
-const shouldShowToggle = ({ purchaseType, min, max }) => {
+const shouldShowToggle = ({
+  purchaseType,
+  minBorrowRatio,
+  maxBorrowRatio,
+  minPropertyValue,
+  maxPropertyValue,
+}) => {
   if (purchaseType === PURCHASE_TYPE.ACQUISITION) {
-    return !!min.propertyValue && min.propertyValue !== max.propertyValue;
+    return !!minPropertyValue && minPropertyValue !== maxPropertyValue;
   }
 
   if (purchaseType === PURCHASE_TYPE.REFINANCING) {
-    return !!min.borrowRatio && min.borrowRatio !== max.borrowRatio;
+    return !!minBorrowRatio && minBorrowRatio !== maxBorrowRatio;
   }
 };
 
-const MaxPropertyValueResultsTable = ({
-  min = {},
-  max,
-  residenceType,
-  canton,
-  showBest,
-  setShowBest,
-  purchaseType,
-  previousLoan,
-}) => {
+const MaxPropertyValueResultsTable = ({ loan, showMoreProps }) => {
   const isSmallMobile = useMedia({ maxWidth: 480 });
   const [showRecap, setShowRecap] = useState(true);
+  const [showBest, setShowBest] = useState(true);
   const {
-    propertyValue: minPropertyValue,
-    borrowRatio: minBorrowRatio,
-    organisationName: minOrganisationName,
-  } = min;
-  const {
-    propertyValue: maxPropertyValue,
-    borrowRatio: maxBorrowRatio,
-    organisationName: maxOrganisationName,
-  } = max;
-
-  const minLoan = minPropertyValue * minBorrowRatio;
-  const maxLoan = maxPropertyValue * maxBorrowRatio;
-
-  const minNotaryFees = Calculator.getNotaryFees({
-    loan: Calculator.createLoanObject({
-      residenceType,
-      wantedLoan: minLoan,
-      propertyValue: minPropertyValue,
-      canton,
-      purchaseType,
-    }),
-  }).total;
-  const maxNotaryFees = Calculator.getNotaryFees({
-    loan: Calculator.createLoanObject({
-      residenceType,
-      wantedLoan: maxLoan,
-      propertyValue: maxPropertyValue,
-      canton,
-      purchaseType,
-    }),
-  }).total;
-
-  const minOwnFunds = minPropertyValue * (1 - minBorrowRatio) + minNotaryFees;
-  const maxOwnFunds = maxPropertyValue * (1 - maxBorrowRatio) + maxNotaryFees;
-
-  const propertyValue = showBest ? maxPropertyValue : minPropertyValue;
-  const notaryFees = showBest ? maxNotaryFees : minNotaryFees;
-  const ownFunds = showBest ? maxOwnFunds : minOwnFunds;
-  const loan = showBest ? maxLoan : minLoan;
-  const raise = loan - previousLoan;
-
-  const valueToDisplay =
-    purchaseType === PURCHASE_TYPE.REFINANCING ? loan : propertyValue;
+    propertyValue,
+    notaryFees,
+    ownFunds,
+    loanValue,
+    raise,
+    valueToDisplay,
+    minOrganisationName,
+    maxOrganisationName,
+    previousLoan,
+    minBorrowRatio,
+    maxBorrowRatio,
+    minPropertyValue,
+    maxPropertyValue,
+  } = parseMaxPropertyValue(loan, showBest);
+  const { purchaseType } = loan;
 
   const prevValueRef = useRef();
   useEffect(() => {
@@ -88,7 +57,13 @@ const MaxPropertyValueResultsTable = ({
   if (showRecap) {
     return (
       <>
-        {shouldShowToggle({ purchaseType, min, max }) && (
+        {shouldShowToggle({
+          purchaseType,
+          minBorrowRatio,
+          maxBorrowRatio,
+          minPropertyValue,
+          maxPropertyValue,
+        }) && (
           <MaxPropertyValueResultsToggle
             showBest={showBest}
             setShowBest={setShowBest}
@@ -118,6 +93,7 @@ const MaxPropertyValueResultsTable = ({
           className="show-recap-button"
           onClick={() => setShowRecap(false)}
           size="small"
+          {...showMoreProps}
         >
           <T id="MaxPropertyValue.showDetail" />
         </Button>
@@ -127,7 +103,7 @@ const MaxPropertyValueResultsTable = ({
 
   return (
     <>
-      {!!min.propertyValue && min.propertyValue !== max.propertyValue && (
+      {!!minPropertyValue && minPropertyValue !== maxPropertyValue && (
         <MaxPropertyValueResultsToggle
           showBest={showBest}
           setShowBest={setShowBest}
@@ -136,8 +112,8 @@ const MaxPropertyValueResultsTable = ({
           maxOrganisationName={maxOrganisationName}
         />
       )}
-      {!!min.propertyValue &&
-        min.propertyValue === max.propertyValue &&
+      {!!minPropertyValue &&
+        minPropertyValue === maxPropertyValue &&
         Meteor.microservice === 'admin' && (
           <span>
             [ADMIN]&nbsp;
@@ -150,13 +126,13 @@ const MaxPropertyValueResultsTable = ({
           propertyValue={propertyValue}
           notaryFees={notaryFees}
           ownFunds={ownFunds}
-          loan={loan}
+          loan={loanValue}
         />
       )}
 
       {purchaseType === PURCHASE_TYPE.REFINANCING && (
         <MaxPropertyValueResultsTableRefinancing
-          loan={loan}
+          loan={loanValue}
           previousLoan={previousLoan}
         />
       )}
@@ -165,6 +141,7 @@ const MaxPropertyValueResultsTable = ({
         className="show-recap-button"
         onClick={() => setShowRecap(true)}
         size="small"
+        {...showMoreProps}
       >
         <T id="MaxPropertyValue.showRecap" />
       </Button>
@@ -172,8 +149,4 @@ const MaxPropertyValueResultsTable = ({
   );
 };
 
-export default withState(
-  'showBest',
-  'setShowBest',
-  true,
-)(MaxPropertyValueResultsTable);
+export default MaxPropertyValueResultsTable;

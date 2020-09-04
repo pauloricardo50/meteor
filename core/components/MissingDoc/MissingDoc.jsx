@@ -32,7 +32,7 @@ class MissingDoc extends Component {
     }
 
     return (
-      <div className="missing-doc flex-col center animated jackInTheBox">
+      <div className="missing-doc flex-col center animated fadeIn">
         <FontAwesomeIcon icon={faQuestionCircle} className="icon" />
 
         <h2 className="font-size-4 secondary mb-16">

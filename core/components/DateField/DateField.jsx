@@ -12,4 +12,5 @@ const DateField = ({ getProps = () => {}, ...props }) => (
     {...getProps(props)}
   />
 );
+
 export default DateField;

@@ -17,7 +17,6 @@ export default compose(
   withSmartQuery({
     query: ORGANISATIONS_COLLECTION,
     params: ({ organisationId }) => ({
-      // TODO: Remove unnecessary data
       $filters: { _id: organisationId },
       address: 1,
       address1: 1,
@@ -50,9 +49,6 @@ export default compose(
       generatedRevenues: 1,
       generatedProductions: 1,
       lenderRules: lenderRules(),
-      lenders: lender(),
-      offers: 1, // FIXME: Refactor this to use lenders.offers instead
-      offerCount: 1,
       users: organisationUser(),
       enabledCommissionTypes: 1,
     }),

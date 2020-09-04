@@ -16,6 +16,7 @@ const DashboardInfoTeamMember = ({
   renderTitle,
   src,
   title,
+  calendly,
 }) => (
   <div className="dashboard-info-team-company-member">
     {src && <img src={src} alt={name} />}
@@ -58,6 +59,24 @@ const DashboardInfoTeamMember = ({
               <T
                 id="DashboardInfoTeamMember.phoneTooltip"
                 values={{ phoneNumber }}
+              />
+            }
+          />
+        </a>
+      )}
+      {calendly && (
+        <a
+          className="ml-4"
+          href={calendly}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <IconButton
+            type="eventAvailable"
+            tooltip={
+              <T
+                id="DashboardInfoTeamMember.calendlyTooltip"
+                values={{ name }}
               />
             }
           />

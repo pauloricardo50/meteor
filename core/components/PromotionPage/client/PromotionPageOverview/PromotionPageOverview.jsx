@@ -49,7 +49,7 @@ const PromotionPageOverview = ({ promotion, loan }) => {
         </>
       )}
 
-      {(!isApp || loan.residenceType) && (
+      {(!isApp || !loan || loan.residenceType) && (
         <Element name="additional-lots-table" className="additional-lots-table">
           <LotsTable promotion={promotion} className="card1" />
         </Element>

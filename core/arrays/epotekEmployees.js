@@ -19,6 +19,7 @@ const employees = [
     phoneNumber: '+41 22 566 01 10',
     _id: 'gxpj4pn2Rzs4trdy9',
     gender: 'M',
+    calendly: 'https://www.calendly.com/epotek-badr',
   },
   {
     email: 'florian@e-potek.ch',

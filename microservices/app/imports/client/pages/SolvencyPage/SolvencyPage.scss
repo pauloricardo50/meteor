@@ -1,6 +1,7 @@
 .solvency-page {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 
   .max-property-value {
     min-width: 400px;

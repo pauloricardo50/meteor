@@ -35,6 +35,7 @@ import {
   updateProNote,
 } from '../../helpers/server/collectionServerHelpers';
 import CollectionService from '../../helpers/server/CollectionService';
+import { INTEREST_RATES } from '../../interestRates/interestRatesConstants';
 import LenderRulesService from '../../lenderRules/server/LenderRulesService';
 import { ORGANISATION_FEATURES } from '../../organisations/organisationConstants';
 import OrganisationService from '../../organisations/server/OrganisationService';
@@ -49,7 +50,6 @@ import { REVENUE_STATUS, REVENUE_TYPES } from '../../revenues/revenueConstants';
 import { TASK_STATUS } from '../../tasks/taskConstants';
 import UserService from '../../users/server/UserService';
 import {
-  APPLICATION_TYPES,
   CANTONS,
   LOANS_COLLECTION,
   LOAN_STATUS,
@@ -104,9 +104,9 @@ class LoanService extends CollectionService {
       loanId,
       object: {
         anonymous: true,
-        displayWelcomeScreen: false,
         referralId,
         purchaseType,
+        hasStartedOnboarding: true,
       },
     });
 
@@ -260,10 +260,21 @@ class LoanService extends CollectionService {
 
   addStructure = ({ loanId, structure, atIndex }) => {
     const newStructureId = Random.id();
+
+    let { loanTranches } = structure;
+
+    if (!loanTranches?.length) {
+      loanTranches = [
+        { type: INTEREST_RATES.YEARS_10, value: structure.wantedLoan || 0 },
+      ];
+    }
+
     Loans.update(loanId, {
       $push: {
         structures: {
-          $each: [{ ...structure, id: newStructureId, disabled: false }],
+          $each: [
+            { ...structure, loanTranches, id: newStructureId, disabled: false },
+          ],
           $position: atIndex,
         },
       },
@@ -515,15 +526,7 @@ class LoanService extends CollectionService {
       }
     });
 
-    this.update({
-      loanId,
-      object: {
-        userId,
-        anonymous: false,
-        // If the loan was anonymous before, don't show welcome screen again
-        displayWelcomeScreen: anonymous ? false : undefined,
-      },
-    });
+    this.update({ loanId, object: { userId, anonymous: false } });
     this.update({ loanId, object: { referralId: true }, operator: '$unset' });
 
     if (newAssignee) {
@@ -689,6 +692,10 @@ class LoanService extends CollectionService {
     });
     const maxPropertyValues = organisations
       .map(({ lenderRules, name }) => {
+        // Hack from Micaiah that yields the current fiber, and avoids blocking
+        // the main thread if someone else wants to execute a method
+        Promise.await(new Promise(resolve => Meteor._setImmediate(resolve)));
+
         const calculator = new CalculatorClass({
           loan: loanObject,
           lenderRules,
@@ -975,7 +982,7 @@ class LoanService extends CollectionService {
     }
 
     if (existingBorrowers.length === 1 && amount === 2) {
-      throw new Meteor.Error('Can insert only one more borrower');
+      throw new Meteor.Error('Cannot have more than 2 borrowers');
     }
 
     if (amount === 1) {
@@ -983,12 +990,14 @@ class LoanService extends CollectionService {
         userId,
         loanId,
       });
-    } else if (amount === 2) {
+      return [borrowerId];
+    }
+    if (amount === 2) {
       const borrowerId1 = BorrowerService.insert({ userId, loanId });
       const borrowerId2 = BorrowerService.insert({ userId, loanId });
-    } else {
-      throw new Meteor.Error('Invalid borrowers number');
+      return [borrowerId1, borrowerId2];
     }
+    throw new Meteor.Error('Invalid borrowers number');
   }
 
   linkPromotion({ promotionId, loanId }) {
@@ -1230,6 +1239,60 @@ class LoanService extends CollectionService {
 
   updateInsurancePotential({ loanId, insurancePotential }) {
     return this._update({ id: loanId, object: { insurancePotential } });
+  }
+
+  upsertUserProperty({ loanId, property }) {
+    const { properties = [] } = this.get(loanId, {
+      properties: { category: 1 },
+    });
+
+    if (
+      properties.length > 0 &&
+      properties[0].category === PROPERTY_CATEGORY.USER
+    ) {
+      return PropertyService.update({
+        propertyId: properties[0]._id,
+        object: property,
+      });
+    }
+
+    return PropertyService.insert({
+      property: { ...property, category: PROPERTY_CATEGORY.USER }, // Avoid extra fetch in PropertyService
+      loanId,
+    });
+  }
+
+  startedOnboarding({ loanId }) {
+    const { hasStartedOnboarding } = this.get(loanId, {
+      hasStartedOnboarding: 1,
+    });
+
+    if (hasStartedOnboarding) {
+      // false return value checked during E2E tests
+      return false;
+    }
+
+    return this._update({ id: loanId, object: { hasStartedOnboarding: true } });
+  }
+
+  setBorrowers({ loanId, amount }) {
+    const { borrowers = [] } = this.get(loanId, { borrowers: { _id: 1 } });
+
+    if (borrowers.length === 2) {
+      return;
+    }
+
+    if (borrowers.length === 1) {
+      if (amount === 1) {
+        return;
+      }
+
+      if (amount === 2) {
+        return this.insertBorrowers({ loanId, amount: 1 });
+      }
+    }
+
+    return this.insertBorrowers({ loanId, amount });
   }
 }
 

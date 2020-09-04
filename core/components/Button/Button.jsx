@@ -9,6 +9,7 @@ import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
 import { compose, mapProps } from 'recompose';
 
+import { analyticsCTA } from '../../api/analytics/methodDefinitions';
 import Icon from '../Icon';
 import Link from '../Link';
 
@@ -111,9 +112,22 @@ const Button = props => {
 
   const Comp = props.fab ? Fab : MuiButton;
 
+  const { onClick, ctaId } = childProps;
+
+  const shouldBeTracked = !!ctaId;
+
   const button = (
     <Comp
       {...childProps}
+      onClick={event => {
+        if (shouldBeTracked) {
+          analyticsCTA.run({ name: ctaId, path: window?.location?.pathname });
+        }
+
+        if (onClick) {
+          return onClick(event);
+        }
+      }}
       color={color}
       variant={variant}
       component={props.component || (props.link ? Link : 'button')}

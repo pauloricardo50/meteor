@@ -9,6 +9,7 @@ import {
   toNumber,
 } from '../../utils/conversionFunctions';
 import {
+  decimalPercentMask,
   percentMask,
   swissFrancDecimalNegativeMask,
   swissFrancMask,
@@ -24,6 +25,7 @@ const getDefaults = ({
   simpleOnChange,
   negative,
   decimal,
+  decimalPercent,
 }) => {
   if (simpleOnChange) {
     return { onChangeHandler: onChange, value };
@@ -65,9 +67,9 @@ const getDefaults = ({
             event,
           ),
         showMask: true,
-        mask: percentMask,
+        mask: decimalPercent ? decimalPercentMask : percentMask,
         placeholder: '%',
-        value: (value * 100).toFixed(2),
+        value: decimalPercent ? (value * 100).toFixed(2) : value * 100,
       };
     case 'number':
       return {
@@ -143,6 +145,7 @@ const TextInputContainer = mapProps(
     simpleOnChange,
     type,
     value,
+    decimalPercent,
     ...rest
   }) => {
     const { formatMessage } = useIntl();
@@ -161,6 +164,7 @@ const TextInputContainer = mapProps(
       simpleOnChange,
       negative,
       decimal,
+      decimalPercent,
     });
 
     return {

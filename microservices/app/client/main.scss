@@ -6,24 +6,24 @@
 @import '../imports/client/layouts/AppLayout/AppLayout.scss';
 
 // Pages
-@import '../imports/client/pages/AppPage/AppPage.scss';
 @import '../imports/client/pages/AppPromotionPage/AppPromotionPage.scss';
 @import '../imports/client/pages/BorrowersPage/BorrowersPage.scss';
 @import '../imports/client/pages/DashboardPage/DashboardPage.scss';
+@import '../imports/client/pages/OnboardingPage/OnboardingPage.scss';
 @import '../imports/client/pages/PropertiesPage/PropertiesPage.scss';
 @import '../imports/client/pages/RefinancingPage/RefinancingPage.scss';
 @import '../imports/client/pages/SignupSuccessPage/SignupSuccessPage.scss';
-@import '../imports/client/pages/SimpleDashboardPage/SimpleDashboardPage.scss';
 @import '../imports/client/pages/SinglePropertyPage/SinglePropertyPage.scss';
 @import '../imports/client/pages/SolvencyPage/SolvencyPage.scss';
+@import '../imports/client/pages/UserLoansPage/UserLoansPage.scss';
 
 // Components
 @import '../imports/client/components/BorrowersAdder/BorrowersAdder.scss';
 @import '../imports/client/components/ContactAssigneeModal/ContactAssigneeModal.scss';
 @import '../imports/client/components/DeactivatedFormInfo/DeactivatedFormInfo.scss';
+@import '../imports/client/components/PageApp/PageApp.scss';
 @import '../imports/client/components/ReturnToDashboard/ReturnToDashboard.scss';
 @import '../imports/client/components/SideNavUser/SideNavUser.scss';
-@import '../imports/client/components/WelcomeScreen/WelcomeScreen.scss';
 
 
 html {

@@ -173,9 +173,9 @@ describe('PasswordResetPage', () => {
     const input1 = dumbComponent().find('input[name="newPassword"]').at(0);
     const input2 = dumbComponent().find('input[name="newPassword2"]').at(0);
 
-    input1.instance().value = '12345678';
+    input1.instance().value = '12345678abc';
     input1.simulate('change');
-    input2.instance().value = '123456789';
+    input2.instance().value = '123456789abc';
     input2.simulate('change');
 
     dumbComponent().find('form').first().simulate('submit');

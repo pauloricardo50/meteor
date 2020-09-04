@@ -147,12 +147,20 @@ export const anonymousLoanInsert = new Method({
     existingAnonymousLoanId: Match.Maybe(Match.OneOf(String, null)),
     proPropertyId: Match.Maybe(String),
     purchaseType: Match.Maybe(String),
-    referralId: Match.Maybe(String),
+    referralId: Match.Maybe(Match.OneOf(String, null)),
   },
 });
 
 export const loanInsertBorrowers = new Method({
   name: 'loanInsertBorrowers',
+  params: {
+    loanId: String,
+    amount: Number,
+  },
+});
+
+export const loanSetBorrowers = new Method({
+  name: 'loanSetBorrowers',
   params: {
     loanId: String,
     amount: Number,
@@ -195,6 +203,7 @@ export const sendLoanChecklist = new Method({
     loanId: String,
     address: String,
     emailParams: Object,
+    attachmentKeys: Match.Maybe(Array),
     basicDocumentsOnly: Match.Optional(Boolean),
   },
 });
@@ -260,6 +269,11 @@ export const notifyInsuranceTeamForPotential = new Method({
 export const updateInsurancePotential = new Method({
   name: 'updateInsurancePotential',
   params: { loanId: String, insurancePotential: String },
+});
+
+export const upsertUserProperty = new Method({
+  name: 'upsertUserProperty',
+  params: { loanId: String, property: Object },
 });
 
 export const sendNegativeFeedbackToLenders = new Method({

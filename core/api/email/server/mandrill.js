@@ -99,6 +99,7 @@ export const renderMandrillTemplate = mandrillTemplate =>
 
 export const sendMandrillTemplate = (mandrillTemplate, address) => {
   if (shouldSkipEmail(address)) {
+    console.warn('Skipped email at sendMandrillTemplate for:', address);
     return Promise.resolve();
   }
 

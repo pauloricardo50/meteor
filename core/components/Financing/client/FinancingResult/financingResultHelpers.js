@@ -4,25 +4,22 @@ import Calculator, {
 } from '../../../../utils/Calculator';
 import FinanceCalculator from '../FinancingCalculator';
 
-const initCalc = ({
+export const initCalc = ({
   loan,
   structureId,
-  offer,
+  offer = Calculator.selectOffer({ loan, structureId }),
   Calculator: InitializedCalculator,
 }) => {
-  let finalOffer = offer;
+  if (offer?._id) {
+    const lender = Calculator.selectLenderForOfferId({
+      loan,
+      offerId: offer._id,
+    });
 
-  if (!finalOffer) {
-    const { offers = [] } = loan;
-    const { offerId } = Calculator.selectStructure({ loan, structureId });
-    finalOffer = offers.find(({ _id }) => offerId === _id);
-  }
-
-  if (finalOffer?.organisation?.lenderRules) {
     return new CalculatorClass({
       loan,
       structureId,
-      lenderRules: finalOffer.organisation.lenderRules,
+      lenderRules: lender.organisation.lenderRules,
     });
   }
 
@@ -33,6 +30,7 @@ const initCalc = ({
     lenderRules: InitializedCalculator.lenderRules,
   });
 };
+
 export const getInterests = params =>
   FinanceCalculator.getInterestsWithTranches(params) / 12;
 

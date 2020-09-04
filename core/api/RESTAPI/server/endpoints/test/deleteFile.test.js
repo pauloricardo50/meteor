@@ -1,5 +1,4 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 import { expect } from 'chai';
@@ -67,10 +66,10 @@ const deleteFile = ({ key, propertyId: propId, impersonateUser, userId }) => {
   });
 };
 
-describe('REST: deleteFile', function() {
+describe('REST: deleteFile', function () {
   this.timeout(10000);
 
-  before(function() {
+  before(function () {
     makeFileUploadDir();
     flushFileUploadDir();
     api.start();
@@ -240,7 +239,7 @@ describe('REST: deleteFile', function() {
     }).then(res => {
       const { status, message } = res;
       expect(status).to.equal(HTTP_STATUS_CODES.BAD_REQUEST);
-      expect(message).to.include('Property ID is required');
+      expect(message).to.include('propertyId is required');
     }));
 
   it('works with an external id', () => {

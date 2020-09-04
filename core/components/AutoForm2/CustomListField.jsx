@@ -1,5 +1,6 @@
 import React, { Children } from 'react';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import { makeStyles } from '@material-ui/core/styles';
 import { shouldUpdate } from 'recompose';
 import { connectField, filterDOMProps, joinName } from 'uniforms';
 
@@ -7,6 +8,8 @@ import ListMaterial from '../Material/List';
 import { FIELDS_TO_IGNORE } from './autoFormConstants';
 import CustomListAddField from './CustomListAddField';
 import ListItemField from './CustomListItemField';
+
+const useStyles = makeStyles({ subheader: { paddingLeft: 0 } });
 
 const List = ({
   addIcon,
@@ -18,45 +21,54 @@ const List = ({
   name,
   value,
   ...props
-}) => (
-  <div>
-    <ListMaterial
-      key="list"
-      dense={dense}
-      subheader={
-        label ? <ListSubheader disableSticky>{label}</ListSubheader> : undefined
-      }
-      {...filterDOMProps(props)}
-    >
-      {children
-        ? value.map((item, index) =>
-            Children.map(children, child =>
-              React.cloneElement(child, {
-                key: index,
-                label: null,
-                name: joinName(
-                  name,
-                  child.props.name && child.props.name.replace('$', index),
-                ),
-              }),
-            ),
-          )
-        : value.map((item, index) => (
-            <ListItemField
-              key={index}
-              label={null}
-              name={joinName(name, index)}
-              {...itemProps}
-            />
-          ))}
-    </ListMaterial>
-    <CustomListAddField
-      key="listAddField"
-      name={`${name}.$`}
-      initialCount={initialCount}
-    />
-  </div>
-);
+}) => {
+  const classes = useStyles();
+
+  return (
+    <div>
+      <ListMaterial
+        key="list"
+        dense={dense}
+        subheader={
+          label ? (
+            <ListSubheader disableSticky classes={{ root: classes.subheader }}>
+              {label}
+            </ListSubheader>
+          ) : undefined
+        }
+        classes={classes}
+        {...filterDOMProps(props)}
+      >
+        {children
+          ? value?.map?.((item, index) =>
+              Children.map(children, child =>
+                React.cloneElement(child, {
+                  key: index,
+                  label: null,
+                  name: joinName(
+                    name,
+                    child.props.name && child.props.name.replace('$', index),
+                  ),
+                }),
+              ),
+            )
+          : value?.map?.((item, index) => (
+              <ListItemField
+                key={index}
+                label={null}
+                name={joinName(name, index)}
+                {...itemProps}
+              />
+            ))}
+      </ListMaterial>
+      <CustomListAddField
+        key="listAddField"
+        name={`${name}.$`}
+        initialCount={initialCount}
+      />
+    </div>
+  );
+};
 
 List.defaultProps = {
   dense: true,

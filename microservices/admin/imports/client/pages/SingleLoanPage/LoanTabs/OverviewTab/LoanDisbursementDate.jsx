@@ -16,13 +16,14 @@ const schema = new SimpleSchema({
   },
 });
 
-const LoanDisbursementDate = ({ onSubmit, model }) => (
+const LoanDisbursementDate = ({ onSubmit, model, ...props }) => (
   <AutoForm
     schema={schema}
     model={model}
     onSubmit={onSubmit}
     autosave
     submitFieldProps={{ showSubmitField: false }}
+    {...props}
   />
 );
 

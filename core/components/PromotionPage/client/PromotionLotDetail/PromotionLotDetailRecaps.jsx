@@ -128,16 +128,25 @@ const getPromotionLotRecapArray = promotionLot => {
 
 const PromotionLotDetailRecaps = ({ promotionLot }) => {
   const promotionLotValue = getPromotionLotValue(promotionLot);
+  const valueRecap = getPromotionLotValueRecapArray(promotionLot);
+  const detailsRecap = getPromotionLotRecapArray(promotionLot);
+
+  const shouldShowValue = typeof promotionLotValue === 'number';
+  const shouldShowDetails =
+    detailsRecap.filter(({ hide }) => hide !== true).length > 1;
+
   return (
     <>
-      {typeof promotionLotValue === 'number' ? (
+      {shouldShowValue && (
         <Box>
-          <Recap array={getPromotionLotValueRecapArray(promotionLot)} />
+          <Recap array={valueRecap} />
         </Box>
-      ) : null}
-      <Box>
-        <Recap array={getPromotionLotRecapArray(promotionLot)} />
-      </Box>
+      )}
+      {shouldShowDetails && (
+        <Box>
+          <Recap array={detailsRecap} />
+        </Box>
+      )}
     </>
   );
 };

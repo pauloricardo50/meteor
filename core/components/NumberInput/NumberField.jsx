@@ -10,15 +10,17 @@ const NumberField = ({
   helperText,
   label,
   required,
+  error,
   ...props
 }) => {
   const { inputLabelRef, labelWidth } = useInputLabelWidth(!!label);
+  const finalHelperText = helperText || error?.message;
 
   return (
-    <FormControl required={required} fullWidth={fullWidth}>
+    <FormControl required={required} fullWidth={fullWidth} error={!!error}>
       <InputLabel ref={inputLabelRef}>{label}</InputLabel>
       <NumberInput labelWidth={labelWidth} {...props} />
-      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      {finalHelperText && <FormHelperText>{finalHelperText}</FormHelperText>}
     </FormControl>
   );
 };
