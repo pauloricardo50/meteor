@@ -572,10 +572,8 @@ describe('App onboarding', () => {
 
       cy.contains('button', 'Nouvelle hypothèque').click();
       cy.url().should('include', 'loans');
-      cy.contains(
-        'button',
-        "Je pense signer bientôt une promesse d'achat",
-      ).click();
+      cy.contains('button', "J'ai fait une offre qui a été acceptée").click();
     });
   });
 });
+§
