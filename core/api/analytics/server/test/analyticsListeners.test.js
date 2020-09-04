@@ -256,10 +256,7 @@ describe('analyticsListeners', () => {
         });
 
         await ddpWithUserId('user', () =>
-          analyticsStartedOnboarding.run({
-            loanId: 'loan',
-            activeStep: 'purchaseType',
-          }),
+          analyticsStartedOnboarding.run({ loanId: 'loan' }),
         );
 
         expect(analyticsSpy.called).to.equal(false);
@@ -267,16 +264,10 @@ describe('analyticsListeners', () => {
 
       it('does not track the event twice', async () => {
         await ddpWithUserId('user', () =>
-          analyticsStartedOnboarding.run({
-            loanId: 'loan',
-            activeStep: 'purchaseType',
-          }),
+          analyticsStartedOnboarding.run({ loanId: 'loan' }),
         );
         await ddpWithUserId('user', () =>
-          analyticsStartedOnboarding.run({
-            loanId: 'loan',
-            activeStep: 'purchaseType',
-          }),
+          analyticsStartedOnboarding.run({ loanId: 'loan' }),
         );
 
         expect(analyticsSpy.callCount).to.equal(1);
@@ -284,10 +275,7 @@ describe('analyticsListeners', () => {
 
       it('tracks the event if onboarding has not started yet', async () => {
         await ddpWithUserId('user', () =>
-          analyticsStartedOnboarding.run({
-            loanId: 'loan',
-            activeStep: 'purchaseType',
-          }),
+          analyticsStartedOnboarding.run({ loanId: 'loan' }),
         );
 
         const [[{ userId, event, properties }]] = await waitForStub(
@@ -308,15 +296,11 @@ describe('analyticsListeners', () => {
           assigneeName: 'Advisor E-Potek',
           propertyId: 'property',
           anonymous: false,
-          currentStep: 'purchaseType',
         });
       });
 
       it('tracks the event if onboarding has not started yet with an anonymous loan', async () => {
-        await analyticsStartedOnboarding.run({
-          loanId: 'anonymousLoan',
-          activeStep: 'purchaseType',
-        });
+        await analyticsStartedOnboarding.run({ loanId: 'anonymousLoan' });
 
         const [[{ userId, event, properties }]] = await waitForStub(
           analyticsSpy,
@@ -327,7 +311,6 @@ describe('analyticsListeners', () => {
         expect(properties).to.deep.include({
           loanId: 'anonymousLoan',
           anonymous: true,
-          currentStep: 'purchaseType',
         });
       });
     });

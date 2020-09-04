@@ -955,20 +955,26 @@ addAnalyticsListener({
   },
 });
 
-const trackOnboardingStart = ({ analytics, loanId, userId }) => {
+const trackOnboardingStart = ({ analytics, loanId, userId, stopIfTracked }) => {
   const {
     anonymous,
     purchaseType,
     properties = [],
     promotions = [],
     name: loanName,
+    hasStartedOnboarding,
   } = LoanService.get(loanId, {
     anonymous: 1,
     purchaseType: 1,
     properties: { _id: 1 },
     promotions: { name: 1 },
     name: 1,
+    hasStartedOnboarding: 1,
   });
+
+  if (stopIfTracked && hasStartedOnboarding) {
+    return;
+  }
 
   let params = {
     loanId,
@@ -1008,8 +1014,9 @@ const trackOnboardingStart = ({ analytics, loanId, userId }) => {
 
 addAnalyticsListener({
   method: analyticsStartedOnboarding,
+  type: 'before',
   func: ({ analytics, context: { userId }, params: { loanId } }) => {
-    trackOnboardingStart({ analytics, loanId, userId });
+    trackOnboardingStart({ analytics, loanId, userId, stopIfTracked: true });
   },
 });
 
