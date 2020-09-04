@@ -43,6 +43,8 @@ const CalendlyInline = ({ url, scriptLoaded, loadScript, styles, prefill }) => {
           top: 'calc(50% - 50px)',
           left: 'calc(50% - 50px)',
           zIndex: 1,
+          width: 100,
+          height: 100,
         }}
       />
     </div>

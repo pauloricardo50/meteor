@@ -40,7 +40,11 @@ export const getOnBoardingFlow = loan => {
     return ONBOARDING_FLOWS.REFINANCING;
   }
 
-  if (loan.acquisitionStatus === ACQUISITION_STATUS.SEARCHING) {
+  if (
+    [ACQUISITION_STATUS.BEGINNER, ACQUISITION_STATUS.SEARCHING].includes(
+      loan.acquisitionStatus,
+    )
+  ) {
     return ONBOARDING_FLOWS.ACQUISITION_SEARCH;
   }
 

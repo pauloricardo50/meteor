@@ -553,3 +553,8 @@ p.description,
 .fa-spin {
   animation: fa-spin 2s infinite linear;
 }
+
+.intercom-lightweight-app {
+  // Keep this below modals, which are 1300
+  z-index: 1200 !important;
+}

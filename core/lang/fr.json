@@ -26,7 +26,7 @@
   "OnboardingResult.subtitle.search": "Vous avez la capacité d’acheter un bien immobilier à hauteur de :",
   "OnboardingResult.subtitle.refinancingRaise": "Vous avez une capacité d'emprunt maximale de :",
   "OnboardingResult.subtitle.refinancingAmortization": "Vous avez une capacité d'emprunt maximale de :",
-  "OnboardingResult.subtitle.propertyNegative": "Votre capacité d'achat maximale semble inférieure à la valeur du bien que vous voulez acquérir :",
+  "OnboardingResult.subtitle.propertyNegative": "Votre capacité d'achat maximale semble inférieure à la valeur du bien que vous voulez acquérir, trouvons une solution ensemble :",
   "OnboardingResultUnfinished.title": "Il manque des informations",
   "OnboardingResultUnfinished.description": "Vous n'avez pas saisi toutes les informations dont nous avons besoin pour calculer au mieux votre capacité d'achat. Retournez en arrière dans le processus pour continuer.",
   "OnboardingResultUnfinished.cta": "Compléter les infos manquantes",
