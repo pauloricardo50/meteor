@@ -2,6 +2,7 @@ import React from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 
+import T from '../Translation';
 import DatePickerContext from './DatePickerContext';
 
 const DatePicker = ({
@@ -28,6 +29,8 @@ const DatePicker = ({
         autoOk
         disabled={disabled}
         name={name}
+        cancelLabel={<T id="general.cancel" />}
+        toolbarTitle="yooo"
       />
     </FormControl>
   </DatePickerContext>

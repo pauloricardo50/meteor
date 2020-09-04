@@ -31,7 +31,7 @@ describe('App onboarding', () => {
   });
 
   describe('onboarding flows', () => {
-    it.only('should go through onboarding and create an account', () => {
+    it('should go through onboarding and create an account', () => {
       cy.callMethod('generateScenario', {
         scenario: {
           organisations: {
