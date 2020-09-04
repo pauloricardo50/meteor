@@ -7,8 +7,10 @@
       "core/*": [
         "../../core/*"
       ]
-    }
+    },
+    "allowJs": true,
+    "outDir": "dist"
   },
   "include": ["imports"],
-  "exclude": ["imports/core/assets", "imports/core/lang"]
+  "exclude": ["imports/core"]
 }
