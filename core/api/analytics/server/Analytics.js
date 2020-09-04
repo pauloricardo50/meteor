@@ -103,6 +103,7 @@ class Analytics {
       lastName: 1,
       email: 1,
       roles: 1,
+      acquisitionChannel: 1,
     });
     this.clientAddress = realIp || clientAddress;
     this.host = getClientHost();
@@ -151,6 +152,7 @@ class Analytics {
         lastName: this.user?.lastName,
         email: this.user?.email,
         role: this.user?.roles[0]._id,
+        acquisitionChannel: this.user?.acquisitionChannel,
       },
     });
   }
