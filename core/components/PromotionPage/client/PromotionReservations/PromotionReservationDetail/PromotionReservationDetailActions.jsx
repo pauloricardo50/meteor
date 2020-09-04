@@ -63,7 +63,7 @@ const PromotionReservationDetailActions = ({
         label={<T id="PromotionReservationActions.reactivateReservation" />}
         method={reactivateReservation}
         description={
-          <T id="PromotionReservationActions.addToWaitList.description" />
+          <T id="PromotionReservationActions.reactivateReservation.description" />
         }
       />
     )}
@@ -89,9 +89,7 @@ const PromotionReservationDetailActions = ({
           disabled: confirmReservationIsDisabled,
           tooltip: confirmReservationIsDisabled ? (
             <T id="PromotionReservationActions.confirmReservation.tooltip" />
-          ) : (
-            undefined
-          ),
+          ) : undefined,
           className: 'mr-8 mb-8',
         }}
         label={<T id="PromotionReservationActions.confirmReservation" />}

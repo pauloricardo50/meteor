@@ -636,7 +636,7 @@
   "PromotionReservationActions.reactivateReservation": "Réactiver réservation",
   "PromotionReservationActions.reactivateReservation.description": "Remet ce client à \"Réservation en cours\".",
   "PromotionReservationActions.addToWaitList": "Mettre en liste d'attente",
-  "PromotionReservationActions.addToWaitList.description": "Met cette réservation en d'attente en attendant de pouvoir l'envoyer au prêteur",
+  "PromotionReservationActions.addToWaitList.description": "Met cette réservation en attente avant de pouvoir l'envoyer au prêteur",
   "PromotionReservationActions.confirmReservation.tooltip": "Veuillez compléter toutes les étapes pour cette réservation",
   "PromotionReservationActions.confirmReservation": "Confirmer réservation",
   "PromotionReservationActions.confirmReservation.description": "Vous confirmez que ce lot est maintenant réservé pour ce client ? Notifiera tous les Pros par email.",
