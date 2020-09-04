@@ -142,10 +142,9 @@ class Analytics {
   }
 
   identify(trackingId = getClientTrackingId()) {
-    this.alias(trackingId);
-
     this.analytics.identify({
       userId: this.userId,
+      anonymousId: trackingId,
       traits: {
         firstName: this.user?.firstName,
         lastName: this.user?.lastName,

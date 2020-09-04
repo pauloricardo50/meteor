@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
-import { Random } from 'meteor/random';
 
 import get from 'lodash/get';
 import set from 'lodash/set';
 import NodeRSA from 'node-rsa';
 import hashObject from 'object-hash';
 
+import { uuidv4 } from '../../../utils/general';
 import { getFromFiber, storeOnFiber } from '../../../utils/server/fiberStorage';
 import { getClientHost } from '../../../utils/server/getClientUrl';
 import EVENTS from '../../analytics/events';
@@ -432,7 +432,7 @@ export const trackRequest = ({ req, result }) => {
   });
 
   if (userId) {
-    analytics.identify(Random.id(16));
+    analytics.identify(uuidv4());
   }
 
   analytics.track(EVENTS.API_CALLED, {

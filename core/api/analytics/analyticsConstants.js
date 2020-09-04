@@ -1,4 +1,4 @@
-export const TRACKING_COOKIE = 'epotek_trackingid';
+export const TRACKING_COOKIE = 'epotek_trackingid_v2';
 
 // e-Potek's office and VPN IPs
 // Those addresses are blacklisted from 'app' and 'pro' tracked events

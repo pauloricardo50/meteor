@@ -27,7 +27,7 @@ const resetContact = () =>
     contactId: CONTACT_INTERCOM_ID,
     owner_id: null,
     custom_attributes: {
-      epotek_trackingid: null,
+      epotek_trackingid_v2: null,
       test: null,
     },
   });
@@ -36,7 +36,7 @@ const resetVisitor = () =>
   IntercomService.updateVisitor({
     visitorId: VISITOR_INTERCOM_ID,
     custom_attributes: {
-      epotek_trackingid: null,
+      epotek_trackingid_v2: null,
       test: null,
     },
   });
@@ -596,7 +596,7 @@ describe('IntercomService', function () {
         visitorId: VISITOR_INTERCOM_ID,
       });
       expect(response).to.equal(undefined);
-      expect(visitor.custom_attributes.epotek_trackingid).to.equal(null);
+      expect(visitor.custom_attributes.epotek_trackingid_v2).to.equal(null);
     });
 
     it('does not update visitor if no visitorId is provided', async () => {
@@ -616,7 +616,7 @@ describe('IntercomService', function () {
         visitorId: VISITOR_INTERCOM_ID,
       });
       expect(response).to.equal(undefined);
-      expect(visitor.custom_attributes.epotek_trackingid).to.equal(null);
+      expect(visitor.custom_attributes.epotek_trackingid_v2).to.equal(null);
     });
 
     it('does not update visitor if visitor is not found on intercom', async () => {
@@ -651,7 +651,7 @@ describe('IntercomService', function () {
 
       expect(response).to.equal(undefined);
       expect(visitor.custom_attributes).to.deep.include({
-        epotek_trackingid: '12345',
+        epotek_trackingid_v2: '12345',
       });
     });
 
@@ -665,7 +665,7 @@ describe('IntercomService', function () {
       });
 
       expect(visitor.custom_attributes).to.deep.include({
-        epotek_trackingid: '12345',
+        epotek_trackingid_v2: '12345',
       });
     });
   });
@@ -856,7 +856,7 @@ describe('IntercomService', function () {
     it('tracks the event if contact has a tracking id', async () => {
       await IntercomService.updateContact({
         contactId: CONTACT_INTERCOM_ID,
-        custom_attributes: { epotek_trackingid: 'trackingId' },
+        custom_attributes: { epotek_trackingid_v2: 'trackingId' },
       });
       await IntercomService.handleNewConversation({
         id: CONVERSATION_INTERCOM_ID,
@@ -953,7 +953,7 @@ describe('IntercomService', function () {
     it('tracks the event if contact has a tracking id', async () => {
       await IntercomService.updateContact({
         contactId: CONTACT_INTERCOM_ID,
-        custom_attributes: { epotek_trackingid: 'trackingId' },
+        custom_attributes: { epotek_trackingid_v2: 'trackingId' },
       });
 
       generator({
@@ -1056,7 +1056,7 @@ describe('IntercomService', function () {
     it('tracks the event if contact has a tracking id', async () => {
       await IntercomService.updateContact({
         contactId: CONTACT_INTERCOM_ID,
-        custom_attributes: { epotek_trackingid: 'trackingId' },
+        custom_attributes: { epotek_trackingid_v2: 'trackingId' },
       });
 
       generator({
