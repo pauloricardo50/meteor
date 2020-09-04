@@ -1003,8 +1003,6 @@ const trackOnboardingStart = ({ analytics, loanId, userId }) => {
     };
   }
 
-  console.log('started onboarding!!!');
-
   analytics.track(EVENTS.STARTED_ONBOARDING, params);
 };
 

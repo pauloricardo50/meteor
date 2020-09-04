@@ -14,7 +14,7 @@ const OnboardingResultMaxPropertyValue = ({ loan }) => {
   const [loading, setLoading] = useState(false);
   const borrowerHash = useMemo(
     () => Calculator.getMaxPropertyValueHash({ loan }),
-    [],
+    [loan],
   );
   const { steps } = useOnboarding();
   const canton = steps.find(({ id }) => id === 'canton')?.value;

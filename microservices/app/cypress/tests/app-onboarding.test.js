@@ -1,16 +1,20 @@
 import {
   LOAN_STATUS,
   LOCAL_STORAGE_ANONYMOUS_LOAN,
+  PURCHASE_TYPE,
 } from '../../imports/core/api/loans/loanConstants';
 import { ORGANISATION_FEATURES } from '../../imports/core/api/organisations/organisationConstants';
-import { PROPERTY_CATEGORY } from '../../imports/core/api/properties/propertyConstants';
+import {
+  PROPERTY_CATEGORY,
+  RESIDENCE_TYPE,
+} from '../../imports/core/api/properties/propertyConstants';
 import { ROLES } from '../../imports/core/api/users/userConstants';
 import {
   USER_EMAIL,
   USER_PASSWORD,
 } from '../../imports/core/cypress/server/e2eConstants';
 
-describe.only('App onboarding', () => {
+describe('App onboarding', () => {
   before(() => {
     cy.startTest();
     cy.meteorLogout();
@@ -39,7 +43,7 @@ describe.only('App onboarding', () => {
 
       cy.url().should('include', '/onboarding');
 
-      cy.contains('button', 'Acheter un nouveau bien').click();
+      cy.contains('button', 'Nouvelle hypothèque').click();
 
       cy.url().should('include', 'loans');
       cy.contains('button', 'Je recherche encore un logement').click();
@@ -55,8 +59,6 @@ describe.only('App onboarding', () => {
 
       cy.get('input[name="borrower1.bankFortune"]').type('250000');
       cy.get('form').submit();
-
-      cy.contains('button', 'Calculer').click();
 
       cy.url().should('include', 'step=result');
       cy.contains('CHF 1 023 000');
@@ -86,7 +88,7 @@ describe.only('App onboarding', () => {
     it('lets you go back and change your answers, then routes you to the latest step', () => {
       cy.url().should('include', '/onboarding');
 
-      cy.contains('button', 'Acheter un nouveau bien').click();
+      cy.contains('button', 'Nouvelle hypothèque').click();
 
       cy.url().should('include', 'loans');
 
@@ -123,6 +125,10 @@ describe.only('App onboarding', () => {
     it('works for pro properties', () => {
       cy.callMethod('generateScenario', {
         scenario: {
+          organisations: {
+            features: [ORGANISATION_FEATURES.LENDER],
+            lenderRules: {},
+          },
           users: {
             _factory: ROLES.PRO,
             proProperties: {
@@ -131,6 +137,7 @@ describe.only('App onboarding', () => {
               address1: 'Chemin Auguste-Vilbert 14',
               value: 1500000,
               description: 'End to end tests suck',
+              canton: 'GE',
             },
           },
         },
@@ -143,7 +150,7 @@ describe.only('App onboarding', () => {
 
       cy.contains('Chemin Auguste-Vilbert 14').click();
       cy.url().should('include', 'properties/proPropertyId');
-      cy.contains('button', 'Calculer').first().click();
+      cy.contains('button', 'Calculer').click();
 
       cy.url().should('include', 'onboarding');
       cy.contains('Résidence principale').click();
@@ -156,6 +163,29 @@ describe.only('App onboarding', () => {
 
       cy.contains('button', 'Retour').click();
       cy.url().should('include', 'onboarding');
+
+      cy.contains('button', 'Un emprunteur').click();
+      cy.get('input[name="borrower1.birthDate"]').type('1990-01-01');
+      cy.get('form').submit();
+
+      cy.get('input[name="borrower1.salary"]').type('180000');
+      cy.get('form').submit();
+
+      cy.get('input[name="borrower1.bankFortune"]').type('250000');
+      cy.get('form').submit();
+
+      cy.url().should('include', 'step=result');
+      cy.contains('CHF 1 023 000');
+
+      cy.contains('Étudions votre projet').should('exist');
+
+      cy.contains('button', 'Fonds propres').click();
+      cy.get('input[name="borrower1.bankFortune"]').clear().type('700000');
+      cy.get('form').submit();
+
+      cy.contains('button', 'Recalculer').click();
+      cy.contains('Félicitations, tout est bon').should('exist');
+      cy.contains('Étudions votre projet').should('not.exist');
     });
 
     it('should not display non-PRO properties', () => {
@@ -176,25 +206,80 @@ describe.only('App onboarding', () => {
       cy.contains('Bienvenue sur e-Potek').should('exist');
       cy.contains('Chemin Auguste-Vilbert 14').should('not.exist');
     });
+
+    it('should handle errors in maxPropertyValue calculation', () => {});
+
+    it('should work with old cached anonymous loans', () => {
+      cy.callMethod('generateScenario', {
+        scenario: {
+          loans: {
+            _id: 'loanId',
+            anonymous: true,
+            purchaseType: PURCHASE_TYPE.ACQUISITION,
+            residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
+          },
+        },
+      });
+      cy.window().then(() => {
+        localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, 'loanId');
+      });
+      cy.routeTo('/');
+      cy.url().should('include', 'loans/loanId/onboarding');
+      cy.contains('button', 'Nouvelle hypothèque').click();
+      cy.contains('button', 'Je recherche').click();
+      // Should skip residenceType as it's already set
+      cy.contains('canton').should('exist');
+    });
+
+    it('should not fail with old expired anonymous loans, and create a new one', () => {
+      cy.callMethod('generateScenario', {
+        scenario: {
+          loans: {
+            _id: 'loanId',
+            anonymous: true,
+            status: LOAN_STATUS.UNSUCCESSFUL,
+          },
+          users: {
+            _factory: ROLES.PRO,
+            proProperties: {
+              _id: 'proPropertyId',
+              category: PROPERTY_CATEGORY.PRO,
+              address1: 'Chemin Auguste-Vilbert 14',
+              value: 1500000,
+              description: 'End to end tests suck',
+              canton: 'GE',
+            },
+          },
+        },
+      });
+      cy.window().then(() => {
+        localStorage.setItem(LOCAL_STORAGE_ANONYMOUS_LOAN, 'loanId');
+      });
+      cy.routeTo('/?property-id=proPropertyId');
+      cy.contains('button', 'Calculer').click();
+      cy.url().should('include', 'loans');
+      cy.url().should('not.include', 'loanId');
+      cy.contains('Chemin Auguste').should('exist');
+    });
   });
 
   it('should keep the loan in localstorage after a page refresh', () => {
     cy.url().should('include', '/onboarding');
 
-    cy.contains('button', 'Acheter un nouveau bien').click();
+    cy.contains('button', 'Nouvelle hypothèque').click();
     cy.contains('button', 'Je recherche encore un logement').click();
 
     cy.url().should('include', 'step=residenceType');
 
     cy.visit('/');
 
-    cy.contains('Acheter un nouveau bien').should('exist');
+    cy.contains('Nouvelle hypothèque').should('exist');
     cy.contains('Je recherche encore un logement').should('exist');
     cy.url().should('include', '/loans/');
   });
 
   it('localStorage is cleared if the loan is no more available', () => {
-    cy.contains('button', 'Acheter un nouveau bien').click();
+    cy.contains('button', 'Nouvelle hypothèque').click();
     cy.url().should('include', '/loans/');
 
     cy.window().then(window => {
@@ -215,7 +300,7 @@ describe.only('App onboarding', () => {
   });
 
   it(`Should attach an anonymous loan to a new user account`, () => {
-    cy.contains('button', 'Acheter un nouveau bien').click();
+    cy.contains('button', 'Nouvelle hypothèque').click();
     cy.contains('button', 'Je recherche encore un logement').click();
 
     cy.contains('Créez votre compte').click();
@@ -237,14 +322,14 @@ describe.only('App onboarding', () => {
     cy.get('[type="checkbox"]').check();
     cy.contains('button', 'Continuer').click();
 
-    cy.contains('Acheter un nouveau bien').should('exist');
+    cy.contains('Nouvelle hypothèque').should('exist');
     cy.contains('Je recherche encore un logement').should('exist');
     cy.url().should('include', '/loans/');
   });
 
   it('should attach an anonymous loan to an existing account', () => {
     cy.callMethod('inviteTestUser', { withPassword: true });
-    cy.contains('button', 'Acheter un nouveau bien').click();
+    cy.contains('button', 'Nouvelle hypothèque').click();
     cy.contains('button', 'Je recherche encore un logement').click();
 
     cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
@@ -254,7 +339,7 @@ describe.only('App onboarding', () => {
     cy.url().should('include', '/loans/');
     cy.contains('Dossier anonyme').should('not.exist');
 
-    cy.contains('Acheter un nouveau bien').should('exist');
+    cy.contains('Nouvelle hypothèque').should('exist');
     cy.contains('Je recherche encore un logement').should('exist');
 
     cy.get('.onboarding-side-nav .logo-home').click();
@@ -274,7 +359,7 @@ describe.only('App onboarding', () => {
 
     cy.routeTo(`/?ref=proId`);
 
-    cy.contains('button', 'Acheter un nouveau bien').click();
+    cy.contains('button', 'Nouvelle hypothèque').click();
     cy.url().should('include', '/loans/');
 
     cy.window().then(window => {
@@ -291,7 +376,7 @@ describe.only('App onboarding', () => {
     cy.routeTo('/?ref=abcdef');
     cy.wait(500);
 
-    cy.contains('button', 'Acheter un nouveau bien').click();
+    cy.contains('button', 'Nouvelle hypothèque').click();
     cy.url().should('include', '/loans/');
 
     cy.window().then(window => {
@@ -355,7 +440,7 @@ describe.only('App onboarding', () => {
     cy.routeTo('/');
     cy.url().should('include', '/loans/');
 
-    cy.contains('button', 'Acheter un nouveau bien').click();
+    cy.contains('button', 'Nouvelle hypothèque').click();
 
     cy.routeTo(`/?property-id=proPropertyId`);
     cy.contains('Chemin Auguste-Vilbert 14').should('exist');
@@ -378,12 +463,15 @@ describe.only('App onboarding', () => {
 
     cy.url().should('include', '/onboarding');
 
-    cy.contains('button', 'Acheter un nouveau bien').click();
+    cy.contains('button', 'Nouvelle hypothèque').click();
 
     cy.url().should('include', 'loans');
     cy.contains('button', "J'ai fait une offre").click();
     cy.contains('button', 'Résidence principale').click();
     cy.contains('button', 'Genève').click();
+
+    cy.get('input[name="value"]').type('1000000{enter}');
+
     cy.contains('button', 'Un emprunteur').click();
 
     cy.get('input[name="borrower1.birthDate"]').type('1990-01-01');
@@ -394,8 +482,6 @@ describe.only('App onboarding', () => {
 
     cy.get('input[name="borrower1.bankFortune"]').type('250000');
     cy.get('form').submit();
-
-    cy.contains('button', 'Calculer').click();
 
     cy.url().should('include', 'step=result');
     cy.contains('CHF 1 023 000');
@@ -412,7 +498,7 @@ describe.only('App onboarding', () => {
       $options: { sort: { createdAt: 1 } },
       params: 1,
     }).then(result => {
-      expect(result.length).to.equal(8);
+      expect(result.length).to.equal(9);
     });
 
     // Check refreshing doesn't call analytics again
@@ -426,7 +512,6 @@ describe.only('App onboarding', () => {
       params: 1,
       result: 1,
     }).then(result => {
-      console.log('result:', result);
       expect(result.length).to.equal(0);
     });
   });
@@ -453,7 +538,7 @@ describe.only('App onboarding', () => {
       cy.url().should('include', 'onboarding');
       cy.url().should('not.include', 'loans');
 
-      cy.contains('button', 'Acheter un nouveau bien').click();
+      cy.contains('button', 'Nouvelle hypothèque').click();
       cy.url().should('include', 'loans');
       cy.contains(
         'button',
@@ -482,7 +567,7 @@ describe.only('App onboarding', () => {
       cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
       cy.routeTo('/'); // Make sure the user goes to the AppRootPage
 
-      cy.contains('button', 'Acheter un nouveau bien').click();
+      cy.contains('button', 'Nouvelle hypothèque').click();
       cy.url().should('include', 'loans');
       cy.contains(
         'button',

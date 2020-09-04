@@ -1266,7 +1266,6 @@ class LoanService extends CollectionService {
     const { hasStartedOnboarding } = this.get(loanId, {
       hasStartedOnboarding: 1,
     });
-    console.log('hasStartedOnboarding:', hasStartedOnboarding);
 
     if (hasStartedOnboarding) {
       // false return value checked during E2E tests
