@@ -31,7 +31,7 @@ describe('App onboarding', () => {
   });
 
   describe('onboarding flows', () => {
-    it('should go through onboarding and create an account', () => {
+    it.only('should go through onboarding and create an account', () => {
       cy.callMethod('generateScenario', {
         scenario: {
           organisations: {
@@ -54,7 +54,7 @@ describe('App onboarding', () => {
       cy.contains('button', 'Genève').click();
       cy.contains('button', 'Un emprunteur').click();
 
-      cy.get('input[name="borrower1.birthDate"]').type('1011990');
+      cy.get('input[name="borrower1.birthDate"]').type('01011990');
       cy.get('form').submit();
 
       cy.get('input[name="borrower1.salary"]').type('180000');
@@ -103,7 +103,7 @@ describe('App onboarding', () => {
       cy.contains('button', 'Genève').click();
       cy.contains('button', 'Un emprunteur').click();
 
-      cy.get('input[name="borrower1.birthDate"]').type('1011990');
+      cy.get('input[name="borrower1.birthDate"]').type('01011990');
       cy.get('form').submit();
       cy.url().should('include', 'step=income');
 
@@ -171,7 +171,7 @@ describe('App onboarding', () => {
       cy.url().should('include', 'onboarding');
 
       cy.contains('button', 'Un emprunteur').click();
-      cy.get('input[name="borrower1.birthDate"]').type('1011990');
+      cy.get('input[name="borrower1.birthDate"]').type('01011990');
       cy.get('form').submit();
 
       cy.get('input[name="borrower1.salary"]').type('180000');
@@ -481,7 +481,7 @@ describe('App onboarding', () => {
 
     cy.contains('button', 'Un emprunteur').click();
 
-    cy.get('input[name="borrower1.birthDate"]').type('1011990');
+    cy.get('input[name="borrower1.birthDate"]').type('01011990');
     cy.get('form').submit();
 
     cy.get('input[name="borrower1.salary"]').type('180000');

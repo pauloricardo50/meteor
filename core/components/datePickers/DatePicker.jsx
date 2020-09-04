@@ -18,7 +18,7 @@ const DatePicker = ({
       <KeyboardDatePicker
         disableFuture
         openTo="year"
-        format="d/MM/yyyy"
+        format="DD/MM/yyyy"
         label={label}
         views={['year', 'month', 'date']}
         value={value || null}
