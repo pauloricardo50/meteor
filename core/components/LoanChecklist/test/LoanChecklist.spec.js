@@ -19,7 +19,7 @@ describe('LoanChecklist helpers', () => {
       const result = getChecklistValidInformationsRatio({
         loan: { borrowers: [{}] },
       });
-      expect(result).to.deep.equal({ valid: 0, required: 22 });
+      expect(result).to.deep.equal({ valid: 0, required: 21 });
     });
 
     it('returns just the property elements', () => {
@@ -74,8 +74,8 @@ describe('LoanChecklist helpers', () => {
       );
 
       expect(result.fields.property).to.deep.equal(undefined);
-      expect(result.fields.borrowers[0].labels.length).to.equal(22);
-      expect(result.fields.borrowers[1].labels.length).to.equal(21);
+      expect(result.fields.borrowers[0].labels.length).to.equal(21);
+      expect(result.fields.borrowers[1].labels.length).to.equal(20);
     });
 
     it('returns fields and documents for a property ', () => {

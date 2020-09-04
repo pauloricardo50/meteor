@@ -492,7 +492,6 @@ describe('BorrowerCalculator', () => {
         'citizenship',
         'isUSPerson',
         'civilStatus',
-        'children',
         'activityType',
         'salary',
         'netSalary',
