@@ -83,6 +83,7 @@ const config = {
         'TopNav',
         'TopNavDropdown',
         'TranchePicker',
+        'UpdateNotification',
         'Uploader',
         'UploaderArray',
       ],

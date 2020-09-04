@@ -1,14 +1,17 @@
-/* global Reload */
-import React, { useEffect, useState } from 'react';
-import { useTracker } from 'meteor/react-meteor-data';
-import { makeStyles } from '@material-ui/core/styles';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import cx from 'classnames';
 import { Meteor } from 'meteor/meteor';
 import { Autoupdate } from 'meteor/autoupdate';
-import Icon from '../Icon';
+import { useTracker } from 'meteor/react-meteor-data';
+
+/* global Reload */
+import React, { useEffect, useState } from 'react';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import { makeStyles } from '@material-ui/core/styles';
+import cx from 'classnames';
+
 import Button from '../Button';
+import Icon from '../Icon';
+import T from '../Translation';
 
 const useStyles = makeStyles(theme => ({
   infoSnackbar: {
@@ -104,7 +107,10 @@ const UpdateNotification = () => {
               className={cx(classes.icon, classes.iconVariant)}
             />
             <span>
-              Update available! Reloading in {remainingSeconds} seconds
+              <T
+                id="UpdateNotification.updateAvailable"
+                values={{ seconds: remainingSeconds }}
+              />
             </span>
           </div>
         }
@@ -115,7 +121,9 @@ const UpdateNotification = () => {
             className={classes.button}
             onClick={() => reload()}
           >
-            {reloading ? 'Reloading...' : 'Reload Now'}
+            <T
+              id={`UpdateNotification.${reloading}` ? 'reloading' : 'reloadNow'}
+            />
           </Button>
         }
       />

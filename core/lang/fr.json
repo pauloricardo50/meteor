@@ -1,4 +1,7 @@
 {
+  "UpdateNotification.updateAvailable": "Une nouvelle version est disponible, mise à jour dans {seconds} secondes.",
+  "UpdateNotification.reloading": "En cours...",
+  "UpdateNotification.reloadNow": "Mettre à jour",
   "Forms.children": "Enfants",
   "Forms.children.name": "Prénom",
   "Forms.children.age": "Âge",
