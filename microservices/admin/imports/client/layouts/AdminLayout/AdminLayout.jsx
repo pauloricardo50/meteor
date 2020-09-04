@@ -11,6 +11,7 @@ import PageHead from 'core/components/PageHead';
 import useMedia from 'core/hooks/useMedia';
 import { handleLoggedOut } from 'core/utils/history';
 import getBaseRedirect from 'core/utils/redirection';
+import UpdateNotification from 'core/components/UpdateNotification';
 
 import FileViewer from '../../components/FileViewer';
 import AdminKeyboardShortcuts from './AdminKeyboardShortcuts';
@@ -108,7 +109,7 @@ const AdminLayout = ({
           {React.cloneElement(children, { ...props, currentUser })}
         </ErrorBoundary>
       </div>
-
+      <UpdateNotification />
       <FileViewer />
     </div>
   );
