@@ -124,7 +124,9 @@ const Button = props => {
           analyticsCTA.run({ name: ctaId, path: window?.location?.pathname });
         }
 
-        return onClick(event);
+        if (onClick) {
+          return onClick(event);
+        }
       }}
       color={color}
       variant={variant}
