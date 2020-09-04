@@ -15,6 +15,7 @@ const assigneeProperties = [
 const eventsSharedProperties = [
   { name: 'userEmail', optional: true },
   { name: 'userName', optional: true },
+  { name: 'acquisitionChannel', optional: true },
   ...referringProperties,
   ...assigneeProperties,
 ];
@@ -43,6 +44,7 @@ export const EVENTS_CONFIG = {
       ...assigneeProperties,
       'origin',
       { name: 'ctaId', optional: true },
+      { name: 'acquisitionChannel', optional: true },
     ],
   },
   [EVENTS.USER_LOGGED_IN]: {

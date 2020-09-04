@@ -56,6 +56,7 @@ addAnalyticsListener({
         referredByUser: { name: 1 },
         referredByOrganisation: { name: 1 },
         assignedEmployee: { name: 1 },
+        acquisitionChannel: 1,
       });
 
       const {
@@ -67,6 +68,7 @@ addAnalyticsListener({
           name: referringOrganisationName,
         } = {},
         assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
+        acquisitionChannel,
       } = user;
 
       let origin;
@@ -88,6 +90,7 @@ addAnalyticsListener({
         assigneeId,
         assigneeName,
         origin,
+        acquisitionChannel,
       });
     }
   },
@@ -143,6 +146,7 @@ addAnalyticsListener({
         assignedEmployee: { name: 1 },
         name: 1,
         email: 1,
+        acquisitionChannel: 1,
       });
 
       properties = {
@@ -156,6 +160,7 @@ addAnalyticsListener({
         userName: user.name,
         userEmail: user.email,
         userId: user._id,
+        acquisitionChannel: user.acquisitionChannel,
       };
     }
 
@@ -176,12 +181,14 @@ addAnalyticsListener({
         name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
+      acquisitionChannel,
     } = UserService.get(userId, {
       name: 1,
       email: 1,
       referredByOrganisation: { name: 1 },
       referredByUser: { name: 1 },
       assignedEmployee: { name: 1 },
+      acquisitionChannel: 1,
     });
 
     const { impersonatingAdmin: admin } = SessionService.get(
@@ -201,6 +208,7 @@ addAnalyticsListener({
       referringOrganisationName,
       assigneeId,
       assigneeName,
+      acquisitionChannel,
     });
   },
 });
@@ -224,12 +232,14 @@ addAnalyticsListener({
         name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
+      acquisitionChannel,
     } = UserService.get(userId, {
       name: 1,
       email: 1,
       referredByOrganisation: { name: 1 },
       referredByUser: { name: 1 },
       assignedEmployee: { name: 1 },
+      acquisitionChannel: 1,
     });
     analytics.identify();
     analytics.track(EVENTS.USER_LOGGED_IN, {
@@ -243,6 +253,7 @@ addAnalyticsListener({
       referringOrganisationName,
       assigneeId,
       assigneeName,
+      acquisitionChannel,
     });
   },
 });
@@ -263,6 +274,7 @@ addAnalyticsListener({
       referredByOrganisation: { name: 1 },
       referredByUser: { name: 1 },
       assignedEmployee: { name: 1 },
+      acquisitionChannel: 1,
     });
     const {
       name: userName,
@@ -273,6 +285,7 @@ addAnalyticsListener({
         name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
+      acquisitionChannel,
     } = user;
     analytics.track(EVENTS.USER_VERIFIED_EMAIL, {
       userId,
@@ -284,6 +297,7 @@ addAnalyticsListener({
       referringOrganisationName,
       assigneeId,
       assigneeName,
+      acquisitionChannel,
     });
   },
 });
@@ -313,6 +327,7 @@ addAnalyticsListener({
         referredByOrganisation: { name: 1 },
         referredByUser: { name: 1 },
         assignedEmployee: { name: 1 },
+        acquisitionChannel: 1,
       },
     });
     const {
@@ -380,6 +395,7 @@ addAnalyticsListener({
         name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
+      acquisitionChannel,
     } = user;
 
     analytics.track(EVENTS.LOAN_MAX_PROPERTY_VALUE_CALCULATED, {
@@ -415,6 +431,7 @@ addAnalyticsListener({
       referringOrganisationName,
       assigneeId,
       assigneeName,
+      acquisitionChannel,
     });
   },
 });
@@ -436,6 +453,7 @@ addAnalyticsListener({
         referredByOrganisation: { name: 1 },
         referredByUser: { name: 1 },
         assignedEmployee: { name: 1 },
+        acquisitionChannel: 1,
       },
     });
     const {
@@ -470,6 +488,7 @@ addAnalyticsListener({
         name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
+      acquisitionChannel,
     } = user;
 
     analytics.track(EVENTS.LOAN_BORROWERS_INSERTED, {
@@ -490,6 +509,7 @@ addAnalyticsListener({
       referringOrganisationName,
       assigneeId,
       assigneeName,
+      acquisitionChannel,
     });
   },
 });
@@ -537,6 +557,7 @@ addAnalyticsListener({
         referredByOrganisation: { name: 1 },
         referredByUser: { name: 1 },
         assignedEmployee: { name: 1 },
+        acquisitionChannel: 1,
       },
       promotions: { name: 1 },
       properties: { _id: 1 },
@@ -556,6 +577,7 @@ addAnalyticsListener({
         name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
+      acquisitionChannel,
     } = user;
 
     analytics.track(EVENTS.LOAN_CREATED, {
@@ -576,6 +598,7 @@ addAnalyticsListener({
       assigneeName,
       promotionId: promotion?._id,
       promotionName: promotion?.name,
+      acquisitionChannel,
     });
   },
 });
@@ -622,6 +645,7 @@ addAnalyticsListener({
       referredByUser: { name: 1 },
       referredByOrganisation: { name: 1 },
       assignedEmployee: { name: 1 },
+      acquisitionChannel: 1,
     });
 
     const {
@@ -633,6 +657,7 @@ addAnalyticsListener({
         name: referringOrganisationName,
       } = {},
       assignedEmployee: { _id: assigneeId, name: assigneeName } = {},
+      acquisitionChannel,
     } = user;
 
     // The user is creating himself, make sure all recent tracks are
@@ -651,6 +676,7 @@ addAnalyticsListener({
       assigneeName,
       origin: 'user',
       ctaId,
+      acquisitionChannel,
     });
 
     if (loanId) {
@@ -679,9 +705,13 @@ addAnalyticsListener({
       promotionLotIds = [],
       showAllLots = false,
     } = user;
-    const { assignedEmployee = {} } = UserService.get(customerId, {
-      assignedEmployee: { name: 1 },
-    });
+    const { assignedEmployee = {}, acquisitionChannel } = UserService.get(
+      customerId,
+      {
+        assignedEmployee: { name: 1 },
+        acquisitionChannel: 1,
+      },
+    );
     const { _id: assigneeId, name: assigneeName } = assignedEmployee;
 
     const { name: referringUserName } = UserService.get(referringUserId, {
@@ -706,6 +736,7 @@ addAnalyticsListener({
       assigneeId,
       assigneeName,
       referOnly,
+      acquisitionChannel,
     };
 
     if (referOnly) {
@@ -767,12 +798,14 @@ addAnalyticsListener({
       assignedEmployee: { name: assigneeName, _id: assigneeId } = {},
       referredByUser,
       referredByOrganisation,
+      acquisitionChannel,
     } = UserService.get(userId, {
       name: 1,
       email: 1,
       assignedEmployee: { name: 1 },
       referredByUser: { name: 1 },
       referredByOrganisation: { name: 1 },
+      acquisitionChannel: 1,
     });
     let referringUserId;
     let referringUserName;
@@ -799,6 +832,7 @@ addAnalyticsListener({
       referringOrganisationName,
       assigneeId,
       assigneeName,
+      acquisitionChannel,
     });
   },
 });
@@ -848,6 +882,7 @@ addAnalyticsListener({
         referredByUser: { name: 1 },
         referredByOrganisation: { name: 1 },
         assignedEmployee: { intercomId: 1, name: 1 },
+        acquisitionChannel: 1,
       });
 
       params = {
@@ -861,6 +896,7 @@ addAnalyticsListener({
         referringOrganisationName: user?.referredByOrganisation?.name,
         assigneeId: user?.assignedEmployee?._id,
         assigneeName: user?.assignedEmployee?.name,
+        acquisitionChannel: user?.acquisitionChannel,
       };
     }
 
@@ -914,6 +950,7 @@ addAnalyticsListener({
         assignedEmployee: { name: 1 },
         referredByOrganisation: { name: 1 },
         referredByUser: { name: 1 },
+        acquisitionChannel: 1,
       });
 
       analytics.track(EVENTS.USER_CHANGED_STATUS, {
@@ -929,6 +966,7 @@ addAnalyticsListener({
         assigneeId: user?.assignedEmployee?._id,
         assigneeName: user?.assignedEmployee?.name,
         statusChangeReason: reason,
+        acquisitionChannel: user?.acquisitionChannel,
       });
     }
   },
@@ -987,6 +1025,7 @@ const trackOnboardingStart = ({ analytics, loanId, userId }) => {
       referredByUser: { name: 1 },
       referredByOrganisation: { name: 1 },
       assignedEmployee: { intercomId: 1, name: 1 },
+      acquisitionChannel: 1,
     });
 
     params = {
@@ -1000,6 +1039,7 @@ const trackOnboardingStart = ({ analytics, loanId, userId }) => {
       referringOrganisationName: user?.referredByOrganisation?.name,
       assigneeId: user?.assignedEmployee?._id,
       assigneeName: user?.assignedEmployee?.name,
+      acquisitionChannel: user?.acquisitionChannel,
     };
   }
 

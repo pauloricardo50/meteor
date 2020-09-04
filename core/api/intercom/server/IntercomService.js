@@ -358,6 +358,7 @@ export class IntercomService {
         referredByUser: { name: 1 },
         referredByOrganisation: { name: 1 },
         assignedEmployee: { intercomId: 1, name: 1 },
+        acquisitionChannel: 1,
       });
 
     const analytics = new Analytics();
@@ -376,6 +377,7 @@ export class IntercomService {
         lastPageTitle: lastPageEvent?.metadata?.title,
         lastPageMicroservice: lastPageEvent?.metadata?.microservice,
         lastPagePath: lastPageEvent?.metadata?.pathname,
+        acquisitionChannel: user?.acquisitionChannel,
         ...additionalProperties,
       },
       trackingId,

@@ -119,6 +119,7 @@ const getUserProperties = userId => {
     referredByUser: { name: 1 },
     referredByOrganisation: { name: 1 },
     assignedEmployee: { name: 1 },
+    acquisitionChannel: 1,
   });
 
   return {
@@ -131,6 +132,7 @@ const getUserProperties = userId => {
     referringOrganisationName: user?.referredByOrganisation?.name,
     assigneeId: user?.assignedEmployee?._id,
     assigneeName: user?.assignedEmployee?.name,
+    acquisitionChannel: 1,
   };
 };
 

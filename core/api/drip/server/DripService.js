@@ -183,6 +183,7 @@ export class DripService {
         referredByUser: { name: 1 },
         referredByOrganisation: { name: 1 },
         assignedEmployee: { name: 1 },
+        acquisitionChannel: 1,
       });
 
     if (!analyticsUser) {
@@ -200,6 +201,7 @@ export class DripService {
       referringOrganisationName: analyticsUser?.referredByOrganisation?.name,
       assigneeId: analyticsUser?.assignedEmployee?._id,
       assigneeName: analyticsUser?.assignedEmployee?.name,
+      acquisitionChannel: analyticsUser?.acquisitionChannel,
       ...additionalProperties,
     });
   }
@@ -370,6 +372,7 @@ export class DripService {
       referredByUser: { name: 1 },
       referredByOrganisation: { name: 1 },
       assignedEmployee: { name: 1 },
+      acquisitionChannel: 1,
     });
 
     switch (tag) {
@@ -455,6 +458,7 @@ export class DripService {
       referredByUser: { name: 1 },
       referredByOrganisation: { name: 1 },
       assignedEmployee: { name: 1 },
+      acquisitionChannel: 1,
     });
 
     if (user?._id) {
@@ -483,6 +487,7 @@ export class DripService {
       referredByUser: { name: 1 },
       referredByOrganisation: { name: 1 },
       assignedEmployee: { name: 1 },
+      acquisitionChannel: 1,
     });
 
     if (user?._id) {
@@ -514,6 +519,7 @@ export class DripService {
       referredByUser: { name: 1 },
       referredByOrganisation: { name: 1 },
       assignedEmployee: { name: 1 },
+      acquisitionChannel: 1,
     });
 
     if (user?._id) {
@@ -570,6 +576,7 @@ export class DripService {
       referredByUser: { name: 1 },
       referredByOrganisation: { name: 1 },
       assignedEmployee: { name: 1 },
+      acquisitionChannel: 1,
     });
 
     if (user?._id) {
@@ -613,6 +620,7 @@ export class DripService {
       referredByUser: { name: 1 },
       referredByOrganisation: { name: 1 },
       assignedEmployee: { name: 1 },
+      acquisitionChannel: 1,
     });
 
     if (user?._id) {
