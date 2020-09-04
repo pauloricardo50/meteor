@@ -46,11 +46,11 @@ class Analytics {
     );
     const isTest = Meteor.isTest || Meteor.isAppTest;
 
-    // if (isImpersonating || isTest || Meteor.isDevelopment) {
-    //   this.analytics = noOpAnalytics;
-    // } else {
-    this.analytics = nodeAnalytics;
-    // }
+    if (isImpersonating || isTest || Meteor.isDevelopment) {
+      this.analytics = noOpAnalytics;
+    } else {
+      this.analytics = nodeAnalytics;
+    }
 
     this.context(context);
   }
@@ -142,8 +142,6 @@ class Analytics {
   }
 
   identify(trackingId = getClientTrackingId()) {
-    // this.alias(trackingId);
-
     this.analytics.identify({
       userId: this.userId,
       anonymousId: trackingId,
@@ -215,7 +213,6 @@ class Analytics {
   }
 
   track(event, data, trackingId = getClientTrackingId()) {
-    console.log('trackingId:', trackingId);
     if (!Object.keys(this.events).includes(event)) {
       throw new Meteor.Error(`Unknown event ${event}`);
     }
