@@ -316,7 +316,7 @@ describe('Pro promotion', () => {
     cy.get('.additional-lots-table')
       .contains('Promotion lot 1')
       .should('not.exist');
-    cy.get('.promotion-lots-table').contains('Lot 2').should('not.exist');
+    cy.get('.promotion-lots-table').contains('1 290 000').should('exist');
 
     cy.get('.additional-lots-table tbody tr').first().click();
     // cy.wait(2000); // Try to wait for focus to settle
@@ -331,7 +331,7 @@ describe('Pro promotion', () => {
 
     cy.contains('Lot 2').should('exist');
     cy.contains('2 500').should('exist');
-    cy.get('.promotion-lots-table').contains('Lot 2').should('exist');
+    cy.get('.promotion-lots-table').contains('1 292 500').should('exist');
   });
 
   it('should remove lots', () => {
