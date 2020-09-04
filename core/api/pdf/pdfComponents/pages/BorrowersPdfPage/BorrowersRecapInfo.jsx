@@ -51,9 +51,9 @@ const getBorrowersInfosArray = ({ borrowers, calculator }) => {
       }),
     },
     {
-      label: <T id="Forms.childrenCount" />,
-      data: borrowersInfos.childrenCount.map(children => children || '-'),
-      condition: shouldRenderArray(borrowersInfos.childrenCount),
+      label: <T id="Forms.children" />,
+      data: borrowersInfos.children.map(children => children || '-'),
+      condition: shouldRenderArray(borrowersInfos.children),
     },
     {
       label: <T id="Forms.activityType" />,

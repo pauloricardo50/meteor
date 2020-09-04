@@ -1,4 +1,7 @@
 {
+  "Forms.children": "Enfants",
+  "Forms.children.name": "Prénom",
+  "Forms.children.age": "Âge",
   "general.next": "Suivant",
   "OnboardingResultEmpty.calculateTitle": "Déterminez votre capacité d'achat",
   "OnboardingResultEmpty.calculateCta": "Calculer",

@@ -32,7 +32,6 @@ describe('PDFService', () => {
             lastName: 'Doe',
             gender: GENDER.M,
             age: 51,
-            childrenCount: 2,
             civilStatus: CIVIL_STATUS.MARRIED,
             zipCode: 1400,
             city: 'Yverdon-les-Bains',

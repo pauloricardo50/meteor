@@ -1864,7 +1864,7 @@ describe('PromotionOptionService', function () {
 
         expect(content).to.include('Validé'); // Bank
         expect(content).to.include('Tout baigne'); // proNote
-        expect(content).to.include('2/22 (9%)'); // Infos
+        expect(content).to.include('2/21 (9%)'); // Infos
       });
 
       it("anonymizes the proNote for pros who shouldn't get it", async () => {

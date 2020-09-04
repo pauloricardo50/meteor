@@ -197,7 +197,15 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
       condition: shouldDisplayAddPartner({ b, multiple, isFirst }),
       required: false,
     },
-    { id: 'childrenCount', type: 'textInput', number: true },
+    {
+      id: 'children',
+      type: 'arrayInput',
+      required: false,
+      inputs: [
+        { id: 'name', type: 'textInput' },
+        { id: 'age', type: 'textInput', number: true },
+      ],
+    },
     {
       id: 'activityType',
       type: 'radioInput',

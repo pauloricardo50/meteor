@@ -106,6 +106,7 @@ import '/imports/core/api/migrations/server/test/5.test.js';
 import '/imports/core/api/migrations/server/test/6.test.js';
 import '/imports/core/api/migrations/server/test/7.test.js';
 import '/imports/core/api/migrations/server/test/9.test.js';
+import '/imports/core/api/migrations/server/test/43.test.js';
 import '/imports/core/api/monitoring/server/test/monitoring.test.js';
 import '/imports/core/api/mortgageNotes/server/test/MortgageNoteService.test.js';
 import '/imports/core/api/notifications/server/test/NotificationService.test.js';
