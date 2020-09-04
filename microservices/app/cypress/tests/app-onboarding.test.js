@@ -46,7 +46,10 @@ describe('App onboarding', () => {
       cy.contains('button', 'Nouvelle hypothèque').click();
 
       cy.url().should('include', 'loans');
-      cy.contains('button', 'Je recherche encore un logement').click();
+      cy.contains(
+        'button',
+        "Je suis en recherche active d'un logement",
+      ).click();
       cy.contains('button', 'Résidence principale').click();
       cy.contains('button', 'Genève').click();
       cy.contains('button', 'Un emprunteur').click();
@@ -92,7 +95,10 @@ describe('App onboarding', () => {
 
       cy.url().should('include', 'loans');
 
-      cy.contains('button', 'Je recherche encore un logement').click();
+      cy.contains(
+        'button',
+        "Je suis en recherche active d'un logement",
+      ).click();
       cy.contains('button', 'Résidence principale').click();
       cy.contains('button', 'Genève').click();
       cy.contains('button', 'Un emprunteur').click();
@@ -226,7 +232,7 @@ describe('App onboarding', () => {
       cy.routeTo('/');
       cy.url().should('include', 'loans/loanId/onboarding');
       cy.contains('button', 'Nouvelle hypothèque').click();
-      cy.contains('button', 'Je recherche').click();
+      cy.contains('button', 'Je vais signer chez le notaire').click();
       // Should skip residenceType as it's already set
       cy.contains('canton').should('exist');
     });
@@ -267,14 +273,14 @@ describe('App onboarding', () => {
     cy.url().should('include', '/onboarding');
 
     cy.contains('button', 'Nouvelle hypothèque').click();
-    cy.contains('button', 'Je recherche encore un logement').click();
+    cy.contains('button', "Je suis en recherche active d'un logement").click();
 
     cy.url().should('include', 'step=residenceType');
 
     cy.visit('/');
 
     cy.contains('Nouvelle hypothèque').should('exist');
-    cy.contains('Je recherche encore un logement').should('exist');
+    cy.contains("Je suis en recherche active d'un logement").should('exist');
     cy.url().should('include', '/loans/');
   });
 
@@ -301,7 +307,7 @@ describe('App onboarding', () => {
 
   it(`Should attach an anonymous loan to a new user account`, () => {
     cy.contains('button', 'Nouvelle hypothèque').click();
-    cy.contains('button', 'Je recherche encore un logement').click();
+    cy.contains('button', "Je suis en recherche active d'un logement").click();
 
     cy.contains('Créez votre compte').click();
 
@@ -323,14 +329,14 @@ describe('App onboarding', () => {
     cy.contains('button', 'Continuer').click();
 
     cy.contains('Nouvelle hypothèque').should('exist');
-    cy.contains('Je recherche encore un logement').should('exist');
+    cy.contains("Je suis en recherche active d'un logement").should('exist');
     cy.url().should('include', '/loans/');
   });
 
   it('should attach an anonymous loan to an existing account', () => {
     cy.callMethod('inviteTestUser', { withPassword: true });
     cy.contains('button', 'Nouvelle hypothèque').click();
-    cy.contains('button', 'Je recherche encore un logement').click();
+    cy.contains('button', "Je suis en recherche active d'un logement").click();
 
     cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
     cy.routeTo('/');
@@ -340,7 +346,7 @@ describe('App onboarding', () => {
     cy.contains('Dossier anonyme').should('not.exist');
 
     cy.contains('Nouvelle hypothèque').should('exist');
-    cy.contains('Je recherche encore un logement').should('exist');
+    cy.contains("Je suis en recherche active d'un logement").should('exist');
 
     cy.get('.onboarding-side-nav .logo-home').click();
     cy.get('.loan-card').should('have.length', 2);
@@ -540,10 +546,7 @@ describe('App onboarding', () => {
 
       cy.contains('button', 'Nouvelle hypothèque').click();
       cy.url().should('include', 'loans');
-      cy.contains(
-        'button',
-        "Je pense signer bientôt une promesse d'achat",
-      ).click();
+      cy.contains('button', "J'ai signé chez le notaire").click();
     });
 
     it('Works for users with a loan', () => {
