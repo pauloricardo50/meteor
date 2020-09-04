@@ -95,7 +95,7 @@ describe('App Promotions', () => {
 
     cy.contains('button', 'Un emprunteur').click();
 
-    cy.get('input[name="borrower1.birthDate"]').type('1990-01-01');
+    cy.get('input[name="borrower1.birthDate"]').type('1011990');
     cy.get('form').submit();
 
     cy.get('input[name="borrower1.salary"]').type('180000');

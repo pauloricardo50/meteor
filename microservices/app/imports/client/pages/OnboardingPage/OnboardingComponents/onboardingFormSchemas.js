@@ -1,9 +1,10 @@
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { OWN_FUNDS_TYPES } from 'core/api/borrowers/borrowerConstants';
 import { borrowerSchemaObject } from 'core/api/borrowers/schemas/BorrowerSchema';
 import { moneyField } from 'core/api/helpers/sharedSchemas';
-import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/autoFormConstants';
+import DatePicker from 'core/components/datePickers/DatePicker';
 
 import { makeBorrowerFormHeader } from './BorrowerFormHeader';
 
@@ -58,7 +59,9 @@ export const getBorrowersFormSchema = ({
 export const birthDateSchema = {
   birthDate: {
     type: Date,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    uniforms: {
+      render: props => <DatePicker {...props} />,
+    },
     optional: false,
   },
 };

@@ -54,7 +54,7 @@ describe('App onboarding', () => {
       cy.contains('button', 'Genève').click();
       cy.contains('button', 'Un emprunteur').click();
 
-      cy.get('input[name="borrower1.birthDate"]').type('1990-01-01');
+      cy.get('input[name="borrower1.birthDate"]').type('1011990');
       cy.get('form').submit();
 
       cy.get('input[name="borrower1.salary"]').type('180000');
@@ -103,7 +103,7 @@ describe('App onboarding', () => {
       cy.contains('button', 'Genève').click();
       cy.contains('button', 'Un emprunteur').click();
 
-      cy.get('input[name="borrower1.birthDate"]').type('1990-01-01');
+      cy.get('input[name="borrower1.birthDate"]').type('1011990');
       cy.get('form').submit();
       cy.url().should('include', 'step=income');
 
@@ -171,7 +171,7 @@ describe('App onboarding', () => {
       cy.url().should('include', 'onboarding');
 
       cy.contains('button', 'Un emprunteur').click();
-      cy.get('input[name="borrower1.birthDate"]').type('1990-01-01');
+      cy.get('input[name="borrower1.birthDate"]').type('1011990');
       cy.get('form').submit();
 
       cy.get('input[name="borrower1.salary"]').type('180000');
@@ -341,6 +341,7 @@ describe('App onboarding', () => {
     cy.meteorLogin(USER_EMAIL, USER_PASSWORD);
     cy.routeTo('/');
     cy.contains('Dossier anonyme').should('exist');
+    cy.wait(1000); // "Detached from the DOM" failure avoidance 
     cy.contains('Ajouter à mon compte').click();
     cy.url().should('include', '/loans/');
     cy.contains('Dossier anonyme').should('not.exist');
@@ -480,7 +481,7 @@ describe('App onboarding', () => {
 
     cy.contains('button', 'Un emprunteur').click();
 
-    cy.get('input[name="borrower1.birthDate"]').type('1990-01-01');
+    cy.get('input[name="borrower1.birthDate"]').type('1011990');
     cy.get('form').submit();
 
     cy.get('input[name="borrower1.salary"]').type('180000');

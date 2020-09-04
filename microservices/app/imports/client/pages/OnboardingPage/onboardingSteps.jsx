@@ -243,7 +243,7 @@ export const steps = [
     condition: always,
     props: { borrowerSchema: birthDateSchema },
     isDone: loan =>
-      loan.borrowers.length > 0 &&
+      loan.borrowers?.length > 0 &&
       loan.borrowers?.every(({ birthDate }) => !!birthDate),
     onSubmit: loan => ({ borrower1, borrower2 }) =>
       updateBorrowers(loan, borrower1, borrower2),
