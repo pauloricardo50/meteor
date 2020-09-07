@@ -44,6 +44,7 @@ const SUBSCRIBER_PHONE = '+41 123456';
 // because they are tested in DripService.test.js
 describe('dripListeners', function () {
   this.timeout(5000);
+  this.retries(2);
   let analyticsSpy;
   let callDripAPIStub;
 

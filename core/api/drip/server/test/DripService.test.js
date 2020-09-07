@@ -31,6 +31,7 @@ const removeSubscriber = email => DripService.removeSubscriber({ email });
 
 describe('DripService', function () {
   this.timeout(10000);
+  this.retries(2);
   let logErrorSpy;
   let analyticsSpy;
   let SUBSCRIBER_EMAIL;

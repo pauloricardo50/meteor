@@ -2,6 +2,7 @@
 import { expect } from 'chai';
 import moment from 'moment';
 
+import { createClock } from '../../../../utils/testHelpers';
 import { BORROWERS_COLLECTION } from '../../../borrowers/borrowerConstants';
 import generator from '../../../factories/server';
 import { asyncForEach } from '../../../helpers';
@@ -9,7 +10,6 @@ import { BORROWER_DOCUMENTS, FILE_STATUS } from '../../fileConstants';
 import FileService from '../FileService';
 import S3Service from '../S3Service';
 import { clearBucket } from './S3Service.test';
-import { createClock } from '../../../../utils/testHelpers';
 
 const docId = 'someDocId';
 const json = { hello: 'world' };
@@ -27,6 +27,7 @@ const setupBucket = () =>
 
 describe('FileService', function () {
   this.timeout(10000);
+  this.retries(2);
 
   beforeEach(() => clearBucket(docId).then(setupBucket));
 
