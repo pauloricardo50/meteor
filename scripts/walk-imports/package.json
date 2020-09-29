@@ -1,0 +1,18 @@
+{
+  "name": "walk-imports",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true,
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "ast-types": "^0.14.2",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "meteor-babel": "^7.9.0",
+    "recast": "^0.20.3"
+  }
+}
