@@ -14,9 +14,9 @@ const KeyPairGenerator = ({ loading, generateKeyPair, keyPair = {} }) => (
     className="generate-key-pair"
   >
     {keyPair.publicKey ? (
-      <T id="AccountPage.DevelopperSection.keyPair.regenerate" />
+      <T defaultMessage="Regénérer une paire de clés" />
     ) : (
-      <T id="AccountPage.DevelopperSection.keyPair.generate" />
+      <T defaultMessage="Générer une paire de clés" />
     )}
   </Button>
 );

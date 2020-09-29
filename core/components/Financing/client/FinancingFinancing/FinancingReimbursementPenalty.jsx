@@ -37,13 +37,13 @@ const FinancingReimbursementPenalty = ({ className, ...props }) => {
       >
         <div className="reimbursement-penalty-dialog">
           <h3>
-            <T id="general.reimbursementPenalty" />
+            <T defaultMessage="Pénalités de remoursement" />
           </h3>
           <div>
             {hasReimbursementPenaltyOverride ? (
-              <T id="FinancingReimbursementPenalty.override" />
+              <T defaultMessage="Vous avez choisi des pénalités de remboursement sur mesure. Pour accéder aux pénalités de remboursement automatiques, supprimez le contenu du champ \"Pénalités de remboursement\"" />
             ) : (
-              <T id="FinancingReimbursementPenalty.description" />
+              <T defaultMessage="Les pénalités de remboursement sont calculées en additionnant tous les intérêts de vos tranches au pro rata du temps restant jusqu'à leur fin. Attention: il s'agit d'une estimation." />
             )}
           </div>
         </div>

@@ -58,7 +58,7 @@ const getRefinancingOwnFundsTitle = props => {
           />
         </div>
         <div className="mt-8">
-          <T id="FinancingOwnFundsTitle.pledge" />
+          <T defaultMessage="Nantissement" />
         </div>
       </div>
     );

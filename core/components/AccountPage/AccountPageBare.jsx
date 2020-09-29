@@ -21,7 +21,7 @@ const AccountPageBare = ({ currentUser }) => {
       <div className="account-page-info">
         <div>
           <h4>
-            <T id="AccountPage.email" />
+            <T defaultMessage="Adresse email" />
           </h4>
           <span className="secondary">
             {email} <EmailModifier userId={userId} email={email} />
@@ -31,7 +31,7 @@ const AccountPageBare = ({ currentUser }) => {
         {phoneNumbers && phoneNumbers.length > 0 && (
           <div>
             <h4>
-              <T id="AccountPage.phone" />
+              <T defaultMessage="Téléphone" />
             </h4>
             <TooltipArray
               title="Numéros de téléphone"
@@ -48,7 +48,7 @@ const AccountPageBare = ({ currentUser }) => {
         )}
         <div>
           <h4>
-            <T id="AccountPage.newsletter" />
+            <T defaultMessage="Newsletter e-Potek" />
           </h4>
           <NewsletterSignup />
         </div>

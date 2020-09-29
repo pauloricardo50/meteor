@@ -22,7 +22,7 @@ const isAdmin = Meteor.microservice === 'admin';
 
 const getColumns = ({ currentUser, promotion: { promotionLots = [] } }) => [
   {
-    Header: <T id="PromotionCustomersTable.customer" />,
+    Header: <T defaultMessage="Acquéreur" />,
     accessor: 'userCache.lastName',
     Cell: ({ row: { original: loan } }) => (
       <PromotionCustomer
@@ -32,14 +32,14 @@ const getColumns = ({ currentUser, promotion: { promotionLots = [] } }) => [
     ),
   },
   {
-    Header: <T id="Forms.status" />,
+    Header: <T defaultMessage="Statut" />,
     accessor: 'status',
     Cell: ({ value: status }) => (
       <StatusLabel status={status} collection={LOANS_COLLECTION} />
     ),
   },
   {
-    Header: <T id="PromotionCustomersTable.invitedBy" />,
+    Header: <T defaultMessage="Invité par" />,
     accessor: 'promotionLinks.0.invitedBy',
     Cell: ({ row: { original: loan } }) => (
       <InvitedByAssignDropdown
@@ -49,12 +49,12 @@ const getColumns = ({ currentUser, promotion: { promotionLots = [] } }) => [
     ),
   },
   {
-    Header: <T id="PromotionCustomersTable.createdAt" />,
+    Header: <T defaultMessage="Ajouté" />,
     accessor: 'createdAt',
     Cell: ({ value: createdAt }) => moment(createdAt).fromNow(),
   },
   {
-    Header: <T id="PromotionCustomersTable.priorityOrder" />,
+    Header: <T defaultMessage="Priorité" />,
     accessor: 'promotionLinks.0.priorityOrder.0',
     Cell: ({ row: { original: loan } }) => (
       <PriorityOrder
@@ -64,7 +64,7 @@ const getColumns = ({ currentUser, promotion: { promotionLots = [] } }) => [
     ),
   },
   {
-    Header: <T id="PromotionCustomersTable.actions" />,
+    Header: <T defaultMessage="Actions" />,
     accessor: '_id',
     Cell: ({ row: { original: loan } }) => (
       <PromotionCustomersTableActions

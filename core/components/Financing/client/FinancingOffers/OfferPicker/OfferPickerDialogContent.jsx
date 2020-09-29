@@ -30,7 +30,7 @@ const OfferPickerDialogContent = props => {
       {conditions.length > 0 && (
         <>
           <h3>
-            <T id="FinancingOffers.conditions" />
+            <T defaultMessage="Conditions de l'offre" />
           </h3>
           <p>
             <ul>
@@ -45,7 +45,7 @@ const OfferPickerDialogContent = props => {
       {!!fees && (
         <>
           <h3>
-            <T id="Forms.fees" />
+            <T defaultMessage="Frais de dossier" />
           </h3>
           <Money value={fees} />
         </>
@@ -54,14 +54,14 @@ const OfferPickerDialogContent = props => {
       {!!epotekFees && (
         <>
           <h3>
-            <T id="Forms.epotekFees" />
+            <T defaultMessage="Frais e-Potek" />
           </h3>
           <Money value={epotekFees} />
         </>
       )}
 
       <h3>
-        <T id="FinancingOffers.monthly" />
+        <T defaultMessage="Coût Mensuel" />
       </h3>
       <div className="validator recap">
         <RecapSimple
@@ -87,12 +87,12 @@ const OfferPickerDialogContent = props => {
       </div>
 
       <h3>
-        <T id="Forms.maxAmount" />
+        <T defaultMessage="Prêt maximal" />
       </h3>
       <Money value={maxAmount} />
 
       <h3>
-        <T id="FinancingOffers.interests" />
+        <T defaultMessage="Intérêts" />
       </h3>
       <div className="rates">
         {Object.keys(rates).map(rate => (

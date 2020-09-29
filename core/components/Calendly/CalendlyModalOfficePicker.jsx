@@ -13,7 +13,7 @@ const CalendlyModalOfficePicker = ({ setLink }) => (
       size="large"
     >
       e-Potek&nbsp;–&nbsp;
-      <T id="cities.geneva" />
+      <T defaultMessage="Genève" />
     </Button>
     <Button
       primary
@@ -23,7 +23,7 @@ const CalendlyModalOfficePicker = ({ setLink }) => (
       size="large"
     >
       e-Potek&nbsp;–&nbsp;
-      <T id="cities.lausanne" />
+      <T defaultMessage="Lausanne" />
     </Button>
   </div>
 );

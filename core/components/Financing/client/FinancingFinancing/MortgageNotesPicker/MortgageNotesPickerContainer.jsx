@@ -12,7 +12,7 @@ const formatMortgageNotes = (mortgageNoteIds, borrowers) =>
     const notesWithName = notes.map(note => ({
       ...note,
       borrowerName: name || (
-        <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
+        <T values={{ index: index + 1 }} defaultMessage="Emprunteur {index}" />
       ),
       isBorrower: true,
     }));

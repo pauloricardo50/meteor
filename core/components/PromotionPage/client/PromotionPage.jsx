@@ -26,20 +26,18 @@ const getTabs = ({
     {
       id: 'customers',
       label: (
-        <T id="PromotionPageTabs.customers" values={{ count: loanCount }} />
+        <T values={{ count: loanCount }} defaultMessage="Acquéreurs ({count})" />
       ),
       shouldDisplay: canSeeCustomers,
     },
     {
       id: 'users',
       label: (
-        <T id="PromotionPageTabs.users" values={{ count: users.length }} />
+        <T values={{ count: users.length }} defaultMessage="Pros ({count})" />
       ),
       shouldDisplay: canSeeUsers,
     },
-  ]
-    .filter(({ shouldDisplay }) => shouldDisplay)
-    .map(tab => ({
+  ].filter(({ shouldDisplay }) => shouldDisplay).map(tab => ({
       ...tab,
       label: tab.label || <T id={`PromotionPageTabs.${tab.id}`} />,
     }));

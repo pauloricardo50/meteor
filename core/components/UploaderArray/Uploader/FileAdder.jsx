@@ -49,7 +49,7 @@ const FileAdder = ({ handleAddFiles }) => {
         component="label"
         size="small"
       >
-        <T id="FileAdder.title" />
+        <T defaultMessage="+ Uploader un fichier (ou glissez-deposez)" />
       </Button>
     </a>
   );

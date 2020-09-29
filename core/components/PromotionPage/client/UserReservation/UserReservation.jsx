@@ -24,7 +24,10 @@ const UserReservation = ({
   return (
     <div className={cx('user-reservation', className)}>
       <h3>
-        <T id="UserReservation.title" values={{ promotionLotName: name }} />
+        <T
+          values={{ promotionLotName: name }}
+          defaultMessage="Lot {promotionLotName}"
+        />
       </h3>
 
       <div className="user-reservation-info">

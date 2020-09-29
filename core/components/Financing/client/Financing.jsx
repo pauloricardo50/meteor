@@ -28,7 +28,7 @@ const Financing = ({ loan }) => {
     return (
       <div className="financing-select-residence-type">
         <FontAwesomeIcon icon={faHome} className="icon" />
-        <T id="Financing.residenceTypeSelect.description" />
+        <T defaultMessage="Sélectionnez un type d'utilisation pour créer un plan financier" />
         <UpdateField
           doc={loan}
           fields={['residenceType']}

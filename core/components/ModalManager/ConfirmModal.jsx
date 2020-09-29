@@ -38,8 +38,8 @@ const ConfirmModal = ({
         {keyword && (
           <>
             <T
-              id="ConfirmMethod.dialogMessage"
               values={{ keyword: <b>{keyword}</b> }}
+              defaultMessage="Tapez {keyword} pour valider."
             />
             <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
               <TextInput

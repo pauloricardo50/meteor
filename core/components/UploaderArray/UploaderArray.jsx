@@ -19,7 +19,7 @@ export const UploaderArray = ({
   if (documentArray.length === 0) {
     return (
       <p className="description">
-        <T id="UploaderArray.empty" />
+        <T defaultMessage="Pas encore de documents dans cette catégorie. Ajoutez-en et ils apparaîtront ici." />
       </p>
     );
   }

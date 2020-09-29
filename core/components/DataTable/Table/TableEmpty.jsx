@@ -12,7 +12,7 @@ const TableEmpty = () => (
       style={{ padding: 16, paddingBottom: 4 }}
     />
     <span className="mb-8 font-size-3">
-      <T id="Table.empty" />
+      <T defaultMessage="Rien à afficher" />
     </span>
   </div>
 );

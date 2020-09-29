@@ -98,9 +98,9 @@ export default withProps(
       params: { promotionId, $body: { promotionLotGroupIds: 1 } },
     });
     const columns = useMemo(() => [
-      { Header: <T id="Forms.promotionLotGroup" />, accessor: 'label' },
+      { Header: <T defaultMessage="Groupe de lots" />, accessor: 'label' },
       {
-        Header: <T id="PromotionLotGroupsManager.count" />,
+        Header: <T defaultMessage="Nombre de lots" />,
         accessor: 'id',
         Cell: ({ value: id }) =>
           promotionLots.reduce(
@@ -112,7 +112,7 @@ export default withProps(
           ),
       },
       {
-        Header: <T id="PromotionLotGroupsManager.actions" />,
+        Header: <T defaultMessage="Actions" />,
         accessor: 'actions',
         disableSortBy: true,
       },

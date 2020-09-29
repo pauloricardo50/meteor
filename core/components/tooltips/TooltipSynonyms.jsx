@@ -20,7 +20,11 @@ export const TooltipSynonyms = ({ tooltipId, match, tooltips }) => {
   return (
     <span className="tooltip-synonyms">
       <b>
-        <T id="TooltipSynonyms.title" values={{ count: synonyms.length }} />:
+        <T
+          values={{ count: synonyms.length }}
+          defaultMessage="{count, plural, one {Synonyme} other {Synonymes}}"
+        />
+        :
       </b>
       <i>{synonyms.join(', ')}</i>
     </span>

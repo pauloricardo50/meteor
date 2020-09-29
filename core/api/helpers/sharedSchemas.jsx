@@ -79,7 +79,7 @@ export const address = {
       withCustomOther: true,
       transform: city => {
         if (city === 'other') {
-          return <T id="general.other" />;
+          return <T defaultMessage="Autre" />;
         }
         return city || 'Aucun résultat trouvé';
       },

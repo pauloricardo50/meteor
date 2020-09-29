@@ -13,7 +13,7 @@ import { usePromotion } from '../PromotionPageContext';
 const getOptions = (allLots, promotionLotId) => {
   const unassignedLots = allLots.filter(lot => lot.promotionLots.length === 0);
   if (unassignedLots.length === 0) {
-    return [{ id: 'empty', label: <T id="PromotionLotsManager.empty" /> }];
+    return [{ id: 'empty', label: <T defaultMessage="Pas de lots annexes" /> }];
   }
   return unassignedLots.map(({ _id: lotId, name }) => ({
     id: lotId,
@@ -48,7 +48,7 @@ const PromotionLotsManager = ({
   return (
     <Box>
       <h4 className="mt-0">
-        <T id="PromotionLotPage.manageLot" />
+        <T defaultMessage="Lots annexes" />
       </h4>
       <div className="promotion-lots-manager">
         {lots.map(lot => (

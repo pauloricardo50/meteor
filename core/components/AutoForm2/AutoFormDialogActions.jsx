@@ -32,7 +32,7 @@ const AutoFormDialogActions = (
     <DialogActions>
       {!noCancel && (
         <Button onClick={handleClose} disabled={submitting || disableActions}>
-          <T id="general.cancel" />
+          <T defaultMessage="Annuler" />
         </Button>
       )}
 

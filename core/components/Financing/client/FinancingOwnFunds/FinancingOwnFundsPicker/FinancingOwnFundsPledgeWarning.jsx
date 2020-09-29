@@ -13,7 +13,6 @@ const FinancingOwnFundsPledgeWarning = props => {
       <p className="financing-pledge-warning primary">
         <Icon type="info" className="icon" />
         <T
-          id="FinancingOwnFundsPledgeWarning.description"
           values={{
             maxPledge: (
               <b style={{ color: 'black' }}>
@@ -23,6 +22,7 @@ const FinancingOwnFundsPledgeWarning = props => {
               </b>
             ),
           }}
+          defaultMessage="Attention, vous pouvez nantir CHF {maxPledge} au maximum."
         />
       </p>
     );

@@ -16,7 +16,7 @@ const MortgageNotesForm = ({
 }) => (
   <div className={className} style={{ maxWidth: 400, width: '100%' }}>
     <h3 className="text-center v-align-mortgageNotes">
-      <T id="general.mortgageNotes" />
+      <T defaultMessage="Cédules hypothécaires" />
     </h3>
     <p className="description text-center">
       <T
@@ -39,14 +39,14 @@ const MortgageNotesForm = ({
       >
         <div className="flex center">
           <Button onClick={() => mortgageNoteRemove(mortgageNote._id)} raised>
-            <T id="general.delete" />
+            <T defaultMessage="Supprimer" />
           </Button>
         </div>
       </AutoForm>
     ))}
     <div className="flex center m-8">
       <Button onClick={mortgageNoteInsert} raised primary>
-        <T id="general.add" />
+        <T defaultMessage="Ajouter" />
       </Button>
     </div>
   </div>

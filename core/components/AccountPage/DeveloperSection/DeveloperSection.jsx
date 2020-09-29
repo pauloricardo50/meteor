@@ -7,14 +7,14 @@ import GenerateApiKeyPair from './GenerateApiKeyPair';
 const DeveloperSection = ({ user }) => (
   <div className="developper-section animated fadeIn">
     <h2>
-      <T id="AccountPage.DevelopperSection.title" />
+      <T defaultMessage="Zone développeur" />
     </h2>
     <p>
       <T
-        id="AccountPage.DevelopperSection.description"
         values={{
           email: <a href="mailto:digital@e-potek.ch">digital@e-potek.ch</a>,
         }}
+        defaultMessage="N'hésitez pas à contacter {email} pour obtenir la documentation nécessaire à l'implémentation de l'API."
       />
     </p>
     <GenerateApiKeyPair user={user} />

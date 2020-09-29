@@ -22,31 +22,29 @@ export const getReadyToCalculateTitle = props => {
   } = loan;
 
   if (!lockCanton) {
-    return <T id="MaxPropertyValue.empty" />;
+    return <T defaultMessage="Choisissez le canton dans lequel se situe le bien immobilier. Vous pourrez le changer plus tard." />;
   }
 
   if (hasPromotion) {
     const promotionName = promotions[0].name;
     return (
       <T
-        id="MaxPropertyValue.empty.promotion"
         values={{
           promotionName,
           canton: <T id={`Forms.canton.${canton}`} />,
         }}
+        defaultMessage="Dans le cadre de la promotion \"{promotionName}\", calculez votre capacité d'achat et obtenez un accord de principe pour le canton de {canton}"
       />
     );
   }
 
   if (hasProProperty) {
     const propertyName = properties[0].address1;
-    return (
-      <T id="MaxPropertyValue.empty.proProperty" values={{ propertyName }} />
-    );
+    return <T values={{ propertyName }} defaultMessage="Obtenez un accord de principe pour le bien immobilier \"{propertyName}\"" />;
   }
 
   if (purchaseType === PURCHASE_TYPE.REFINANCING) {
-    return <T id="MaxPropertyValue.empty.refinancing" />;
+    return <T defaultMessage="Calculez votre capacité d'emprunt auprès de tous les prêteurs du marché" />;
   }
 };
 
@@ -93,9 +91,9 @@ export const MaxPropertyValueEmptyStateReady = ({
         icon={<Icon type="check" />}
       >
         {lockCanton ? (
-          <T id="general.calculate" />
+          <T defaultMessage="Calculer" />
         ) : (
-          <T id="general.validate" />
+          <T defaultMessage="Valider" />
         )}
       </Button>
     </div>
@@ -114,17 +112,17 @@ const MaxPropertyValueEmptyState = props => {
         {state === STATE.MISSING_INFOS ? (
           <>
             <div className="font-size-5">
-              <T id="MaxPropertyValue.completeInfo" />
+              <T defaultMessage="Complétez vos informations" />
             </div>
             <p className="description">
-              <T id="MaxPropertyValue.missingInfos" values={{ purchaseType }} />
+              <T values={{ purchaseType }} defaultMessage="Complétez le formulaire pour pouvoir calculer votre capacité {purchaseType, select, REFINANCING {d'emprunt} other {d'achat}} auprès de tous les prêteurs" />
             </p>
             <Button
               link
               primary
               to={createRoute('/loans/:loanId/borrowers/finance', { loanId })}
             >
-              <T id="collections.borrowers" />
+              <T defaultMessage="Emprunteurs" />
             </Button>
           </>
         ) : (

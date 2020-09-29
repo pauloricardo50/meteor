@@ -50,7 +50,10 @@ const MaxPropertyValueResults = ({
         {!hideTitle && (
           <div>
             <h2>
-              <T id="MaxPropertyValue.title" values={{ purchaseType }} />
+              <T
+                values={{ purchaseType }}
+                defaultMessage="Capacité {purchaseType, select, REFINANCING {d'emprunt} other {d'achat}}"
+              />
             </h2>
           </div>
         )}
