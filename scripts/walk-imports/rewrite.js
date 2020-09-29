@@ -2,7 +2,12 @@ const { print, types } = require('recast');
 const { resolve: resolvePath } = require('path');
 
 const { writeFileSync } = require('fs');
-const { findTImport, findTComponents, getId } = require('./find-strings');
+const {
+  findTImport,
+  findTComponents,
+  getId,
+  createTPaths,
+} = require('./find-strings');
 const walkApp = require('.');
 
 const b = types.builders;
@@ -10,8 +15,9 @@ const b = types.builders;
 // eslint-disable-next-line import/no-dynamic-require
 const lang = require(resolvePath(process.cwd(), 'imports/core/lang/fr.json'));
 
-module.exports = function (importedFile) {
-  const tName = findTImport(importedFile.path, importedFile.imports);
+module.exports = function (importedFile, appPath) {
+  const tPaths = createTPaths(appPath);
+  const tName = findTImport(importedFile.path, importedFile.imports, tPaths);
   let modified = false;
   const components = findTComponents(importedFile.ast, tName);
 
@@ -34,9 +40,11 @@ module.exports = function (importedFile) {
     let attrValue = null;
     // JSX doesn't allow escaping quotes, so we have to
     // put the string within an expression
-    if (content.includes('/"')) {
+    if (content.includes('"')) {
+      console.log('has escaped string', content);
       attrValue = b.jsxExpressionContainer(b.stringLiteral(content));
     } else {
+      console.log('plain string', content);
       attrValue = b.literal(content);
     }
 
@@ -57,14 +65,14 @@ module.exports = function (importedFile) {
     } catch (e) {
       console.log('failed migrating', importedFile.path, e.message);
     }
+    console.log('modified', importedFile.path);
   }
-  console.log('modified', importedFile.path);
 };
 
 const archList = ['client'];
 const startTime = new Date();
 walkApp(process.cwd(), archList, importedFile => {
-  module.exports(importedFile);
+  module.exports(importedFile, process.cwd());
 });
 
 const endTime = new Date();
