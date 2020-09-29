@@ -30,12 +30,7 @@ describe('CurrentOwnFunds', () => {
 
     props.ownFunds = { usageType };
 
-    expect(
-      component()
-        .find(T)
-        .at(1)
-        .props().id,
-    ).to.include(usageType);
+    expect(component().find(T).at(1).props().id).to.include(usageType);
   });
 
   it('does not display firstName if there is only one', () => {
@@ -54,9 +49,7 @@ describe('CurrentOwnFunds', () => {
     const spy = sinon.spy();
     props.handleOpen = spy;
 
-    component()
-      .find('div')
-      .simulate('click');
+    component().find('div').simulate('click');
     expect(spy.calledOnce).to.equal(true);
   });
 
@@ -72,11 +65,7 @@ describe('CurrentOwnFunds', () => {
       },
     ];
     props.structure = { ownFunds: [props.ownFunds] };
-    expect(
-      component()
-        .find('p.error')
-        .exists(),
-    ).to.equal(true);
+    expect(component().find('p.error').exists()).to.equal(true);
   });
 
   it('displays an error message if funds have changed to be lower than used', () => {
@@ -98,10 +87,6 @@ describe('CurrentOwnFunds', () => {
         },
       ],
     };
-    expect(
-      component()
-        .find('p.error')
-        .exists(),
-    ).to.equal(true);
+    expect(component().find('p.error').exists()).to.equal(true);
   });
 });

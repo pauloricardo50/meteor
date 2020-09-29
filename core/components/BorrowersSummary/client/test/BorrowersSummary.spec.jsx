@@ -43,11 +43,7 @@ describe('BorrowersSummary />', () => {
 
     expect(wrapper.find('.borrowers-list').children()).to.have.length(1);
     expect(
-      wrapper
-        .find('.borrowers-list')
-        .children()
-        .find(T)
-        .prop('id'),
+      wrapper.find('.borrowers-list').children().find(T).prop('id'),
     ).to.equal('general.noBorrowersForLoan');
   });
 });

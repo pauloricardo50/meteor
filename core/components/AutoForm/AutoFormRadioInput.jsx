@@ -30,8 +30,9 @@ export default class AutoFormRadioInput extends Component {
     }
     return (
       <T
-        id={`Forms.${this.props.InputProps.intlId ||
-          this.props.InputProps.id}.${optionId}`}
+        id={`Forms.${
+          this.props.InputProps.intlId || this.props.InputProps.id
+        }.${optionId}`}
         values={intlValues}
       />
     );

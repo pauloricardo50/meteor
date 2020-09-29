@@ -43,7 +43,7 @@ const Offer = ({ offer, offerValues, loan }) => {
         </div>
 
         <div className="offer-list-item-detail">
-          {offerValues.map((offerValue) => (
+          {offerValues.map(offerValue => (
             <OfferField
               key={offerValue.key}
               offerValue={offerValue}

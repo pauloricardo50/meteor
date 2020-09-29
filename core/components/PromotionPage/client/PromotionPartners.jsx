@@ -60,10 +60,7 @@ const PromotionPartners = ({
                 <img src={logo.url} alt="" />
               </div>
               <p className="text-center bold">
-                {logo.name
-                  .split('.')
-                  .slice(0, -1)
-                  .join('.')}
+                {logo.name.split('.').slice(0, -1).join('.')}
               </p>
             </div>
           ))}

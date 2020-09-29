@@ -98,10 +98,7 @@ const File = props => {
               getSignedUrl.run({ key: Key }).then(signedUrl => {
                 displayFile(
                   signedUrl,
-                  url
-                    .split('.')
-                    .slice(-1)[0]
-                    .toLowerCase(),
+                  url.split('.').slice(-1)[0].toLowerCase(),
                 );
               });
             }

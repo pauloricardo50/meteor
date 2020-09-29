@@ -92,10 +92,7 @@ describe('ModalManager', () => {
     });
 
   const closeDialog = () =>
-    component()
-      .find('.dialog-close')
-      .first()
-      .simulate('click');
+    component().find('.dialog-close').first().simulate('click');
 
   beforeEach(() => {
     getMountedComponent.reset();
@@ -107,24 +104,16 @@ describe('ModalManager', () => {
   });
 
   it('opens a modal', () => {
-    component()
-      .find('button')
-      .first()
-      .simulate('click');
+    component().find('button').first().simulate('click');
 
     expect(component().find('.dialog-1-content').length).to.equal(1);
-    expect(
-      component()
-        .find('.dialog-1-content')
-        .text(),
-    ).to.equal('Hello world');
+    expect(component().find('.dialog-1-content').text()).to.equal(
+      'Hello world',
+    );
   });
 
   it('closes a modal', () => {
-    component()
-      .find('button')
-      .first()
-      .simulate('click');
+    component().find('button').first().simulate('click');
 
     expect(component().find('.dialog-1-content').length).to.equal(1);
     closeDialog();
@@ -133,15 +122,9 @@ describe('ModalManager', () => {
   });
 
   it('opens 2 modals one after the other', () => {
-    component()
-      .find('#btn1')
-      .first()
-      .simulate('click');
+    component().find('#btn1').first().simulate('click');
 
-    component()
-      .find('#btn2')
-      .last()
-      .simulate('click');
+    component().find('#btn2').last().simulate('click');
 
     expect(component().find('.dialog-1-content').length).to.equal(1);
 
@@ -151,18 +134,11 @@ describe('ModalManager', () => {
 
     closeDialog();
 
-    expect(
-      component()
-        .find(Dialog)
-        .prop('open'),
-    ).to.equal(false);
+    expect(component().find(Dialog).prop('open')).to.equal(false);
   });
 
   it('allows passing an array of modals', () => {
-    component()
-      .find('#btn3')
-      .first()
-      .simulate('click');
+    component().find('#btn3').first().simulate('click');
 
     expect(component().find('.dialog-3-content').length).to.equal(1);
 
@@ -176,18 +152,11 @@ describe('ModalManager', () => {
 
     closeDialog();
 
-    expect(
-      component()
-        .find(Dialog)
-        .prop('open'),
-    ).to.equal(false);
+    expect(component().find(Dialog).prop('open')).to.equal(false);
   });
 
   it('can pass values between modals', done => {
-    component()
-      .find('#btn4')
-      .first()
-      .simulate('click');
+    component().find('#btn4').first().simulate('click');
 
     expect(component().find('.dialog-6-content').length).to.equal(1);
 
@@ -198,19 +167,13 @@ describe('ModalManager', () => {
       component().update();
 
       expect(component().find('.dialog-7-content').length).to.equal(1);
-      expect(
-        component()
-          .find('.dialog-7-content')
-          .text(),
-      ).to.equal('Promise worked!');
+      expect(component().find('.dialog-7-content').text()).to.equal(
+        'Promise worked!',
+      );
 
       closeDialog();
 
-      expect(
-        component()
-          .find(Dialog)
-          .prop('open'),
-      ).to.equal(false);
+      expect(component().find(Dialog).prop('open')).to.equal(false);
 
       done();
     }, 0);

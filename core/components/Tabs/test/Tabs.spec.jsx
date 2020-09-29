@@ -26,10 +26,7 @@ describe('Tabs', () => {
     const onChangeSpy = sinon.spy();
     props.onChange = sinon.spy();
 
-    component()
-      .find('.core-tabs-tab')
-      .last()
-      .simulate('click');
+    component().find('.core-tabs-tab').last().simulate('click');
     component().update();
 
     expect(onChangeSpy.calledOnce).to.equal(true);
