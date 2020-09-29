@@ -68,12 +68,12 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
     {
       type: 'textInput',
       id: 'email',
-      placeholder: <T id="Forms.email.placeholder" />,
+      placeholder: <T defaultMessage="nom@mail.com" />,
     },
     {
       type: 'textInput',
       id: 'phoneNumber',
-      placeholder: <T id="Forms.phoneNumber.placeholder" />,
+      placeholder: <T defaultMessage="079 000 00 00" />,
     },
     {
       id: 'gender',
@@ -378,7 +378,7 @@ export const getBorrowerFortuneArray = ({ purchaseType } = {}) => {
       id: 'realEstate',
       description: isRefinancing && (
         <span className="secondary">
-          <T id="Forms.realEstate.refinancingDescription" />
+          <T defaultMessage="Ne saisissez pas le bien immobilier que vous souhaitez refinancer" />
         </span>
       ),
       type: 'arrayInput',
@@ -423,7 +423,7 @@ export const getBorrowerFortuneArray = ({ purchaseType } = {}) => {
                 />
                 <span>
                   &nbsp;/
-                  <T id="general.month" />
+                  <T defaultMessage="mois" />
                 </span>
               </b>
             </div>

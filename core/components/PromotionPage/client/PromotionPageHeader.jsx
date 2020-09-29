@@ -62,7 +62,7 @@ const PromotionPageHeader = ({ promotion }) => {
           </div>
           <h2 className="font-size-4">
             <T
-              id="PromotionPage.subtitle"
+              defaultMessage="Promotion immobilière - {promotionLotCount} lots"
               values={{ promotionLotCount: promotionLotLinks.length }}
             />
           </h2>

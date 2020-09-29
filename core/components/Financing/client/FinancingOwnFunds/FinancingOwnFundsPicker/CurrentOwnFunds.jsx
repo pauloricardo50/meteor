@@ -48,7 +48,7 @@ export const CurrentOwnFunds = ({
       {!hasEnoughFundsOfType({ structure, type, borrowerId, borrowers }) && (
         <p className="error">
           <T
-            id="FinancingCurrentOwnFunds.error"
+            defaultMessage="Pas assez de {type}"
             values={{ type: <T id={`Forms.${type}`} /> }}
           />
         </p>

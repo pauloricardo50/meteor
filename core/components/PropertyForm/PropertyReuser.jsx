@@ -30,7 +30,7 @@ const PropertyReuser = ({
   >
     <div className="flex-col center">
       <p className="description">
-        <T id="PropertyAdder.reuser.dialogDescription" />
+        <T defaultMessage="Vous pouvez ajouter un nouveau bien immobilier ou en réutiliser un déjà existant" />
       </p>
       <Button
         onClick={() => {
@@ -45,7 +45,7 @@ const PropertyReuser = ({
         style={{ maxWidth: '250px' }}
       />
       <h4>
-        <T id="PropertyAdder.reuser.reusePropertyTitle" />
+        <T defaultMessage="Réutiliser un bien immobilier existant" />
       </h4>
       <List className="flex-col" style={{ width: '100%' }}>
         {reusableProperties.map(({ _id, address, totalValue }) => (

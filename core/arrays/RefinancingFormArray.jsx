@@ -38,7 +38,7 @@ const getRefinancingFormArray = () => [
               {label}
               &nbsp;
               <b>
-                {diff} <T id="general.months" />
+                {diff} <T defaultMessage="mois" />
               </b>
             </div>
           );

@@ -32,7 +32,7 @@ const UserImpersonateNotificationDialog = ({
         <h3>{adminName}</h3>
         <p>
           <T
-            id="ImpersonateNotification.dialog.description"
+            defaultMessage="{adminFirstName} souhaite vous accompagner à travers e-Potek"
             values={{ adminFirstName }}
           />
         </p>

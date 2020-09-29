@@ -90,7 +90,7 @@ const PriorityOrder = ({
         >
           <span style={{ alignSelf: 'center' }}>
             <T
-              id="PromotionPriorityOrder.more"
+              defaultMessage="et {count} de plus"
               values={{ count: rest.length }}
             />
           </span>

@@ -46,13 +46,13 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
       title: true,
       label: (
         <span>
-          <T id="Recap.title" />
+          <T defaultMessage="Projet (en CHF)" />
           &nbsp;
           {Meteor.microservice === 'admin' && calc.organisationName && (
             <span className="secondary">
               (
               <T
-                id="Recap.consideredBy"
+                defaultMessage="Considéré par {organisationName}"
                 values={{ organisationName: calc.organisationName }}
               />
               )
@@ -270,13 +270,13 @@ export const getBorrowerArray = ({
       title: true,
       label: (
         <span className="v-align-recap">
-          <T id="Recap.fortune" />
+          <T defaultMessage="Fortune" />
           &nbsp;
           {Meteor.microservice === 'admin' && calc.organisationName && (
             <span className="secondary">
               (
               <T
-                id="Recap.consideredBy"
+                defaultMessage="Considéré par {organisationName}"
                 values={{ organisationName: calc.organisationName }}
               />
               )
@@ -461,7 +461,7 @@ export const getPropertyArray = ({ property }) => {
       title: true,
       label: (
         <small className="secondary">
-          <T id="Recap.empty" />
+          <T defaultMessage="Ajoutez des informations pour afficher un résumé" />
         </small>
       ),
       hide: dataArray.filter(({ hide }) => !hide).length > 0,
@@ -699,13 +699,13 @@ export const getPremiumArray = ({ Calculator: calc = Calculator, loan }) => {
       title: true,
       label: (
         <span>
-          <T id="Recap.title" />
+          <T defaultMessage="Projet (en CHF)" />
           &nbsp;
           {Meteor.microservice === 'admin' && calc.organisationName && (
             <span className="secondary">
               (
               <T
-                id="Recap.consideredBy"
+                defaultMessage="Considéré par {organisationName}"
                 values={{ organisationName: calc.organisationName }}
               />
               )

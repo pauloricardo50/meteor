@@ -149,7 +149,7 @@ export default compose(
         state: getState({ loan }),
         recalculate: () => {
           if (!canton) {
-            setError(<T id="MaxPropertyValue.noCantonError" />);
+            setError(<T defaultMessage="Champ obligatoire" />);
             return;
           }
           setLoading(true);

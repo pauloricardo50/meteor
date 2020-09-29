@@ -21,7 +21,7 @@ const MortgageNotesPickerSummary = ({
     return (
       <div className="text-center">
         <Button primary onClick={handleOpen} disabled={disabled} fullWidth>
-          <T id="general.choose" />
+          <T defaultMessage="Choisir" />
         </Button>
       </div>
     );
@@ -41,7 +41,7 @@ const MortgageNotesPickerSummary = ({
       {wantedMortgageNote > currentMortgageNotesValue && (
         <div className="flex center-align mt-8">
           <h5 className="text-center">
-            <T id="FinancingMortgageNotesPicker.mortgageNoteToCreate" />:
+            <T defaultMessage="À constituer" />:
           </h5>
           &nbsp;
           <Money value={wantedMortgageNote - currentMortgageNotesValue} />

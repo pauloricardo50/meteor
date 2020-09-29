@@ -10,7 +10,9 @@ import T from '../Translation';
 
 const NewsletterSignup = ({
   userId,
-  label = <T id="AccountPage.newsletter.signedUp" />,
+  label = (
+    <T defaultMessage="Recevoir notre newsletter mensuelle avec les dernières actualités du monde hypothécaire" />
+  ),
 }) => {
   const { data, loading } = useStaticMeteorData({
     query: userId ? USERS_COLLECTION : appUser,

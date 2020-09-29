@@ -38,12 +38,12 @@ const UserImpersonateNotification = ({ impersonatedSession, options }) => {
         <h4>
           {followAdmin ? (
             <T
-              id="ImpersonateNotification.following"
+              defaultMessage="Vous suivez {adminFirstName}"
               values={{ adminFirstName }}
             />
           ) : (
             <T
-              id="ImpersonateNotification.follow"
+              defaultMessage="Suivre {adminFirstName}"
               values={{ adminFirstName }}
             />
           )}

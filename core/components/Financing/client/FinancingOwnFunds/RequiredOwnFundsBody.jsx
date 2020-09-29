@@ -26,7 +26,7 @@ const getLabel = props => {
       return (
         <>
           <span className="text">
-            <T id="Financing.requiredOwnFunds.warning" />
+            <T defaultMessage="Vous devez nantir encore" />
           </span>
           <div className="value">
             <span className="chf">CHF</span>
@@ -61,7 +61,7 @@ const getLabel = props => {
         {toMoney(Math.abs(value))}
       </div>
       <span className="text">
-        <T id="Financing.requiredOwnFunds.suffix" />
+        <T defaultMessage="de fonds propres" />
       </span>
     </>
   );

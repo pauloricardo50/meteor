@@ -38,7 +38,7 @@ const PromotionReservationDeadline = ({
   ) {
     return (
       <label htmlFor="expirationDate" style={{ marginBottom: 24 }}>
-        <T id="Forms.expirationDate" />
+        <T defaultMessage="Échéance de la convention de réservation" />
         <Tooltip
           title={
             expirationDate ? (

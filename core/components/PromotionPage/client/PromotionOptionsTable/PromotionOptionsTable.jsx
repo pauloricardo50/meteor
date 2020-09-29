@@ -22,7 +22,7 @@ const getModalProps = promotionOption => {
   return {
     title: (
       <T
-        id="PromotionReservationsTable.modalTitle"
+        defaultMessage="Réservation du lot {lotName} par {customerName}"
         values={{
           lotName: <b>{name}</b>,
           customerName: <b>{loan.user.name}</b>,

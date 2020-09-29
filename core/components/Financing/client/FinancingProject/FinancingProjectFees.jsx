@@ -55,13 +55,17 @@ const FinancingProjectFees = ({ className, ...props }) => {
       >
         <div className="notary-fees-dialog">
           <h3>
-            <T id="general.notaryFees" />
+            <T defaultMessage="Frais de notaire" />
           </h3>
           <div className="flex center-align nowrap">
             <Icon size={40} type="warning" className="mr-16" color="primary" />
             <div>
               {hasNotaryFeesOverride ? (
-                <T id="FinancingProjectFees.notaryFeesOverride" />
+                <T
+                  defaultMessage={
+                    'Vous avez choisi des frais de notaire sur mesure. Pour accéder aux frais de notaire automatiques, supprimez le contenu du champ "Frais de notaire".'
+                  }
+                />
               ) : (
                 <T
                   id={

@@ -104,7 +104,7 @@ const PromotionReservationDeadlineText = ({
   const proName = pro ? (
     getUserNameAndOrganisation({ user: pro })
   ) : (
-    <T id="PromotionReservationDeadline.yourBroker" />
+    <T defaultMessage="votre courtier" />
   );
 
   const textLabel = getTextLabel(promotionOption, loan);

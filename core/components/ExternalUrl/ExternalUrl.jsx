@@ -13,7 +13,9 @@ const ExternalUrl = ({ externalUrl, description, title, style }) => (
   >
     <Icon type="openInNew" className="external-url-icon" size={40} />
     {description && <h3>{description}</h3>}
-    <h4 className="secondary">{title || <T id="ExternalUrl.title" />}</h4>
+    <h4 className="secondary">
+      {title || <T defaultMessage="Ouvrir le site externe" />}
+    </h4>
   </a>
 );
 

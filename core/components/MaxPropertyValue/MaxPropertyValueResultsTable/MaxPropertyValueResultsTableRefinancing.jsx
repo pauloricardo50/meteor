@@ -9,11 +9,11 @@ const MaxPropertyValueResultsTableRefinancing = ({ loan, previousLoan }) => {
       <div className="balance-sheet animated fadeIn">
         <div className="left">
           <span className="label">
-            <T id="MaxPropertyValueResults.maxLoanValue" />
+            <T defaultMessage="Capacité d'emprunt max." />
           </span>
           <Money className="money bold" value={loan} />
           <span className="label">
-            <T id="MaxPropertyValueResults.previousLoan" />
+            <T defaultMessage="Hypothèque actuelle" />
           </span>
           <Money className="money bold" value={previousLoan} />
         </div>
@@ -23,7 +23,7 @@ const MaxPropertyValueResultsTableRefinancing = ({ loan, previousLoan }) => {
         <div className="sums  animated fadeIn">
           <div className="left">
             <span className="label">
-              <T id="MaxPropertyValueResults.potentialRaise" />
+              <T defaultMessage="Dégagement de liquidités potentiel" />
             </span>
             <Money className="money bold" value={loan - previousLoan} />
           </div>

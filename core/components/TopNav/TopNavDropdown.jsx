@@ -60,7 +60,7 @@ const getMenuItems = (currentUser, history) => {
     },
     {
       id: 'logout',
-      label: <T id="general.logout" />,
+      label: <T defaultMessage="Déconnexion" />,
       onClick: () => {
         Meteor.logout();
         history.push('/login');
@@ -82,17 +82,19 @@ const TopNavDropdown = ({ currentUser }) => {
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       iconType="person"
-      options={getMenuItems(currentUser, history)
+      options={
         // Allow the Divider to go through
-        .filter(o => !!o.show)
-        .map(({ id: optionId, link, label, show, ...rest }) => ({
-          ...rest,
-          id: optionId,
-          link: true,
-          to: link,
-          label: label || <T id={`TopNavDropdown.${optionId}`} />,
-          history, // required for Link to work
-        }))}
+        getMenuItems(currentUser, history)
+          .filter(o => !!o.show)
+          .map(({ id: optionId, link, label, show, ...rest }) => ({
+            ...rest,
+            id: optionId,
+            link: true,
+            to: link,
+            label: label || <T id={`TopNavDropdown.${optionId}`} />,
+            history, // required for Link to work
+          }))
+      }
       paperClassName="top-nav-dropdown"
     />
   );

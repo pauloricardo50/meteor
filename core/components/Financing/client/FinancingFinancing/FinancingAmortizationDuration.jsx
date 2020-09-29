@@ -42,7 +42,7 @@ const FinancingAmortizationDuration = ({ loan, structureId, Calculator }) => {
     <div className="amortizationDuration" style={{ padding: '8px 0' }}>
       <b className="text-center">
         <T
-          id="FinancingAmortizationDuration.years"
+          defaultMessage="{years} {years, plural, one {an} other {ans}}"
           values={{ years: duration }}
         />
       </b>

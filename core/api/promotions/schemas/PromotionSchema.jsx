@@ -189,7 +189,9 @@ const PromotionSchema = new SimpleSchema({
     type: String,
     optional: true,
     uniforms: {
-      label: <T id="Forms.promotionExternalUrl" />,
+      label: (
+        <T defaultMessage="Lien vers site de commercialisation de la promotion" />
+      ),
       placeholder: 'https://www.google.com/ma-promotion',
     },
   },

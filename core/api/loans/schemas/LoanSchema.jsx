@@ -194,7 +194,7 @@ const LoanSchema = new SimpleSchema({
           category ? (
             <T id={`Forms.unsuccessfulReason.category.${category}`} />
           ) : (
-            <T id="general.other" />
+            <T defaultMessage="Autre" />
           ),
       },
       displayEmpty: false,

@@ -23,10 +23,10 @@ export default class AutoFormRadioInput extends Component {
   getOptionLabel = (optionId, intlValues) => {
     // If the options are true and false, render "yes" and "no" as labels
     if (optionId === true) {
-      return <T id="general.yes" values={intlValues} />;
+      return <T defaultMessage="Oui" values={intlValues} />;
     }
     if (optionId === false) {
-      return <T id="general.no" values={intlValues} />;
+      return <T defaultMessage="Non" values={intlValues} />;
     }
     return (
       <T

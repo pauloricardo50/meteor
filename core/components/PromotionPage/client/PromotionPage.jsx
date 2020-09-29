@@ -26,14 +26,17 @@ const getTabs = ({
     {
       id: 'customers',
       label: (
-        <T id="PromotionPageTabs.customers" values={{ count: loanCount }} />
+        <T
+          defaultMessage="Acquéreurs ({count})"
+          values={{ count: loanCount }}
+        />
       ),
       shouldDisplay: canSeeCustomers,
     },
     {
       id: 'users',
       label: (
-        <T id="PromotionPageTabs.users" values={{ count: users.length }} />
+        <T defaultMessage="Pros ({count})" values={{ count: users.length }} />
       ),
       shouldDisplay: canSeeUsers,
     },

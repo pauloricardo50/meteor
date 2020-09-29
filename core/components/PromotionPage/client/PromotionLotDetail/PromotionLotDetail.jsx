@@ -56,7 +56,7 @@ const PromotionLotDetail = ({ promotionLot, children }) => {
         {files.length > 0 && (
           <Box>
             <h4 className="mt-0">
-              <T id="PromotionLotPage.downloads" />
+              <T defaultMessage="Téléchargements" />
             </h4>
             <DocumentDownloadList files={files} />
           </Box>
@@ -66,7 +66,7 @@ const PromotionLotDetail = ({ promotionLot, children }) => {
       {constructionTimeline?.steps?.length > 0 && (
         <section>
           <h4>
-            <T id="PromotionPage.timeline" />
+            <T defaultMessage="Avancement des travaux" />
           </h4>
           <PromotionLotTimeline
             constructionTimeline={constructionTimeline}
@@ -78,7 +78,7 @@ const PromotionLotDetail = ({ promotionLot, children }) => {
       {canSeeCustomers && (
         <section>
           <h4>
-            <T id="PromotionLotPage.loans" />
+            <T defaultMessage="Acquéreurs intéressés" />
           </h4>
           <PromotionLotLoansTable promotionLotId={promotionLot._id} />
         </section>

@@ -20,20 +20,17 @@ const groupOptions = (options, { groupBy, format = x => x }) => {
     undefinedGroup = undefinedGroup.filter(({ id }) => !!id);
   }
 
-  const groupedOptions = groups.reduce(
-    (acc, v) => [
-      ...acc,
-      { id: 'SELECT_GROUP', label: format(v) },
-      ...grouped[v],
-    ],
-    [],
-  );
+  const groupedOptions = groups.reduce((acc, v) => [
+    ...acc,
+    { id: 'SELECT_GROUP', label: format(v) },
+    ...grouped[v],
+  ], []);
 
   if (undefinedGroup?.length) {
     return [
       ...falsyOptions,
       ...groupedOptions,
-      { id: 'SELECT_GROUP', label: <T id="general.other" /> },
+      { id: 'SELECT_GROUP', label: <T defaultMessage="Autre" /> },
       ...undefinedGroup,
     ].filter(x => x);
   }
@@ -64,11 +61,9 @@ export const mapSelectOptions = (options, grouping) => {
     } = option;
 
     if (id === 'SELECT_GROUP') {
-      array.push(
-        <ListSubheader style={{ marginTop: 8 }} key={`${id}${index}`}>
-          <b>{label}</b>
-        </ListSubheader>,
-      );
+      array.push(<ListSubheader style={{ marginTop: 8 }} key={`${id}${index}`}>
+        <b>{label}</b>
+      </ListSubheader>);
       array.push(<Divider key={`divider${id}`} />);
       return;
     }
@@ -77,18 +72,16 @@ export const mapSelectOptions = (options, grouping) => {
       array.push(<Divider key={`divider${id}`} />);
     }
 
-    array.push(
-      <MenuItem value={id} key={id} {...otherProps}>
-        <>
-          {icon && (
-            <ListItemIcon>
-              <Icon type={icon} />
-            </ListItemIcon>
-          )}
-          <ListItemText primary={label} secondary={secondary} />
-        </>
-      </MenuItem>,
-    );
+    array.push(<MenuItem value={id} key={id} {...otherProps}>
+      <>
+        {icon && (
+          <ListItemIcon>
+            <Icon type={icon} />
+          </ListItemIcon>
+        )}
+        <ListItemText primary={label} secondary={secondary} />
+      </>
+    </MenuItem>);
 
     if (dividerBottom) {
       array.push(<Divider key={`divider${id}`} />);

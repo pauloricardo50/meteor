@@ -15,7 +15,7 @@ const LoginPageRight = ({ path, push, onSignInSuccess }) => {
         <span className="no-account">
           {isApp ? (
             <T
-              id="LoginPage.noAccountApp"
+              defaultMessage="Vous n'avez pas de compte? Commencez {link}"
               values={{
                 link: (
                   <Link to="/" className="color">
@@ -26,7 +26,7 @@ const LoginPageRight = ({ path, push, onSignInSuccess }) => {
             />
           ) : (
             <T
-              id="LoginPage.noAccount"
+              defaultMessage="Vous n'avez pas de compte? {contactUs}"
               values={{
                 contactUs: (
                   <a href={`${Meteor.settings.public.subdomains.www}/contact`}>

@@ -20,7 +20,7 @@ const BorrowersSummary = ({
   const isAdmin = Meteor.microservice === 'admin';
   return (
     <div className={cx('borrowers-summary', className)}>
-      {showTitle && <h5>{title || <T id="collections.borrowers" />}</h5>}
+      {showTitle && <h5>{title || <T defaultMessage="Emprunteurs" />}</h5>}
       <div className="borrowers-list">
         {borrowers.length > 0
           ? borrowers.map((borrower, index) =>
@@ -46,7 +46,9 @@ const BorrowersSummary = ({
                 />
               ),
             )
-          : emptyState || <T id="general.noBorrowersForLoan" />}
+          : emptyState || (
+              <T defaultMessage="Pas d'emprunteurs pour cet hypothèque" />
+            )}
       </div>
     </div>
   );

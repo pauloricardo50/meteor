@@ -11,7 +11,9 @@ const ResidenceTypeSetter = ({
   image,
   onSubmitCallback,
   noIcon = false,
-  text = <T id="Forms.propertyPage.residenceTypeSetter.text" />,
+  text = (
+    <T defaultMessage="Choisissez le type de résidence pour afficher le bien immobilier." />
+  ),
 }) => {
   const { residenceType } = loan;
   return (

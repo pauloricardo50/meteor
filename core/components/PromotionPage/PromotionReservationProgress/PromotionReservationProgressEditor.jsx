@@ -17,7 +17,7 @@ const PromotionReservationProgressEditor = ({ promotionOption, loan }) => {
     <>
       <div className="flex center-align">
         <h3 className="mr-16">
-          <T id="PromotionReservationsTable.progress" />
+          <T defaultMessage="Progrès" />
         </h3>
       </div>
 

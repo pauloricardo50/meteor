@@ -7,7 +7,7 @@ const PromotionCustomers = props => (
   <div className="animated fadeIn mt-16">
     <div className="card1 card-top">
       <h2>
-        <T id="PromotionUsersPage.title" />
+        <T defaultMessage="Clients de la promotion" />
       </h2>
       <PromotionCustomersTable {...props} />
     </div>

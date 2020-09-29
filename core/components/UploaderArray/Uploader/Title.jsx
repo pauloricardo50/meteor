@@ -29,7 +29,7 @@ const Title = ({
           <span className="secondary file-count">
             <span style={{ padding: '0 4px' }}>&bull;</span>
             <T
-              id="Uploader.fileCount"
+              defaultMessage="{count, plural, =0 {0 fichiers} one {Un fichier} other {# fichiers}}"
               values={{ count: (currentValue && currentValue.length) || 0 }}
             />
           </span>

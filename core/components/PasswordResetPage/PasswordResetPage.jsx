@@ -100,7 +100,7 @@ const getSchema = ({
         checkboxes: true,
         label: (
           <span className="newsletter-signup">
-            <T id="PasswordResetPage.newsletterSignup" />
+            <T defaultMessage="Recevoir notre newsletter mensuelle avec les dernières actualités du monde hypothécaire" />
           </span>
         ),
       },
@@ -118,7 +118,7 @@ const getSchema = ({
         label: (
           <span className="disclaimer">
             <T
-              id="PasswordResetPage.disclaimer"
+              defaultMessage="J'ai lu et accepté la {link}."
               values={{
                 link: (
                   <a

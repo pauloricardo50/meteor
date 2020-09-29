@@ -12,7 +12,7 @@ const FinancingOwnFundsWarning = ({
 }) => (
   <p>
     <T
-      id="FinancingOwnFundsPickerForm.warning"
+      defaultMessage="Êtes-vous certain de disposer de CHF {value} en {type} sur {name}?"
       values={{
         name: (
           <b>

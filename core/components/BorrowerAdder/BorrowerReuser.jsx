@@ -32,7 +32,7 @@ const BorrowerReuser = ({
     <div className="flex-col center">
       <p className="description">
         <T
-          id="BorrowerAdder.reuser.dialogDescription"
+          defaultMessage="Vous pouvez ajouter un nouvel {isBorrower, select, true {emprunteur} other {assuré}} ou en réutiliser un déjà existant"
           values={{ isBorrower }}
         />
       </p>
@@ -49,7 +49,7 @@ const BorrowerReuser = ({
       />
       <h4>
         <T
-          id="BorrowerAdder.reuser.reuseBorrowerTitle"
+          defaultMessage="Réutiliser un {isBorrower, select, true {emprunteur} other {assuré}} existant"
           values={{ isBorrower }}
         />
       </h4>
