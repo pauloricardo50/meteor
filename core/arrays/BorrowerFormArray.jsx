@@ -415,6 +415,7 @@ export const getBorrowerFortuneArray = ({ purchaseType } = {}) => {
                   id="theoreticalExpenses"
                   value={Calculator.getRealEstateCost(itemValue)}
                   tooltip={
+                    // eslint-disable-next-line multiline-ternary
                     currentValue ? undefined : (
                       <T id="Forms.theoreticalExpenses.tooltip" />
                     )

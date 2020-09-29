@@ -8,13 +8,20 @@ import TextField from './Material/TextField';
 import T from './Translation';
 
 export default class ConfirmMethod extends Component {
-  state = {
-    open: false,
-    text: '',
-    anchorEl: null,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      text: '',
+      anchorEl: null,
+    };
+  }
 
-  shouldAllowSubmit = keyword => !keyword || this.state.text === keyword;
+  shouldAllowSubmit = keyword => {
+    const { text } = this.state;
+
+    return !keyword || text === keyword;
+  };
 
   handleOpen = event => {
     event.preventDefault();
