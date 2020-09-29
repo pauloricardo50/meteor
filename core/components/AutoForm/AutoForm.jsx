@@ -170,7 +170,7 @@ const AutoForm = ({
     {children}
     {showDisclaimer && (
       <p className="text-center">
-        <T defaultMessage="Les informations dans ce formulaire sont sauvegardées à chaque instant, naviguez en toute liberté." />
+        <T id="AutoForm.autosaveDisclaimer" />
       </p>
     )}
   </form>

@@ -20,7 +20,7 @@ import PromotionLotReservation from './PromotionLotReservation/PromotionLotReser
 const columns = promotionLotId => [
   {
     accessor: 'loan._id',
-    Header: <T defaultMessage="Dossier" />,
+    Header: <T id="PromotionLotLoansTable.loanName" />,
     style: { whiteSpace: 'nowrap' },
     disableSortBy: true,
     Cell: ({
@@ -37,7 +37,7 @@ const columns = promotionLotId => [
   },
   {
     accessor: 'status',
-    Header: <T defaultMessage="Niveau d'intérêt" />,
+    Header: <T id="PromotionLotLoansTable.status" />,
     Cell: ({
       value,
       row: {
@@ -58,7 +58,7 @@ const columns = promotionLotId => [
   },
   {
     accessor: 'loanCache.0.userCache.lastName',
-    Header: <T defaultMessage="Acquéreur" />,
+    Header: <T id="PromotionLotLoansTable.buyer" />,
     // disableSortBy: true,
     Cell: ({
       row: {
@@ -71,14 +71,14 @@ const columns = promotionLotId => [
   },
   {
     accessor: 'createdAt',
-    Header: <T defaultMessage="Date du choix" />,
+    Header: <T id="PromotionLotLoansTable.date" />,
     Cell: ({ value }) => (
       <IntlDate value={value} type="relative" style="long" />
     ),
   },
   {
     accessor: 'loanCache.0.promotionLinks.0.priorityOrder',
-    Header: <T defaultMessage="Priorité" />,
+    Header: <T id="PromotionLotLoansTable.priorityOrder" />,
     Cell: ({
       row: {
         original: {
@@ -95,7 +95,7 @@ const columns = promotionLotId => [
   },
   {
     accessor: 'attribute',
-    Header: <T defaultMessage="Attribution" />,
+    Header: <T id="PromotionLotLoansTable.attribute" />,
     disableSortBy: true,
     Cell: ({ row: { original: promotionOption } }) => (
       <PromotionLotReservation promotionOption={promotionOption} />

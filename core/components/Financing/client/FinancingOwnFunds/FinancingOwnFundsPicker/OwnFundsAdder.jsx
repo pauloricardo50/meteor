@@ -14,7 +14,7 @@ const OwnFundsAdder = ({
 }) => (
   <>
     <Button raised primary onClick={handleOpen} disabled={disabled}>
-      <T defaultMessage="Ajouter fonds propres" />
+      <T id="Financing.ownFundsAdder" />
     </Button>
     <FinancingOwnFundsDialog
       open={open}

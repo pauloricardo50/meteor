@@ -35,7 +35,7 @@ const FinancingOwnFundsDialog = props => {
       fullWidth
     >
       <DialogTitle>
-        <T defaultMessage="Allouer des fonds propres" />
+        <T id="FinancingOwnFundsDialog.title" />
       </DialogTitle>
       <DialogContent>
         <OwnFundsCompleter

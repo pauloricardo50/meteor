@@ -52,7 +52,7 @@ export default class ConditionsButton extends Component {
             {!!(conditions.length > 0) && (
               <>
                 <h2 className="fixed-size">
-                  <T defaultMessage="Conditions obligatoires" />
+                  <T id="ConditionsButton.mandatory" />
                 </h2>
                 <ul>
                   {conditions.map((c, i) => (

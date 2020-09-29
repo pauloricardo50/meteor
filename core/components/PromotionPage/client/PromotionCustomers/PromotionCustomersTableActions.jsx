@@ -37,14 +37,14 @@ const PromotionCustomersTableActions = ({
   if (isAllowedToSee) {
     options.push({
       id: 'edit',
-      label: <T defaultMessage="Préselectionner lots" />,
+      label: <T id="PromotionUsersTableActions.editLots" />,
       onClick: handleOpenForm,
     });
   }
   if (isAllowedToRemove && isAllowedToSee) {
     options.push({
       id: 'remove',
-      label: <T defaultMessage="Supprimer" />,
+      label: <T id="general.remove" />,
       onClick: handleRemove,
     });
   }

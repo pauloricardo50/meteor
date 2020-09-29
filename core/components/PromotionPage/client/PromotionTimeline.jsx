@@ -19,7 +19,7 @@ const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
       <div className="flex center-align">
         <div className="mr-8">
           <b>
-            <T defaultMessage="Date de signature" />
+            <T id="Forms.signingDate" />
             :&nbsp;
           </b>
           <span>
@@ -31,13 +31,13 @@ const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
                 day="numeric"
               />
             ) : (
-              <T defaultMessage="À déterminer" />
+              <T id="PromotionTimelineHeader.undetermined" />
             )}
           </span>
         </div>
         <div>
           <b>
-            <T defaultMessage="Début des travaux" />
+            <T id="PromotionTimelineHeader.constructionStart" />
             :&nbsp;
           </b>
           <span>
@@ -49,7 +49,7 @@ const PromotionTimelineHeader = ({ constructionTimeline, signingDate }) => {
                 day="numeric"
               />
             ) : (
-              <T defaultMessage="À déterminer" />
+              <T id="PromotionTimelineHeader.undetermined" />
             )}
           </span>
         </div>
@@ -69,7 +69,7 @@ export const getTimelineDateText = ({
   }
 
   if (index === 0) {
-    return <T defaultMessage="Début" />;
+    return <T id="PromotionTimeline.start" />;
   }
 
   const monthsDiff = moment(date).diff(firstDate, 'months');

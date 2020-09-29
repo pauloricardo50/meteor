@@ -9,7 +9,7 @@ const LoanChecklistList = ({ labels, title }) => (
     <h4>{title}</h4>
     {labels.length === 0 && (
       <span className="secondary">
-        <T defaultMessage="Nous avons tout ce qu'il faut" />
+        <T id="LoanChecklist.done" />
         <StatusIcon status={SUCCESS} />
       </span>
     )}

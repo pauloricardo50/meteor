@@ -86,7 +86,7 @@ class ClickToEditField extends Component {
       disabled,
       children,
       style,
-      tooltipWhenDisabled = <T defaultMessage="Ce champ est vérouillé" />,
+      tooltipWhenDisabled = <T id="general.clickToEditField.disabledTooltip" />,
     } = this.props;
 
     if (isEditing) {

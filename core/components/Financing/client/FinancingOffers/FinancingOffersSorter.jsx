@@ -7,7 +7,7 @@ import FinancingOffersSorterContainer from './FinancingOffersSorterContainer';
 const FinancingOffersSorter = ({ options, sortBy, setSort, ...props }) => (
   <div>
     <p>
-      <T defaultMessage="Choix de l'offre" />
+      <T id="Financing.offerId" />
     </p>
     <Select value={sortBy} options={options} onChange={setSort} />
   </div>

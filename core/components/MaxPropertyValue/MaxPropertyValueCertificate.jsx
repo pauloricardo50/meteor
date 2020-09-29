@@ -21,21 +21,21 @@ const getSchema = has2Borrowers =>
   new SimpleSchema({
     firstName1: {
       type: String,
-      uniforms: { label: <T defaultMessage="Prénom" />, placeholder: null },
+      uniforms: { label: <T id="Forms.firstName" />, placeholder: null },
     },
     lastName1: {
       type: String,
-      uniforms: { label: <T defaultMessage="Nom" />, placeholder: null },
+      uniforms: { label: <T id="Forms.lastName" />, placeholder: null },
     },
     firstName2: {
       type: String,
-      uniforms: { label: <T defaultMessage="Prénom" />, placeholder: null },
+      uniforms: { label: <T id="Forms.firstName" />, placeholder: null },
       condition: has2Borrowers,
       required: has2Borrowers,
     },
     lastName2: {
       type: String,
-      uniforms: { label: <T defaultMessage="Nom" />, placeholder: null },
+      uniforms: { label: <T id="Forms.lastName" />, placeholder: null },
       condition: has2Borrowers,
       required: has2Borrowers,
     },

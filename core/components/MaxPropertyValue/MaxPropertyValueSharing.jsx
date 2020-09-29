@@ -20,11 +20,11 @@ const getTrigger = ({
         <Button secondary raised onClick={() => setOpenDialog(true)}>
           {propertyOrganisation ? (
             <T
+              id="MaxPropertyValueSharing.buttonLabelOrg"
               values={{ orgName: propertyOrganisation.name }}
-              defaultMessage="Certifier avec {orgName}"
             />
           ) : (
-            <T defaultMessage="Partager avec mon courtier" />
+            <T id="MaxPropertyValueSharing.buttonLabel" />
           )}
         </Button>
       );
@@ -36,11 +36,11 @@ const getTrigger = ({
           <span>
             {propertyOrganisation ? (
               <T
+                id="MaxPropertyValueSharing.buttonLabelOrg"
                 values={{ orgName: propertyOrganisation.name }}
-                defaultMessage="Certifier avec {orgName}"
               />
             ) : (
-              <T defaultMessage="Partage de solvabilité" />
+              <T id="MaxPropertyValueSharing.toggleLabel" />
             )}
           </span>
           <Toggle

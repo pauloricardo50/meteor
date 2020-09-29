@@ -20,7 +20,7 @@ const MapWithMarkerWrapper = ({
 
     return (
       <p className="description incomplete-address">
-        <T defaultMessage="Entrez votre adresse complète pour afficher la carte!" />
+        <T id="Maps.incompleteAddress" />
       </p>
     );
   }

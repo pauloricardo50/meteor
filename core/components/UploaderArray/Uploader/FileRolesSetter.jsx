@@ -15,7 +15,7 @@ const getIconProps = roles => {
     return {
       type: 'lock',
       iconProps: { color: 'error' },
-      tooltip: <T defaultMessage="Document accessible uniquement aux Admins" />,
+      tooltip: <T id="File.roles.admin" />,
     };
   }
 
@@ -23,11 +23,11 @@ const getIconProps = roles => {
     return {
       type: 'lock',
       iconProps: { color: 'warning' },
-      tooltip: <T defaultMessage="Document accessible uniquement aux Pros" />,
+      tooltip: <T id="File.roles.pro" />,
     };
   }
 
-  return { type: 'lockOpen', tooltip: <T defaultMessage="Document public" /> };
+  return { type: 'lockOpen', tooltip: <T id="File.roles.public" /> };
 };
 
 const getOptions = roles => {

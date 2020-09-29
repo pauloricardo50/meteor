@@ -90,8 +90,8 @@ const PriorityOrder = ({
         >
           <span style={{ alignSelf: 'center' }}>
             <T
+              id="PromotionPriorityOrder.more"
               values={{ count: rest.length }}
-              defaultMessage="et {count} de plus"
             />
           </span>
         </StickyPopover>

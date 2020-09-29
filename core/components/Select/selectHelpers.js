@@ -33,7 +33,7 @@ const groupOptions = (options, { groupBy, format = x => x }) => {
     return [
       ...falsyOptions,
       ...groupedOptions,
-      { id: 'SELECT_GROUP', label: <T defaultMessage="Autre" /> },
+      { id: 'SELECT_GROUP', label: <T id="general.other" /> },
       ...undefinedGroup,
     ].filter(x => x);
   }

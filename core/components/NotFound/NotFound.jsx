@@ -43,10 +43,10 @@ export default class NotFound extends Component {
           <meta name="prerender-status-code" content="404" />
         </Helmet>
         <h1 style={styles.h1}>
-          <T defaultMessage="Oops.." />
+          <T id="NotFound.title" />
         </h1>
         <h3 className="secondary">
-          <T defaultMessage="On dirait que vous vous êtes perdu!" />
+          <T id="NotFound.description" />
         </h3>
         <div style={styles.button}>
           <Button

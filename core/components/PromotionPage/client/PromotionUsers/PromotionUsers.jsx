@@ -58,7 +58,7 @@ const PromotionUsers = () => {
           style={{ justifyContent: 'space-between' }}
         >
           <h2>
-            <T defaultMessage="Pros" />
+            <T id="PromotionPage.PromotionUsers" />
           </h2>
         </div>
 

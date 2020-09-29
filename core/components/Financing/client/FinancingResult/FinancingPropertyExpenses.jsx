@@ -14,9 +14,7 @@ const schema = new SimpleSchema2Bridge(
       type: Number,
       optional: true,
       uniforms: {
-        helperText: (
-          <T defaultMessage="Indicatif: charges PPE, chauffage, etc." />
-        ),
+        helperText: <T id="FinancingPropertyExpenses.helperText" />,
       },
     },
   }),

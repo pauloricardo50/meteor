@@ -26,6 +26,7 @@ const FinancingOwnFundsWithdrawWarning = ({ usageType, type, value }) => {
         <Icon type="info" className="icon" />
         {isInsurance2WithdrawTooLow ? (
           <T
+            id="FinancingOwnFundsWithdrawWarning.insurance2"
             values={{
               minWithdraw: (
                 <b style={{ color: 'black' }}>
@@ -35,10 +36,9 @@ const FinancingOwnFundsWithdrawWarning = ({ usageType, type, value }) => {
                 </b>
               ),
             }}
-            defaultMessage="Attention, vous devez retirer au minimum CHF {minWithdraw} de LPP"
           />
         ) : (
-          <T defaultMessage="Attention, lors des retraits de capitaux de prévoyance (LPP, 3A), vous serez imposé sur l'ensemble des retraits cumulés. Pensez à prévoir des fonds propres supplémentaires pour payer cet impôt." />
+          <T id="FinancingOwnFundsWithdrawWarning.description" />
         )}
       </p>
     );

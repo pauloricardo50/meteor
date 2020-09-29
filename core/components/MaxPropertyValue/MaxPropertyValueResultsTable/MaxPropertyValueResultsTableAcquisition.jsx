@@ -12,21 +12,21 @@ const MaxPropertyValueResultsTableAcquisition = ({
     <div className="balance-sheet animated fadeIn">
       <div className="left">
         <span className="label">
-          <T defaultMessage="Prix d'achat max." />
+          <T id="MaxPropertyValueResults.maxPropertyValue" />
         </span>
         <Money className="money bold" value={propertyValue} />
         <span className="label">
-          <T defaultMessage="Frais de notaire" />
+          <T id="MaxPropertyValueResults.notaryFees" />
         </span>
         <Money className="money bold" value={notaryFees} />
       </div>
       <div className="right">
         <span className="label">
-          <T defaultMessage="Fonds propres" />
+          <T id="MaxPropertyValueResults.ownFunds" />
         </span>
         <Money className="money bold" value={ownFunds} />
         <span className="label">
-          <T defaultMessage="Hypothèque" />
+          <T id="MaxPropertyValueResults.loan" />
         </span>
         <Money className="money bold" value={loan} />
       </div>
@@ -35,13 +35,13 @@ const MaxPropertyValueResultsTableAcquisition = ({
     <div className="sums  animated fadeIn">
       <div className="left">
         <span className="label">
-          <T defaultMessage="Coût total" />
+          <T id="MaxPropertyValueResults.totalCost" />
         </span>
         <Money className="money bold" value={propertyValue + notaryFees} />
       </div>
       <div className="right">
         <span className="label">
-          <T defaultMessage="Financement total" />
+          <T id="MaxPropertyValueResults.totalFinancing" />
         </span>
         <Money className="money bold" value={ownFunds + loan} />
       </div>

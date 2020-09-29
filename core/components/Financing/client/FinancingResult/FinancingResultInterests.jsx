@@ -16,13 +16,13 @@ const getTooltipTitle = ({ structure, loan, structureId }) => {
     });
     return (
       <T
+        id="FinancingResultInterests.withOffer"
         values={{ name: offer.organisation.name }}
-        defaultMessage="Offre de {name}"
       />
     );
   }
 
-  return <T defaultMessage="Basé sur nos taux actuels" />;
+  return <T id="FinancingResultInterests.noOffer" />;
 };
 
 const InterestsTooltip = props => {

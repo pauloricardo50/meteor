@@ -26,7 +26,7 @@ const UserPromotionOptionsTable = ({
   return (
     <>
       <h3>
-        <T defaultMessage="Mes lots" />
+        <T id="collections.promotionOptions" />
       </h3>
 
       <TableWithModal

@@ -26,7 +26,7 @@ const PromotionPageOverview = ({ promotion, loan }) => {
       {constructionTimeline?.steps?.length > 0 && (
         <>
           <h3>
-            <T defaultMessage="Avancement des travaux" />
+            <T id="PromotionPage.timeline" />
           </h3>
           <div className="promotion-timeline">
             <PromotionTimeline

@@ -12,6 +12,7 @@ const OwnFundsCompleter = ({ required, current }) => {
     <div className="own-funds-completer">
       <h4>
         <T
+          id="Financing.ownFundsCompleter"
           values={{
             current: (
               <span
@@ -28,7 +29,6 @@ const OwnFundsCompleter = ({ required, current }) => {
             ),
             required: <span className="secondary">{toMoney(required)}</span>,
           }}
-          defaultMessage="{current} / {required} alloués"
         />
       </h4>
     </div>

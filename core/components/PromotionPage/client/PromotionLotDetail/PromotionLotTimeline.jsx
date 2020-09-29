@@ -23,7 +23,7 @@ const PromotionLotTimeline = ({
   const initialPaymentDate = showExactDates ? (
     <IntlDate value={signingDate} year="numeric" month="long" day="numeric" />
   ) : (
-    <T defaultMessage="À déterminer" />
+    <T id="PromotionTimelineHeader.undetermined" />
   );
   const initialConstructionPayment = startPercent * constructionValue;
   const totalInitialPayment =
@@ -35,7 +35,7 @@ const PromotionLotTimeline = ({
       Header: () => (
         <div className="construction-timeline-header">
           <h4>
-            <T defaultMessage="Chez le notaire" />
+            <T id="PromotionLotTimeline.notary" />
           </h4>
           <b>
             <Money value={totalInitialPayment} />
@@ -74,7 +74,7 @@ const PromotionLotTimeline = ({
       Header: () => (
         <div className="construction-timeline-header end">
           <h4>
-            <T defaultMessage="Durant la construction" />
+            <T id="PromotionLotTimeline.construction" />
           </h4>
           {hasDetailedValue && (
             <b>

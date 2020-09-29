@@ -25,7 +25,7 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
         <>
           <div>
             <span>
-              <T defaultMessage="Montant à amortir" />
+              <T id="FinancingResultAmortization.total" />
             </span>
             :&nbsp;
             <b>
@@ -35,29 +35,29 @@ const AmortizationTooltip = ({ Calculator, loan, structureId }) => {
 
           <div>
             <span>
-              <T defaultMessage="Durée de l'amortissement" />
+              <T id="FinancingResultAmortization.duration" />
             </span>
             :&nbsp;
             <b>
-              {amortizationYears} <T defaultMessage="ans" />
+              {amortizationYears} <T id="general.years" />
             </b>
           </div>
 
           <div>
             <span>
-              <T defaultMessage="Amortissement annuel" />
+              <T id="FinancingResultAmortization.yearly" />
             </span>
             :&nbsp;
             <b>
               <Money value={yearlyAmortization} />
               /
-              <T defaultMessage="an" />
+              <T id="general.year" />
             </b>
           </div>
         </>
       )}
       {(!amortizationAmount || amortizationAmount < 0) && (
-        <T defaultMessage="Vous n'avez pas besoin d'amortir votre prêt hypothécaire." />
+        <T id="FinancingResultAmortization.none" />
       )}
     </div>
   );

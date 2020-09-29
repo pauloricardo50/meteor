@@ -35,17 +35,17 @@ const getPromotionLotValueRecapArray = promotionLot => {
       hide: !isApp && propertyValue !== totalValue,
     },
     {
-      label: <T defaultMessage="Prix du terrain" />,
+      label: <T id="Forms.landValue" />,
       value: <Money value={landValue} />,
       hide: isApp || !landValue,
     },
     {
-      label: <T defaultMessage="Coût de la construction" />,
+      label: <T id="Forms.constructionValue" />,
       value: <Money value={constructionValue} />,
       hide: isApp || !constructionValue,
     },
     {
-      label: <T defaultMessage="Mise en valeur" />,
+      label: <T id="Forms.additionalMargin" />,
       value: <Money value={additionalMargin} />,
       hide: isApp || !additionalMargin,
     },

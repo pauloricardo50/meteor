@@ -17,11 +17,11 @@ const FinancingOwnFundsActions = ({
 }) => {
   const defaultActions = [
     <Button disabled={loading} key="cancel" onClick={handleClose}>
-      <T defaultMessage="Annuler" />
+      <T id="general.cancel" />
     </Button>,
     !disableDelete && (
       <Button disabled={loading} key="delete" onClick={handleDelete} error>
-        <T defaultMessage="Supprimer" />
+        <T id="general.delete" />
       </Button>
     ),
     <Button
@@ -32,13 +32,13 @@ const FinancingOwnFundsActions = ({
       loading={loading}
       disabled={disableSubmit}
     >
-      <T defaultMessage="Ok" />
+      <T id="general.ok" />
     </Button>,
   ];
 
   const borrowerUpdateActions = [
     <Button disabled={loading} key="no" onClick={handleCancelUpdateBorrower}>
-      <T defaultMessage="Non" />
+      <T id="general.no" />
     </Button>,
     <Button
       primary
@@ -47,7 +47,7 @@ const FinancingOwnFundsActions = ({
       key="yes"
       onClick={handleUpdateBorrower}
     >
-      <T defaultMessage="Oui, modifier" />
+      <T id="FinancingOwnFundsActions.modify" />
     </Button>,
   ];
 

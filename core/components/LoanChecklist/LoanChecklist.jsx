@@ -20,7 +20,7 @@ const LoanChecklist = props => {
     <div className="loan-checklist">
       <div className="loan-checklist-section">
         <h3>
-          <T defaultMessage="Informations manquantes" />
+          <T id="LoanChecklist.missingFields" />
         </h3>
 
         <LoanChecklistSection
@@ -31,7 +31,7 @@ const LoanChecklist = props => {
 
       <div className="loan-checklist-section">
         <h3>
-          <T defaultMessage="Documents manquants" />
+          <T id="LoanChecklist.missingDocuments" />
         </h3>
 
         <LoanChecklistSection

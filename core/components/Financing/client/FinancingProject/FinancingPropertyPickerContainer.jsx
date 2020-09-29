@@ -58,7 +58,7 @@ const FinancingPropertyPickerContainer = compose(
               <span style={{ maxWidth: 200, whiteSpace: 'pre-wrap' }}>
                 {address.replace(', ', '\n')}
               </span>
-            ) || <T defaultMessage="Bien immobilier sans addresse" />,
+            ) || <T id="FinancingPropertyPicker.placeholder" />,
             secondary: <Money value={value} />,
             description: propertyType && (
               <T id={`Forms.propertyType.${propertyType}`} />
@@ -69,7 +69,12 @@ const FinancingPropertyPickerContainer = compose(
 
             return {
               id: _id,
-              label: <T values={{ name }} defaultMessage="Lot {name}" />,
+              label: (
+                <T
+                  id="FinancingPropertyPicker.promotionOption"
+                  values={{ name }}
+                />
+              ),
               secondary: <Money value={value} />,
               description: (
                 <span style={{ maxWidth: 200, whiteSpace: 'pre-wrap' }}>
@@ -81,7 +86,7 @@ const FinancingPropertyPickerContainer = compose(
           {
             id: 'add',
             dividerTop: true,
-            label: <T defaultMessage="Ajouter bien immobilier" />,
+            label: <T id="FinancingPropertyPicker.addProperty" />,
           },
         ],
         value: propertyId || promotionOptionId,

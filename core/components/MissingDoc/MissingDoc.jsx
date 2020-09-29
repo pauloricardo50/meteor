@@ -36,12 +36,12 @@ class MissingDoc extends Component {
         <FontAwesomeIcon icon={faQuestionCircle} className="icon" />
 
         <h2 className="font-size-4 secondary mb-16">
-          <T defaultMessage="Ce document a été supprimé, n'existe pas, ou vous n'avez pas le droit de le voir!" />
+          <T id="MissingDoc.text" />
         </h2>
         <div className="flex center">
           <Link to="/" className="home-link">
             <Button raised color="secondary" icon={<Icon type="home" />}>
-              <T defaultMessage="Page d'accueil" />
+              <T id="MissingDoc.redirectHome" />
             </Button>
           </Link>
         </div>

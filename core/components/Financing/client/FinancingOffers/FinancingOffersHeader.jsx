@@ -28,7 +28,7 @@ const FinancingOffersHeader = props => {
   }
   return (
     <p className="secondary offer">
-      <T defaultMessage="Choisissez.." />
+      <T id="FinancingOffersHeader.empty" />
     </p>
   );
 };

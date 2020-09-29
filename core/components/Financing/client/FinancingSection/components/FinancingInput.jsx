@@ -46,8 +46,8 @@ const defaultGetError = ({ value, max, min, FormatComponent }) => {
   if (typeof value === 'number' && value > max) {
     return (
       <T
+        id="Financing.maxExceeded"
         values={{ max: <FormatComponent value={max} /> }}
-        defaultMessage="Max. {max}"
       />
     );
   }
@@ -55,8 +55,8 @@ const defaultGetError = ({ value, max, min, FormatComponent }) => {
   if (typeof value === 'number' && value < min) {
     return (
       <T
+        id="Financing.belowMin"
         values={{ min: <FormatComponent value={min} /> }}
-        defaultMessage="Min. {min}"
       />
     );
   }

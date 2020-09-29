@@ -66,20 +66,20 @@ const TranchePickerDialog = ({
           &nbsp;/&nbsp;<span className="secondary">{toMoney(wantedLoan)}</span>
           &nbsp;
           <small>
-            <T defaultMessage="répartis" />
+            <T id="general.distributed" />
           </small>
         </h2>
         <TranchePicker {...props} wantedLoan={wantedLoan} tranches={tranches} />
         {status === 'error' &&
           (errors.includes('allTypesAreNotDefined') ? (
             <span className="error">
-              <T defaultMessage="Une de vos tranches n'est pas définie correctement" />
+              <T id="TranchePicker.error.general" />
             </span>
           ) : (
             <span className="error">
               <T
+                id="TranchePicker.error.sumIsNotEqualToWantedLoan"
                 values={{ wantedLoan: <Money value={wantedLoan} /> }}
-                defaultMessage="Vos tranches doivent s'additioner à {wantedLoan}"
               />
             </span>
           ))}

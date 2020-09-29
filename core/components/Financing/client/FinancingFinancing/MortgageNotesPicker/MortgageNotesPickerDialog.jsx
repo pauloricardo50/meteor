@@ -25,7 +25,7 @@ const MortgageNotesPickerDialog = props => {
   if (!property?._id) {
     return (
       <p className="description">
-        <T defaultMessage="Choisissez un bien immobilier sur ce plan financier avant d'ajouter des cédules." />
+        <T id="FinancingMortgageNotesPicker.noProperty" />
       </p>
     );
   }
@@ -36,7 +36,7 @@ const MortgageNotesPickerDialog = props => {
     return (
       <div className="flex-col">
         <p className="description">
-          <T defaultMessage="Entrez le code postal du bien immobilier pour déterminer le canton duquel vos cédules vont provenir." />
+          <T id="FinancingMortgageNotesPicker.noCanton" />
         </p>
         <UpdateField
           doc={property}
@@ -50,13 +50,13 @@ const MortgageNotesPickerDialog = props => {
   return (
     <div className="mortgage-notes-picker-dialog">
       <h4>
-        <T defaultMessage="Cédules existantes" />
+        <T id="FinancingMortgageNotesPicker.propertyMortgageNotes" />
       </h4>
 
       {currentMortgageNotes.length === 0 && (
         <div className="flex-col center-align">
           <span className="mb-8">
-            <T defaultMessage="Ajoutez des cédules sur ce bien immobilier pour les faire apparaître ici." />
+            <T id="FinancingMortgageNotesPicker.emptyPropertyMortgageNotes" />
           </span>
           <Button
             primary
@@ -65,14 +65,14 @@ const MortgageNotesPickerDialog = props => {
             to={createRoute(`/loans/${loanId}/properties/${propertyId}`)}
             icon={<Icon type={collectionIcons[PROPERTIES_COLLECTION]} />}
           >
-            <T defaultMessage="Ajouter cédules" />
+            <T id="FinancingMortgageNotesPicker.add" />
           </Button>
         </div>
       )}
       <MortgageNotesPickerList mortgageNotes={currentMortgageNotes} />
 
       <h4>
-        <T defaultMessage="Autres cédules disponibles" />
+        <T id="FinancingMortgageNotesPicker.borrowerMortgageNotes" />
       </h4>
       <MortgageNotesPickerList
         mortgageNotes={borrowerMortgageNotes}
@@ -83,6 +83,7 @@ const MortgageNotesPickerDialog = props => {
         <div className="flex-col center-align">
           <span className="mb-8">
             <T
+              id="FinancingMortgageNotesPicker.noAvailableMortgageNotes"
               values={{
                 canton: (
                   <b>
@@ -90,7 +91,6 @@ const MortgageNotesPickerDialog = props => {
                   </b>
                 ),
               }}
-              defaultMessage="Ajoutez des cédules du canton de {canton} sur un emprunteur pour pouvoir les choisir ici."
             />
           </span>
           <Button
@@ -100,7 +100,7 @@ const MortgageNotesPickerDialog = props => {
             to={createRoute(`/loans/${loanId}/borrowers`)}
             icon={<Icon type={collectionIcons[BORROWERS_COLLECTION]} />}
           >
-            <T defaultMessage="Ajouter cédules" />
+            <T id="FinancingMortgageNotesPicker.add" />
           </Button>
         </div>
       )}

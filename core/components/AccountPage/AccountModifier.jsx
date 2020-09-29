@@ -26,6 +26,6 @@ export default withProps(({ currentUser }) => ({
   buttonProps: {
     raised: true,
     primary: true,
-    label: <T defaultMessage="Modifier mes informations" />,
+    label: <T id="AccountPage.updateUser" />,
   },
 }))(AccountModifier);

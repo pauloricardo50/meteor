@@ -29,11 +29,11 @@ export default withProps(
         disabled: disabled || selected,
         secondary: disabled ? (
           <div style={{ maxWidth: 200, whiteSpace: 'normal' }}>
-            <T defaultMessage="Vous ne pouvez pas supprimer un plan financier verrouillé" />
+            <T id="FinancingHeaderActions.removeDescriptionDisabled" />
           </div>
         ) : selected ? (
           <div style={{ maxWidth: 200, whiteSpace: 'normal' }}>
-            <T defaultMessage="Vous ne pouvez pas supprimer le plan financier choisi" />
+            <T id="FinancingHeaderActions.removeDescriptionSelected" />
           </div>
         ) : null,
       },

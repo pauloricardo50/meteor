@@ -16,10 +16,7 @@ export const FinancingResultFutureTitle = ({ borrowers = [] }) => {
       {borrowers.map(({ _id, firstName }, index) => (
         <span key={_id}>
           {firstName || (
-            <T
-              values={{ index: index + 1 }}
-              defaultMessage="Emprunteur {index}"
-            />
+            <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
           )}
         </span>
       ))}

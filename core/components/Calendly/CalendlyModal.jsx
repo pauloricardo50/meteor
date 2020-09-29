@@ -75,10 +75,10 @@ const CalendlyModal = ({ buttonProps }) => {
               style={{ width: '100px', height: '100px', color: colors.success }}
             />
             <h3>
-              <T defaultMessage="Vous avez déjà planifié un rendez-vous" />
+              <T id="CalendlyModal.eventScheduled.title" />
             </h3>
             <p className="description">
-              <T defaultMessage="Voulez-vous en planifier un autre ?" />
+              <T id="CalendlyModal.eventScheduled.description" />
             </p>
             <Button
               onClick={() => setEventScheduled(false)}

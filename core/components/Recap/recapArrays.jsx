@@ -46,14 +46,14 @@ export const getDashboardArray = ({ Calculator: calc = Calculator, loan }) => {
       title: true,
       label: (
         <span>
-          <T defaultMessage="Projet (en CHF)" />
+          <T id="Recap.title" />
           &nbsp;
           {Meteor.microservice === 'admin' && calc.organisationName && (
             <span className="secondary">
               (
               <T
+                id="Recap.consideredBy"
                 values={{ organisationName: calc.organisationName }}
-                defaultMessage="Considéré par {organisationName}"
               />
               )
             </span>
@@ -270,14 +270,14 @@ export const getBorrowerArray = ({
       title: true,
       label: (
         <span className="v-align-recap">
-          <T defaultMessage="Fortune" />
+          <T id="Recap.fortune" />
           &nbsp;
           {Meteor.microservice === 'admin' && calc.organisationName && (
             <span className="secondary">
               (
               <T
+                id="Recap.consideredBy"
                 values={{ organisationName: calc.organisationName }}
-                defaultMessage="Considéré par {organisationName}"
               />
               )
             </span>
@@ -461,7 +461,7 @@ export const getPropertyArray = ({ property }) => {
       title: true,
       label: (
         <small className="secondary">
-          <T defaultMessage="Ajoutez des informations pour afficher un résumé" />
+          <T id="Recap.empty" />
         </small>
       ),
       hide: dataArray.filter(({ hide }) => !hide).length > 0,
@@ -699,14 +699,14 @@ export const getPremiumArray = ({ Calculator: calc = Calculator, loan }) => {
       title: true,
       label: (
         <span>
-          <T defaultMessage="Projet (en CHF)" />
+          <T id="Recap.title" />
           &nbsp;
           {Meteor.microservice === 'admin' && calc.organisationName && (
             <span className="secondary">
               (
               <T
+                id="Recap.consideredBy"
                 values={{ organisationName: calc.organisationName }}
-                defaultMessage="Considéré par {organisationName}"
               />
               )
             </span>

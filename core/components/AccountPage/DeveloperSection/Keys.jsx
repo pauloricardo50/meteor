@@ -9,10 +9,10 @@ const Keys = ({ keyPair = {} }) => {
     return (
       <>
         <h3>
-          <T defaultMessage="Pas de clés API" />
+          <T id="AccountPage.DevelopperSection.emptyState.title" />
         </h3>
         <h4 className="secondary">
-          <T defaultMessage="Vous pouvez générer une paire de clés pour commencer à utiliser notre API REST." />
+          <T id="AccountPage.DevelopperSection.emptyState.description" />
         </h4>
       </>
     );

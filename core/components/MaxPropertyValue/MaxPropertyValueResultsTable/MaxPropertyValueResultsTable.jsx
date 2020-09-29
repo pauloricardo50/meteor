@@ -84,8 +84,8 @@ const MaxPropertyValueResultsTable = ({ loan, showMoreProps }) => {
         {purchaseType === PURCHASE_TYPE.REFINANCING && raise > 0 && (
           <span className="text-center mt-16">
             <T
+              id="MaxPropertyValue.ownFundsRaise"
               values={{ raise: <Money value={raise} /> }}
-              defaultMessage="Dégagement de liquidités potentiel de {raise}"
             />
           </span>
         )}
@@ -95,7 +95,7 @@ const MaxPropertyValueResultsTable = ({ loan, showMoreProps }) => {
           size="small"
           {...showMoreProps}
         >
-          <T defaultMessage="Afficher détails" />
+          <T id="MaxPropertyValue.showDetail" />
         </Button>
       </>
     );
@@ -143,7 +143,7 @@ const MaxPropertyValueResultsTable = ({ loan, showMoreProps }) => {
         size="small"
         {...showMoreProps}
       >
-        <T defaultMessage="Masquer détails" />
+        <T id="MaxPropertyValue.showRecap" />
       </Button>
     </>
   );

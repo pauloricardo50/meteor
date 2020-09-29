@@ -41,7 +41,7 @@ const PromotionAdministration = ({
 
   const dialogActions = setOpenModal => [
     <Button primary onClick={() => setOpenModal(false)} key="close">
-      <T defaultMessage="Fermer" />
+      <T id="general.close" />
     </Button>,
   ];
 

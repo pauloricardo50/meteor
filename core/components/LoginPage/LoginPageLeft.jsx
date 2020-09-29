@@ -12,11 +12,11 @@ const LoginPageLeft = props => (
       </a>
       <div className="text">
         <h1>
-          <T defaultMessage="Accédez à votre compte e-Potek" />
+          <T id="LoginPage.title" />
         </h1>
         <div className="divider" />
         <p className="description">
-          <T defaultMessage="Gérez votre demande de prêt hypothécaire, accompagné(e) par nos conseillers." />
+          <T id="LoginPage.description" />
         </p>
       </div>
     </span>

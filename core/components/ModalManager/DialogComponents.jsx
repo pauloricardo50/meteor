@@ -17,7 +17,7 @@ const makeRenderDialogPart = dialogProps => part => {
 
 const defaultActions = ({ closeModal }) => (
   <Button className="dialog-close" primary onClick={closeModal}>
-    <T defaultMessage="Fermer" />
+    <T id="general.close" />
   </Button>
 );
 

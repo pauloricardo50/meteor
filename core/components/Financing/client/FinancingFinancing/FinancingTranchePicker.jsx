@@ -25,13 +25,13 @@ const FinancingTranchePicker = ({
       {status === 'error' &&
         (errors.includes('allTypesAreNotDefined') ? (
           <div className="error flex-col center">
-            <T defaultMessage="Une de vos tranches n'est pas définie correctement" />
+            <T id="TranchePicker.error.general" />
           </div>
         ) : (
           <div className="error flex-col center">
             <T
+              id="TranchePicker.error.sumIsNotEqualToWantedLoan"
               values={{ wantedLoan: <Money value={wantedLoan} /> }}
-              defaultMessage="Vos tranches doivent s'additioner à {wantedLoan}"
             />
           </div>
         ))}

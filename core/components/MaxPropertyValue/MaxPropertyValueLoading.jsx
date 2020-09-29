@@ -7,10 +7,10 @@ const MaxPropertyValueLoading = () => (
   <div className="animated fadeIn text-center">
     <Loading />
     <h4>
-      <T defaultMessage="Algorithmes au travail..." />
+      <T id="MaxPropertyValue.loading1" />
     </h4>
     <p>
-      <T defaultMessage="Détendez-vous un instant" />
+      <T id="MaxPropertyValue.loading2" />
     </p>
   </div>
 );

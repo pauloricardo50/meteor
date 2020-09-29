@@ -15,7 +15,7 @@ const MapWithMarker = props => {
     <GoogleMap address={address} latlng={latlng} id={id} options={options} />
   ) : (
     <p className="description">
-      <T defaultMessage="Cette adresse n'a pas pu être trouvée" />
+      <T id="Maps.addressNotFound" />
     </p>
   );
 };

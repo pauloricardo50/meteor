@@ -64,7 +64,7 @@ const LotsTable = ({ promotion: { _id: promotionId } }) => {
     <Element name="additional-lots-table">
       <div className="card1 p-16">
         <h3>
-          <T defaultMessage="Lots annexes" />
+          <T id="PromotionPage.AdditionalLotsTable" />
         </h3>
         <DataTable
           queryConfig={{ query: lots, params: { promotionId } }}

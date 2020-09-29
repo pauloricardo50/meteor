@@ -34,7 +34,7 @@ const ProPropertyRecap = ({ property }) => {
       {propertyType === PROPERTY_TYPE.HOUSE && houseType && (
         <div key="houseType">
           <h4>
-            <T defaultMessage="Type de villa" />
+            <T id="Forms.houseType" />
           </h4>
           <p>
             <T id={`Forms.houseType.${houseType}`} />
@@ -44,7 +44,7 @@ const ProPropertyRecap = ({ property }) => {
       {propertyType === PROPERTY_TYPE.FLAT && flatType && (
         <div key="flatType">
           <h4>
-            <T defaultMessage="Type d'appartement" />
+            <T id="Forms.flatType" />
           </h4>
           <p>
             <T id={`Forms.flatType.${flatType}`} />
