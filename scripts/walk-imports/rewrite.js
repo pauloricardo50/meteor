@@ -41,10 +41,8 @@ module.exports = function (importedFile, appPath) {
     // JSX doesn't allow escaping quotes, so we have to
     // put the string within an expression
     if (content.includes('"')) {
-      console.log('has escaped string', content);
       attrValue = b.jsxExpressionContainer(b.stringLiteral(content));
     } else {
-      console.log('plain string', content);
       attrValue = b.literal(content);
     }
 
