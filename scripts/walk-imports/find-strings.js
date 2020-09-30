@@ -1,5 +1,6 @@
 const { resolve: resolvePath, dirname } = require('path');
 const { visit } = require('ast-types');
+const crypto = require('crypto');
 
 function createTPaths(appDir) {
   return [
@@ -38,7 +39,7 @@ function expressionToString(expr) {
     return null;
   }
 
-  throw new Error('unsupported expression type');
+  return null;
 }
 
 // Node should be a JSXOpeningElement
@@ -136,10 +137,18 @@ function findTComponents(ast, tName) {
   return result;
 }
 
+function createHash(defaultMessage, description) {
+  return crypto
+    .createHash('MD5')
+    .update(JSON.stringify({ defaultMessage, description }))
+    .digest('hex');
+}
+
 module.exports = {
   createTPaths,
   getId,
   findTImport,
   findTComponents,
   getAttrValue,
+  createHash,
 };

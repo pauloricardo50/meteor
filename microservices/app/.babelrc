@@ -43,6 +43,9 @@
         }
       }
     ],
-    "lodash"
+    "lodash",
+    [
+      "../../scripts/walk-imports/babel-plugin.js"
+    ]
   ]
 }
