@@ -11,6 +11,8 @@ import messagesFR from '../../../lang/fr.json';
 import AdminLayout from '../../client/layouts/AdminLayout';
 import ADMIN_ROUTES from './adminRoutes';
 
+const isDev = Meteor.isDevelopment;
+
 const AdminRoutes = props => (
   <Switch>
     {Object.keys(ADMIN_ROUTES).map(route => (
@@ -25,7 +27,7 @@ const AdminRouter = () => {
   return (
     <BaseRouter
       locale={getUserLocale()}
-      messages={messagesFR}
+      messages={isDev ? {} : messagesFR}
       formats={getFormats()}
       routes={ADMIN_ROUTES}
       currentUserConfig={{
