@@ -22,11 +22,11 @@ export const T = props => {
   if (noTooltips) {
     return <FormattedMessage {...props} />;
   }
-  if (typeof id !== 'string') {
-    return id;
-  }
   if (!id) {
     throw new Error('Undefined id in Translation component');
+  }
+  if (typeof id !== 'string') {
+    return id;
   }
 
   const Auto = makeAutoTooltip(props);
