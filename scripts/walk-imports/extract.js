@@ -13,36 +13,73 @@ const crypto = require('crypto');
 const { writeFileSync } = require('fs');
 const {
   findTImport,
+  findDmImport,
   getId,
   findTComponents,
   getAttrValue,
   createTPaths,
+  createDefineMessagePaths,
+  findDmCalls,
+  findProperty,
+  createHash,
 } = require('./find-strings');
 const walkApp = require('.');
 
 let result = {};
 
 module.exports = function (filePath, ast, imports, appDir) {
+  const messages = [];
+
   const tPaths = createTPaths(appDir);
+  const dmPaths = createDefineMessagePaths(appDir);
   const tName = findTImport(filePath, imports, tPaths);
+  const dmName = findDmImport(filePath, imports, dmPaths);
 
-  const components = findTComponents(ast, tName);
-  components.forEach(component => {
-    let id = getId(component);
-    const defaultMessage = getAttrValue('defaultMessage');
-    const description = getAttrValue('description');
+  if (tName) {
+    const components = findTComponents(ast, tName);
+    components.forEach(component => {
+      let id = getId(component);
+      const defaultMessage = getAttrValue(component, 'defaultMessage');
+      const description = getAttrValue(component, 'description');
 
-    if (id instanceof RegExp) {
+      if (id instanceof RegExp) {
+        return;
+      }
+
+      messages.push({
+        id,
+        defaultMessage,
+        description,
+      });
+    });
+  }
+  if (dmName) {
+    findDmCalls(ast, dmName).forEach(callExpression => {
+      const properties = callExpression.arguments[0].properties;
+      const id = findProperty(properties, 'id');
+      const defaultMessage = findProperty(properties, 'defaultMessage');
+      const description = findProperty(properties, 'description');
+      messages.push({
+        id,
+        defaultMessage,
+        description,
+      });
+    });
+  }
+
+  messages.forEach(({ id, defaultMessage, description }) => {
+    if (!defaultMessage && !description) {
+      // Do not extract if we only have the id, to help us
+      // identify missing strings in the migration.
+      // After the migration, we can probably remove
+      // this condition.
       return;
     }
 
     if (!id) {
-      const hash = crypto
-        .createHash('MD5')
-        .update(JSON.stringify({ defaultMessage, description }))
-        .digest('hex');
-      id = hash;
+      id = createHash(defaultMessage, description);
     }
+
     result[id] = {
       defaultMessage,
       description,

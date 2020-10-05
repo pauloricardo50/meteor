@@ -1,17 +1,23 @@
 const {
   createTPaths,
+  createDefineMessagePaths,
   findTImport,
   getAttrValue,
   createHash,
+  findDmImport,
+  findProperty,
 } = require('./find-strings');
 
 module.exports = function ({ types: t }) {
   const tPaths = createTPaths(process.cwd());
+  const dmPaths = createDefineMessagePaths(process.cwd());
   const removeDefault = process.env.NODE_ENV === 'production';
 
   return {
     pre() {
       this.imports = [];
+      this.tName = null;
+      this.dmName = null;
     },
     visitor: {
       ImportDeclaration(path, state) {
@@ -31,15 +37,40 @@ module.exports = function ({ types: t }) {
           source: importPath,
         });
       },
-      CallExpression(path) {
-        if (path.node.callee.type !== 'Import') {
-          return;
-        }
+      CallExpression(path, state) {
+        if (path.node.callee.type === 'Import') {
+          let importPath = path.node.arguments[0].value;
+          this.imports.push({
+            source: importPath,
+          });
+        } else {
+          if (!this.dmName) {
+            this.dmName = findDmImport(state.filename, this.imports, dmPaths);
 
-        let importPath = path.node.arguments[0].value;
-        this.imports.push({
-          source: importPath,
-        });
+            if (!this.dmName) {
+              return;
+            }
+          }
+
+          if (path.node.callee.name === this.dmName) {
+            const config = path.node.arguments[0];
+            const properties = path
+              .get('arguments.0.properties')
+              .map(a => a.node);
+            let id = findProperty(properties, 'id');
+            const defaultMessage = findProperty(properties, 'defaultMessage');
+            const description = findProperty(properties, 'description');
+            if (!id && (defaultMessage || description)) {
+              id = createHash(defaultMessage, description);
+              console.log('created id', id);
+              path
+                .get('arguments.0.properties')[0]
+                .insertBefore(
+                  t.objectProperty(t.stringLiteral('id'), t.stringLiteral(id)),
+                );
+            }
+          }
+        }
       },
       JSXOpeningElement(path, state) {
         const componentName = path.node.name.name;

@@ -10,6 +10,16 @@ function createTPaths(appDir) {
   ];
 }
 
+function createDefineMessagePaths(appDir) {
+  return [
+    resolvePath(
+      appDir,
+      'imports/core/components/Translation/defineMessage.jsx',
+    ),
+    resolvePath(appDir, 'imports/core/components/Translation/defineMessage'),
+  ];
+}
+
 function expressionToString(expr) {
   if (expr.type === 'TemplateLiteral') {
     const parts = [...expr.expressions, ...expr.quasis].sort(
@@ -89,6 +99,14 @@ function getAttrValue(node, attrName) {
   return value;
 }
 
+function findProperty(properties, key) {
+  const result = properties.find(
+    property => property.key.type === 'Identifier' && property.key.name === key,
+  );
+
+  return result ? result.value.value : null;
+}
+
 // Returns the specifier used to import the T component
 // Only supports import statements, not dynamic imports or
 // require statements
@@ -118,6 +136,32 @@ function findTImport(filePath, imports, tPaths) {
   return result;
 }
 
+function findDmImport(filePath, imports, dmPaths) {
+  let result;
+  imports.forEach(({ source, specifiers }) => {
+    const importPath = resolvePath(dirname(filePath), source);
+    if (dmPaths.includes(importPath)) {
+      if (result) {
+        throw new Error('Two imports for defineMessage?');
+      }
+      if (!specifiers) {
+        throw new Error('defineMessage not imported with import declaration');
+      }
+
+      const specifier = specifiers.find(
+        specifier => specifier.type === 'ImportDefaultSpecifier',
+      );
+      if (!specifier) {
+        return false;
+      }
+
+      result = specifier.local.name;
+    }
+  });
+
+  return result;
+}
+
 function findTComponents(ast, tName) {
   const result = [];
 
@@ -137,6 +181,22 @@ function findTComponents(ast, tName) {
   return result;
 }
 
+function findDmCalls(ast, dmName) {
+  const result = [];
+
+  visit(ast, {
+    visitCallExpression(path) {
+      if (path.node.callee.name === dmName) {
+        result.push(path.node);
+      }
+
+      return false;
+    },
+  });
+
+  return result;
+}
+
 function createHash(defaultMessage, description) {
   return crypto
     .createHash('MD5')
@@ -146,9 +206,13 @@ function createHash(defaultMessage, description) {
 
 module.exports = {
   createTPaths,
+  createDefineMessagePaths,
   getId,
   findTImport,
+  findDmImport,
   findTComponents,
+  findDmCalls,
   getAttrValue,
   createHash,
+  findProperty,
 };
