@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
+import { categories as categoryMessages } from 'core/api/files/messages.js';
 import T from '../Translation';
 import HiddenDocuments from '../UploaderArray/HiddenDocuments';
 import UploaderArray from '../UploaderArray/UploaderArray';
@@ -22,7 +23,7 @@ const UploaderCategories = props => {
     .map(category => (
       <div className="uploader-category" key={category}>
         <h3 className={`v-align-${category}`}>
-          <T id={`files.category.${category}`} />
+          <T {...categoryMessages[category]} />
         </h3>
         <UploaderArray
           documentArray={categories[category].documentsToDisplay}

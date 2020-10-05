@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import SimpleSchema from 'simpl-schema';
 
+import { categories as categoryMessages } from 'core/api/files/messages.js';
 import { BORROWERS_COLLECTION } from '../../../api/borrowers/borrowerConstants';
 import {
   removeAdditionalDoc,
@@ -58,7 +59,7 @@ export const getAdditionalDocSchema = collection => {
       uniforms: {
         label: 'Catégorie',
         placeholder: null,
-        transform: id => <T id={`files.category.${id}`} />,
+        transform: id => <T {...categoryMessages[id]} />,
       },
       condition: () => allowedValues.length > 0,
       defaultValue: 'OTHER',

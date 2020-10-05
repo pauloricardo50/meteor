@@ -16,6 +16,7 @@ import {
   SORT_BY,
   SORT_ORDER,
 } from '../../../components/AdminBoard/AdminBoardConstants';
+import 'core/lang/form-status.js';
 
 const insuranceRequestBoardStatusOrder = [
   INSURANCE_REQUEST_STATUS.UNSUCCESSFUL,

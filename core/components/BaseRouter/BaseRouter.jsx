@@ -16,6 +16,7 @@ import HistoryWatcher from './HistoryWatcher';
 import LibraryWrappers from './LibraryWrappers';
 import Route from './Route';
 import Switch from './Switch';
+import useDevMessages from '../Translation/devMessages';
 
 const loginWithToken = ({
   match: {
@@ -48,12 +49,18 @@ const BaseRouter = ({
     }
   });
 
+  const devMessages = useDevMessages();
+
   return (
     <ErrorBoundary helper="root">
       <MicroserviceHead />
       <CurrentUserProvider {...currentUserConfig}>
         <LibraryWrappers
-          i18n={{ locale, messages, formats }}
+          i18n={{
+            locale,
+            messages: { ...messages, ...devMessages },
+            formats,
+          }}
           WrapperComponent={WrapperComponent}
         >
           {/* Make sure all errors are catched in the top-level of the app
